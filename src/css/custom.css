@@ -7,6 +7,15 @@
 /* You can override the default Infima variables here. */
 :root {
   --ifm-font-size-base: 1.125rem; /* Increased base font size */
+
+  /* Adjust header font sizes */
+  --ifm-h1-font-size: 2.25rem; /* ~36px */
+  --ifm-h2-font-size: 1.75rem; /* ~28px */
+  --ifm-h3-font-size: 1.5rem;  /* ~24px */
+  --ifm-h4-font-size: 1.25rem; /* ~20px */
+  --ifm-h5-font-size: 1.125rem; /* Same as base font size */
+  --ifm-h6-font-size: 1rem;    /* Slightly smaller than base */
+
   --ifm-color-primary: #2e8555;
   --ifm-color-primary-dark: #29784c;
   --ifm-color-primary-darker: #277148;
