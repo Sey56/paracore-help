@@ -1,0 +1,43 @@
+---
+sidebar_position: 6
+---
+
+# Script Execution
+
+Executing scripts in RAP is a straightforward process designed to integrate seamlessly with your Revit workflows. This section covers how to run scripts and understand their outcomes.
+
+## Prerequisites for Running a Script
+
+Before you can run a script, ensure the following:
+
+1.  **Revit is Running:** Autodesk Revit must be open on your machine.
+2.  **RAP Add-in is Loaded:** The `RServer.Addin` must be loaded within your Revit session. You should see a "RAP" tab in the Revit ribbon.
+3.  **Script Compatibility:** The selected script must be compatible with the currently open Revit document (if it specifies a required document type).
+4.  **Authentication:** You must be logged into RAP.
+
+## Steps to Execute a Script
+
+RAP offers two ways to execute a script:
+
+1.  **From the Script Card (Quick Run):**
+    *   In the [Script Gallery](./script-gallery.md), locate the script you wish to run.
+    *   Click the **"Run" button** (usually a play icon) directly on the script card.
+    *   The script will execute immediately using its default parameters (or the last used parameters if a preset is active).
+    *   The [Script Inspector](./script-inspector.md) will automatically open to the **Console Tab** to display the execution results.
+
+2.  **From the Script Inspector (Configurable Run):**
+    *   **Select a Script:** From the [Script Gallery](./script-gallery.md), click on the script you wish to run. This will open it in the [Script Inspector](./script-inspector.md).
+    *   **Configure Parameters:** In the Script Inspector's **Parameters Tab**, adjust any necessary [script parameters and presets](./parameters-presets.md).
+    *   **Click "Run Script":** Locate and click the prominent "Run Script" button.
+    *   **Monitor Execution:** The script will execute. The Console Tab will automatically activate to display real-time output.
+
+## Understanding Execution Results
+
+After a script finishes running, the Console Tab will show its output. The "Run Script" button in the Parameters Tab will also display a status icon next to it:
+
+*   **Green Checkmark (✅):** Indicates successful script execution.
+*   **Red X (❌):** Indicates that the script encountered an error during execution. Details of the error will be available in the Console Tab.
+
+Clicking on this status icon (green checkmark or red X) will activate the **Console Tab**, allowing you to quickly review the full execution log without navigating away.
+
+For a more structured overview of the results, navigate to the **Summary Tab** in the Script Inspector.
