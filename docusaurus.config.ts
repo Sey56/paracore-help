@@ -5,7 +5,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'RAP - Revit Automation Platform',
+  title: 'Paracore - Revit Automation Platform',
   tagline: 'Streamline your Revit workflows with intelligent automation and script management.',
   favicon: 'img/favicon.ico',
 
@@ -75,10 +75,10 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
     navbar: {
-      title: 'RAP',
+      title: 'Paracore',
       logo: {
-        alt: 'RAP Logo',
-        src: '/img/rap-logo.png',
+        alt: 'Paracore Logo',
+        src: '/img/paracore-logo.png',
       },
       items: [
         {
@@ -112,7 +112,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} RAP. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Paracore. Built with Docusaurus.`,
     },
     prism: {
       theme: prismThemes.github,
