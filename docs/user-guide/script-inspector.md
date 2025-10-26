@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Script Inspector
 
-The Script Inspector, located on the right side of the RAP application, provides a detailed view of the currently selected script. It allows you to review script metadata, adjust parameters, view execution results, and initiate script runs.
+The Script Inspector, located on the right side of the Paracore application, provides a detailed view of the currently selected script. It allows you to review script metadata, adjust parameters, view execution results, and initiate script runs.
 
 ## Inspector Tabs
 

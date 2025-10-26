@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Script Gallery
 
-The Script Gallery is the central hub for discovering and accessing all available automation scripts in RAP. It displays scripts from your active script source (either a local folder or a team workspace) and allows you to filter, search, and select scripts for execution.
+The Script Gallery is the central hub for discovering and accessing all available automation scripts in Paracore. It displays scripts from your active script source (either a local folder or a team workspace) and allows you to filter, search, and select scripts for execution.
 
 ## Navigating the Script Gallery
 

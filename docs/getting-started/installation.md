@@ -4,23 +4,23 @@ sidebar_position: 1
 
 # Installation Guide
 
-This section will guide you through the process of installing the Revit Automation Platform (RAP) on your local machine.
+This section will guide you through the process of installing the Revit Automation Platform (Paracore) on your local machine.
 
 ## System Requirements
 
 *   **Operating System:** Windows 10 or 11 (64-bit)
 *   **Revit Version:** Autodesk Revit 2020 or newer
-*   **Python:** Python 3.8 or newer (for `rap-server`)
-*   **Node.js:** Node.js 16 or newer (for `rap-web` development, not required for end-users)
+*   **Python:** Python 3.8 or newer (for `paracore-server`)
+*   **Node.js:** Node.js 16 or newer (for `paracore-web` development, not required for end-users)
 *   **Git:** Git client installed and configured
 
 ## Installation Steps
 
-RAP is distributed as a set of installer packages:
+Paracore is distributed as a set of installer packages:
 
-1.  **Download the Installers:** Obtain the latest RAP installers:
-    *   `RAP_Installer.msi` (for the RAP desktop application)
-    *   `RAP_Server_Installer.exe` (for the local backend server)
+1.  **Download the Installers:** Obtain the latest Paracore installers:
+    *   `Paracore_Installer.msi` (for the Paracore desktop application)
+    *   `Paracore_Server_Installer.exe` (for the local backend server)
     *   `RServer_Addin_Installer.exe` (for the Revit add-in)
     *   [Link to release page/download]
 
@@ -29,8 +29,8 @@ RAP is distributed as a set of installer packages:
     *   The installers will set up the respective components.
 
 3.  **Verify Installation:**
-    *   Launch the RAP desktop application.
-    *   Open Autodesk Revit and check for the `RAP` tab in the Revit ribbon.
+    *   Launch the Paracore desktop application.
+    *   Open Autodesk Revit and check for the `Paracore` tab in the Revit ribbon.
 
 ## Post-Installation Setup
 

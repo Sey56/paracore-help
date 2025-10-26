@@ -4,7 +4,7 @@ sidebar_position: 7
 
 # Script Parameters and Presets
 
-RAP allows you to define and manage parameters for your scripts, making them flexible and reusable without needing to modify the underlying code. Parameter presets enable you to save and quickly load specific sets of parameter values.
+Paracore allows you to define and manage parameters for your scripts, making them flexible and reusable without needing to modify the underlying code. Parameter presets enable you to save and quickly load specific sets of parameter values.
 
 ## Script Parameters
 

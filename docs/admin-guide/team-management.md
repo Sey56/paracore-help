@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Team Management
 
-As an `admin`, you are responsible for managing your team members and their roles within RAP. This ensures that the right people have the right access to collaborate effectively.
+As an `admin`, you are responsible for managing your team members and their roles within Paracore. This ensures that the right people have the right access to collaborate effectively.
 
 ## Inviting New Team Members
 
@@ -12,7 +12,7 @@ To invite new users to your team:
 
 1.  **Access Team Management:** Navigate to the **Settings modal** (usually accessible via your profile in the Top Bar) and select the **"Team Management" tab**.
 2.  **Enter Member Details:** In the invitation section, enter the email address of the user you wish to invite.
-    *   **Prerequisite:** The user must already have a RAP account (i.e., they must have signed in to RAP at least once).
+    *   **Prerequisite:** The user must already have a Paracore account (i.e., they must have signed in to Paracore at least once).
 3.  **Assign a Role:** Select the desired role for the new member:
     *   **`user`:** Can run scripts, manage parameters, and update local clones.
     *   **`developer`:** Can create/edit scripts, use full Git workflow, and manage local clones.

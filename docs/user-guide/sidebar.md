@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Sidebar Navigation
 
-The Sidebar, located on the left side of the RAP application, is your primary tool for navigating through script categories, managing script sources, and accessing your favorite or recently used scripts.
+The Sidebar, located on the left side of the Paracore application, is your primary tool for navigating through script categories, managing script sources, and accessing your favorite or recently used scripts.
 
 ## Sections of the Sidebar
 
@@ -20,7 +20,7 @@ The Sidebar, located on the left side of the RAP application, is your primary to
     *   Shows a list of scripts you have recently executed.
 
 4.  **Script Sources:**
-    *   This crucial section allows you to manage where RAP finds your automation scripts.
+    *   This crucial section allows you to manage where Paracore finds your automation scripts.
     *   **Local Folders:**
         *   Visible only when you are in your personal team space (as an `admin`).
         *   Allows you to add local folders from your computer as script sources for personal use and experimentation.

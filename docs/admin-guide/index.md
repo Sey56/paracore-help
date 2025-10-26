@@ -5,7 +5,7 @@ slug: /admin-guide
 
 # Admin Guide
 
-As an `admin` in RAP, you play a crucial role in managing your team, curating the script library, and ensuring the overall health and governance of your firm's automation ecosystem. This guide provides detailed instructions on your responsibilities and how to perform key administrative tasks.
+As an `admin` in Paracore, you play a crucial role in managing your team, curating the script library, and ensuring the overall health and governance of your firm's automation ecosystem. This guide provides detailed instructions on your responsibilities and how to perform key administrative tasks.
 
 ## Key Responsibilities of an Admin
 
@@ -17,7 +17,7 @@ As an `admin` in RAP, you play a crucial role in managing your team, curating th
 
 ## Admin Tools and Access
 
-Admins have the most comprehensive access within RAP, including:
+Admins have the most comprehensive access within Paracore, including:
 
 *   Full access to the script editor and development environment.
 *   All Git integration features (commit, push, pull/sync, branch management).

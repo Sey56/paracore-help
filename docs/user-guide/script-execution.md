@@ -4,20 +4,20 @@ sidebar_position: 6
 
 # Script Execution
 
-Executing scripts in RAP is a straightforward process designed to integrate seamlessly with your Revit workflows. This section covers how to run scripts and understand their outcomes.
+Executing scripts in Paracore is a straightforward process designed to integrate seamlessly with your Revit workflows. This section covers how to run scripts and understand their outcomes.
 
 ## Prerequisites for Running a Script
 
 Before you can run a script, ensure the following:
 
 1.  **Revit is Running:** Autodesk Revit must be open on your machine.
-2.  **RAP Add-in is Loaded:** The `RServer.Addin` must be loaded within your Revit session. You should see a "RAP" tab in the Revit ribbon.
+2.  **Paracore Add-in is Loaded:** The `RServer.Addin` must be loaded within your Revit session. You should see a "Paracore" tab in the Revit ribbon.
 3.  **Script Compatibility:** The selected script must be compatible with the currently open Revit document (if it specifies a required document type).
-4.  **Authentication:** You must be logged into RAP.
+4.  **Authentication:** You must be logged into Paracore.
 
 ## Steps to Execute a Script
 
-RAP offers two ways to execute a script:
+Paracore offers two ways to execute a script:
 
 1.  **From the Script Card (Quick Run):**
     *   In the [Script Gallery](./script-gallery.md), locate the script you wish to run.

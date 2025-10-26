@@ -3,11 +3,11 @@ sidebar_position: 1
 slug: /collaboration
 ---
 
-# Collaboration with RAP
+# Collaboration with Paracore
 
-RAP is designed to facilitate seamless collaboration within AEC firms, allowing teams to share, manage, and develop automation scripts together. This is achieved through a powerful Git-powered workflow that leverages industry-standard practices.
+Paracore is designed to facilitate seamless collaboration within AEC firms, allowing teams to share, manage, and develop automation scripts together. This is achieved through a powerful Git-powered workflow that leverages industry-standard practices.
 
-## Why Collaborate with RAP?
+## Why Collaborate with Paracore?
 
 *   **Centralized Script Management:** Keep all your team's automation scripts in version-controlled Git repositories.
 *   **Role-Based Access:** Define clear responsibilities with distinct roles for users, developers, and administrators.
@@ -17,11 +17,11 @@ RAP is designed to facilitate seamless collaboration within AEC firms, allowing 
 
 ## Key Concepts
 
-Collaboration in RAP revolves around a few key concepts:
+Collaboration in Paracore revolves around a few key concepts:
 
 *   **Teams:** Groups of users working together on shared automation goals.
 *   **User Roles:** Defined permissions and responsibilities within a team (`admin`, `developer`, `user`).
-*   **Workspaces:** Git repositories registered with RAP that serve as the source for team scripts.
+*   **Workspaces:** Git repositories registered with Paracore that serve as the source for team scripts.
 *   **Git Workflow:** The process of using Git for version control, branching, and merging changes.
 
-This section of the documentation will guide you through understanding these concepts and effectively collaborating with your team using RAP.
+This section of the documentation will guide you through understanding these concepts and effectively collaborating with your team using Paracore.
