@@ -11,32 +11,29 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    title: 'Dynamic Script Execution',
+    Svg: require('@site/static/img/play-icon.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Execute C# scripts directly in Revit without compiling or reloading. Get instant feedback and see your changes live. Paracore streamlines your development workflow, making Revit automation faster and more interactive.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Powerful VSCode Integration',
+    Svg: require('@site/static/img/vscode-icon.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Edit your scripts with the full power of VSCode. Paracore provides a seamless, one-click workflow to open your scripts in a fully configured environment with IntelliSense for the Revit API, code completion, and live-syncing of your changes back to Paracore.
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Unified Script Hub',
+    Svg: require('@site/static/img/team-icon.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Organize all your personal and team scripts in one central location. With built-in Git integration, you can manage versions, collaborate with your team, and ensure everyone is working from the same source of truth.
       </>
     ),
   },

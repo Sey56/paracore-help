@@ -20,6 +20,11 @@ The Top Bar is located at the very top of the Paracore application interface. It
 3.  **Help Button:**
     *   Provides access to the Paracore documentation and other helpful resources.
 
+4.  **Navigation Tabs:**
+    *   **Automation:** The default view. Browse your [Script Gallery](./script-gallery.md) to manage and run local scripts manually.
+    *   **Generation:** Access the [AI Script Generation](./ai-script-generation.md) interface to create new scripts from natural language.
+    *   **Agent:** Open the [Paracore Agent](./agentic-automation.md) chat interface for conversational automation.
+
 ## Revit Status Display
 
 The Top Bar provides real-time information about your Autodesk Revit connection and the currently active document. This status is crucial for understanding if Paracore can interact with Revit.

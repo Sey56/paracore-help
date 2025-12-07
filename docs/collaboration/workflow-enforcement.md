@@ -12,6 +12,10 @@ Paracore implements several features to guide users towards Git best practices a
 *   **Purpose:** This serves as an immediate visual reminder to encourage working on feature branches from the start.
 *   **Disappearance:** This message automatically disappears once the developer checks out or creates a new branch.
 
+:::info User Role Note
+The `user` role does not have access to the `GitStatusPanel` and is therefore not subject to these branching reminders or restrictions. Their interaction with Git is limited to the "Update Workspace" button.
+:::
+
 ## Disabled Commit/Push (Developer Role on `main`)
 
 *   **Behavior:** The "Commit" and "Push" buttons in the `GitStatusPanel` are disabled for `developer`s when the `main` branch is active.

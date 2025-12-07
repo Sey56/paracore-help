@@ -12,8 +12,7 @@ As an `admin` in Paracore, you play a crucial role in managing your team, curati
 *   **Team Management:** Invite new members, assign roles (`user`, `developer`, or `admin`), and remove users from your team.
 *   **Workspace Registration:** Define and register remote Git repositories as team workspaces, making them available to all team members.
 *   **Registered Workspace Management:** Delete registered workspaces from the team's list.
-*   **Gatekeeper of Quality:** Oversee the quality and stability of automation scripts, often by managing the `main` branch of your team's Git repositories.
-*   **Publishing Scripts:** Mark specific versions of scripts as "ready for production use," making them visible and available to all `user` roles.
+*   **Quality Assurance:** Oversee the quality and stability of automation scripts, primarily by managing the `main` branch of your team's Git repositories and ensuring only approved changes are merged.
 
 ## Admin Tools and Access
 

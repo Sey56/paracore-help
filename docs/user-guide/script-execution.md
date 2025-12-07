@@ -31,6 +31,11 @@ Paracore offers two ways to execute a script:
     *   **Click "Run Script":** Locate and click the prominent "Run Script" button.
     *   **Monitor Execution:** The script will execute. The Console Tab will automatically activate to display real-time output.
 
+3.  **Agent-Initiated Execution:**
+    *   When using the [Paracore Agent](./agentic-automation.md), the agent handles the setup.
+    *   After you approve the parameters in the chat, the agent triggers the execution.
+    *   The result is displayed in the Console Tab and also summarized back to you in the chat conversation.
+
 ## Understanding Execution Results
 
 After a script finishes running, the Console Tab will show its output. The "Run Script" button in the Parameters Tab will also display a status icon next to it:

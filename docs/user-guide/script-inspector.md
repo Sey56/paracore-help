@@ -28,6 +28,18 @@ The Script Inspector is organized into several tabs:
 4.  **Metadata Tab:**
     *   Shows detailed information about the script, such as its author, version, description, and required Revit document type.
 
+4.  **Metadata Tab:**
+    *   Shows detailed information about the script, such as its author, version, description, and required Revit document type.
+
+## Inspector & Agent Interaction
+
+When using the [Paracore Agent](./agentic-automation.md), the Script Inspector plays a key role:
+
+*   **Automatic Selection:** The agent automatically selects relevant scripts and opens them in the Inspector.
+*   **Parameter Sync:** Parameter values extracted by the agent are automatically populated in the Parameters Tab.
+*   **Two-Way Editing:** You can modify parameters either by chatting with the agent or by manually editing fields in the Inspector. The agent respects your UI changes.
+*   **Mode Selection:** For scripts with multiple modes, the Inspector provides the interface for selecting the active mode before the agent proceeds.
+
 ## Running a Script
 
 1.  Select the **Parameters Tab**.

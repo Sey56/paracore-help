@@ -1,4 +1,4 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
 const sidebars: SidebarsConfig = {
   tutorialSidebar: [
@@ -10,6 +10,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'getting-started/installation',
         'getting-started/first-login',
+        'getting-started/downloads',
       ],
     },
     {
@@ -19,8 +20,11 @@ const sidebars: SidebarsConfig = {
         'user-guide/topbar',
         'user-guide/sidebar',
         'user-guide/script-gallery',
+        'user-guide/script-categories-and-metadata',
         'user-guide/script-inspector',
-        'user-guide/code-editing',
+        'user-guide/ai-script-generation',
+        'user-guide/agentic-automation',
+        'user-guide/code-editing-with-vscode',
         'user-guide/script-execution',
         'user-guide/parameters-presets',
       ],

@@ -6,15 +6,20 @@ sidebar_position: 4
 
 Paracore integrates with Git to provide a powerful and flexible workflow for managing your automation scripts. Understanding basic Git concepts, especially branching, is crucial for effective collaboration.
 
-## What is a Git Branch?
+## The `GitStatusPanel`: Your Git Interface in Paracore
 
-Think of a Git branch as a **separate line of development**. When you create a branch, you're essentially making a copy of your project's entire codebase at that moment. You can then make changes, add new features, or fix bugs on this copy without affecting the original, main version of your project.
+When an active [Local Workspace](./workspace-management.md) (a cloned Git repository) is selected, `admin`s and `developer`s will see the `GitStatusPanel` in the Paracore UI. This panel provides a real-time overview of your local repository's status and offers direct access to common Git operations.
 
-### Why Use Branches?
+### Git Status Indicators
 
-*   **Isolation:** Work on new features or experiments without breaking the stable, "production-ready" version of your code (typically the `main` branch).
-*   **Collaboration:** Multiple team members can work on different features simultaneously without interfering with each other.
-*   **Experimentation:** Try out ideas or complex changes on a branch, and if they don't work out, you can simply discard the branch.
+The panel displays the current status of your local branch relative to its remote counterpart (e.g., "1 uncommitted change", "Ahead by 2 commits", "Up to date").
+
+### Git Actions
+
+*   **Commit Button:** Performs a `git add .` (stages all changes) followed by a `git commit` (saves changes to your local branch). The button will be active when uncommitted changes are detected.
+*   **Push Button:** Executes `git push`, sending your local commits to the remote repository.
+*   **Pull Button:** Executes `git pull`, fetching and merging the latest changes from the remote repository into your local branch.
+*   **Create Branch Button:** Allows you to create a new branch from your current branch.
 
 ## The `main` Branch: Your Stable Foundation
 
@@ -50,6 +55,6 @@ This workflow ensures that `user`s always receive stable, tested scripts, while 
     *   Once the PR is approved, it is **merged** into the `main` branch on your Git hosting platform.
 
 7.  **Users Get the Updates:**
-    *   Now that your changes are in `main`, when a `user` clicks their **"Update Scripts" button** in Paracore, they will pull the latest changes from the `main` branch and get your new, tested, and approved script.
+    *   Now that your changes are merged into `main`, when a `user` clicks their **"Update Workspace" button** in Paracore, they will pull the latest changes from the `main` branch and get your new, tested, and approved script.
 
 8.  **Developer Sync:** Developers should regularly use the **"Pull" button** in Paracore to update their local `main` branch with the latest approved changes from the remote `main` branch.

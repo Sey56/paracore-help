@@ -4,7 +4,11 @@ sidebar_position: 3
 
 # Workspace Management
 
-Workspaces are the foundation of team collaboration in Paracore. They are Git repositories registered with Paracore that serve as the central source for your team's automation scripts. This section explains how to manage these workspaces.
+Workspaces are the foundation of team collaboration in Paracore. They are Git repositories that serve as the central source for your team's automation scripts. This section explains the lifecycle of workspaces, from team selection to script activation.
+
+## Team Selection
+
+When a user is a member of multiple teams, they will be presented with a **Team Switcher** upon logging into Paracore. This allows them to select which team space they want to work in. The currently active team space is always displayed at the top of the Paracore sidebar (e.g., "Seyoum Hagos's Space (developer)").
 
 ## Script Sources: A Dual System
 
@@ -19,16 +23,42 @@ Paracore provides two sources for scripts, designed for different purposes:
     *   For team collaboration, the **single source of truth** is a Git repository, registered as a "Workspace."
     *   All scripts intended for team use must reside in a Workspace.
 
-## Local Cloned Repositories (User-Specific)
+## Registered Workspaces (Admin-Managed)
 
-Once a team workspace is registered, any team member can create a local clone of it on their machine. This local copy is personal to each user.
+Registered Workspaces are remote Git repositories that an `admin` has made available to the team. These are not local clones but rather pointers to the remote source.
 
-*   **"Setup" Button:** Appears in the sidebar next to a registered workspace that has not yet been cloned by the current user. Clicking it initiates the cloning process to a local folder on the user's machine. This is available to all roles (`admin`, `developer`, `user`).
-*   **"Remove" Button (Trash Icon):** Appears in the sidebar next to a workspace that has been locally cloned by the current user. Clicking it deletes the local repository folder from the user's machine and removes its record from the local Paracore database. This is available to all roles (`admin`, `developer`, `user`).
+### Registering a Workspace
 
-## Registered Workspace Management (Admin-Specific)
+Only `admin`s can register new workspaces. This is done via the **Team Management** tab within the **Settings Modal** (accessed by clicking the gear icon in the TopBar).
 
-The management of registered team workspaces is an `admin`-only responsibility. These actions are typically performed from the "Workspaces" tab within the Settings modal.
+1.  Navigate to the "Team Management" tab.
+2.  Click the "Register Workspace" button.
+3.  Enter a unique **Identifier Name** (e.g., "Demo") and the **Remote Repository URL** (e.g., `https://github.com/Sey56/RAP-Demo-Scripts.git`).
+4.  Click "Register" to save the workspace.
 
-*   **Workspace Registration:** Admins define a "Workspace" by providing a name and the remote Git repository URL (e.g., from GitHub, GitLab). Once registered, the Workspace appears for all team members with a "Setup" button.
-*   **"Delete" Button:** Located in the "Workspaces" tab of the Settings modal. Only `admin`s can delete a registered workspace. This action removes the workspace from the team's list of registered repositories.
+This action saves the repository information in the cloud via the `rap-auth-server`, making it available to all team members.
+
+### Accessing Registered Workspaces
+
+In the Paracore sidebar, there is a **"Registered Workspaces"** section with a dropdown menu. This dropdown lists all workspaces that have been registered for the current team. Users can select a registered workspace from this dropdown to make it active.
+
+If the selected registered workspace has not yet been cloned locally by the current user, a **"Clone" button** will appear next to the dropdown. Clicking this button initiates the local cloning process.
+
+## Local Workspaces (User-Specific Clones)
+
+Once a registered workspace is cloned, it becomes a **Local Workspace** on the user's machine. These are the actual Git repositories that Paracore interacts with to display scripts and manage Git operations.
+
+### Managing Local Clones
+
+In the Paracore sidebar, under the **"Local Workspaces"** section, there is another dropdown menu. This dropdown lists all the repositories that the user has locally cloned from the registered workspaces.
+
+*   **Activating a Local Workspace:** Selecting a local workspace from this dropdown makes it the active workspace. The scripts within the active local workspace will then populate the Script Gallery.
+*   **"Remove" Button (Trash Icon):** Appears next to a local workspace. Clicking it deletes the local repository folder from the user's machine and removes its record from the local Paracore database. This is available to all roles (`admin`, `developer`, `user`).
+
+## Summary of Workspace Flow
+
+1.  **Admin registers** a remote Git repository as a **Registered Workspace**.
+2.  **Team members select** a Registered Workspace from the sidebar dropdown.
+3.  **Team members clone** the Registered Workspace to create a **Local Workspace**.
+4.  **Team members select** an active Local Workspace from the sidebar dropdown.
+5.  **Scripts from the active Local Workspace** populate the Script Gallery, ready for use.
