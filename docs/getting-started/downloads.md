@@ -15,18 +15,18 @@ To use Paracore or the VSCode extension, you **must** first install the **RServe
 This is the essential Revit add-in that enables communication between Revit and Paracore (or the VSCode extension). It must be installed and running in Revit for any C# script execution to occur.
 
 *   **File:** `RServer_Installer.exe`
-*   **Download:** [RServer Addin Installer](https://drive.google.com/file/d/1Ezao15uPtNC3YFc_ENxGouEI06NWdHL3/view?usp=drive_link)
+*   **Download:** [RServer Addin Installer](https://github.com/Sey56/Paracore-Scripts/releases)
 
 ### 2. Paracore Desktop Application
 
 This is the main user-facing desktop application for managing, executing, and collaborating on Revit C# scripts. It requires the RServer Addin to be installed in Revit.
 
 *   **File:** `Paracore_Installer.msi`
-*   **Download:** [Paracore Installer](https://drive.google.com/file/d/1krzlwE5YoqT97DW_NNRsmLRw0K-dohaH/view?usp=drive_link)
+*   **Download:** [Paracore Installer](https://github.com/Sey56/Paracore-Scripts/releases)
 
 ### 3. VSCode Extension (Optional)
 
 This extension is for developers who prefer to write and execute C# scripts directly from Visual Studio Code, bypassing the Paracore application's script management features. It also requires the RServer Addin to be installed in Revit.
 
 *   **File:** `corescript-0.0.1.vsix`
-*   **Download:** [VSCode Extension](https://drive.google.com/file/d/1bbblZF8hErjgfNreW2lMtZ5bt9_wjrDG/view?usp=drive_link)
+*   **Download:** [VSCode Extension](https://github.com/Sey56/Paracore-Scripts/releases)
