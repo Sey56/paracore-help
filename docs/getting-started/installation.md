@@ -12,7 +12,6 @@ To use Paracore, you will need:
 
 *   **Operating System:** Windows 10 or 11 (64-bit)
 *   **Revit Version:** Autodesk Revit 2025 (64-bit)
-*   **Account:** A Google (Gmail) account for signing into Paracore.
 *   **Code Editor:** Visual Studio Code (for editing scripts)
     *   Paracore's seamless [VSCode Integration](../user-guide/code-editing-with-vscode.md) provides full IntelliSense for the Revit API and .NET C# namespaces, along with access to custom global variables (e.g., `Doc`, `UIDoc`, `Transact`, `Print`). This significantly simplifies learning and developing with the Revit API by removing traditional add-in boilerplate.
 *   **Version Control:** Git client (Optional, for collaboration or managing personal repositories)
