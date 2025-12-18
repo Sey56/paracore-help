@@ -25,6 +25,7 @@ const sidebars: SidebarsConfig = {
         'user-guide/ai-script-generation',
         'user-guide/agentic-automation',
         'user-guide/code-editing-with-vscode',
+        'user-guide/corescript-vscode',
         'user-guide/script-execution',
         'user-guide/parameters-presets',
       ],
