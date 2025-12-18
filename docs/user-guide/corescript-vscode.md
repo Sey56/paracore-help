@@ -1,24 +1,24 @@
-# CoreScript VSCode Extension
+# corescript-vscode Extension
 
-**CoreScript** is a Visual Studio Code extension that provides a seamless development environment for writing, testing, and executing C# scripts directly in Revit. It's designed for developers who want to create and automate Revit workflows using C# scripting **without needing to install the full Paracore application**.
+The **corescript-vscode** extension provides a seamless development environment for writing, testing, and executing **CoreScript** (C# Revit API scripts with custom globals) directly from Visual Studio Code, **without needing to install the full Paracore application**.
 
 ## Overview
 
-CoreScript is a powerful automation tool that allows you to write and execute C# scripts directly against the Revit API. It offers a complete, standalone solution for automating Revit tasks, with the key advantage of immediate execution and feedback without leaving your code editor.
+**CoreScript** is a scripting language built on C# with custom global helpers (like `Print`, `Println`, `Show`, `Transact`, `Doc`, etc.) that simplifies Revit API automation. The **corescript-vscode** extension is a powerful tool that allows you to write and execute CoreScript directly against the Revit API. It offers a complete, standalone solution for automating Revit tasks, with the key advantage of immediate execution and feedback without leaving your code editor.
 
 ### Key Benefits
 
 - **Full Revit API Access**: Utilize the full power of the Revit API to create sophisticated automation workflows
 - **Immediate Execution**: Run your scripts and see the results instantly in the VS Code output channel, enabling a rapid and interactive development cycle
 - **No Overhead**: Focus purely on your automation logic. CoreScript removes the need for boilerplate code (`IExternalApplication`, `IExternalCommand`), `.addin` manifests, and manual DLL management
-- **Full IntelliSense**: Get real-time code completion and IntelliSense for the Revit API and custom global variables
+- **Full IntelliSense**: Get real-time code completion and IntelliSense for the Revit API and CoreScript's custom global variables
 
-While CoreScript is a powerful tool on its own, it also serves as an excellent companion for traditional add-in development. You can:
+While the **corescript-vscode** extension is a powerful tool on its own, it also serves as an excellent companion for traditional add-in development. You can:
 
-- **Prototype and Iterate Rapidly**: Use CoreScript as a live scripting environment to quickly prototype and perfect your core logic before integrating it into a larger add-in with a custom UI
+- **Prototype and Iterate Rapidly**: Use the extension as a live scripting environment to quickly prototype and perfect your core logic before integrating it into a larger add-in with a custom UI
 - **Streamline Your Workflow**: Test and debug your code in an agile environment, ensuring it works as expected before you package it into a final add-in
 
-Whether you're looking for a fast and direct way to automate Revit tasks or a way to accelerate your existing add-in development process, CoreScript provides the tools you need to be more productive.
+Whether you're looking for a fast and direct way to automate Revit tasks or a way to accelerate your existing add-in development process, **corescript-vscode** provides the tools you need to be more productive.
 
 ## Requirements
 
@@ -121,9 +121,9 @@ The workspace is configured with:
 - Parameter hints
 - Documentation tooltips
 
-### Global Helpers
+### CoreScript Global Helpers
 
-CoreScript provides convenient global functions (via `Globals.cs`):
+**CoreScript** provides convenient global functions (via `Globals.cs`) that simplify Revit API scripting:
 
 - `Println(message)` - Print to output
 - `Transact(name, action)` - Execute code in a Revit transaction
