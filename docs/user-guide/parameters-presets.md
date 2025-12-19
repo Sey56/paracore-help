@@ -4,17 +4,13 @@ sidebar_position: 7
 
 # Script Parameters and Presets
 
-Paracore allows you to define and manage parameters for your scripts, making them flexible and reusable without needing to modify the underlying code. Parameter presets enable you to save and quickly load specific sets of parameter values.
+Paracore features a professional-grade parameter system that transforms C# scripts into powerful, user-friendly automation tools. Parameters can be defined using either **Comment-Based** or **Class-Based** syntax, with support for advanced UI controls, automatic option population, and parameter grouping.
 
-## Script Parameters
+## Defining Parameters
 
-Paracore automatically extracts parameters from your C# scripts, allowing users to interact with them directly through the UI. Parameters are defined within your script using a special comment syntax and are initialized with default values.
+### Comment-Based Syntax (Legacy)
 
-### Defining Parameters in Scripts
-
-Parameters are identified by a `// [Parameter]` comment placed directly above a variable declaration in your C# script. The variable's initial value will serve as its default in the Paracore UI.
-
-**Example:**
+For simple scripts, you can use comment-based parameter definitions:
 
 ```csharp
 // [Parameter]
@@ -27,60 +23,239 @@ double wallLengthMeters = 6.0;
 bool createOpenings = true;
 ```
 
-In the Paracore UI's Parameters Tab, these will appear as editable fields, pre-filled with "Level 1", "6.0", and a checked checkbox, respectively.
+### Class-Based Syntax (Recommended: "Pro Pattern")
 
-### Supported Parameter Types
+For better IntelliSense, type safety, and IDE support, use the **Pro Pattern** with a dedicated `Params` class:
 
-Currently, Paracore supports the extraction and UI representation of common primitive types:
+```csharp
+class Params
+{
+    [ScriptParameter]
+    public string projectName = "My Revit Project";
 
-*   `string`
-*   `double` (and `float`, `decimal`)
-*   `int` (and `long`, `short`)
-*   `bool`
+    [ScriptParameter(Description = "Number of walls to create")]
+    public int wallCount = 5;
 
-Users can modify these values directly in the UI, and the script will execute with the updated inputs.
+    [ScriptParameter]
+    public bool enableLogging = true;
+}
 
-:::info Future Enhancements
-We plan to introduce support for more complex parameter types, such as generic collections (e.g., `List<string>`) and Dictionaries (e.g., `Dictionary<string, string>`), to further enhance script flexibility.
-:::
+var p = new Params();
+Println($"Project: {p.projectName}");
+```
 
-When you select a script in the [Script Gallery](./script-gallery.md), its parameters are displayed in the **Parameters Tab** of the [Script Inspector](./script-inspector.md).
+**Benefits of the Pro Pattern:**
+- ✅ Full IntelliSense support in VS Code
+- ✅ No red squiggles or IDE errors
+- ✅ Cleaner, more maintainable code
+- ✅ Access to all advanced features
 
-*   **Input Fields:** Each parameter has an input field corresponding to its data type (e.g., text box for strings, number input for integers/floats, checkbox for booleans).
-*   **Adjusting Values:** You can directly type or select values for each parameter.
-*   **Validation:** Parameters may have built-in validation to ensure you enter appropriate values.
+## Parameter Types
+
+### Basic Types
+
+Paracore supports all common C# primitives:
+
+- `string` → Text input
+- `int`, `long`, `short` → Integer input
+- `double`, `float`, `decimal` → Decimal input
+- `bool` → Checkbox
+
+### Advanced Types
+
+#### Multi-Select (Lists)
+
+Use `List<string>` with the `MultiSelect` property for checkbox groups:
+
+```csharp
+[ScriptParameter(MultiSelect = true)]
+public List<string> categoryFilter = ["Walls", "Doors"];
+```
+
+**UI Result:** Renders as a group of checkboxes, allowing users to select multiple items.
+
+#### Numeric Sliders
+
+Add `Min`, `Max`, and `Step` to render a slider control:
+
+```csharp
+[ScriptParameter(Min = 0, Max = 100, Step = 5)]
+public int offsetValue = 50;
+
+[ScriptParameter(Min = 0.0, Max = 10.0, Step = 0.1)]
+public double precisionOffset = 2.5;
+```
+
+**UI Result:** Renders as a slider with a synchronized numeric input box.
+
+## Advanced Features
+
+### Parameter Grouping
+
+Organize parameters into collapsible sections using the `Group` property:
+
+```csharp
+class Params
+{
+    [ScriptParameter(Group = "General")]
+    public string projectName = "My Project";
+
+    [ScriptParameter(Group = "Dimensions")]
+    public double wallHeight = 3.5;
+
+    [ScriptParameter(Group = "Dimensions")]
+    public double wallLength = 6.0;
+
+    [ScriptParameter(Group = "Options")]
+    public bool enableLogging = true;
+}
+```
+
+**UI Result:** Parameters are organized into collapsible accordion sections, sorted alphabetically by group name. Groups are collapsed by default for a clean initial view.
+
+### Magic Extraction (Automatic Options)
+
+Use the `[RevitElements]` attribute to automatically populate dropdowns with Revit elements:
+
+```csharp
+[RevitElements(Type = "WallType")]
+public string wallTypeSelection = "Generic - 200mm";
+
+[RevitElements(Type = "Level")]
+public string targetLevel = "Level 1";
+
+[RevitElements(Type = "FamilySymbol", Category = "Doors")]
+public string doorType = "Single-Flush: 30\" x 84\"";
+```
+
+**Supported Types:**
+- `WallType`, `FloorType`, `RoofType`, `CeilingType`
+- `Level`, `View`, `ViewTemplate`
+- `FamilySymbol` (with optional `Category` filter)
+- `Family` (with optional `Category` filter)
+- `Material`, `LineStyle`, `FillPattern`
+
+**How It Works:**
+1. Click the **Blue "Fetch" button** (loop icon) next to the parameter.
+2. Paracore queries the active Revit document and populates the dropdown.
+3. The button turns **Gray "Refresh"** after data is loaded, allowing re-computation if the model changes.
+
+### Manual Options (Custom Dropdowns)
+
+For custom logic, define a `_Options()` method:
+
+```csharp
+[ScriptParameter]
+public string targetLevel = "Level 1";
+
+public List<string> targetLevel_Options() {
+    return new FilteredElementCollector(Doc)
+        .OfClass(typeof(Level))
+        .Select(l => l.Name)
+        .Where(n => !n.Contains("Drafting")) // Custom filter!
+        .OrderBy(n => n)
+        .ToList();
+}
+```
+
+**Naming Convention:** The method must be named `{parameterName}_Options()` and return `List<string>`.
+
+### State-Aware Compute Buttons
+
+Parameters with `[RevitElements]` or manual `_Options()` methods display a **State-Aware Compute Button**:
+
+- **Blue (Fetch):** Prominent when options are not yet loaded. Tooltip: *"Compute options from Revit"*.
+- **Gray (Refresh):** Subtle after options are loaded. Tooltip: *"Refresh options (Current: 15)"*.
+
+This visual distinction prevents unnecessary re-computation while allowing users to refresh data when the Revit model changes.
 
 ## Parameter Presets
 
-Presets allow you to save a specific configuration of parameter values for a script and load them instantly.
+Presets allow you to save and instantly load specific parameter configurations.
 
 ### Managing Presets
 
-In the Parameters Tab, above the parameter inputs, you will find a dropdown for selecting presets and a set of action buttons:
+In the **Parameters Tab**, you'll find a preset dropdown and action buttons:
 
-1.  **Preset Selector:**
-    *   The default option is `<Default Parameters>`, which uses the script's default parameter values.
-    *   Select a saved preset from the dropdown to load its values into the parameter fields.
+1. **Preset Selector:**
+   - Default: `<Default Parameters>` (uses script's default values)
+   - Select a saved preset to load its values
 
-2.  **New Preset (➕):**
-    *   Click this button to save the currently configured parameter values as a new preset.
-    *   You will be prompted to enter a name for your new preset.
+2. **New Preset (➕):**
+   - Save current parameter values as a new preset
+   - Enter a name when prompted
 
-3.  **Rename Preset (✏️):**
-    *   Select an existing preset from the dropdown.
-    *   Click this button to rename the selected preset.
+3. **Rename Preset (✏️):**
+   - Select a preset and click to rename it
 
-4.  **Update Preset (🔄):**
-    *   Select an existing preset from the dropdown.
-    *   Modify some parameter values.
-    *   Click this button to update the selected preset with the new parameter values.
+4. **Update Preset (🔄):**
+   - Modify parameters, then update the selected preset with new values
 
-5.  **Delete Preset (🗑️):**
-    *   Select an existing preset from the dropdown.
-    *   Click this button to permanently delete the selected preset.
+5. **Delete Preset (🗑️):**
+   - Permanently delete the selected preset
 
-## Best Practices for Parameters
+### Preset Data Integrity
 
-*   **Descriptive Names:** Use clear and concise names for your parameters.
-*   **Sensible Defaults:** Provide default values that make sense for common use cases.
-*   **Organize with Presets:** Create presets for frequently used configurations or for different project types.
+Presets automatically handle complex parameter types:
+- Multi-select values are stored as JSON arrays
+- Computed options are preserved across app restarts
+- Switching between presets maintains UI control types (checkboxes, sliders, etc.)
+
+## Best Practices
+
+### For Script Authors
+
+- **Use the Pro Pattern:** Define parameters in a `class Params` for better IDE support
+- **Descriptive Names:** Use clear, self-documenting parameter names
+- **Sensible Defaults:** Provide default values that work for common scenarios
+- **Group Related Parameters:** Use `Group` to organize complex scripts
+- **Leverage Magic Extraction:** Use `[RevitElements]` instead of writing custom `_Options()` methods when possible
+
+### For Script Users
+
+- **Create Presets:** Save frequently used configurations for quick access
+- **Refresh Options:** Click the Gray "Refresh" button if the Revit model changes
+- **Organize with Groups:** Expand only the parameter groups you need to modify
+- **Validate Inputs:** Check the Console tab for detailed error messages if execution fails
+
+## Example: Comprehensive Parameter Script
+
+```csharp
+class Params
+{
+    // General Settings
+    [ScriptParameter(Group = "General", Description = "Project identifier")]
+    public string projectName = "My Revit Project";
+
+    [ScriptParameter(Group = "General")]
+    public bool enableLogging = true;
+
+    // Dimensions
+    [ScriptParameter(Group = "Dimensions", Min = 1.0, Max = 10.0, Step = 0.5)]
+    public double wallHeight = 3.5;
+
+    [ScriptParameter(Group = "Dimensions", Min = 0, Max = 100, Step = 5)]
+    public int offsetValue = 50;
+
+    // Filtering
+    [ScriptParameter(Group = "Filtering", MultiSelect = true)]
+    public List<string> categoryFilter = ["Walls", "Doors"];
+
+    [RevitElements(Type = "WallType", Group = "Filtering")]
+    public string wallTypeSelection = "Generic - 200mm";
+
+    [RevitElements(Type = "Level", Group = "Filtering")]
+    public string targetLevel = "Level 1";
+}
+
+var p = new Params();
+Println($"Creating walls on {p.targetLevel} with height {p.wallHeight}m");
+```
+
+This script demonstrates:
+- ✅ Pro Pattern class structure
+- ✅ Parameter grouping
+- ✅ Numeric sliders with constraints
+- ✅ Multi-select checkboxes
+- ✅ Magic extraction for Revit elements
+- ✅ Descriptive tooltips
