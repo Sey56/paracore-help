@@ -22,12 +22,12 @@ Whether you're looking for a fast and direct way to automate Revit tasks or a wa
 
 ## Requirements
 
-Before using this extension, you must have the **RServer.Addin** for Revit installed.
+Before using this extension, you must have the **Paracore.Addin** for Revit installed.
 
-1. Download and run `RServer_Installer.exe` from the [Downloads](../getting-started/downloads.md) page
+1. Download and run `Paracore_Installer.exe` from the [Downloads](../getting-started/downloads.md) page
 2. Launch Revit
 3. Go to the **"Paracore"** tab in the Revit ribbon
-4. Click the **"RServer"** toggle button to start the server
+4. Click the **"Paracore"** toggle button to start the server
 
 ## Installation
 
@@ -100,7 +100,7 @@ Println("Done!");
 
 ### 5. Execute in Revit
 
-1. Make sure Revit is running with the RServer add-in loaded
+1. Make sure Revit is running with the Paracore add-in loaded
 2. Open Command Palette (`Ctrl+Shift+P`)
 3. Type and select: **CoreScript: Run in Revit** (or press `Ctrl+Shift+R`)
 
@@ -169,7 +169,7 @@ If an error occurs, the output will show the failure status and the exception de
 
 ## Architecture
 
-This extension functions as a gRPC client that establishes a direct connection with the `RServer.Addin` running within Revit. This provides a convenient and efficient workflow for developers to write and test scripts without leaving the VS Code environment.
+This extension functions as a gRPC client that establishes a direct connection with the `Paracore.Addin` running within Revit. This provides a convenient and efficient workflow for developers to write and test scripts without leaving the VS Code environment.
 
 ## Workflow
 
@@ -185,7 +185,7 @@ graph LR
 
 ## Tips
 
-- **Keep Revit Open**: The RServer add-in must be running in Revit for script execution
+- **Keep Revit Open**: The Paracore add-in must be running in Revit for script execution
 - **Check Output**: Always check the Output panel for execution results and errors
 - **Use Transactions**: Wrap any Revit API calls that modify the model in `Transact()`
 - **Organize Code**: Use multiple files for complex scripts to keep code maintainable
@@ -194,7 +194,7 @@ graph LR
 
 ### "No response from CoreScript server"
 - Ensure Revit is running
-- Check that the RServer add-in is loaded (look for the "RServer" button in Revit)
+- Check that the Paracore add-in is loaded (look for the "Paracore" button in Revit)
 - Verify the add-in status shows "On"
 
 ### IntelliSense not working

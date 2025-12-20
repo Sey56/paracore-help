@@ -30,13 +30,13 @@ The Top Bar is located at the very top of the Paracore application interface. It
 The Top Bar provides real-time information about your Autodesk Revit connection and the currently active document. This status is crucial for understanding if Paracore can interact with Revit.
 
 *   **Revit Version:** Displays the version of Revit currently running on your machine.
-*   **RServer Connection Status:**
-    *   **`RServer Connected` (Green):** Indicates that Paracore's local backend (`paracore-server`) is successfully connected to the Revit add-in (`RServer.Addin`). When connected, Paracore can send commands to Revit.
-    *   **`RServer Disconnected` (Red):** Indicates that Paracore is not connected to the Revit add-in. This might happen if Revit is not running, the add-in is not loaded, or there's a communication issue. Scripts cannot be executed when disconnected.
+*   **Paracore Connection Status:**
+    *   **`Paracore Connected` (Green):** Indicates that Paracore's local backend (`paracore-server`) is successfully connected to the Revit add-in (`Paracore.Addin`). When connected, Paracore can send commands to Revit.
+    *   **`Paracore Disconnected` (Red):** Indicates that Paracore is not connected to the Revit add-in. This might happen if Revit is not running, the add-in is not loaded, or there's a communication issue. Scripts cannot be executed when disconnected.
 *   **Document Name:** If a Revit document is open, its name will be displayed.
 *   **Document Type:** Indicates the type of the currently open Revit document (e.g., `Project`, `ConceptualMass`, `Family`).
 
 ### Script Card Behavior Based on Revit Status
 
-*   **No Document Open:** If Paracore is connected to RServer but no document is currently open in Revit, script cards in the [Script Gallery](./script-gallery.md) will be disabled. Hovering over them will display a tooltip: "No document opened in Revit".
+*   **No Document Open:** If Paracore is connected to Paracore but no document is currently open in Revit, script cards in the [Script Gallery](./script-gallery.md) will be disabled. Hovering over them will display a tooltip: "No document opened in Revit".
 *   **Incompatible Document Type:** If a script requires a specific Revit document type (e.g., `Project`) and the currently open document is incompatible (e.g., `Family`), the script card will be disabled with a corresponding tooltip.

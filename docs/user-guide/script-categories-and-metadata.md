@@ -21,7 +21,7 @@ Author: Seyoum Hagos
 Version: 1.0.0
 LastRun: null
 IsDefault: true
-Dependencies: RevitAPI 2025, CoreScript.Engine, RServer.Addin
+Dependencies: RevitAPI 2025, CoreScript.Engine, Paracore.Addin
 Description:Creates a wall along the X-axis at a user-defined level with specified length and height.Parameters allow customizing geometry in meters. Great for layout prototyping.
 History:
 - 2025-07-01: Initial release

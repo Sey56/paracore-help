@@ -21,18 +21,18 @@ To use Paracore, you will need:
 Paracore is distributed as a set of installer packages. You can find all necessary downloads on our dedicated [Downloads page](./downloads.md).
 
 1.  **Download the Installers:** Visit the [Downloads page](./downloads.md) to obtain the latest installers:
-    *   `RServer_Installer.exe` (for the Revit add-in)
+    *   `Paracore_Installer.exe` (for the Revit add-in)
     *   `Paracore_Installer.msi` (for the Paracore desktop application)
     *   `corescript-0.0.1.vsix` (for the VSCode extension - optional, for developers)
 
-2.  **Install RServer Addin:** Run `RServer_Installer.exe` first. This is crucial as both Paracore and the VSCode extension rely on this Revit add-in.
+2.  **Install Paracore Addin:** Run `Paracore_Installer.exe` first. This is crucial as both Paracore and the VSCode extension rely on this Revit add-in.
 
 3.  **Install Paracore Desktop Application:** Run `Paracore_Installer.msi`.
 
-4.  **Install VSCode Extension (Optional):** for just executing scripts from vscode to Revit without using the Paracore app, install `corescript-0.0.1.vsix` VScode extension (Still you need to install the RServer.Addin with RServer_Installer.exe for this workflow to work.).
+4.  **Install VSCode Extension (Optional):** for just executing scripts from vscode to Revit without using the Paracore app, install `corescript-0.0.1.vsix` VScode extension (Still you need to install the Paracore.Addin with Paracore_Installer.exe for this workflow to work.).
 
 5.  **Verify Installation:**
-    *   Open Autodesk Revit and ensure the `Paracore` tab is visible in the Revit ribbon. Start the RServer from the ribbon.
+    *   Open Autodesk Revit and ensure the `Paracore` tab is visible in the Revit ribbon. Start the Paracore from the ribbon.
     *   Launch the Paracore desktop application.
 ## Post-Installation Setup
 

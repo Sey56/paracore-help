@@ -11,7 +11,7 @@ Executing scripts in Paracore is a straightforward process designed to integrate
 Before you can run a script, ensure the following:
 
 1.  **Revit is Running:** Autodesk Revit must be open on your machine.
-2.  **Paracore Add-in is Loaded:** The `RServer.Addin` must be loaded within your Revit session. You should see a "Paracore" tab in the Revit ribbon.
+2.  **Paracore Add-in is Loaded:** The `Paracore.Addin` must be loaded within your Revit session. You should see a "Paracore" tab in the Revit ribbon.
 3.  **Script Compatibility:** The selected script must be compatible with the currently open Revit document (if it specifies a required document type).
 4.  **Authentication:** You must be logged into Paracore.
 
