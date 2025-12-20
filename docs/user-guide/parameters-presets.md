@@ -33,7 +33,7 @@ class Params
     [ScriptParameter]
     public string projectName = "My Revit Project";
 
-    [ScriptParameter(Description = "Number of walls to create")]
+    [ScriptParameter(Description: "Number of walls to create")]
     public int wallCount = 5;
 
     [ScriptParameter]
@@ -50,6 +50,56 @@ Println($"Project: {p.projectName}");
 - ✅ Cleaner, more maintainable code
 - ✅ Access to all advanced features
 
+## Parameter Properties Reference
+
+Both `[ScriptParameter]` and `[RevitElements]` attributes support the following properties:
+
+| Property | Type | Description | Example |
+|----------|------|-------------|---------|
+| **Description** | `string` | Tooltip text shown in the UI | `Description: "Wall height in meters"` |
+| **Group** | `string` | Organizes parameters into collapsible sections | `Group: "Dimensions"` |
+| **Options** | `string` | Comma-separated list for dropdown | `Options: "Option A,Option B,Option C"` |
+| **MultiSelect** | `bool` | Renders checkboxes instead of dropdown | `MultiSelect: true` |
+| **Min** | `double` | Minimum value for numeric sliders | `Min: 0.0` |
+| **Max** | `double` | Maximum value for numeric sliders | `Max: 100.0` |
+| **Step** | `double` | Increment step for numeric sliders | `Step: 0.5` |
+| **VisibleWhen** | `string` | Conditional visibility based on other parameters | `VisibleWhen: "mode=Advanced"` |
+
+### Comment-Based Syntax Examples
+
+```csharp
+// [Parameter(Description: "Select operation mode", Options: "Create,Modify,Delete")]
+string mode = "Create";
+
+// [Parameter(Description: "Target categories", MultiSelect: true)]
+List<string> categories = ["Walls", "Doors"];
+
+// [Parameter(Description: "Wall height in meters", Min: 1.0, Max: 10.0, Step: 0.5)]
+double wallHeight = 3.5;
+
+// [Parameter(Group: "Advanced", VisibleWhen: "mode=Advanced")]
+bool enableDebugMode = false;
+```
+
+### Pro Pattern Syntax Examples
+
+```csharp
+class Params
+{
+    [ScriptParameter(Description: "Select operation mode", Options: "Create,Modify,Delete")]
+    public string mode = "Create";
+
+    [ScriptParameter(Description: "Target categories", MultiSelect: true)]
+    public List<string> categories = ["Walls", "Doors"];
+
+    [ScriptParameter(Description: "Wall height in meters", Min: 1.0, Max: 10.0, Step: 0.5)]
+    public double wallHeight = 3.5;
+
+    [ScriptParameter(Group: "Advanced", VisibleWhen: "mode=Advanced")]
+    public bool enableDebugMode = false;
+}
+```
+
 ## Parameter Types
 
 ### Basic Types
@@ -61,28 +111,61 @@ Paracore supports all common C# primitives:
 - `double`, `float`, `decimal` → Decimal input
 - `bool` → Checkbox
 
-### Advanced Types
+### Dropdown (Options)
 
-#### Multi-Select (Lists)
+Create a dropdown by specifying comma-separated options:
 
-Use `List<string>` with the `MultiSelect` property for checkbox groups:
-
+**Comment-Based:**
 ```csharp
-[ScriptParameter(MultiSelect = true)]
+// [Parameter(Options: "Small,Medium,Large")]
+string size = "Medium";
+```
+
+**Pro Pattern:**
+```csharp
+[ScriptParameter(Options: "Small,Medium,Large")]
+public string size = "Medium";
+```
+
+**UI Result:** Renders as a dropdown with three options.
+
+### Multi-Select (Checkboxes)
+
+Use `List<string>` with `MultiSelect: true` for checkbox groups:
+
+**Comment-Based:**
+```csharp
+// [Parameter(MultiSelect: true)]
+List<string> categoryFilter = ["Walls", "Doors"];
+```
+
+**Pro Pattern:**
+```csharp
+[ScriptParameter(MultiSelect: true)]
 public List<string> categoryFilter = ["Walls", "Doors"];
 ```
 
 **UI Result:** Renders as a group of checkboxes, allowing users to select multiple items.
 
-#### Numeric Sliders
+### Numeric Sliders
 
 Add `Min`, `Max`, and `Step` to render a slider control:
 
+**Comment-Based:**
 ```csharp
-[ScriptParameter(Min = 0, Max = 100, Step = 5)]
+// [Parameter(Min: 0, Max: 100, Step: 5)]
+int offsetValue = 50;
+
+// [Parameter(Min: 0.0, Max: 10.0, Step: 0.1)]
+double precisionOffset = 2.5;
+```
+
+**Pro Pattern:**
+```csharp
+[ScriptParameter(Min: 0, Max: 100, Step: 5)]
 public int offsetValue = 50;
 
-[ScriptParameter(Min = 0.0, Max = 10.0, Step = 0.1)]
+[ScriptParameter(Min: 0.0, Max: 10.0, Step: 0.1)]
 public double precisionOffset = 2.5;
 ```
 
@@ -94,37 +177,78 @@ public double precisionOffset = 2.5;
 
 Organize parameters into collapsible sections using the `Group` property:
 
+**Comment-Based:**
+```csharp
+// [Parameter(Group: "General")]
+string projectName = "My Project";
+
+// [Parameter(Group: "Dimensions")]
+double wallHeight = 3.5;
+
+// [Parameter(Group: "Dimensions")]
+double wallLength = 6.0;
+```
+
+**Pro Pattern:**
 ```csharp
 class Params
 {
-    [ScriptParameter(Group = "General")]
+    [ScriptParameter(Group: "General")]
     public string projectName = "My Project";
 
-    [ScriptParameter(Group = "Dimensions")]
+    [ScriptParameter(Group: "Dimensions")]
     public double wallHeight = 3.5;
 
-    [ScriptParameter(Group = "Dimensions")]
+    [ScriptParameter(Group: "Dimensions")]
     public double wallLength = 6.0;
-
-    [ScriptParameter(Group = "Options")]
-    public bool enableLogging = true;
 }
 ```
 
 **UI Result:** Parameters are organized into collapsible accordion sections, sorted alphabetically by group name. Groups are collapsed by default for a clean initial view.
 
+> [!TIP]
+> **Controlling Group Order**
+> Since groups are sorted alphabetically, you can control the display order by using numbered prefixes:
+> `Group: "01. General"`, `Group: "02. Configuration"`, `Group: "03. Advanced"`.
+
+
+### Conditional Visibility (VisibleWhen)
+
+Show/hide parameters based on other parameter values:
+
+**Comment-Based:**
+```csharp
+// [Parameter(Options: "Basic,Advanced")]
+string mode = "Basic";
+
+// [Parameter(VisibleWhen: "mode=Advanced")]
+bool enableDebugMode = false;
+```
+
+**Pro Pattern:**
+```csharp
+[ScriptParameter(Options: "Basic,Advanced")]
+public string mode = "Basic";
+
+[ScriptParameter(VisibleWhen: "mode=Advanced")]
+public bool enableDebugMode = false;
+```
+
+**UI Result:** The `enableDebugMode` checkbox only appears when `mode` is set to "Advanced".
+
 ### Magic Extraction (Automatic Options)
 
 Use the `[RevitElements]` attribute to automatically populate dropdowns with Revit elements:
 
+**Pro Pattern Only:**
 ```csharp
-[RevitElements(Type = "WallType")]
+[RevitElements(Type: "WallType")]
 public string wallTypeSelection = "Generic - 200mm";
 
-[RevitElements(Type = "Level")]
+[RevitElements(Type: "Level")]
 public string targetLevel = "Level 1";
 
-[RevitElements(Type = "FamilySymbol", Category = "Doors")]
+[RevitElements(Type: "FamilySymbol", Category: "Doors")]
 public string doorType = "Single-Flush: 30\" x 84\"";
 ```
 
@@ -144,9 +268,10 @@ public string doorType = "Single-Flush: 30\" x 84\"";
 
 For custom logic, define a `_Options()` method:
 
+**Comment-Based:**
 ```csharp
-[ScriptParameter]
-public string targetLevel = "Level 1";
+// [Parameter]
+string targetLevel = "Level 1";
 
 public List<string> targetLevel_Options() {
     return new FilteredElementCollector(Doc)
@@ -158,7 +283,24 @@ public List<string> targetLevel_Options() {
 }
 ```
 
+**Pro Pattern:**
+```csharp
+[ScriptParameter]
+public string targetLevel = "Level 1";
+
+public List<string> targetLevel_Options() {
+    return new FilteredElementCollector(Doc)
+        .OfClass(typeof(Level))
+        .Select(l => l.Name)
+        .Where(n => !n.Contains("Drafting"))
+        .OrderBy(n => n)
+        .ToList();
+}
+```
+
 **Naming Convention:** The method must be named `{parameterName}_Options()` and return `List<string>`.
+
+**Note:** For `[RevitElements]` parameters, you can also provide a manual `_Options()` method to override the automatic extraction.
 
 ### State-Aware Compute Buttons
 
@@ -207,55 +349,69 @@ Presets automatically handle complex parameter types:
 
 - **Use the Pro Pattern:** Define parameters in a `class Params` for better IDE support
 - **Descriptive Names:** Use clear, self-documenting parameter names
+- **Add Descriptions:** Use `Description` property for tooltips to guide users
 - **Sensible Defaults:** Provide default values that work for common scenarios
 - **Group Related Parameters:** Use `Group` to organize complex scripts
 - **Leverage Magic Extraction:** Use `[RevitElements]` instead of writing custom `_Options()` methods when possible
+- **Use Conditional Visibility:** Hide advanced parameters with `VisibleWhen` to reduce clutter
 
 ### For Script Users
 
 - **Create Presets:** Save frequently used configurations for quick access
 - **Refresh Options:** Click the Gray "Refresh" button if the Revit model changes
 - **Organize with Groups:** Expand only the parameter groups you need to modify
+- **Read Descriptions:** Hover over parameter labels to see helpful tooltips
 - **Validate Inputs:** Check the Console tab for detailed error messages if execution fails
 
-## Example: Comprehensive Parameter Script
+## Complete Example
 
 ```csharp
 class Params
 {
+    // Mode Selection
+    [ScriptParameter(Group: "Mode", Description: "Operation type", Options: "Create,Modify,Delete")]
+    public string mode = "Create";
+
     // General Settings
-    [ScriptParameter(Group = "General", Description = "Project identifier")]
+    [ScriptParameter(Group: "General", Description: "Project identifier")]
     public string projectName = "My Revit Project";
 
-    [ScriptParameter(Group = "General")]
+    [ScriptParameter(Group: "General")]
     public bool enableLogging = true;
 
     // Dimensions
-    [ScriptParameter(Group = "Dimensions", Min = 1.0, Max = 10.0, Step = 0.5)]
+    [ScriptParameter(Group: "Dimensions", Description: "Wall height in meters", Min: 1.0, Max: 10.0, Step: 0.5)]
     public double wallHeight = 3.5;
 
-    [ScriptParameter(Group = "Dimensions", Min = 0, Max = 100, Step = 5)]
+    [ScriptParameter(Group: "Dimensions", Description: "Offset value", Min: 0, Max: 100, Step: 5)]
     public int offsetValue = 50;
 
     // Filtering
-    [ScriptParameter(Group = "Filtering", MultiSelect = true)]
+    [ScriptParameter(Group: "Filtering", Description: "Target categories", MultiSelect: true)]
     public List<string> categoryFilter = ["Walls", "Doors"];
 
-    [RevitElements(Type = "WallType", Group = "Filtering")]
+    [RevitElements(Type: "WallType", Group: "Filtering", Description: "Wall type to use")]
     public string wallTypeSelection = "Generic - 200mm";
 
-    [RevitElements(Type = "Level", Group = "Filtering")]
+    [RevitElements(Type: "Level", Group: "Filtering", Description: "Target level")]
     public string targetLevel = "Level 1";
+
+    // Advanced (Conditional)
+    [ScriptParameter(Group: "Advanced", Description: "Enable debug output", VisibleWhen: "mode=Create")]
+    public bool debugMode = false;
 }
 
 var p = new Params();
+Println($"Mode: {p.mode}");
 Println($"Creating walls on {p.targetLevel} with height {p.wallHeight}m");
 ```
 
 This script demonstrates:
 - ✅ Pro Pattern class structure
 - ✅ Parameter grouping
+- ✅ Dropdown options
 - ✅ Numeric sliders with constraints
 - ✅ Multi-select checkboxes
 - ✅ Magic extraction for Revit elements
 - ✅ Descriptive tooltips
+- ✅ Conditional visibility
