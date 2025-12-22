@@ -237,10 +237,34 @@ These fields are automatically extracted by Paracore:
 
 ### Built-in Categories
 
-Paracore comes with several pre-defined categories that are commonly used in Revit workflows, such as `Architectural`, `Structural`, and `MEP`. These categories are displayed as checkboxes at the top of the Script Gallery. By default, all scripts are shown. When you check a built-in category, the Script Gallery will filter to display only those scripts that have that category listed in their metadata.
+Paracore provides three built-in category filters at the top of the Script Gallery:
+- **Architectural**
+- **Structural**  
+- **MEP**
+
+These checkboxes are unchecked by default (showing all scripts). Checking a category filters the gallery to show only scripts that include that category in their `Categories` metadata.
+
+**Example:**
+```csharp
+/*
+Categories: Architectural, Prototyping
+*/
+```
+This script will be shown when the **Architectural** checkbox is checked.
 
 ### Custom Categories
 
-Beyond the built-in options, Paracore allows you to define your own custom categories. In the sidebar, under the "Custom Categories" section, you can click the `+` button to add a new category. Once added, this custom category will appear in the sidebar. Selecting it will filter the Script Gallery to show only scripts that include this custom category in their metadata.
+You can create custom categories in the **Sidebar** under "Custom Categories" by clicking the `+` button. Once created, selecting a custom category filters the gallery to show scripts that include that category name in their metadata.
 
-This flexible categorization and metadata system empowers you to keep your script library well-organized, easily searchable, and tailored to your specific needs and workflows.
+**Example:**
+```csharp
+/*
+Categories: Prototyping, QA
+*/
+```
+To filter scripts with "Prototyping" or "QA", create those custom categories in the sidebar.
+
+> [!TIP]
+> You can also use the search bar with `categories: Architectural` to filter by category.
+
+This flexible categorization system helps you organize and find scripts quickly, whether using built-in or custom categories tailored to your workflow.
