@@ -46,6 +46,12 @@ When you sign in with Google, you choose a team before accessing Paracore. Once 
 
 ### Script Sources
     *   This crucial section allows you to manage where Paracore finds your automation scripts.
+
+    > [!IMPORTANT]
+    > **Personal (Offline) vs. Team (Cloud) Usage:**
+    > *   **Continue Offline:** If you signed in using "Continue Offline", you are in Personal Mode. You will **only** see "Local Folders" as a source. Workspaces and Teams are not available.
+    > *   **Sign in with Google:** If you signed in with Google, you have access to Team features, including "Registered Workspaces" and "Local Workspaces".
+
     *   **Local Folders:**
         *   Visible only when you are in your personal team space (as an `admin`).
         *   Allows you to add local folders from your computer (e.g., `C:\MyScripts`).
