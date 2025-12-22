@@ -8,18 +8,30 @@ The Sidebar, located on the left side of the Paracore application, is your prima
 
 ## Sections of the Sidebar
 
-### Team Display
+### Active Team
 
-Located at the very top of the Sidebar, this section shows:
+Located at the very top of the Sidebar, this section displays your current team and role:
 
-*   **Team Name:** Your currently active team
-*   **Your Role:** Admin, Developer, or User
+*   **Team Name:** Shows your active team (e.g., "Seyoum Hagos's Space" or "John Doe's Space")
+*   **Role Badge:** Displays your role in the current team:
+    - **admin** - Full permissions (manage workspaces, users, scripts)
+    - **developer** - Can access dev workspaces and create scripts
+    - **user** - Read-only access to user workspaces
+
+**Example Display:**
+```
+Seyoum Hagos's Space  [admin]
+```
+or
+```
+John Doe's Space  [developer]
+```
 
 **Team Selection:**
 When you sign in with Google, you choose a team before accessing Paracore. Once signed in, you remain in that team for the entire session. To switch teams, sign out and sign in again.
 
 > [!NOTE]
-> Team switching is not available during a session to prevent confusion and ensure you're working on the correct projects.
+> Team switching during a session is not available to prevent confusion and ensure you're working on the correct projects.
 
 ### Categories
     *   Lists predefined categories (Architectural, Structural, MEP) and any custom categories you have added.
