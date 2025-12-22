@@ -17,12 +17,14 @@ The Script Gallery is the central hub for discovering and accessing all availabl
     *   `categories:Architectural`: Filters by assigned categories.
     *   **Search Pills:** As you apply advanced search filters, "search pills" will appear above the search bar. These pills represent your active filters and can be removed by clicking the 'x' mark on each pill.
 4.  **Favorites:** Scripts marked as favorites will appear in the "Favorites" section of the Sidebar for easy access.
-5.  **Recent Scripts:** Recently executed scripts are listed in the "Recent" section of the Sidebar.
-6.  **"All Folders" / "All Workspaces" Checkmark:**
+5.  **Search Bar:**
+    *   Located at the top of the Script Gallery.
+    *   Allows you to search for scripts by name, description, or metadata.
+    *   Supports advanced search with `categories:`, `author:`, etc.
+6.  **Script Count:**
     *   Located at the top right of the Script Gallery.
-    *   The label dynamically changes based on your active script source (either "All Folders" or "All Workspaces").
-    *   **"All Folders":** If you are working with local folders, checking this box will populate the Script Gallery with scripts from *all* your added local folders, not just the currently selected one. This is useful for searching across all your personal scripts.
-    *   **"All Workspaces":** If you are working with team workspaces, checking this box will populate the Script Gallery with scripts from *all* your set-up workspaces, not just the currently active one. This is useful for searching across all team scripts.
+    *   Displays the total number of scripts currently visible in the gallery.
+    *   Updates dynamically when filtering, searching, or switching script sources.
 
 ## Script Card Information
 
