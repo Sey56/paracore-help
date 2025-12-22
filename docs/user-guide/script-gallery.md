@@ -38,9 +38,14 @@ Each script card provides a quick overview:
 
 To view a script's details and prepare it for execution, simply click on its card in the Script Gallery. This will open the [Script Inspector](./script-inspector.md) on the right side of the application.
 
-## Team Switcher
+## Team Selection
 
-The Team Switcher is located in the header of the Script Gallery. It allows you to view and change your currently active team.
+When you sign in with Google, you'll be prompted to choose a team before accessing Paracore:
 
-*   **Current Team Display:** Shows your active team's name and your role within that team (e.g., "My Team (Admin)").
-*   **Switching Teams:** If you are a member of multiple teams, click the dropdown to see a list of all teams you belong to. Selecting a different team will update the Script Gallery to show scripts relevant to that team, and your permissions will adjust according to your role in the newly selected team.
+*   **Your Own Team:** Where you are an Admin
+*   **Other Teams:** Where you are a User or Developer
+
+Once signed in, you remain in the selected team for the entire session. Your current team and role are displayed at the top of the [Sidebar](./sidebar.md).
+
+> [!NOTE]
+> Team switching is not available during a session to prevent confusion and ensure you're working on the correct projects. To switch teams, sign out and sign in again, then select a different team.
