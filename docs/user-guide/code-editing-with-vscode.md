@@ -4,41 +4,75 @@ title: Code Editing with VSCode
 sidebar_label: Code Editing with VSCode
 ---
 
-Paracore offers a powerful and seamless integration with Visual Studio Code, allowing developers and administrators to edit C# scripts with a full-featured coding environment. Instead of building a limited in-app editor, Paracore leverages the robust capabilities of VSCode to provide an unparalleled editing experience.
+Paracore integrates seamlessly with Visual Studio Code, allowing you to edit scripts with full IntelliSense, syntax highlighting, and modern IDE features.
 
-### The "Edit in VSCode" Button
+## Opening Scripts in VSCode
 
-When you select a script in the Script Gallery, its details are displayed in the Script Inspector. For users with `developer` or `admin` roles, a special "Edit in VSCode" button is available at the bottom of the Floating Code Viewer. Clicking this button initiates the VSCode integration workflow.
+1. **Select a Script** in the Script Gallery
+2. **View the Code** by clicking the toggle button (far right of "Run Script" button) in the Parameters tab to open the **Floating Code Viewer**
+3. **Click "Edit in VSCode"** button (bottom-right of the Floating Code Viewer)
 
-### The Temporary Workspace
+The Floating Code Viewer is read-only. To edit, you must use the "Edit in VSCode" button.
 
-Upon clicking "Edit in VSCode", Paracore performs several actions to prepare your coding environment:
+## Workspace Generation
 
-1.  **Workspace Creation:** A temporary, ephemeral VSCode workspace is dynamically created on your local disk.
-2.  **Project Scaffolding:** This temporary workspace is automatically scaffolded with all necessary project files, including:
-    *   `.sln` (Solution file)
-    *   `.csproj` (C# Project file)
-    *   `Globals.cs` (A file containing global variables and references for your scripts)
-3.  **Dependency Restoration:** The project dependencies are automatically restored, ensuring that the environment is ready for compilation and IntelliSense.
-4.  **Script Copying:** The script(s) you selected in Paracore are copied into a dedicated `Scripts` folder within this temporary workspace.
+When you click "Edit in VSCode", Paracore automatically:
 
-### Full IntelliSense and Code Completion
+1. **Generates a temporary workspace** for the script
+2. **Scaffolds the project** with all necessary dependencies
+3. **Restores NuGet packages** (creates `bin` and `obj` folders)
+4. **Opens VSCode** with full IntelliSense support
 
-Once the temporary workspace is open in VSCode, you gain access to a rich development experience:
+> [!IMPORTANT]
+> **Wait for Generation to Complete**
+> 
+> The workspace generation process takes a few seconds. **Do NOT close VSCode until you see both `bin` and `obj` folders** in the workspace. Closing VSCode prematurely will corrupt the script.
 
-*   **Revit API IntelliSense:** Enjoy full IntelliSense and code completion for the entire Revit API, making it easy to discover and use Revit functionalities.
-*   **C#/.NET IntelliSense:** Benefit from comprehensive IntelliSense and code completion for standard C# and .NET namespaces.
-*   **Custom Global Variables:** Access custom global variables and objects provided by the Paracore execution environment, complete with type hints and documentation.
+> [!CAUTION]
+> **Critical: Backup Your Scripts**
+> 
+> If you accidentally close VSCode during workspace generation (before `bin` and `obj` folders appear), your script may be corrupted. Always maintain backups of important scripts.
 
-### Live Syncing of Changes
+## Workspace Persistence
 
-As you edit the copied scripts within the temporary VSCode workspace, Paracore maintains a live synchronization with your original script files. Thanks to VSCode's auto-save feature, any changes you make are instantly reflected back to the original scripts. This means:
+- **First Time:** A new temporary workspace is generated
+- **Subsequent Edits:** The same workspace is reused (faster opening)
+- **File Watchers:** Changes saved in VSCode automatically update the original script
+- **Auto-Save:** Enable VSCode auto-save for seamless updates
 
-*   **Immediate Updates in Paracore:** The Script Inspector in Paracore, including the Parameters tab and any other relevant UI elements, will automatically update to reflect your latest code changes.
-*   **Seamless Iteration:** You can rapidly iterate on your scripts, making changes in VSCode and immediately testing them within Paracore or Revit.
+## Workspace Cleanup
 
-### Automatic Cleanup
+Temporary workspaces are automatically deleted when:
+- **Revit is closed** - All generated workspaces are cleared to free disk space
+- **Original scripts remain** - Only the temporary copies are deleted
 
-Paracore ensures that your hard disk space remains uncluttered. When Revit is closed, all the temporary workspaces generated for script editing are automatically cleared and removed from your system. Your original script files, however, remain updated with all the changes you made in VSCode.
+This automatic cleanup prevents disk clutter from accumulating many temporary workspaces.
 
-This powerful integration allows you to leverage the best-in-class code editing features of VSCode while maintaining the streamlined execution and management capabilities of Paracore.
+## Editing Workflow
+
+1. Click "Edit in VSCode" from the Floating Code Viewer
+2. **Wait for `bin` and `obj` folders to appear** (generation complete)
+3. Edit your script with full IntelliSense
+4. Save changes (or enable auto-save)
+5. Close VSCode when finished (safe after generation completes)
+6. Changes are reflected in Paracore immediately
+
+## Best Practices
+
+- ✅ **Enable Auto-Save** in VSCode (`File > Auto Save`)
+- ✅ **Wait for generation** before editing or closing
+- ✅ **Maintain backups** of critical scripts
+- ✅ **Use Git** for version control of important scripts
+- ⚠️ **Never close VSCode** during workspace generation
+
+## Troubleshooting
+
+**Script appears corrupted after editing:**
+- Likely closed VSCode during generation
+- Restore from backup or Git history
+- Re-create the script if no backup exists
+
+**IntelliSense not working:**
+- Ensure `bin` and `obj` folders exist
+- Reload VSCode window (`Ctrl+Shift+P` → "Reload Window")
+- Check that Revit is running with Paracore.Addin active
