@@ -8,18 +8,31 @@ The Sidebar, located on the left side of the Paracore application, is your prima
 
 ## Sections of the Sidebar
 
-1.  **Categories:**
+### Team Display
+
+Located at the very top of the Sidebar, this section shows:
+
+*   **Team Name:** Your currently active team
+*   **Your Role:** Admin, Developer, or User
+
+**Team Selection:**
+When you sign in with Google, you choose a team before accessing Paracore. Once signed in, you remain in that team for the entire session. To switch teams, sign out and sign in again.
+
+> [!NOTE]
+> Team switching is not available during a session to prevent confusion and ensure you're working on the correct projects.
+
+### Categories
     *   Lists predefined categories (Architectural, Structural, MEP) and any custom categories you have added.
     *   Click a category to filter the [Script Gallery](./script-gallery.md) and show only scripts belonging to that category. This helps teams work on discipline-specific scripts.
     *   Admins can add new custom categories.
 
-2.  **Favorites:**
+### Favorites
     *   Displays a list of scripts you have marked as favorites for quick access.
 
-3.  **Recent:**
+### Recent
     *   Shows a list of scripts you have recently executed.
 
-4.  **Script Sources:**
+### Script Sources
     *   This crucial section allows you to manage where Paracore finds your automation scripts.
     *   **Local Folders:**
         *   Visible only when you are in your personal team space (as an `admin`).

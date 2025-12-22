@@ -37,15 +37,3 @@ Each script card provides a quick overview:
 ## Selecting a Script
 
 To view a script's details and prepare it for execution, simply click on its card in the Script Gallery. This will open the [Script Inspector](./script-inspector.md) on the right side of the application.
-
-## Team Selection
-
-When you sign in with Google, you'll be prompted to choose a team before accessing Paracore:
-
-*   **Your Own Team:** Where you are an Admin
-*   **Other Teams:** Where you are a User or Developer
-
-Once signed in, you remain in the selected team for the entire session. Your current team and role are displayed at the top of the [Sidebar](./sidebar.md).
-
-> [!NOTE]
-> Team switching is not available during a session to prevent confusion and ensure you're working on the correct projects. To switch teams, sign out and sign in again, then select a different team.
