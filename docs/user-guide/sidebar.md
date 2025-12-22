@@ -55,7 +55,7 @@ When you sign in with Google, you choose a team before accessing Paracore. Once 
         *   **Clone Button (Cloud Icon):** Appears next to any registered workspace that you haven't cloned yet. Clicking this allows you to download the repo to your local machine.
     *   **Local Workspaces:**
         *   Displays the list of repositories you have successfully cloned.
-        *   **Remove Button (Trash Icon):** Allows you to delete the local copy of the repository (unclone it).
+        *   **Remove Button (Trash Icon):** Unloads the workspace from Paracore's view. **Note:** This does *not* delete the files from your computer.
         *   **Sync Button (Sync Icon):** Allows you to pull the latest changes from the remote Git repository.
 
 ## Managing Script Sources
@@ -79,5 +79,7 @@ When you sign in with Google, you choose a team before accessing Paracore. Once 
 
 1.  In the **Local Workspaces** section, find the workspace you want to remove.
 2.  Click the **Remove** button (trash icon).
-3.  Confirm the action to delete the local folder from your machine.
-4.  The workspace will revert to the **Registered Workspaces** list, ready to be cloned again if needed.
+3.  Confirm the action to unload the workspace from Paracore.
+4.  The workspace will revert to the **Registered Workspaces** list.
+    > [!NOTE]
+    > **Files are Safe:** This action only removes the workspace from Paracore's interface. The actual folder and files remain on your computer unchanged.
