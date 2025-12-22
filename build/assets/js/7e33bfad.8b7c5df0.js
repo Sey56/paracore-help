@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkparacore_help=globalThis.webpackChunkparacore_help||[]).push([[8058],{7705:a=>{a.exports=JSON.parse('{"authors":[{"name":"Seyoum Hagos","title":"Founder @ Paras Codarch","url":"https://github.com/Sey56","imageURL":"https://github.com/Sey56.png","key":"shagos","page":null,"count":1}]}')}}]);

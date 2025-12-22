@@ -16,6 +16,10 @@ pnpm-debug.log*
 node_modules/
 .pnp/
 .pnp.cjs
+# Build output
+/build
+/.docusaurus
+.cache-loader
 # IDEs and editors
 .vscode/
 .idea/
