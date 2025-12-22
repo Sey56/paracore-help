@@ -4,7 +4,7 @@ The **corescript-vscode** extension provides a seamless development environment 
 
 ## Overview
 
-**CoreScript** is a scripting language built on C# with custom global helpers (like `Print`, `Println`, `Show`, `Transact`, `Doc`, etc.) that simplifies Revit API automation. The **corescript-vscode** extension is a powerful tool that allows you to write and execute CoreScript directly against the Revit API. It offers a complete, standalone solution for automating Revit tasks, with the key advantage of immediate execution and feedback without leaving your code editor.
+**CoreScript** is a scripting language built on C# with custom global helpers (like `Print`, `Println`, `Transact`, `Doc`, etc.) that simplifies Revit API automation. The **corescript-vscode** extension is a powerful tool that allows you to write and execute CoreScript directly against the Revit API. It offers a complete, standalone solution for automating Revit tasks, with the key advantage of immediate execution and feedback without leaving your code editor.
 
 ### Key Benefits
 
@@ -125,11 +125,15 @@ The workspace is configured with:
 
 **CoreScript** provides convenient global functions (via `Globals.cs`) that simplify Revit API scripting:
 
-- `Println(message)` - Print to output
+- `Print(message)` / `Println(message)` - Print to VS Code output panel
 - `Transact(name, action)` - Execute code in a Revit transaction
 - `Doc` - Access the active Revit document
+- `UIDoc` - Access the active UI document
 - `GetLevel(name)` - Get a level by name
 - And more...
+
+> [!NOTE]
+> The `Show()` global is recognized by the extension but does not output to VS Code. It is designed for rendering tables in Paracore's Table tab. Use `Print()` or `Println()` for output in the VS Code extension.
 
 ### Multi-File Scripts
 
