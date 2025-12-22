@@ -14,7 +14,7 @@ To use Paracore or the VSCode extension, you **must** first install the **Paraco
 
 This is the essential Revit add-in that enables communication between Revit and Paracore (or the VSCode extension). It must be installed and running in Revit for any C# script execution to occur.
 
-*   **File:** `Paracore_Installer.exe`
+*   **File:** `Paracore_Revit_Installer.exe`
 *   **Download:** [Paracore Addin Installer](https://github.com/Sey56/Paracore-Scripts/releases)
 
 ### 2. Paracore Desktop Application

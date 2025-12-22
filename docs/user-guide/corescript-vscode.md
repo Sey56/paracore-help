@@ -24,7 +24,7 @@ Whether you're looking for a fast and direct way to automate Revit tasks or a wa
 
 Before using this extension, you must have the **Paracore.Addin** for Revit installed.
 
-1. Download and run `Paracore_Installer.exe` from the [Downloads](../getting-started/downloads.md) page
+1. Download and run `Paracore_Revit_Installer.exe` from the [Downloads](../getting-started/downloads.md) page
 2. Launch Revit
 3. Go to the **"Paracore"** tab in the Revit ribbon
 4. Click the **"Paracore"** toggle button to start the server
