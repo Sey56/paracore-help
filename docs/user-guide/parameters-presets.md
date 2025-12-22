@@ -60,6 +60,8 @@ Both `[ScriptParameter]` and `[RevitElements]` attributes support the following 
 | **Group** | `string` | Organizes parameters into collapsible sections | `Group: "Dimensions"` |
 | **Options** | `string` | Comma-separated list for dropdown | `Options: "Option A,Option B,Option C"` |
 | **MultiSelect** | `bool` | Renders checkboxes instead of dropdown | `MultiSelect: true` |
+| **Computable** | `bool` | Enables Fetch button for custom `_Options()` methods | `Computable: true` |
+| **InputType** | `string` | Renders native file/folder picker | `InputType: "File"` or `"SaveFile"` or `"Folder"` |
 | **Min** | `double` | Minimum value for numeric sliders | `Min: 0.0` |
 | **Max** | `double` | Maximum value for numeric sliders | `Max: 100.0` |
 | **Step** | `double` | Increment step for numeric sliders | `Step: 0.5` |
@@ -264,43 +266,67 @@ public string doorType = "Single-Flush: 30\" x 84\"";
 2. Paracore queries the active Revit document and populates the dropdown.
 3. The button turns **Gray "Refresh"** after data is loaded, allowing re-computation if the model changes.
 
-### Manual Options (Custom Dropdowns)
+### File Picker Parameters
 
-For custom logic, define a `_Options()` method:
-
-**Comment-Based:**
-```csharp
-// [Parameter]
-string targetLevel = "Level 1";
-
-public List<string> targetLevel_Options() {
-    return new FilteredElementCollector(Doc)
-        .OfClass(typeof(Level))
-        .Select(l => l.Name)
-        .Where(n => !n.Contains("Drafting")) // Custom filter!
-        .OrderBy(n => n)
-        .ToList();
-}
-```
+Use `InputType` to render native OS file/folder dialogs:
 
 **Pro Pattern:**
 ```csharp
-[ScriptParameter]
+[ScriptParameter(InputType: "File", Description: "Select input CSV file")]
+public string inputCsvPath = "";
+
+[ScriptParameter(InputType: "SaveFile", Description: "Export results to CSV")]
+public string outputCsvPath = "";
+
+[ScriptParameter(InputType: "Folder", Description: "Select output directory")]
+public string outputFolder = "";
+```
+
+**Supported InputTypes:**
+- `"File"` → Open file dialog (for reading existing files)
+- `"SaveFile"` → Save file dialog (for specifying output paths)
+- `"Folder"` → Folder picker dialog (for directory selection)
+
+**UI Result:** Renders a text input with a "Browse" button that opens a native OS dialog.
+
+### Manual Options (Custom Dropdowns)
+
+For custom logic, define a `_Options()` method with `Computable: true`:
+
+**Pro Pattern:**
+```csharp
+[ScriptParameter(Computable: true)]
 public string targetLevel = "Level 1";
 
 public List<string> targetLevel_Options() {
-    return new FilteredElementCollector(Doc)
+    var levels = new FilteredElementCollector(Doc)
         .OfClass(typeof(Level))
+        .Cast<Level>()
+        .Where(l => !l.Name.Contains("Drafting")) // Custom filter!
         .Select(l => l.Name)
-        .Where(n => !n.Contains("Drafting"))
         .OrderBy(n => n)
         .ToList();
+    
+    if (levels.Count == 0)
+        throw new InvalidOperationException("No levels found in the document.");
+    
+    return levels;
 }
 ```
 
-**Naming Convention:** The method must be named `{parameterName}_Options()` and return `List<string>`.
+**Key Points:**
+- Add `Computable: true` to enable the Fetch button
+- Method must be named `{parameterName}_Options()` and return `List<string>`
+- Throw `InvalidOperationException` with a helpful message if no data is found
+- Works for both `[ScriptParameter]` and `[RevitElements]` attributes
 
-**Note:** For `[RevitElements]` parameters, you can also provide a manual `_Options()` method to override the automatic extraction.
+**Custom Error Messages:**
+When your `_Options()` method returns no data, throw a descriptive exception:
+```csharp
+if (rooms.Count == 0)
+    throw new InvalidOperationException("No rooms found in the document. Please add rooms before running this script.");
+```
+Users will see your custom message instead of a generic error.
 
 ### State-Aware Compute Buttons
 

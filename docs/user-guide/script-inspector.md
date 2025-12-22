@@ -21,12 +21,13 @@ The Script Inspector is organized into several tabs:
 2.  **Console Tab:**
     *   Displays the real-time output and any error messages generated during script execution.
     *   Provides a log of your script's activity.
+    *   Automatically activated when running scripts from the Script Gallery.
 
-3.  **Summary Tab:**
-    *   Presents a structured summary of the script's execution results, often in a more user-friendly format than the raw console output.
-
-4.  **Metadata Tab:**
-    *   Shows detailed information about the script, such as its author, version, description, and required Revit document type.
+3.  **Table Tab:**
+    *   Displays structured table data output from scripts using `Show("table", data)`.
+    *   **Notification Badge:** A blue pulsing badge appears on the tab when new table data is available.
+    *   The badge disappears once you view the tab and reappears for each new execution with table output.
+    *   Provides interactive data grids with sorting, filtering, and CSV export capabilities.
 
 4.  **Metadata Tab:**
     *   Shows detailed information about the script, such as its author, version, description, and required Revit document type.
