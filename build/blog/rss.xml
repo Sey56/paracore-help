@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="rss.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Paracore Blog</title>
+        <link>https://sey56.github.io/paracore-help/blog</link>
+        <description>Paracore Blog</description>
+        <lastBuildDate>Mon, 27 Oct 2025 00:00:00 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>en</language>
+        <item>
+            <title><![CDATA[Introducing Paracore: A New Era of Revit Automation]]></title>
+            <link>https://sey56.github.io/paracore-help/blog/2025/10/27/introducing-paracore</link>
+            <guid>https://sey56.github.io/paracore-help/blog/2025/10/27/introducing-paracore</guid>
+            <pubDate>Mon, 27 Oct 2025 00:00:00 GMT</pubDate>
+            <description><![CDATA[Today, we at Paras Codarch are thrilled to announce the official launch of Paracore, a desktop application poised to revolutionize the way you approach Revit automation.]]></description>
+            <content:encoded><![CDATA[<p>Today, we at Paras Codarch are thrilled to announce the official launch of Paracore, a desktop application poised to revolutionize the way you approach Revit automation.</p>
+<p>For too long, the process of creating and testing Revit add-ins has been cumbersome. It involves a rigid cycle of project creation, coding in Visual Studio, compiling, and manually loading and unloading DLLs in Revit. This workflow is slow, and it stifles the creative and iterative process that is so crucial to effective automation.</p>
+<p>Paracore changes everything.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="what-is-paracore">What is Paracore?<a href="https://sey56.github.io/paracore-help/blog/2025/10/27/introducing-paracore#what-is-paracore" class="hash-link" aria-label="Direct link to What is Paracore?" title="Direct link to What is Paracore?" translate="no">​</a></h3>
+<p>Paracore is a desktop application that provides an integrated environment for executing and managing C# scripts for Autodesk Revit. It connects seamlessly to your active Revit session, allowing you to run scripts and see the results instantly, without ever needing to compile a single DLL or restart Revit.</p>
+<p>Our philosophy is simple: empower users to automate Revit tasks with the full power of the Revit API, but without the traditional overhead. With Paracore, you write pure C# scripts that are executed dynamically.</p>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="key-features">Key Features<a href="https://sey56.github.io/paracore-help/blog/2025/10/27/introducing-paracore#key-features" class="hash-link" aria-label="Direct link to Key Features" title="Direct link to Key Features" translate="no">​</a></h3>
+<ul>
+<li><strong>Dynamic Script Execution:</strong> Write and run C# scripts on the fly. See your changes in Revit immediately, allowing for a rapid and interactive development cycle.</li>
+<li><strong>Integrated Script Management:</strong> Say goodbye to scattered script files. Paracore provides a beautiful and efficient script gallery to organize, view, and manage all your personal and team automation scripts.</li>
+<li><strong>Seamless Team Collaboration:</strong> Paracore is built for teams. With built-in Git integration, you can version control your scripts, collaborate with colleagues, and ensure everyone is working with the latest and greatest tools.</li>
+<li><strong>Parameter Presets:</strong> Save and load different sets of parameters for your scripts. This is perfect for running the same script with different configurations, saving you time and reducing errors.</li>
+</ul>
+<h3 class="anchor anchorWithStickyNavbar_LWe7" id="get-started-today">Get Started Today<a href="https://sey56.github.io/paracore-help/blog/2025/10/27/introducing-paracore#get-started-today" class="hash-link" aria-label="Direct link to Get Started Today" title="Direct link to Get Started Today" translate="no">​</a></h3>
+<p>We believe Paracore will fundamentally change the way you think about Revit automation. It’s faster, more flexible, and more user-friendly.</p>
+<p>Head over to our <strong><a href="https://sey56.github.io/paracore-help/docs/intro">Documentation</a></strong> to learn how to get started.</p>
+<p>We can't wait to see what you create with Paracore!</p>
+<ul>
+<li>The Paras Codarch Team</li>
+</ul>]]></content:encoded>
+            <category>announcement</category>
+            <category>paracore</category>
+            <category>revit</category>
+            <category>automation</category>
+        </item>
+    </channel>
+</rss>

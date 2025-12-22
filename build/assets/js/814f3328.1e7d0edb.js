@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkparacore_help=globalThis.webpackChunkparacore_help||[]).push([[7472],{5513:e=>{e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Introducing Paracore: A New Era of Revit Automation","permalink":"/paracore-help/blog/2025/10/27/introducing-paracore","unlisted":false,"date":"2025-10-27T00:00:00.000Z"}]}')}}]);
