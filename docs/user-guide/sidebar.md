@@ -48,32 +48,36 @@ When you sign in with Google, you choose a team before accessing Paracore. Once 
     *   This crucial section allows you to manage where Paracore finds your automation scripts.
     *   **Local Folders:**
         *   Visible only when you are in your personal team space (as an `admin`).
-        *   Allows you to add local folders from your computer as script sources for personal use and experimentation.
-        *   Scripts from local folders are not shared with your team.
-    *   **Workspaces:**
-        *   Displays a list of Git repositories (Workspaces) registered for your active team.
-        *   **"Setup" Button:** Appears next to a registered workspace that has not yet been cloned to your local machine. Click to clone the repository and make its scripts available.
-        *   **"Remove" Button (Trash Icon):** Appears next to a workspace that has been locally cloned. Click to delete your local copy of the repository from your machine.
+        *   Allows you to add local folders from your computer (e.g., `C:\MyScripts`).
+        *   Scripts here are private to you and not shared with the team.
+    *   **Registered Workspaces:**
+        *   Displays a dropdown list of all Git repositories your Team Admin has registered.
+        *   **Clone Button (Cloud Icon):** Appears next to any registered workspace that you haven't cloned yet. Clicking this allows you to download the repo to your local machine.
+    *   **Local Workspaces:**
+        *   Displays the list of repositories you have successfully cloned.
+        *   **Remove Button (Trash Icon):** Allows you to delete the local copy of the repository (unclone it).
+        *   **Sync Button (Sync Icon):** Allows you to pull the latest changes from the remote Git repository.
 
 ## Managing Script Sources
 
-### Adding a Local Folder (Admin in Personal Space Only)
+### Adding a Local Folder (Personal Space Only)
 
-1.  Ensure your active team is your personal team (e.g., "[Your Name]'s Space").
-2.  In the "Local Folders" subsection, click the "Add" button.
-3.  Select the folder on your computer containing your scripts.
-4.  The folder will be added to the list, and its scripts will appear in the Script Gallery.
+1.  Ensure you are in your personal team (e.g., "[Your Name]'s Space").
+2.  Click the **Add Folder** button in the "Local Folders" section.
+3.  Select the folder on your computer.
+4.  The folder matches immediately and scripts populate the gallery.
 
-### Setting Up a Workspace (All Roles)
+### Cloning a Registered Workspace
 
-1.  In the "Workspaces" subsection, locate a registered workspace that shows a "Setup" button.
-2.  Click the "Setup" button.
-3.  You will be prompted to select a parent folder on your computer where the repository will be cloned.
-4.  Once cloned, the "Setup" button will be replaced by a "Remove" button, and the scripts from the repository will appear in the Script Gallery.
+1.  Expand the **Registered Workspaces** dropdown in the Sidebar.
+2.  Locate a workspace (e.g., `company-standards-repo`).
+3.  Click the **Clone** button (cloud download icon) next to it.
+4.  Select a destination folder on your computer (e.g., `C:\ParacoreWorkspaces`).
+5.  Paracore will clone the repository. Once finished, it moves to the **Local Workspaces** section and its scripts appear in the gallery.
 
-### Removing a Local Workspace (All Roles)
+### Removing a Workspace
 
-1.  In the "Workspaces" subsection, locate a workspace that shows a "Remove" button (trash icon).
-2.  Click the "Remove" button.
-3.  A confirmation dialog will appear. Confirm to delete the local repository folder from your machine.
-4.  The workspace will revert to showing the "Setup" button.
+1.  In the **Local Workspaces** section, find the workspace you want to remove.
+2.  Click the **Remove** button (trash icon).
+3.  Confirm the action to delete the local folder from your machine.
+4.  The workspace will revert to the **Registered Workspaces** list, ready to be cloned again if needed.
