@@ -67,5 +67,8 @@ The agent maintains a **Working Set**—a memory of the Revit elements created o
 ## Best Practices
 
 *   **Action + Element:** Focus your first command on the verb and the noun (e.g., "Select Doors", "Create Floor").
-*   **Refine Later:** Don't try to stuff all parameters into the first sentence. Find the script first, then set the values.
+*   **Mention Keywords:** Mentioning parameter names (like "Level" or "Radius") helps the agent find the right script, even though it won't set the values yet.
+    > *Correct:* "Create a spiral wall with radius and level." (Helps find the script)
+    > *Incorrect:* "Create a spiral wall with radius 5m on Level 2." (Values will be ignored during search).
+*   **Use the UI for Complex Scripts:** For scripts with many parameters, it's often faster and more accurate to use the **Parameters Tab** in the Inspector rather than typing everything in chat.
 *   **Verify Parameters:** Always check the Script Inspector values before saying "Run it".
