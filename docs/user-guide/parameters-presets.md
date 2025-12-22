@@ -49,6 +49,13 @@ Println($"Project: {p.projectName}");
 - ✅ No red squiggles or IDE errors
 - ✅ Cleaner, more maintainable code
 - ✅ Access to all advanced features
+- ✅ Can be in a separate `Params.cs` file for multi-file scripts
+
+> [!IMPORTANT]
+> **Parameter Placement Rules:**
+> - **Single-File Scripts:** Parameters must be in the `.cs` file (either inline or in a `Params` class)
+> - **Multi-File Scripts:** Parameters can be in the entry file OR in a separate `Params.cs` file
+> - Metadata must always be in the entry file (top-level statement file)
 
 ## Parameter Properties Reference
 
