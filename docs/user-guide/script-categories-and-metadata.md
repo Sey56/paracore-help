@@ -185,8 +185,6 @@ var p = new Params();
 
 **Params.cs (Separate File):**
 ```csharp
-using CoreScript.Engine.Globals;
-
 class Params
 {
     [ScriptParameter(Group: "Mode", Options: "Room Boundaries,Grid Layout,Coordinates,Perimeter")]
