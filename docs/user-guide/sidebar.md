@@ -73,7 +73,10 @@ When you sign in with Google, you choose a team before accessing Paracore. Once 
 2.  Locate a workspace (e.g., `company-standards-repo`).
 3.  Click the **Clone** button (cloud download icon) next to it.
 4.  Select a destination folder on your computer (e.g., `C:\ParacoreWorkspaces`).
-5.  Paracore will clone the repository. Once finished, it moves to the **Local Workspaces** section and its scripts appear in the gallery.
+5.  Paracore will populate the gallery with scripts from that workspace.
+
+> [!NOTE]
+> **Existing Workspaces:** If you select a folder that already contains the cloned repository, Paracore will detect it and simply load the existing workspace without re-downloading. This is useful if you previously "removed" (unloaded) a workspace and want to add it back.
 
 ### Removing a Workspace
 
