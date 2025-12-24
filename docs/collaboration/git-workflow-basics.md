@@ -46,12 +46,12 @@ This workflow ensures that `user`s always receive stable, tested scripts, while 
 4.  **Test in Revit:**
     *   While you're on your feature branch in Paracore, any scripts you run in Revit will be the versions from *that branch*. This allows you to thoroughly test your new features or fixes in isolation.
 
-5.  **Create a Pull Request (Outside RAP):**
+5.  **Create a Pull Request (Outside Paracore):**
     *   Once your feature is complete and you've thoroughly tested it, go to your **Git hosting platform** (GitHub, GitLab, etc.).
     *   Create a **Pull Request (PR)** from your `feature/my-new-script` branch to the `main` branch.
     *   This initiates a code review process by other team members or admins.
 
-6.  **Merge the Pull Request (Outside RAP):**
+6.  **Merge the Pull Request (Outside Paracore):**
     *   Once the PR is approved, it is **merged** into the `main` branch on your Git hosting platform.
 
 7.  **Users Get the Updates:**
