@@ -445,8 +445,24 @@ class Params
     [RevitElements(Type: "WallType", Group: "Filtering", Description: "Wall type to use")]
     public string wallTypeSelection = "Generic - 200mm";
 
-    [RevitElements(Type: "Level", Group: "Filtering", Description: "Target level")]
+    [ScriptParameter(Group: "Filtering", Description: "Target level", Computable: true)]
     public string targetLevel = "Level 1";
+
+    public List<string> targetLevel_Options()
+    {
+        var levels = new FilteredElementCollector(Doc)
+            .OfClass(typeof(Level))
+            .Cast<Level>()
+            .Where(l => !l.Name.Contains("Drafting"))
+            .Select(l => l.Name)
+            .OrderBy(n => n)
+            .ToList();
+        
+        if (levels.Count == 0)
+            throw new InvalidOperationException("No levels found.");
+        
+        return levels;
+    }
 
     // Advanced (Conditional)
     [ScriptParameter(Group: "Advanced", Description: "Enable debug output", VisibleWhen: "mode=Create")]
@@ -460,6 +476,7 @@ This script demonstrates:
 - ✅ Dropdown options
 - ✅ Numeric sliders with constraints
 - ✅ Multi-select checkboxes
-- ✅ Magic extraction for Revit elements
+- ✅ Magic extraction for Revit elements (`[RevitElements]`)
+- ✅ Custom computable options (`Computable: true` with `_Options()` method)
 - ✅ Descriptive tooltips
 - ✅ Conditional visibility
