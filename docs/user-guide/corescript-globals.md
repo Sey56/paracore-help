@@ -14,6 +14,12 @@ Prints a message to the output console.
 ### `Println(object message)`
 Same as `Print`, but appends a new line.
 
+**Example:**
+```csharp
+int wallCount = 5;
+Println($"Number of walls: {wallCount}");
+```
+
 ### `Show(string type, object data)`
 Renders rich content in the Paracore UI (e.g., the **Table** tab in the Script Results).
 
