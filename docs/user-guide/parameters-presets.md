@@ -398,6 +398,7 @@ Presets automatically handle complex parameter types:
 
 ## Complete Example
 
+```csharp
 var p = new Params();
 Println($"Mode: {p.mode}");
 Println($"Creating walls on {p.targetLevel} with height {p.wallHeight}m");
