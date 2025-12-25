@@ -273,7 +273,7 @@ public string doorType = "Single-Flush: 30\" x 84\"";
 
 **Generic Type Support:**
 
-The system supports **any Revit API element type** through reflection. If you specify a type that isn't in the list above (e.g., `"PipeType"`, `"DuctType"`, `"RailingType"`), Paracore will automatically attempt to query it from the document using `FilteredElementCollector`.
+The system supports **any Revit API element type** automatically. If you specify a type that isn't in the list above (e.g., `"PipeType"`, `"DuctType"`, `"RailingType"`), Paracore will automatically query it from the document.
 
 **Example with a custom type:**
 ```csharp
