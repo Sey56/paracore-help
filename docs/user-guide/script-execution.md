@@ -29,7 +29,9 @@ Paracore offers two ways to execute a script:
     *   **Select a Script:** From the [Script Gallery](./script-gallery.md), click on the script you wish to run. This will open it in the [Script Inspector](./script-inspector.md).
     *   **Configure Parameters:** In the Script Inspector's **Parameters Tab**, adjust any necessary [script parameters and presets](./parameters-presets.md).
     *   **Click "Run Script":** Locate and click the prominent "Run Script" button.
-    *   **Monitor Execution:** The script will execute. The Console Tab will automatically activate to display real-time output.
+    *   **Monitor Execution:** The script will execute.
+        *   A **Status Icon** (Green Check or Red X) will appear next to the button. Click this icon to open the **Console Tab** and view the output.
+        *   If the script outputs a table, a **pulsing blue badge** will appear on the **Table Tab** to notify you of new results.
 
 3.  **Agent-Initiated Execution:**
     *   When using the [Paracore Agent](./agentic-automation.md), the agent handles the setup.

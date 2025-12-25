@@ -36,4 +36,4 @@ Each script card provides a quick overview:
 
 ## Selecting a Script
 
-To view a script's details and prepare it for execution, simply click on its card in the Script Gallery. This will open the [Script Inspector](./script-inspector.md) on the right side of the application.
+To view a script's details and prepare it for execution, simply click on its card in the Script Gallery. This will populate the [Script Inspector](./script-inspector.md) (located on the right side of the application) with the selected script's information.

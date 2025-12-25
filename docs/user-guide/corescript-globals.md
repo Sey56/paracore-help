@@ -31,16 +31,37 @@ Sends **Structured Output** to the Paracore UI.
 
 **Usage:**
 ```csharp
-// 1. Render a Table in Paracore
-// Create a list of objects (anonymous or typed)
-var myData = new List<object> {
-    new { Name = "Room 1", Area = 50 },
-    new { Name = "Room 2", Area = 45 }
-};
-Show("table", myData);
+// Find the first wall in the document
+Wall? wall = new FilteredElementCollector(Doc)
+    .OfClass(typeof(Wall))
+    .Cast<Wall>()
+    .FirstOrDefault();
 
-// 2. Display a text message
-Show("message", "Operation completed successfully!");
+if (wall == null)
+{
+    Println("No wall found in the document.");
+    Show("message", "No wall found in the document.");
+    return;
+}
+
+// Collect parameters
+List<object> paramData = [];
+foreach (Parameter param in wall.Parameters)
+{
+    string paramName = param.Definition.Name;
+    string paramValue = param.AsValueString() ?? param.AsString() ?? "(null)";
+    string paramType = param.StorageType.ToString();
+
+    paramData.Add(new
+    {
+        Name = paramName,
+        Value = paramValue,
+        Type = paramType
+    });
+}
+
+// Display in table format
+Show("table", paramData);
 ```
 
 ---

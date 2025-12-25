@@ -28,6 +28,9 @@ bool createOpenings = true;
 For better IntelliSense, type safety, and IDE support, use the **Pro Pattern** with a dedicated `Params` class:
 
 ```csharp
+var p = new Params();
+Println($"Project: {p.projectName}");
+
 class Params
 {
     [ScriptParameter]
@@ -39,9 +42,6 @@ class Params
     [ScriptParameter]
     public bool enableLogging = true;
 }
-
-var p = new Params();
-Println($"Project: {p.projectName}");
 ```
 
 **Benefits of the Pro Pattern:**
@@ -116,8 +116,8 @@ class Params
 Paracore supports all common C# primitives:
 
 - `string` → Text input
-- `int`, `long`, `short` → Integer input
-- `double`, `float`, `decimal` → Decimal input
+- `int` → Integer input
+- `double` → Decimal input
 - `bool` → Checkbox
 
 ### Dropdown (Options)
@@ -398,7 +398,10 @@ Presets automatically handle complex parameter types:
 
 ## Complete Example
 
-```csharp
+var p = new Params();
+Println($"Mode: {p.mode}");
+Println($"Creating walls on {p.targetLevel} with height {p.wallHeight}m");
+
 class Params
 {
     // Mode Selection
@@ -433,10 +436,6 @@ class Params
     [ScriptParameter(Group: "Advanced", Description: "Enable debug output", VisibleWhen: "mode=Create")]
     public bool debugMode = false;
 }
-
-var p = new Params();
-Println($"Mode: {p.mode}");
-Println($"Creating walls on {p.targetLevel} with height {p.wallHeight}m");
 ```
 
 This script demonstrates:
