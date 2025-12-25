@@ -9,7 +9,7 @@ There is no need to import or declare these; they are always ready to use.
 ### `Print(object message)`
 Prints a message to the output console.
 - **In VS Code**: Appears in the "CoreScript" output channel.
-- **In Paracore**: Appears in the execution logs.
+- **In Paracore**: Appears in the **Console** tab of the Script Results.
 
 ### `Println(object message)`
 Same as `Print`, but appends a new line.
