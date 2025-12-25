@@ -21,6 +21,7 @@ const sidebars: SidebarsConfig = {
         'user-guide/sidebar',
         'user-guide/script-gallery',
         'user-guide/script-categories-and-metadata',
+        'user-guide/corescript-globals',
         'user-guide/script-inspector',
         'user-guide/ai-script-generation',
         'user-guide/agentic-automation',

@@ -58,11 +58,12 @@ Alternatively, right-click any folder and select **"Open with Code"**.
 2. Type and select: **CoreScript: Initialize Workspace** (or press `Ctrl+Shift+S`)
 
 This command scaffolds your workspace with:
-- `.csproj` - Project file with Revit API references
+- `[Folder Name].sln` - Solution file named after your workspace folder
+- `[Folder Name].csproj` - Project file named after your workspace folder
+- `Globals.cs` - IntelliSense helpers (in workspace root)
 - `global.json` - .NET SDK version configuration
 - `.editorconfig` - Code style settings
 - `Scripts/` folder containing:
-  - `Globals.cs` - IntelliSense helpers
   - `Main.cs` - Your main script entry point
   - `SpiralCreator.cs` - Example helper class
 
@@ -91,7 +92,7 @@ Println("Creating walls...");
 Transact("Create Walls", () =>
 {
     // Your Revit API code here
-    var level = GetLevel("Level 1");
+    // var level = ... get level using Doc
     // ... create elements
 });
 
@@ -123,17 +124,12 @@ The workspace is configured with:
 
 ### CoreScript Global Helpers
 
-**CoreScript** provides convenient global functions (via `Globals.cs`) that simplify Revit API scripting:
+CoreScript provides convenient global functions (via `Globals.cs`) that simplify Revit API scripting, such as `Print`, `Transact`, and `Doc`.
 
-- `Print(message)` / `Println(message)` - Print to VS Code output panel
-- `Transact(name, action)` - Execute code in a Revit transaction
-- `Doc` - Access the active Revit document
-- `UIDoc` - Access the active UI document
-- `GetLevel(name)` - Get a level by name
-- And more...
+For a complete list and detailed documentation of all available globals, see **[CoreScript Global Helpers](./corescript-globals.md)**.
 
 > [!NOTE]
-> The `Show()` global is recognized by the extension but does not output to VS Code. It is designed for rendering tables in Paracore's Table tab. Use `Print()` or `Println()` for output in the VS Code extension.
+> The extension primarily uses `Print` and `Println` for output. The `Show()` global (used for rich UI in Paracore) is recognized but produces no visible output in the VS Code execution console.
 
 ### Multi-File Scripts
 
@@ -143,11 +139,10 @@ You can organize your code into multiple files:
 Scripts/
 ├── Main.cs           # Entry point
 ├── WallCreator.cs    # Helper class
-├── ColumnHelper.cs   # Another helper
-└── Globals.cs        # Auto-generated
+└── ColumnHelper.cs   # Another helper
 ```
 
-All `.cs` files in the `Scripts/` folder (except `Globals.cs`) are automatically included when you run the script.
+All `.cs` files in the `Scripts/` folder are automatically included when you run the script.
 
 ## Execution Output
 
