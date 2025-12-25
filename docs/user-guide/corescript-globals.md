@@ -9,7 +9,7 @@ There is no need to import or declare these; they are always ready to use.
 ### `Print(object message)`
 Prints a message to the output console.
 - **In VS Code**: Appears in the "CoreScript" output channel.
-- **In Paracore**: Appears in the **Console** tab of the Script Results.
+- **In Paracore**: Appears in the **Console** tab.
 
 ### `Println(object message)`
 Same as `Print`, but appends a new line.
@@ -22,7 +22,7 @@ Println($"Number of walls: {wallCount}");
 
 ### `Show(string type, object data)`
 Sends **Structured Output** to the Paracore UI.
-- **`type: "table"`**: Renders the data as an interactive grid in the **Table** tab.
+- **`type: "table"`**: Renders the data as a table in the **Table** tab. Includes an "Export CSV" option.
 - **`type: "message"`**: Displays a formatted text message.
 
 > [!NOTE]

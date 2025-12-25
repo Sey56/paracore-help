@@ -94,6 +94,7 @@ const config: Config = {
         },
         { to: '/blog', label: 'Blog', position: 'left' },
         { to: '/docs/getting-started/downloads', label: 'Download', position: 'left' },
+        { to: '/docs/support', label: 'Support', position: 'left' },
       ],
     },
     footer: {
