@@ -12,7 +12,7 @@ The Sidebar, located on the left side of the Paracore application, is your prima
 
 Located at the very top of the Sidebar, this section displays your current team and role:
 
-*   **Team Name:** Shows your active team (e.g., "Seyoum Hagos's Space" or "John Doe's Space")
+*   **Team Name:** Shows your active team (e.g., "Jane Doe's Space" or "John Doe's Space")
 *   **Role Badge:** Displays your role in the current team:
     - **admin** - Full permissions (manage workspaces, users, scripts)
     - **developer** - Can access dev workspaces and create scripts
@@ -20,7 +20,7 @@ Located at the very top of the Sidebar, this section displays your current team 
 
 **Example Display:**
 ```
-Seyoum Hagos's Space  [admin]
+Jane Doe's Space  [admin]
 ```
 or
 ```

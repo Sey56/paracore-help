@@ -117,7 +117,7 @@ const config: Config = {
           title: 'Community',
           items: [
             {
-              label: 'Seyoum Hagos',
+              label: 'Paras Codarch',
               href: 'https://github.com/Sey56',
             },
           ],
