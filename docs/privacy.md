@@ -6,7 +6,7 @@ sidebar_position: 100
 
 **Last Updated:** December 25, 2025
 
-This Privacy Policy describes how Paracore ("we", "us", or "our") handles your data when you use the Paracore desktop application and its associated Revit add-in.
+This Privacy Policy describes how Paras Codarch ("we", "us", or "our") handles your data when you use the Paracore desktop application and its associated Revit add-in.
 
 Paracore is designed with a **"Local-First"** architecture. We believe your automation scripts and project data should remain under your control.
 
@@ -45,3 +45,9 @@ The application may contain links to third-party websites or services (e.g., Git
 If you have any questions about this Privacy Policy, please contact us at:
 
 **Email:** [codarch46@gmail.com](mailto:codarch46@gmail.com)
+
+---
+
+## Trademarks
+
+Autodesk, Revit, and the Revit logo are registered trademarks or trademarks of Autodesk, Inc., and/or its subsidiaries and/or affiliates in the USA and/or other countries. This website and the Paracore application are independent of Autodesk, Inc., and are not affiliated with, authorized, endorsed, sponsored, or otherwise approved by Autodesk, Inc.
