@@ -21,22 +21,25 @@ Println($"Number of walls: {wallCount}");
 ```
 
 ### `Show(string type, object data)`
-Renders rich content in the Paracore UI (e.g., the **Table** tab in the Script Results).
+Sends **Structured Output** to the Paracore UI.
+- **`type: "table"`**: Renders the data as an interactive grid in the **Table** tab.
+- **`type: "message"`**: Displays a formatted text message.
 
 > [!NOTE]
 > This function **only works when running scripts from Paracore**.
-> If you run a script directly from VS Code using `CoreScript: Run in Revit`, the `Show()` function is recognized but will not produce any visible output in VS Code.
+> It is ignored by the VS Code extension console.
 
 **Usage:**
 ```csharp
-// Display a list of objects as a table in Paracore
+// 1. Render a Table in Paracore
+// Create a list of objects (anonymous or typed)
 var myData = new List<object> {
     new { Name = "Room 1", Area = 50 },
     new { Name = "Room 2", Area = 45 }
 };
 Show("table", myData);
 
-// Display a toast message
+// 2. Display a text message
 Show("message", "Operation completed successfully!");
 ```
 
