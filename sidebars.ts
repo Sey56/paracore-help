@@ -9,7 +9,7 @@ const sidebars: SidebarsConfig = {
       label: 'Getting Started',
       items: [
         'getting-started/installation',
-        'getting-started/first-login',
+        // 'getting-started/first-login',
         'getting-started/downloads',
       ],
     },

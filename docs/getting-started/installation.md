@@ -36,7 +36,9 @@ Paracore is distributed as a set of installer packages. You can find all necessa
     *   Launch the Paracore desktop application.
 ## Post-Installation Setup
 
-After installation, you may need to perform some initial setup steps:
+Once Paracore is installed:
 
-*   **First Login:** Proceed to the [First Login Guide](./first-login.md) to set up your user profile and personal team space.
-*   **Git Configuration:** Ensure your Git client is properly configured with your user name and email.
+1.  **Launch Paracore:** Open the Paracore desktop application.
+2.  **Sign In:** Click the **"Continue Offline"** button on the login screen.
+    *   *Note:* The "Sign in with Google" option features (Cloud Teams, AI Generation) are currently disabled in the public release.
+3.  **Start Automating:** You are now ready to use Paracore! Proceed to the [User Guide](../user-guide/script-execution.md) to learn how to run your first script.
