@@ -261,12 +261,27 @@ public string targetLevel = "Level 1";
 public string doorType = "Single-Flush: 30\" x 84\"";
 ```
 
-**Supported Types:**
+**Commonly Used Types:**
 - `WallType`, `FloorType`, `RoofType`, `CeilingType`
-- `Level`, `View`, `ViewTemplate`
+- `Level`, `Grid`
+- `View` (with optional view type filter: `"FloorPlan"`, `"Section"`, etc.)
+- `ViewFamilyType`
 - `FamilySymbol` (with optional `Category` filter)
 - `Family` (with optional `Category` filter)
-- `Material`, `LineStyle`, `FillPattern`
+- `Material`, `LineStyle`
+- `DimensionType`, `TextNoteType`, `FilledRegionType`
+
+**Generic Type Support:**
+
+The system supports **any Revit API element type** through reflection. If you specify a type that isn't in the list above (e.g., `"PipeType"`, `"DuctType"`, `"RailingType"`), Paracore will automatically attempt to query it from the document using `FilteredElementCollector`.
+
+**Example with a custom type:**
+```csharp
+[RevitElements(Type: "PipeType")]
+public string pipeType = "Default";
+```
+
+This works for any type in the `Autodesk.Revit.DB` namespace that can be collected and has a `Name` property.
 
 **How It Works:**
 1. Click the **Blue "Fetch" button** (loop icon) next to the parameter.
