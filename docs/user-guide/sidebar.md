@@ -74,7 +74,7 @@ When you sign in with Google, you choose a team before accessing Paracore. Once 
 1.  Ensure you are in your personal team (e.g., "[Your Name]'s Space").
 2.  Click the **Add Folder** button in the "Local Folders" section.
 3.  Select the folder on your computer.
-4.  The folder matches immediately and scripts populate the gallery.
+4.  The folder is loaded into Paracore and its scripts are populated in the gallery.
 
 ### Cloning a Registered Workspace
 
