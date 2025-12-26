@@ -74,5 +74,5 @@ This automatic cleanup prevents disk clutter from accumulating many temporary wo
 
 **IntelliSense not working:**
 - Ensure `bin` and `obj` folders exist
-- Reload VSCode window (`Ctrl+Shift+P` → "Reload Window")
+- **Reload VSCode Window:** Press `Ctrl+Shift+P` to open the Command Palette, type "Reload Window", and select **Developer: Reload Window**.
 - Check that Revit is running with Paracore.Addin active
