@@ -63,7 +63,7 @@ Both `[ScriptParameter]` and `[RevitElements]` attributes support the following 
 
 | Property | Type | Description | Example |
 |----------|------|-------------|---------|
-| **Description** | `string` | Tooltip text shown in the UI | `Description: "Wall height in meters"` |
+| **Description** | `string` | Help text shown next to the parameter | `Description: "Wall height in meters"` |
 | **Group** | `string` | Organizes parameters into collapsible sections | `Group: "Dimensions"` |
 | **Options** | `string` | Comma-separated list for dropdown | `Options: "Option A,Option B,Option C"` |
 | **MultiSelect** | `bool` | Renders checkboxes instead of dropdown | `MultiSelect: true` |
@@ -397,7 +397,7 @@ Presets automatically handle complex parameter types:
 
 - **Use the Pro Pattern:** Define parameters in a `class Params` for better IDE support
 - **Descriptive Names:** Use clear, self-documenting parameter names
-- **Add Descriptions:** Use `Description` property for tooltips to guide users
+- **Add Descriptions:** Use `Description` property for help text to guide users
 - **Sensible Defaults:** Provide default values that work for common scenarios
 - **Group Related Parameters:** Use `Group` to organize complex scripts
 - **Leverage Magic Extraction:** Use `[RevitElements]` instead of writing custom `_Options()` methods when possible
@@ -408,7 +408,7 @@ Presets automatically handle complex parameter types:
 - **Create Presets:** Save frequently used configurations for quick access
 - **Refresh Options:** Click the Gray "Refresh" button if the Revit model changes
 - **Organize with Groups:** Expand only the parameter groups you need to modify
-- **Read Descriptions:** Hover over parameter labels to see helpful tooltips
+- **Read Descriptions:** Check the help text displayed to the right of the parameter input
 - **Validate Inputs:** Check the Console tab for detailed error messages if execution fails
 
 ## Complete Example
@@ -478,5 +478,5 @@ This script demonstrates:
 - ✅ Multi-select checkboxes
 - ✅ Magic extraction for Revit elements (`[RevitElements]`)
 - ✅ Custom computable options (`Computable: true` with `_Options()` method)
-- ✅ Descriptive tooltips
+- ✅ Descriptive help text
 - ✅ Conditional visibility
