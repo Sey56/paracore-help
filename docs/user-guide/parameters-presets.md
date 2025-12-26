@@ -72,7 +72,7 @@ Both `[ScriptParameter]` and `[RevitElements]` attributes support the following 
 | **Min** | `double` | Minimum value for numeric sliders | `Min: 0.0` |
 | **Max** | `double` | Maximum value for numeric sliders | `Max: 100.0` |
 | **Step** | `double` | Increment step for numeric sliders | `Step: 0.5` |
-| **VisibleWhen** | `string` | Conditional visibility based on other parameters | `VisibleWhen: "mode=Advanced"` |
+| **VisibleWhen** | `string` | Conditional visibility based on other parameters | `VisibleWhen: "mode == 'Advanced'"` |
 
 ### Comment-Based Syntax Examples
 
@@ -80,13 +80,13 @@ Both `[ScriptParameter]` and `[RevitElements]` attributes support the following 
 // [Parameter(Description: "Select operation mode", Options: "Create,Modify,Delete")]
 string mode = "Create";
 
-// [Parameter(Description: "Target categories", MultiSelect: true)]
+// [Parameter(Description: "Target categories", Options: "Walls, Doors, Windows, Floors, Ceilings", MultiSelect: true)]
 List<string> categories = ["Walls", "Doors"];
 
 // [Parameter(Description: "Wall height in meters", Min: 1.0, Max: 10.0, Step: 0.5)]
 double wallHeight = 3.5;
 
-// [Parameter(Group: "Advanced", VisibleWhen: "mode=Advanced")]
+// [Parameter(Group: "Advanced", VisibleWhen: "mode == 'Advanced'")]
 bool enableDebugMode = false;
 ```
 
@@ -98,13 +98,13 @@ class Params
     [ScriptParameter(Description: "Select operation mode", Options: "Create,Modify,Delete")]
     public string mode = "Create";
 
-    [ScriptParameter(Description: "Target categories", MultiSelect: true)]
+    [ScriptParameter(Description: "Target categories", Options: "Walls, Doors, Windows, Floors, Ceilings", MultiSelect: true)]
     public List<string> categories = ["Walls", "Doors"];
 
     [ScriptParameter(Description: "Wall height in meters", Min: 1.0, Max: 10.0, Step: 0.5)]
     public double wallHeight = 3.5;
 
-    [ScriptParameter(Group: "Advanced", VisibleWhen: "mode=Advanced")]
+    [ScriptParameter(Group: "Advanced", VisibleWhen: "mode == 'Advanced'")]
     public bool enableDebugMode = false;
 }
 ```
@@ -144,13 +144,13 @@ Use `List<string>` with `MultiSelect: true` for checkbox groups:
 
 **Comment-Based:**
 ```csharp
-// [Parameter(MultiSelect: true)]
+// [Parameter(Options: "Walls, Doors, Windows, Floors, Ceilings", MultiSelect: true)]
 List<string> categoryFilter = ["Walls", "Doors"];
 ```
 
 **Pro Pattern:**
 ```csharp
-[ScriptParameter(MultiSelect: true)]
+[ScriptParameter(Options: "Walls, Doors, Windows, Floors, Ceilings", MultiSelect: true)]
 public List<string> categoryFilter = ["Walls", "Doors"];
 ```
 
@@ -230,7 +230,7 @@ Show/hide parameters based on other parameter values:
 // [Parameter(Options: "Basic,Advanced")]
 string mode = "Basic";
 
-// [Parameter(VisibleWhen: "mode=Advanced")]
+// [Parameter(VisibleWhen: "mode == 'Advanced'")]
 bool enableDebugMode = false;
 ```
 
@@ -239,7 +239,7 @@ bool enableDebugMode = false;
 [ScriptParameter(Options: "Basic,Advanced")]
 public string mode = "Basic";
 
-[ScriptParameter(VisibleWhen: "mode=Advanced")]
+[ScriptParameter(VisibleWhen: "mode == 'Advanced'")]
 public bool enableDebugMode = false;
 ```
 
@@ -439,7 +439,7 @@ class Params
     public int offsetValue = 50;
 
     // Filtering
-    [ScriptParameter(Group: "Filtering", Description: "Target categories", MultiSelect: true)]
+    [ScriptParameter(Group: "Filtering", Description: "Target categories", Options: "Walls, Doors, Windows, Floors, Ceilings", MultiSelect: true)]
     public List<string> categoryFilter = ["Walls", "Doors"];
 
     [RevitElements(Type: "WallType", Group: "Filtering", Description: "Wall type to use")]
@@ -465,7 +465,7 @@ class Params
     }
 
     // Advanced (Conditional)
-    [ScriptParameter(Group: "Advanced", Description: "Enable debug output", VisibleWhen: "mode=Create")]
+    [ScriptParameter(Group: "Advanced", Description: "Enable debug output", VisibleWhen: "mode == 'Create'")]
     public bool debugMode = false;
 }
 ```
