@@ -53,7 +53,7 @@ Once a registered workspace is cloned, it becomes a **Local Workspace** on the u
 In the Paracore sidebar, under the **"Local Workspaces"** section, there is another dropdown menu. This dropdown lists all the repositories that the user has locally cloned from the registered workspaces.
 
 *   **Activating a Local Workspace:** Selecting a local workspace from this dropdown makes it the active workspace. The scripts within the active local workspace will then populate the Script Gallery.
-*   **"Remove" Button (Trash Icon):** Appears next to a local workspace. Clicking it deletes the local repository folder from the user's machine and removes its record from the local Paracore database. This is available to all roles (`admin`, `developer`, `user`).
+*   **"Remove" Button (Trash Icon):** Appears next to a local workspace. Clicking it removes the workspace record from the local Paracore database. **Note:** This does *not* delete the local repository folder from your computer. This is available to all roles (`admin`, `developer`, `user`).
 
 ## Summary of Workspace Flow
 
