@@ -13,22 +13,24 @@ To make a Git repository available to your team:
 1.  **Access Workspace Settings:** Navigate to the **Settings modal** (usually accessible via your profile in the Top Bar) and select the **"Workspaces" tab**.
 2.  **Click "Register Workspace":** Locate and click the "Register Workspace" button.
 3.  **Enter Details:**
-    *   **Workspace Name:** Provide a descriptive name for the workspace (e.g., "Project X Automation").
+    *   **Workspace Name:** Provide a descriptive identifier for the workspace (e.g., "Demo" or "ProjectX"). This is just the base name—the system will automatically append a suffix based on your role selection.
     *   **Repository URL:** Enter the full URL of the remote Git repository (e.g., `https://github.com/your-org/your-repo.git`).
+    *   **Target Role:** Select the intended audience using the radio buttons:
+        *   **Developer (-dev):** Check this option if the workspace is for developers. The system will append `-dev` to your workspace name (e.g., "Demo" becomes "Demo-dev").
+        *   **User (-user):** Check this option if the workspace is for end users. The system will append `-user` to your workspace name (e.g., "Demo" becomes "Demo-user").
 4.  **Confirm Registration:** Click the "Register" button in the modal.
 
-The newly registered workspace will immediately appear in the "Workspaces" section of the [Sidebar](../user-guide/sidebar.md) for all team members, showing a "Setup" button next to it.
+The newly registered workspace will immediately appear in the **"Registered Workspaces"** dropdown in the [Sidebar](../user-guide/sidebar.md) for team members based on their role (see visibility rules below).
 
-### Using Naming Conventions for "Published" Scripts
+## Role-Based Workspace Visibility
 
-While Paracore does not have a dedicated "publish" button, `admin`s can use clear naming conventions for registered workspaces to indicate which repositories contain stable, user-ready scripts versus those intended for ongoing development. This acts as a powerful way to "publish" scripts to your users.
+When you register a workspace, the radio button you select determines which team members can see it:
 
-**Examples:**
+*   **Developer (-dev) Workspaces:** Visible only to `admin` and `developer` roles. Use this for repositories containing in-progress scripts, experimental features, or development branches.
+*   **User (-user) Workspaces:** Visible only to `admin` and `user` roles. Use this for repositories containing stable, production-ready scripts that end users should access.
+*   **Admin Role:** As an `admin`, you always see **all registered workspaces** in the "Registered Workspaces" dropdown, regardless of the suffix.
 
-*   **Development Workspaces:** You might register a repository as `ProjectX-Dev` or `FeatureY-InProgress`. These are typically where `developer`s will work and push their branches.
-*   **User-Ready Workspaces:** Once a set of scripts is stable and approved, you can register a separate repository (or a specific branch of a repository) as `ProjectX-User` or `Final-Automation-Scripts`. Users can then be instructed to clone and update from these specifically designated workspaces.
-
-This approach allows `user`s to easily identify and access the approved automation tools, while `developer`s can continue their work in separate, clearly marked development environments.
+This role-based system allows you to control which scripts are visible to different team members, effectively "publishing" stable scripts to users while keeping development work isolated.
 
 :::info Visibility by Role
 *   **Workspaces ending with `-dev`:** Visible only to `admin` and `developer` roles.
