@@ -99,18 +99,6 @@ UsageExamples:
 - "Create a wall of 8m length and 3m height on 'Level 1'"
 */
 
-class Params
-{
-    [ScriptParameter]
-    public string levelName = "Level 1";
-    
-    [ScriptParameter(Min: 1.0, Max: 20.0)]
-    public double wallLengthMeters = 6.0;
-    
-    [ScriptParameter(Min: 1.0, Max: 10.0)]
-    public double wallHeightMeters = 3.0;
-}
-
 var p = new Params();
 
 // Convert to Revit internal units (feet)
@@ -144,6 +132,18 @@ Transact("Create Wall", () =>
 });
 
 Println("✅ Wall created.");
+
+class Params
+{
+    [ScriptParameter]
+    public string levelName = "Level 1";
+    
+    [ScriptParameter(Min: 1.0, Max: 20.0)]
+    public double wallLengthMeters = 6.0;
+    
+    [ScriptParameter(Min: 1.0, Max: 10.0)]
+    public double wallHeightMeters = 3.0;
+}
 ```
 
 ### Multi-File Scripts: Params Class in Separate File
