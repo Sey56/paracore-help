@@ -50,5 +50,7 @@ To remove a Git repository from your team's list of registered workspaces:
 
 **Important Notes:**
 
-*   Deleting a registered workspace **does not** delete any local clones of that repository from team members' machines. Team members will need to [remove their local clones](../user-guide/sidebar.md#removing-a-local-workspace) separately.
-*   This action is irreversible and removes the workspace for the entire team.
+*   **Re-registration is Possible:** You can re-register the same repository at any time. When you do, any team members who had previously cloned it will see the "-Orphaned" suffix removed from their local workspace name.
+*   **Local Clones Become "Orphaned":** Deleting a registered workspace does **not** delete local clones from team members' machines. Instead, their local workspace will show an **"-Orphaned"** suffix (e.g., "RAP-Demo-Scripts-Orphaned") to indicate the source registration no longer exists.
+*   **Workspace Names vs. Repository Names:** The registered workspace name (e.g., "Demo-dev") is just an identifier you create. When team members clone the repository, they see the **actual repository name** from the Git URL (e.g., "RAP-Demo-Scripts") under their **"Local Workspaces"** dropdown in the Sidebar.
+*   **Manual Cleanup:** Team members can [remove their local clones](../user-guide/sidebar.md#removing-a-local-workspace) if they no longer need them.
