@@ -47,4 +47,4 @@ After a script finishes running, the Console Tab will show its output. The "Run 
 
 Clicking on this status icon (green checkmark or red X) will activate the **Console Tab**, allowing you to quickly review the full execution log without navigating away.
 
-For a structured view of tabular results (using `Output.Show("table", data)`), navigate to the **Table Tab** in the Script Inspector.
+For a structured view of tabular results (using `Show("table", data)`), navigate to the **Table Tab** in the Script Inspector.
