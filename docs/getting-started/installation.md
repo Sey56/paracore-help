@@ -41,4 +41,20 @@ Once Paracore is installed:
 1.  **Launch rap-web:** Open the Paracore UI.
 2.  **Sign In:** Click the **"Continue Offline"** button on the login screen.
     *   *Note:* The "Sign in with Google" and AI/Agent features require a running `rap-auth-server`. For local usage without these features, "Continue Offline" is sufficient.
+
+## Getting Sample Scripts
+
+To start experimenting with Paracore, you'll need some scripts to run.
+
+### For Users (Quick Start)
+1. Download the sample scripts: [Paracore-Scripts](https://github.com/Sey56/Paracore/tree/main/Paracore-Scripts) (click "Code" → "Download ZIP")
+2. Extract the ZIP to a folder on your computer (e.g., `C:\Users\YourName\Documents\Paracore-Scripts`)
+3. In Paracore UI, go to **Sidebar** → **Local Folders** → Click **+** to add the extracted folder
+
+### For Developers
+Clone the entire repository to get the scripts along with the source code:
+```bash
+git clone https://github.com/Sey56/Paracore.git
+```
+
 3.  **Start Automating:** You are now ready to use Paracore! Proceed to the [User Guide](../user-guide/script-execution.md) to learn how to run your first script.
