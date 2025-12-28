@@ -37,30 +37,34 @@ Println("Creating wall...");
 class Params { }
 ```
 
-### Multi-File Scripts
-Complex scripts organized in folders for better modularity.
+### Multi-File Scripts (Modular)
 
-**Characteristics:**
-- **Folder Name = Script Name** (displayed in Script Gallery)
-- Contains one or more `.cs` files
-- One file must be the **entry file** (top-level statements)
-- Engine automatically combines all files for execution
+For complex automation, you can organize your code into multiple files within a folder. This allows for better modularity and separation of concerns.
 
-**Recommended Naming:**
-- Entry file: Same as folder name (e.g., `Create_Walls.cs`) or `Main.cs`
-- Other files: Descriptive names (e.g., `Params.cs`, `GridWalls.cs`)
+**Structure & Mechanics:**
+
+1.  **Folder as Script:** You create a **folder** instead of a single file. The **folder name** becomes the script name in the gallery (e.g., `Create_Walls`).
+2.  **Entry Point (Top-Level Statements):**
+    *   The folder must contain **exactly one** `.cs` file that has **top-level statements** (unwrapped executable code).
+    *   The engine automatically detects this file as the **entry point**.
+    *   **Naming Convention:** While the file name technically doesn't matter (as long as it has top-level statements), it is best practice to name it either **[FolderName].cs** (e.g., `Create_Walls.cs`) or **Main.cs**.
+3.  **Semantic Combination (Smart Linking):**
+    *   The engine is smart: it does *not* blindly combine every file in the folder.
+    *   It parses the **entry point** first.
+    *   It **only** combines other `.cs` files (classes, types) that are **explicitly referenced** (used) by the entry point code.
+    *   **Unused Files Ignored:** Any other `.cs` files in the folder that are *not* used by your main logic are ignored. This lets you keep experimental code or backup files in the folder without breaking the script execution.
 
 **Example Structure:**
-```
-Create_Walls/               ← Script name in gallery
-├── Create_Walls.cs         ← Entry file (top-level statements + metadata)
-├── Params.cs               ← Parameter definitions
-├── GridWalls.cs            ← Helper functions
-└── RoomBoundaryWalls.cs    ← Helper functions
+```text
+Create_Walls/               ← Script Name (in Gallery)
+├── Main.cs                 ← ENTRY POINT (Top-level statements + Metadata)
+├── Params.cs               ← Referenced in Main.cs (Included)
+├── GridHelpers.cs          ← Referenced in Main.cs (Included)
+└── Test_Experiment.cs      ← NOT referenced in Main.cs (IGNORED)
 ```
 
 > [!TIP]
-> Use multi-file scripts when your automation logic is complex or exceeds ~200 lines. The engine seamlessly combines all files into a single script for execution.
+> This mechanism allows you to build sophisticated, maintainable tools just like a real software project, while keeping the "run" experience simple. The engine handles the complexity of dependency resolution for you.
 
 ### Script Metadata
 
@@ -205,11 +209,12 @@ class Params
 ```
 
 > [!TIP]
+> [!TIP]
 > **Key Rules for Multi-File Scripts:**
-> - Metadata must be in the **entry file** (file with same name as folder)
-> - Parameters can be defined in the entry file OR in a separate `Params.cs` file
-> - Helper functions and classes can be in any file in the folder
-> - The engine automatically discovers and combines all `.cs` files
+> - Metadata must be in the **entry file** (the one with top-level statements).
+> - Parameters can be defined in the entry file OR in a separate `Params.cs` file.
+> - Helper functions and classes can be in any file in the folder.
+> - **Crucially:** Only files defining types *actually used* by the entry file are combined for execution. Unused files are skipped.
 
 ### Static Metadata Fields
 
