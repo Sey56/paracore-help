@@ -26,4 +26,4 @@ Subscribe to our YouTube channel for tutorials, demos, and updates on the latest
 
 - **[Installation Guide](./getting-started/installation)**
 - **[User Guide](./user-guide/script-execution)**
-- **[GitHub Repository](https://github.com/Sey56/paracore-help)**
+- **[GitHub Repository](https://github.com/Sey56/Paracore)**
