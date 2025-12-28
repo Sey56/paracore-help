@@ -31,7 +31,7 @@ The Top Bar provides real-time information about your Autodesk Revit connection 
 
 *   **Revit Version:** Displays the version of Revit currently running on your machine.
 *   **Paracore Connection Status:**
-    *   **`Paracore Connected` (Green):** Indicates that Paracore's local backend (`paracore-server`) is successfully connected to the Revit add-in (`Paracore.Addin`). When connected, Paracore can send commands to Revit.
+    *   **`Paracore Connected` (Green):** Indicates that Paracore's local backend (`rap-server`) is successfully connected to the Revit add-in (`Paracore.Addin`). When connected, Paracore can send commands to Revit.
     *   **`Paracore Disconnected` (Red):** Indicates that Paracore is not connected to the Revit add-in. This might happen if Revit is not running, the add-in is not loaded, or there's a communication issue. Scripts cannot be executed when disconnected.
 *   **Document Name:** If a Revit document is open, its name will be displayed.
 *   **Document Type:** Indicates the type of the currently open Revit document (e.g., `Project`, `ConceptualMass`, `Family`).

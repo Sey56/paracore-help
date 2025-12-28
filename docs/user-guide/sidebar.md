@@ -56,14 +56,16 @@ When you sign in with Google, you choose a team before accessing Paracore. Once 
     >     *   *Note:* Complex merges or Pull Requests should be handled externally via Git.
 
     *   **Local Folders:**
-        *   Visible only when you are in your personal team space (as an `admin`).
-        *   Allows you to add local folders from your computer (e.g., `C:\MyScripts`).
-        *   Scripts here are private to you and not shared with the team.
-    *   **Registered Workspaces:**
+        *   The primary source for "Offline Mode" users.
+        *   Allows you to add any folder from your computer (e.g., `C:\MyScripts`).
+        *   Scripts here are private to you.
+
+    *   **Registered Workspaces (Advanced - Cloud/Team Only):**
         *   Displays a dropdown list of all Git repositories your Team Admin has registered.
         *   **Clone Button (Cloud Icon):** Appears next to any registered workspace that you haven't cloned yet. Clicking this allows you to download the repo to your local machine.
-    *   **Local Workspaces:**
-        *   Displays the list of repositories you have successfully cloned.
+
+    *   **Local Workspaces (Advanced - Cloud/Team Only):**
+        *   Displays the list of repositories you have successfully cloned from your Team.
         *   **Remove Button (Trash Icon):** Unloads the workspace from Paracore's view. **Note:** This does *not* delete the files from your computer.
         *   **Sync Button (Sync Icon):** Allows you to pull the latest changes from the remote Git repository.
 
@@ -76,7 +78,7 @@ When you sign in with Google, you choose a team before accessing Paracore. Once 
 3.  Select the folder on your computer.
 4.  The folder is loaded into Paracore and its scripts are populated in the gallery.
 
-### Cloning a Registered Workspace
+### Cloning a Registered Workspace (Advanced)
 
 1.  Expand the **Registered Workspaces** dropdown in the Sidebar.
 2.  Locate a workspace (e.g., `company-standards-repo`).
@@ -87,7 +89,7 @@ When you sign in with Google, you choose a team before accessing Paracore. Once 
 > [!NOTE]
 > **Existing Workspaces:** If you select a folder that already contains the cloned repository, Paracore will detect it and simply load the existing workspace without re-downloading. This is useful if you previously "removed" (unloaded) a workspace and want to add it back.
 
-### Removing a Workspace
+### Removing a Workspace (Advanced)
 
 1.  In the **Local Workspaces** section, find the workspace you want to remove.
 2.  Click the **Remove** button (trash icon).
