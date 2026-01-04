@@ -26,12 +26,14 @@ Working with `ExternalEvents` and the "Compile -> Restart" loop was painful. To 
 ## The Experiments: Deliberate Engineering for AI (Early 2025)
 I originally set out to build an **AI Agent for Revit**. I knew that for an agent to be useful, it couldn't just "hallucinate" code; it needed a robust, safe environment to select scripts, parameterize them, and execute them deterministically.
 1.  **RAssistant**: My first attempt using simple generation was unsafe.
-2.  **RToolkit (The Engine)**: I **deliberately built** a Dynamic Execution Engine. The goal was specific: create an environment where the Agent could reliable call "Tools" (scripts) without crashing Revit. I needed the Agent to handle Parameters, UI, and Execution dynamically.
+2.  **RToolkit (The Precursor)**: I built a complete add-in with its own isolated execution engine, WPF-based script management UI, and VSCode integration. It worked—I could write scripts in VSCode and run them dynamically without restarting Revit. But it had limitations: the engine wasn't refined yet, and the WPF UI was restrictive for the modern AI ecosystem I envisioned.
 
 ## The Realization: Solving for the Human (Late 2025)
-By late 2025, the engine was working perfectly for the Agent. But then I had a realization: **This engine wasn't just for AI.**
-The same infrastructure I built to make the Agent safe (Hot-Reload, Dynamic Parameters, No Restarts) was exactly what **Human Developers** were missing.
-We realized we had solved the "Revit API Developer's Crisis" (the Compile/Restart loop) in our pursuit of a robust Agent backend. Paracore is that solution, packaged for you.
+By late 2025, I had refined RToolkit's engine into **CoreScript.Engine**—a robust, production-ready execution system. But I also realized something crucial: **This infrastructure wasn't just for AI.**
+
+The same capabilities I built to make the Agent safe (Hot-Reload, Dynamic Parameters, No Restarts) were exactly what **Human Developers** were missing. And to truly unlock the AI ecosystem (Python, React, TypeScript), I needed to move outside Revit's WPF constraints.
+
+That's how **Paracore** was born: CoreScript.Engine + Modern Web UI (React/Tauri) + Full AI Integration. We solved the "Revit API Developer's Crisis" while building the foundation for future AI capabilities.
 
 ## The Partnership: Domain Mastery + AI Infrastructure
 I have deep domain knowledge of Revit and the API. I know exactly how `ExternalEvents` work and how to respect Revit's single-threaded nature.
