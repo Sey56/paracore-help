@@ -1,7 +1,7 @@
 ---
 slug: origin-story
 title: "A Note from the Developer: The Paracore Story"
-authors: [seyoum]
+authors: [shagos]
 tags: [paracore, story, developers, architecture, ai]
 ---
 
