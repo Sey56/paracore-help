@@ -22,6 +22,7 @@ const sidebars: SidebarsConfig = {
         'user-guide/script-inspector',
         'user-guide/script-execution',
         'user-guide/parameters-presets',
+        'user-guide/parameters-v3',
         'user-guide/code-editing-with-vscode',
         'user-guide/script-categories-and-metadata',
         'user-guide/corescript-globals',
@@ -36,28 +37,28 @@ const sidebars: SidebarsConfig = {
           type: 'category',
           label: 'AI & Agent',
           items: [
-             'user-guide/ai-script-generation',
-             'user-guide/agentic-automation',
+            'user-guide/ai-script-generation',
+            'user-guide/agentic-automation',
           ]
         },
         {
           type: 'category',
           label: 'Collaboration & Teams',
           items: [
-             'collaboration/index',
-             'collaboration/user-roles',
-             'collaboration/workspace-management',
-             'collaboration/git-workflow-basics',
-             'collaboration/workflow-enforcement',
+            'collaboration/index',
+            'collaboration/user-roles',
+            'collaboration/workspace-management',
+            'collaboration/git-workflow-basics',
+            'collaboration/workflow-enforcement',
           ]
         },
         {
           type: 'category',
           label: 'Admin Guide',
           items: [
-             'admin-guide/index',
-             'admin-guide/team-management',
-             'admin-guide/registered-workspaces',
+            'admin-guide/index',
+            'admin-guide/team-management',
+            'admin-guide/registered-workspaces',
           ]
         }
       ],
