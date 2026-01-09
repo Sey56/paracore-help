@@ -21,18 +21,18 @@ This is the essential Revit add-in that enables communication between Revit and 
 
 This is the main user-facing desktop application for managing, executing, and collaborating on Revit C# scripts. It requires the Paracore Addin to be installed in Revit.
 
-*   **Version:** `v1.1.1` (Latest Stable)
+*   **Version:** `v2.0.0` (Latest Stable)
 *   **File:** `Paracore_Installer.msi`
-*   **Download:** [Download Paracore v1.1.1](https://github.com/Sey56/Paracore/releases)
+*   **Download:** [Download Paracore v2.0.0](https://github.com/Sey56/Paracore/releases)
 
 :::tip Recommended Update
-If you were experiencing issues with parameter values or presets being lost during navigation, please download and install this latest version (`v1.1.1`).
+If you were experiencing issues with parameter values or presets being lost during navigation, please download and install this latest version (`v2.0.0`).
 :::
 
 ### 3. VSCode Extension (Optional)
 
 This extension is for developers who prefer to write and execute C# scripts directly from Visual Studio Code, bypassing the rap-web application's script management features. It also requires the Paracore Addin to be installed in Revit.
 
-*   **Version:** `v1.1.1` (Latest Stable)
-*   **File:** `corescript-1.1.1.vsix`
+*   **Version:** `v2.0.0` (Latest Stable)
+*   **File:** `corescript-2.0.0.vsix`
 *   **Download:** [VSCode Extension](https://github.com/Sey56/Paracore/releases)

@@ -31,11 +31,11 @@ Before using this extension, you must have the **Paracore.Addin** for Revit inst
 
 ## Installation
 
-1. Download `corescript-0.0.1.vsix` from the [Downloads](../getting-started/downloads.md) page
+1. Download `corescript-2.0.0.vsix` from the [Downloads](../getting-started/downloads.md) page
 2. Open VS Code
 3. Go to Extensions view (`Ctrl+Shift+X`)
 4. Click the `...` menu → **Install from VSIX...**
-5. Select the downloaded `corescript-0.0.1.vsix` file
+5. Select the downloaded `corescript-2.0.0.vsix` file
 
 ## Getting Started
 
@@ -143,6 +143,17 @@ Scripts/
 ```
 
 All `.cs` files in the `Scripts/` folder are automatically included when you run the script.
+
+### AI Copilot Support
+
+The extension supports custom AI instructions to help agents like **GitHub Copilot** generate Paracore-compliant code. 
+
+When you use the "Edit in VSCode" feature from Paracore, a `.github/copilot-instructions.md` file is automatically generated in your temporary workspace. This file tells Copilot about:
+- **Paracore Parameter Engine (V2)** attributes and conventions.
+- Specialized filtering rules for Revit elements (like Rooms).
+- Implicit globals like `Doc`, `Println`, and `Transact`.
+
+Simply reference the codebase or the instructions file in your Copilot chat to generate perfect Revit automation scripts.
 
 ## Execution Output
 

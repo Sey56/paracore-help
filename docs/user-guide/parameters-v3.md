@@ -2,9 +2,9 @@
 sidebar_position: 7.5
 ---
 
-# Paracore Parameter System V3
+# Paracore Parameter Engine (V2)
 
-The V3 Parameter System is the modern foundation for Paracore scripting. It prioritizes **Zero Boilerplate**, **Type Safety**, and **Convention over Configuration**. 
+The V2 Parameter Engine is the modern foundation for Paracore scripting. It prioritizes **Zero Boilerplate**, **Type Safety**, and **Convention over Configuration**. 
 
 ## 1. Discovery Architecture
 The system uses **Implicit Discovery**. You no longer need to tag every property with an attribute.
@@ -71,9 +71,11 @@ To keep your parameters clean, you can define "Provider" members using a naming 
 | Suffix | Purpose | Expected Type |
 | :--- | :--- | :--- |
 | `_Options` | Dropdown list data | `string[]` or `List<string>` |
-| `_Range` | Dynamic constraints | `(double, double)` or `(double, double, double)` |
+| `_Filter` | Logic-based filtering | `string[]` or `List<string>` |
+| `_Range` | Dynamic constraints | `(double min, double max, double step)` |
 | `_Visible` | UI visibility logic | `bool` (Expression body `=>`) |
 | `_Enabled` | Read-only logic | `bool` (Expression body `=>`) |
+| `_Visible` | UI visibility logic | `bool` (Expression body `=>`) |
 
 ### Example: Dynamic Visibility
 ```csharp
@@ -103,8 +105,28 @@ public List<string> ViewNames_Options() => new FilteredElementCollector(Doc).OfC
 
 ---
 
-## 7. Best Practices
-1.  **Use Properties**: Always use `public Type Name { get; set; }`. Avoid fields for parameters.
-2.  **Initialize Defaults**: Provide helpful starting values.
+## 8. Special Element Types
+
+### Rooms
+"Room" is not a magic `TargetType` class in the Revit API for standard filtering. To enable Room selection in the UI, you **must** use an `_Options` or `_Filter` provider.
+
+```csharp
+[RevitElements(Group = "Selection"), Required]
+public string SelectedRoom { get; set; }
+
+// Provider for Room dropdown
+public List<string> SelectedRoom_Options => new FilteredElementCollector(Doc)
+    .OfCategory(BuiltInCategory.OST_Rooms)
+    .WhereElementIsNotElementType()
+    .Cast<Room>()
+    .Select(r => r.Name)
+    .ToList();
+```
+
+---
+
+## 9. Best Practices
+1.  **Use Properties**: Always use `public Type Name { get; set; }`. The engine now fully supports **auto-properties** without explicit initializers.
+2.  **Initialize Defaults**: Provide helpful starting values where appropriate.
 3.  **Group Parameters**: Use groups for any script with more than 5 parameters.
 4.  **Leverage Tagless Comments**: Use `/// Description` to keep your script code clean and readable.
