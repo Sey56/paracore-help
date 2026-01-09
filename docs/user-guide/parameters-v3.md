@@ -123,13 +123,8 @@ The engine now handles Rooms natively. You can use the standard `[RevitElements]
 public string TargetRoom { get; set; }
 ```
 
-```csharp
-[RevitElements(Group = "Selection"), Required]
-public string SelectedRoom { get; set; }
-
 > [!TIP]
 > While native selection works, you can still use manual `_Options` if you need to filter rooms by specific parameters (e.g., only "Occupied" rooms).
-```
 
 ---
 
