@@ -27,6 +27,7 @@ const sidebars: SidebarsConfig = {
         'user-guide/script-categories-and-metadata',
         'user-guide/corescript-globals',
         'user-guide/corescript-vscode',
+        'user-guide/compatibility',
       ],
     },
     {
