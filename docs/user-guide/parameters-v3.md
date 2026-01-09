@@ -115,22 +115,20 @@ public List<string> ViewNames_Options() => new FilteredElementCollector(Doc).OfC
 
 ---
 
-## 8. Special Element Types
-
 ### Rooms
-"Room" is not a magic `TargetType` class in the Revit API for standard filtering. To enable Room selection in the UI, you **must** use an `_Options` or `_Filter` provider.
+The engine now handles Rooms natively. You can use the standard `[RevitElements]` attribute without custom providers:
+
+```csharp
+[RevitElements(TargetType = "Room", Group = "Selection")]
+public string TargetRoom { get; set; }
+```
 
 ```csharp
 [RevitElements(Group = "Selection"), Required]
 public string SelectedRoom { get; set; }
 
-// Provider for Room dropdown
-public List<string> SelectedRoom_Options => new FilteredElementCollector(Doc)
-    .OfCategory(BuiltInCategory.OST_Rooms)
-    .WhereElementIsNotElementType()
-    .Cast<Room>()
-    .Select(r => r.Name)
-    .ToList();
+> [!TIP]
+> While native selection works, you can still use manual `_Options` if you need to filter rooms by specific parameters (e.g., only "Occupied" rooms).
 ```
 
 ---
