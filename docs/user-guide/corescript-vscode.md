@@ -150,7 +150,7 @@ The extension supports custom AI instructions to help agents like **GitHub Copil
 
 When you use the "Edit in VSCode" feature from Paracore, a `.github/copilot-instructions.md` file is automatically generated in your temporary workspace. This file tells Copilot about:
 - **Paracore Parameter Engine (V2)** attributes and conventions.
-- Specialized filtering rules for Revit elements (like Rooms).
+- Native selection for complex Revit elements (including Rooms).
 - Implicit globals like `Doc`, `Println`, and `Transact`.
 
 Simply reference the codebase or the instructions file in your Copilot chat to generate perfect Revit automation scripts.
