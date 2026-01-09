@@ -19,6 +19,13 @@ public class Params
 }
 ```
 
+### Top-Level Variables (Comment-Based)
+For ultra-simple scripts, you can define parameters at the top level without a `Params` class. These are discovered automatically.
+```csharp
+[ScriptParameter(Description: "My simple setting")]
+string setting = "Value";
+```
+
 ---
 
 ## 2. Parameter Documentation (Tooltips)
@@ -62,6 +69,9 @@ The `[RevitElements]` attribute is used for fast, filtered Revit data:
 [RevitElements(TargetType = "WallType", Group = "Selection")]
 public string WallTypeSelection { get; set; }
 ```
+
+> [!NOTE]
+> **Legacy `[Parameter]` is retired.** Use `[ScriptParameter]` for general metadata or `[RevitElements]` for Revit-specific data filtering.
 
 ---
 
