@@ -54,20 +54,79 @@ The engine infers the appropriate UI control based on the C# property type.
 
 ---
 
-## 4. Attributes (Explicit Metadata)
+## 4. Automatic Unit Conversion (New in v2.1.0)
+The engine can now automatically convert user inputs (Metric/Imperial) into Revit's internal units (Feet) before your script runs.
+
+### How it Works
+Simply add the `[Unit("...")]` attribute to your numeric parameter.
+*   **Input (UI):** The user sees the value in the specified unit (e.g., "1000 mm").
+*   **Execution (Script):** The variable holds the converted value in **Internal Feet**.
+
+```csharp
+public class Params
+{
+    // User types "1000" (mm) -> Script receives "3.2808..." (ft)
+    [Unit("mm")]
+    public double Length { get; set; } = 1000;
+
+    // Supports Area and Volume too!
+    [Unit("m2")]
+    public double FloorArea { get; set; } = 50; // User sees 50 m², Script gets ~538 ft²
+}
+```
+
+**Supported Units:**
+*   **Length:** `mm`, `cm`, `m`, `ft`, `in`
+*   **Area:** `m2`, `sqm`, `ft2`, `sqft`
+*   **Volume:** `m3`, `cum`, `ft3`, `cuft`
+
+> [!TIP]
+> This eliminates the need for manual `UnitUtils.ConvertToInternalUnits(...)` calls in your logic!
+
+---
+
+## 5. Attributes (Explicit Metadata)
 While discovery is implicit, attributes allow you to add constraints or specialized behavior.
 
 ### General Constraints
 *   `[Required]`: Marks the parameter as mandatory.
 *   `[Range(min, max, step)]`: Turns a numeric input into a slider.
-*   `[ScriptParameter(Group = "X")]`: Organizes the parameter into a collapsible UI group.
 *   `[ScriptParameter(InputType = "File")]`: Adds a Browse button (Supports `File`, `Folder`, `SaveFile`).
+
+### Parameter Grouping (Recommended: Use Regions)
+**Preferred Method - Native C# Regions:**
+```csharp
+public class Params
+{
+    #region Room Selection
+    [RevitElements(TargetType = "Room"), Required]
+    public string RoomName { get; set; }
+
+    public string AnotherRoomParam { get; set; }
+    #endregion
+
+    #region Tile Settings
+    public double TileSpacing { get; set; } = 1.0;
+    public bool RandomizeOffset { get; set; } = false;
+    #endregion
+}
+```
+All parameters within a `#region` block automatically inherit the region name as their Group. This creates collapsible sections in both your code editor and the Paracore Parameters UI!
+
+**Alternative - Explicit Group Attribute:**
+```csharp
+[ScriptParameter(Group = "Settings")]
+public double Offset { get; set; }
+```
+You can still use `Group = "..."` in attributes if needed (e.g., for single parameters or to override the region).    
 
 ### Revit Element Selection
 The `[RevitElements]` attribute is used for fast, filtered Revit data:
 ```csharp
-[RevitElements(TargetType = "WallType", Group = "Selection")]
+#region Revit Selection
+[RevitElements(TargetType = "WallType")]
 public string WallTypeSelection { get; set; }
+#endregion
 ```
 
 > [!NOTE]
@@ -75,8 +134,7 @@ public string WallTypeSelection { get; set; }
 
 ---
 
-## 5. Convention-Based Providers (Powerful Logic)
-To keep your parameters clean, you can define "Provider" members using a naming convention: `PropertyName_Suffix`.
+## 6. Convention-Based Providers (Powerful Logic)To keep your parameters clean, you can define "Provider" members using a naming convention: `PropertyName_Suffix`.
 
 | Suffix | Purpose | Expected Type |
 | :--- | :--- | :--- |
@@ -99,7 +157,7 @@ public bool AdvancedKey_Visible => Mode == "Advanced";
 
 ---
 
-## 6. Smart Compute Inference
+## 7. Smart Compute Inference
 The engine distinguishes between **Static Data** (provided by code) and **Dynamic Data** (fetched from Revit).
 
 *   **Static (Property/Field)**: If `_Options` is a property, the engine extracts the data at startup. No "Fetch" button is shown.
