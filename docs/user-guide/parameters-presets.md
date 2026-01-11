@@ -17,16 +17,16 @@ Parameters can be defined using either **Comment-Based** or **Class-Based** synt
 
 ### Comment-Based Syntax (Implicit Discovery)
 
-For simple scripts, you can define parameters using top-level variables. The system will automatically discover them. Use `///` or `[ScriptParameter]` for metadata:
+For simple scripts, you can define parameters using top-level variables. The system will automatically discover them. Use `///` or `// [ScriptParameter]` for metadata:
 
 ```csharp
-[ScriptParameter]
+// [ScriptParameter]
 string levelName = "Level 1";
 
-[ScriptParameter]
+// [ScriptParameter]
 double wallLengthMeters = 6.0;
 
-[ScriptParameter]
+// [ScriptParameter]
 bool createOpenings = true;
 ```
 
@@ -84,20 +84,20 @@ Both `[ScriptParameter]` and `[RevitElements]` attributes support the following 
 ### Comment-Based Syntax Examples
 
 ```csharp
-[ScriptParameter(Description: "Select operation mode", Options: "Create,Modify,Delete")]
+// [ScriptParameter(Description: "Select operation mode", Options: "Create,Modify,Delete")]
 string mode = "Create";
 
-[ScriptParameter(Description: "Target categories", Options: "Walls, Doors, Windows, Floors, Ceilings", MultiSelect: true)]
+// [ScriptParameter(Description: "Target categories", Options: "Walls, Doors, Windows, Floors, Ceilings", MultiSelect: true)]
 List<string> categories = ["Walls", "Doors"];
 
-[ScriptParameter(Description: "Wall height in meters", Min: 1.0, Max: 10.0, Step: 0.5)]
+// [ScriptParameter(Description: "Wall height in meters", Min: 1.0, Max: 10.0, Step: 0.5)]
 double wallHeight = 3.5;
 
-[ScriptParameter(Group: "Advanced", VisibleWhen: "mode == 'Advanced'")]
+// [ScriptParameter(Group: "Advanced", VisibleWhen: "mode == 'Advanced'")]
 bool enableDebugMode = false;
 
 // Selection using RevitElements decorator
-[RevitElements(Type: "WallType")]
+// [RevitElements(Type: "WallType")]
 string wallTypeSelection = "Generic - 200mm";
 ```
 
@@ -137,7 +137,7 @@ Create a dropdown by specifying comma-separated options:
 
 **Comment-Based:**
 ```csharp
-[ScriptParameter(Options: "Small,Medium,Large")]
+// [ScriptParameter(Options: "Small,Medium,Large")]
 string size = "Medium";
 ```
 
@@ -155,7 +155,7 @@ Use `List<string>` with `MultiSelect: true` for checkbox groups:
 
 **Comment-Based:**
 ```csharp
-[ScriptParameter(Options: "Walls, Doors, Windows, Floors, Ceilings", MultiSelect: true)]
+// [ScriptParameter(Options: "Walls, Doors, Windows, Floors, Ceilings", MultiSelect: true)]
 List<string> categoryFilter = ["Walls", "Doors"];
 ```
 
@@ -173,10 +173,10 @@ Add `Min`, `Max`, and `Step` to render a slider control:
 
 **Comment-Based:**
 ```csharp
-[ScriptParameter(Min: 0, Max: 100, Step: 5)]
+// [ScriptParameter(Min: 0, Max: 100, Step: 5)]
 int offsetValue = 50;
 
-[ScriptParameter(Min: 0.0, Max: 10.0, Step: 0.1)]
+// [ScriptParameter(Min: 0.0, Max: 10.0, Step: 0.1)]
 double precisionOffset = 2.5;
 ```
 
@@ -199,13 +199,13 @@ Organize parameters into collapsible sections using the `Group` property:
 
 **Comment-Based:**
 ```csharp
-[ScriptParameter(Group: "General")]
+// [ScriptParameter(Group: "General")]
 string projectName = "My Project";
 
-[ScriptParameter(Group: "Dimensions")]
+// [ScriptParameter(Group: "Dimensions")]
 double wallHeight = 3.5;
 
-[ScriptParameter(Group: "Dimensions")]
+// [ScriptParameter(Group: "Dimensions")]
 double wallLength = 6.0;
 ```
 
@@ -238,10 +238,10 @@ Show/hide parameters based on other parameter values:
 
 **Comment-Based:**
 ```csharp
-[ScriptParameter(Options: "Basic,Advanced")]
+// [ScriptParameter(Options: "Basic,Advanced")]
 string mode = "Basic";
 
-[ScriptParameter(VisibleWhen: "mode == 'Advanced'")]
+// [ScriptParameter(VisibleWhen: "mode == 'Advanced'")]
 bool enableDebugMode = false;
 ```
 
