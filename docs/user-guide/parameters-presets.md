@@ -7,10 +7,9 @@ sidebar_position: 7
 Paracore features a professional-grade parameter system that transforms C# scripts into powerful, user-friendly automation tools. 
 
 > [!NOTE]
-> **New in V2.1.0+: V3 Parameter System**
-> We have introduced a major refinement to the parameter system that eliminates boilerplate and automates discovery. 
-> See the [V3 Parameter System Reference](./parameters-v3.md) for the recommended way to write modern scripts.
-
+> **New in V2.1.0+: Enhanced Parameter Engine**
+> We have introduced a major refinement to the parameter system that eliminates boilerplate and automates discovery.  
+> See the [Parameter Engine Reference](./parameters-engine.md) for the recommended way to write modern scripts.
 Parameters can be defined using either **Comment-Based** or **Class-Based** syntax, with support for advanced UI controls, automatic option population, and parameter grouping.
 
 ## Defining Parameters
