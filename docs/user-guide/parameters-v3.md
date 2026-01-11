@@ -2,9 +2,9 @@
 sidebar_position: 7.5
 ---
 
-# Paracore Parameter Engine (V2)
+# Enhanced Parameter Engine (V2)
 
-The V2 Parameter Engine is the modern foundation for Paracore scripting. It prioritizes **Zero Boilerplate**, **Type Safety**, and **Convention over Configuration**. 
+The Enhanced Parameter Engine is the modern foundation for Paracore scripting. It prioritizes **Zero Boilerplate**, **Type Safety**, and **Convention over Configuration**. 
 
 ## 1. Discovery Architecture
 The system uses **Implicit Discovery**. You no longer need to tag every property with an attribute.
@@ -12,7 +12,7 @@ The system uses **Implicit Discovery**. You no longer need to tag every property
 ### The `Params` Class
 All properties that you want to show in the Paracore UI must be defined as `public` properties within a class named `Params`.
 ```csharp
-public class Params 
+public class Params
 {
     // Automatically becomes a parameter in the UI
     public string ProjectName { get; set; } = "Default Name";
@@ -22,7 +22,7 @@ public class Params
 ### Top-Level Variables (Comment-Based)
 For ultra-simple scripts, you can define parameters at the top level without a `Params` class. These are discovered automatically.
 ```csharp
-[ScriptParameter(Description: "My simple setting")]
+// [ScriptParameter(Description: "My simple setting")]
 string setting = "Value";
 ```
 
@@ -134,7 +134,9 @@ public string WallTypeSelection { get; set; }
 
 ---
 
-## 6. Convention-Based Providers (Powerful Logic)To keep your parameters clean, you can define "Provider" members using a naming convention: `PropertyName_Suffix`.
+## 6. Convention-Based Providers (Powerful Logic)
+
+To keep your parameters clean, you can define "Provider" members using a naming convention: `PropertyName_Suffix`.
 
 | Suffix | Purpose | Expected Type |
 | :--- | :--- | :--- |
@@ -143,7 +145,6 @@ public string WallTypeSelection { get; set; }
 | `_Range` | Dynamic constraints | `(double min, double max, double step)` |
 | `_Visible` | UI visibility logic | `bool` (Expression body `=>`) |
 | `_Enabled` | Read-only logic | `bool` (Expression body `=>`) |
-| `_Visible` | UI visibility logic | `bool` (Expression body `=>`) |
 
 ### Example: Dynamic Visibility
 ```csharp
@@ -158,7 +159,7 @@ public bool AdvancedKey_Visible => Mode == "Advanced";
 ---
 
 ## 7. Smart Compute Inference
-The engine distinguishes between **Static Data** (provided by code) and **Dynamic Data** (fetched from Revit).
+The engine distinguishes between **Static Data** (provided by code) and **Dynamic Data** (fetched from Revit).        
 
 *   **Static (Property/Field)**: If `_Options` is a property, the engine extracts the data at startup. No "Fetch" button is shown.
 *   **Dynamic (Method)**: If `_Options` is a **Method**, the engine enables the **"Fetch" (Search)** button.
@@ -173,8 +174,11 @@ public List<string> ViewNames_Options() => new FilteredElementCollector(Doc).OfC
 
 ---
 
+## 8. Element Selection
+The engine handles native Revit categories efficiently.
+
 ### Rooms
-The engine now handles Rooms natively. You can use the standard `[RevitElements]` attribute without custom providers:
+The engine handles Rooms natively. You can use the standard `[RevitElements]` attribute without custom providers: 
 
 ```csharp
 [RevitElements(TargetType = "Room", Group = "Selection")]

@@ -9,7 +9,8 @@ Paracore features a professional-grade parameter system that transforms C# scrip
 > [!NOTE]
 > **New in V2.1.0+: Enhanced Parameter Engine**
 > We have introduced a major refinement to the parameter system that eliminates boilerplate and automates discovery.  
-> See the [Parameter Engine Reference](./parameters-engine.md) for the recommended way to write modern scripts.
+> See the [Enhanced Parameter Engine Reference](./parameters-v3.md) for the recommended way to write modern scripts.        
+
 Parameters can be defined using either **Comment-Based** or **Class-Based** syntax, with support for advanced UI controls, automatic option population, and parameter grouping.
 
 ## Defining Parameters
@@ -31,7 +32,7 @@ bool createOpenings = true;
 
 ### Class-Based Syntax (Recommended: "Pro Pattern")
 
-For better IntelliSense, type safety, and IDE support, use the **Pro Pattern** with a dedicated `Params` class:
+For better IntelliSense, type safety, and IDE support, use the **Pro Pattern** with a dedicated `Params` class:       
 
 ```csharp
 var p = new Params();
@@ -69,12 +70,12 @@ Both `[ScriptParameter]` and `[RevitElements]` attributes support the following 
 
 | Property | Type | Description | Example |
 |----------|------|-------------|---------|
-| **Description** | `string` | Help text shown next to the parameter | `Description: "Wall height in meters"` |
+| **Description** | `string` | Help text shown next to the parameter | `Description: "Wall height in meters"` |       
 | **Group** | `string` | Organizes parameters into collapsible sections | `Group: "Dimensions"` |
 | **Options** | `string` | Comma-separated list for dropdown | `Options: "Option A,Option B,Option C"` |
 | **MultiSelect** | `bool` | Renders checkboxes instead of dropdown | `MultiSelect: true` |
 | **Computable** | `bool` | Enables Fetch button for custom `_Options()` methods | `Computable: true` |
-| **InputType** | `string` | Renders native file/folder picker | `InputType: "File"` or `"SaveFile"` or `"Folder"` |
+| **InputType** | `string` | Renders native file/folder picker | `InputType: "File"` or `"SaveFile"` or `"Folder"` |  
 | **Min** | `double` | Minimum value for numeric sliders | `Min: 0.0` |
 | **Max** | `double` | Maximum value for numeric sliders | `Max: 100.0` |
 | **Step** | `double` | Increment step for numeric sliders | `Step: 0.5` |
@@ -365,7 +366,7 @@ Users will see your custom message instead of a generic error.
 Parameters with `[RevitElements]` or manual `_Options()` methods display a **State-Aware Compute Button**:
 
 - **Blue (Fetch):** Prominent when options are not yet loaded. Tooltip: *"Compute options from Revit"*.
-- **Gray (Refresh):** Subtle after options are loaded. Tooltip: *"Refresh options (Current: 15)"*.
+- **Gray (Refresh):** Subtle after options are loaded. Tooltip: *"Refresh options (Current: 15)"*
 
 This visual distinction prevents unnecessary re-computation while allowing users to refresh data when the Revit model changes.
 
@@ -385,7 +386,7 @@ In the **Parameters Tab**, you'll find a preset dropdown and action buttons:
    - Save current parameter values as a new preset
    - Enter a name when prompted
 
-3. **Rename Preset (✏️):**
+3. **Rename Preset (📝):**
    - Select a preset and click to rename it
 
 4. **Update Preset (🔄):**
@@ -410,7 +411,7 @@ Presets automatically handle complex parameter types:
 - **Add Descriptions:** Use `Description` property for help text to guide users
 - **Sensible Defaults:** Provide default values that work for common scenarios
 - **Group Related Parameters:** Use `Group` to organize complex scripts
-- **Leverage Magic Extraction:** Use `[RevitElements]` instead of writing custom `_Options()` methods when possible
+- **Leverage Magic Extraction:** Use `[RevitElements]` instead of writing custom `_Options()` methods when possible   
 - **Use Conditional Visibility:** Hide advanced parameters with `VisibleWhen` to reduce clutter
 
 ### For Script Users
@@ -442,7 +443,7 @@ class Params
     public bool enableLogging = true;
 
     // Dimensions
-    [ScriptParameter(Group: "Dimensions", Description: "Wall height in meters", Min: 1.0, Max: 10.0, Step: 0.5)]
+    [ScriptParameter(Group: "Dimensions", Description: "Wall height in meters", Min: 1.0, Max: 10.0, Step: 0.5)]      
     public double wallHeight = 3.5;
 
     [ScriptParameter(Group: "Dimensions", Description: "Offset value", Min: 0, Max: 100, Step: 5)]
@@ -470,7 +471,7 @@ class Params
         
         if (levels.Count == 0)
             throw new InvalidOperationException("No levels found.");
-        
+
         return levels;
     }
 
@@ -490,3 +491,5 @@ This script demonstrates:
 - ✅ Custom computable options (`Computable: true` with `_Options()` method)
 - ✅ Descriptive help text
 - ✅ Conditional visibility
+
+```
