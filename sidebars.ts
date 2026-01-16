@@ -8,6 +8,7 @@ const sidebars: SidebarsConfig = {
       type: 'category',
       label: 'Quick Start (Core)',
       items: [
+        'getting-started/whats-new-v2.1.1',
         'getting-started/installation',
         'getting-started/downloads',
       ],
@@ -22,7 +23,7 @@ const sidebars: SidebarsConfig = {
         'user-guide/script-inspector',
         'user-guide/script-execution',
         'user-guide/parameters-presets',
-        'user-guide/parameters-v3',
+        'user-guide/parameter-engine-v2',
         'user-guide/code-editing-with-vscode',
         'user-guide/script-categories-and-metadata',
         'user-guide/corescript-globals',
