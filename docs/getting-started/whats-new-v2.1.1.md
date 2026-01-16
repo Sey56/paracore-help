@@ -46,11 +46,10 @@ New native selection attributes inject Revit API objects directly:
 *   `[Select(SelectionType.Face)]` → Returns `Reference`
 *   `[Select(SelectionType.Edge)]` → Returns `Reference`
 
-### 3. File System Inputs
-Native OS file dialogs are now valid standard inputs:
-*   `[InputFile("csv,xlsx")]`: Open File Dialog
-*   `[InputFolder]`: Folder Picker
-*   `[SaveFile("json")]`: Save File Dialog
+###*   **File System Inputs:** Native OS dialogs for file processing.
+    *   `[InputFile("csv,xlsx")]`: Open File Dialog.
+    *   `[FolderPath]`: Folder Picker.
+    *   `[OutputFile("json")]`: Save File Dialog.
 
 ### 4. Custom Filtering
 While `[RevitElements]` handles magic extraction, you can now use `_Options` properties to apply custom `FilteredElementCollector` logic for granular control over dropdowns.
