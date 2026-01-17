@@ -26,7 +26,7 @@ This is the main user-facing desktop application for managing, executing, and co
 *   **Download:** [Download Paracore v2.1.1](https://github.com/Sey56/Paracore/releases)
 
 :::tip Recommended Update
-Version 2.1.1 introduces robust workspace sync, AI "Explain & Fix", interactive tables, and new charts (Bar, Pie, Line).
+Version 2.1.1 introduces robust workspace sync, AI "Explain & Fix", and interactive data visualization (Tables & Charts).
 :::
 
 ### 3. VSCode Extension (Optional)
