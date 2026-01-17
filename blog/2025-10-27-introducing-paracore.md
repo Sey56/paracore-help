@@ -6,6 +6,8 @@ tags: [announcement, paracore, revit, automation]
 
 Today, we at Paras Codarch are thrilled to announce the official launch of Paracore, a desktop application poised to revolutionize the way you approach Revit automation.
 
+<!-- truncate -->
+
 For too long, the process of creating and testing Revit add-ins has been cumbersome. It involves a rigid cycle of project creation, coding in Visual Studio, compiling, and manually loading and unloading DLLs in Revit. This workflow is slow, and it stifles the creative and iterative process that is so crucial to effective automation.
 
 Paracore changes everything.
