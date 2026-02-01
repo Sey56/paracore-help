@@ -1,6 +1,6 @@
 # Core Concepts
 
-To get the most out of Paracore, it is helpful to understand the basic principles that make it different from traditional Revit add-in development.
+To get the most out of Paracore, it is helpful to understand the core principles that define its role as a dynamic automation layer within the Revit ecosystem.
 
 ## 🧠 Key Principles
 
