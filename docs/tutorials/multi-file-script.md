@@ -67,6 +67,17 @@ var revitUserName = Doc.Application.Username;
 Println($"👋 Hello, {p.Message}!");
 Println($"👤 Revit User: {revitUserName}");
 
+// Transactions are used even for non-modifying operations in this example
+// to demonstrate how the block works.
+Transact("Example Transaction", () =>
+{
+    Println("--- Output from inside Transaction ---");
+    Println("This logic is in Main.cs");
+    Println("But the parameters are in Params.cs");
+    Println("Paracore combines them automatically!");
+    Println("--------------------------------------");
+});
+
 Println("✅ Multi-file script completed successfully.");
 ```
 
