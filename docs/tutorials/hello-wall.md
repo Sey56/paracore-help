@@ -16,7 +16,6 @@ This script introduces **Geometry** (Line), **Collectors** (finding Levels/Types
 ```csharp
 /*
 DocumentType: Project
-DisplayName: HelloWall
 Categories: Tutorial, Getting Started
 Author: Paracore Team
 Dependencies: RevitAPI 2025, CoreScript.Engine

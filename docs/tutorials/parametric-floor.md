@@ -13,7 +13,6 @@ Following the **Logic before Types** and **Instantiation** rules, paste this int
 ```csharp
 /*
 DocumentType: Project
-DisplayName: Parametric Floor
 Categories: Tutorial, Geometry
 Author: Paracore Team
 Dependencies: RevitAPI 2025, CoreScript.Engine

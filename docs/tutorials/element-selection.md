@@ -12,7 +12,6 @@ Select a Wall in Revit and update its "Comments" parameter via code.
 ```csharp
 /*
 DocumentType: Project
-DisplayName: Element Selection
 Categories: Tutorial, Selection, Data
 Author: Paracore Team
 Dependencies: RevitAPI 2025, CoreScript.Engine
