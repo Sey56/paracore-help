@@ -47,7 +47,7 @@ public class Params
 ```
 
 ## 4. Edit Main.cs
-Now open the existing `Main.cs` file and replace its content with the logic below. notice we don't define the `Params` class here, but we can still use it!
+Now open the existing `Main.cs` file and replace its content with the logic below. Notice we don't define the `Params` class here, but we can still use it!
 
 ```csharp
 /*
@@ -63,17 +63,9 @@ var p = new Params();
 
 var revitUserName = Doc.Application.Username;
 
+// 2. Logic & Execution
 Println($"👋 Hello, {p.Message}!");
 Println($"👤 Revit User: {revitUserName}");
-
-// 2. Logic & Execution
-Transact("Example Transaction", () =>
-{
-    Println("--- Output from inside Transaction ---");
-    Println("This logic is in Main.cs");
-    Println("But the parameters are in Params.cs");
-    Println("Paracore combines them automatically!");
-});
 
 Println("✅ Multi-file script completed successfully.");
 ```
