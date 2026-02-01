@@ -1,16 +1,32 @@
----
-sidebar_position: 1
----
+import SystemArchitecture from '@site/static/img/system-architecture.png';
 
 # Introduction to Paracore
 
-This documentation will guide you through installing Paracore, understanding its core features, collaborating with your team, and leveraging its full potential to enhance your Revit workflows.
+**Paracore** is a professional-grade C# automation platform for Autodesk Revit. It serves as a high-performance **Dynamic Execution Layer** that complements the existing Revit automation ecosystem, offering a streamlined workflow for computational designers, BIM managers, and developers.
 
-Paracore offers three complementary modes of automation to suit your needs:
+## 🤝 A New Addition to Your Toolkit
 
-*   **Manual Automation:** Browse the library, select existing scripts, configure parameters, and execute them. You can also create new scripts from templates (single or multi-file), saving them to your active script source.
-    *   **VSCode Integration:** A core feature of Paracore is the deep integration with VSCode. Click "Edit in VSCode" on any script to launch a temporary workspace with full IntelliSense, code completion, and access to custom global variables, making script development powerful and efficient.
-*   **AI Script Generation:** Describe a task in natural language, and let Paracore's AI generate the C# code for you. You can preview, edit, and save these scripts to your library.
-*   **Agentic Automation:** Chat with the Paracore Agent to describe complex workflows. The agent will understand your intent, find the right scripts, extract parameters from your conversation, and execute the work for you.
+The Revit ecosystem is powered by diverse and essential tools—from traditional Add-in development and Dynamo to pyRevit, RevitPythonShell, and Rhino.Inside.Revit. Paracore is designed to sit alongside these industry standards, providing a unique solution for those who need the power of C# with the speed of dynamic scripting.
 
-Use the sidebar to navigate through the different sections of the documentation.
+Paracore removes the setup friction often associated with C# development, allowing you to move from idea to execution without leaving your creative flow.
+
+### Key Benefits:
+- **Streamlined Workflow**: Focus strictly on your logic. Paracore handles the environment setup, Revit API pathing, and reference management automatically.
+- **Instant Add-in Experience**: Turn any C# script into a professional tool. Paracore automatically generates a rich UI with dropdowns, sliders, and validation based on your code properties.
+- **Zero-Boilerplate C#**: Use modern C# top-level statements to write clean, modular logic that runs instantly within the live Revit session.
+- **Interactive Feedback**: Refine your code iteratively with a modern UI, real-time console, and rich data visualization tools.
+- **AI-Native Infrastructure**: Built for the modern AI era, Paracore provides the dynamic environment needed for AI agents to execute scripts as modular "tools," bridging the gap between LLMs and the Revit API.
+
+## 🏗️ Architecture at a Glance
+
+Paracore consists of three primary layers working in harmony:
+
+<img src={SystemArchitecture} alt="System Architecture" />
+
+1.  **Paracore Revit Addin**: The execution host that lives inside Revit, providing the direct API context and execution engine.
+2.  **Paracore Desktop App**: The modern user interface for script management, parameter configuration, and workflow orchestration.
+3.  **Backend Sidecar**: The local backend service (FastAPI) that manages script discovery, agent logic, and handles communication between the desktop app and the Revit add-in. 
+
+---
+
+*Paracore is built for speed, simplicity, and the power of C#. Welcome to a new way of automating Revit.*

@@ -1,0 +1,57 @@
+import RevitRibbonTab from '@site/static/img/revit-ribbon-tab.png';
+import TwistingTowerImg from '@site/static/img/twisting-tower.png';
+
+# Your First Script
+
+In this guide, you will load the **Paracore Examples** library, configure dynamic parameters, and execute your first automation.
+**Note**: The "TwistingTower" script used here is just to demonstrate Paracore's capabilities. Don't worry about understanding its code yet! We will start from scratch in the [Tutorials](../tutorials/index.md).
+
+## 🎯 Goal
+Experience **Dynamic Execution** in action. Run a pre-made script to see how Paracore instantly compiles and executes code without restarting Revit.
+
+## 🚀 Steps
+
+### 1. Connect to Revit
+1.  Open **Autodesk Revit 2025+**.
+2.  Go to the **Paracore** tab in the ribbon.
+3.  Locate the **Paracore Server** button (it will initially show **Off**).
+4.  Click the icon. The label will change to **On** and a Revit TaskDialog will appear confirming the connection.     
+5.  Close the TaskDialog.
+
+<img src={RevitRibbonTab} alt="Revit Ribbon Tab" />
+
+### 2. Launch Paracore Desktop App
+1.  Open the **Paracore Desktop App**.
+2.  Ensure the top bar shows a green **Connected** status.
+
+### 3. Add the Script Source
+1.  **Download Examples**: Download or clone the [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) repository to your computer.
+2.  **Add Local Folder**: In the Paracore **Sidebar**, click the **"+"** button under **Local Folders**.
+3.  **Select the Folder**: Navigate **inside** the repository folder and select the **`01_Getting_Started`** directory.
+    *   *Important: Do not select the root 'Paracore-Examples' folder. You must select a specific sub-folder (Script Source).*
+4.  Click **Select Folder**. The "TwistingTower" script will appear in the Gallery.
+
+ ### 4. Configure Parameters
+ 1.  Click on the **TwistingTower** card.
+2.  In the **Script Inspector**, ensure the **Parameters** tab is active.
+3.  Click the **Compute (🔄)** button next to the **BaseLevelName** and **WallTypeName** fields to fetch live data from your Revit project.
+4.  Select a level and a wall type from the resulting dropdowns.
+
+### 5. Execute the Script
+1.  **Idle State**: Ensure Revit is not currently running another command (press `Esc` a few times).
+2.  Click the **Run Script** button at the bottom of the Parameters tab.
+
+### 6. Monitor Status
+1.  Look at the **Execution Status** button. It will turn **Green (✅)** on success.
+
+## 🎉 Expected Result
+
+<img src={TwistingTowerImg} alt="Twisting Tower Result" />
+
+1. **In Revit**: Look at the origin point. A twisting tower structure will be created on all levels above your base level.
+2. **In Paracore Desktop**: The **Console Tab** will show:
+   `✅ Created twisting house on X levels starting from: Level 1`
+
+---
+
+*Next: Explore the [Script Gallery](../authoring/gallery.mdx) features in depth.*

@@ -1,0 +1,35 @@
+import BuildToolButton from '@site/static/img/build-tool-button.png';
+
+# Creating Tools
+
+The Tool Generator is integrated directly into the Paracore authoring environment, allowing you to transition from source code to a protected distribution with a single click.
+
+## 🛠️ Step-by-Step Guide
+
+### 1. Select your Script
+In the **Script Gallery**, select the Single-File or Multi-File script you wish to package.
+
+### 2. Open the Floating Code Viewer
+Navigate to the **Parameters Tab** in the Script Inspector. Locate the **View Code** icon (or the toggle button with the tooltip *"View Code in Floating Window"*) and click it to open the viewer.
+
+### 3. Verify the Source
+Review the code in the floating window. 
+- For multi-file scripts, this window displays the **Combined Logic** that the engine has resolved. This is exactly what will be compiled into your tool.
+
+### 4. Build the Tool
+Click the **Build Protected Tool** button located in the footer of the Floating Code Viewer.
+
+<img src={BuildToolButton} alt="Build Tool Button" />
+
+### 5. Automatic Generation
+Paracore will perform the following actions immediately:
+- **Compile**: The engine compiles the logic into a protected binary format.
+- **Output**: A new file is created with the same name as your script but with the `.ptool` extension.
+- **Placement**: The tool is automatically saved into the **same Script Source folder** as your original script.
+
+## ✅ Verification
+Once the process finishes, the new tool will appear in your Gallery. It is identified by its **Amber Right Border** and **"Tool"** badge. You can now run this tool to verify it behaves exactly like the source script.
+
+---
+
+*Note: Your original source code remains untouched. You can continue to edit the source and rebuild the tool as many times as you like.*

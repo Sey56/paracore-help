@@ -4,57 +4,40 @@ sidebar_position: 1
 
 # Installation Guide
 
-This section will guide you through the process of installing Paracore on your local machine.
+Paracore offers two independent paths for Revit automation: using the **Paracore Desktop App** for script management, or using the **VSCode Extension** for direct developer execution. Both require the **Paracore Revit Addin**.
 
-## System Requirements
+## 💻 System Requirements
 
-To use Paracore, you will need:
+- **Operating System**: Windows 10 or 11 (64-bit).
+- **Autodesk Revit**: Version 2025 or later.
+- **.NET Runtime**: .NET Desktop Runtime 8.0.
+- **Visual Studio Code**: **Required for Authoring**.
 
-*   **Operating System:** Windows 10 or 11 (64-bit)
-*   **Revit Version:** Autodesk Revit 2025 (64-bit)
-*   **Code Editor:** Visual Studio Code (for editing scripts)
-    *   Paracore's seamless [VSCode Integration](../user-guide/code-editing-with-vscode.md) provides full IntelliSense for the Revit API and .NET C# namespaces, along with access to custom global variables (e.g., `Doc`, `UIDoc`, `Transact`, `Print`). This significantly simplifies learning and developing with the Revit API by removing traditional add-in boilerplate.
-*   **Version Control:** Git client (Optional, for collaboration or managing personal repositories)
+## 📥 1. Download the Components
 
-## Installation Steps
+Visit the **[Downloads](./downloads.md)** page to get:
+1. **Paracore Revit Addin** (`Paracore_Addin_v3.0.0.exe`) - **Required**.
+2. **Paracore Desktop App** (`Paracore_v3.0.0_x64.msi`).
+3. **CoreScript VSCode Extension** (`.vsix`).
 
-Paracore is distributed as a set of installer packages. You can find all necessary downloads on our dedicated [Downloads page](./downloads.md).
+## 🛠️ 2. Installation Steps
 
-1.  **Download the Installers:** Visit the [Downloads page](./downloads.md) to obtain the latest installers:
-    *   `Paracore_Revit_Installer.exe` (for the Revit add-in)
-    *   `Paracore_Installer.msi` (for the Paracore desktop application)
-    *   `corescript-0.0.1.vsix` (for the VSCode extension - optional, for developers)
+### Step 1: Install the Paracore Revit Addin
+Run the installer. This installs the execution host and the **Paracore** ribbon tab in Revit. 
 
-2.  **Install Paracore Addin:** Run `Paracore_Revit_Installer.exe` first. This is crucial as both Paracore and the VSCode extension rely on this Revit add-in.
+### Step 2: Choose Your Workflow
+- **Path A: Paracore Desktop App**: Run the MSI installer for managed automation.
+- **Path B: VSCode Extension**: Install the `.vsix` file for direct code execution.
 
-3.  **Install rap-web (Paracore UI):** Run `Paracore_Installer.msi`.
+## 🚀 3. Verification
 
-4.  **Install VSCode Extension (Optional):** for just executing scripts from vscode to Revit without using the Paracore UI, install `corescript-0.0.1.vsix` VScode extension (Still you need to install the Paracore.Addin with Paracore_Revit_Installer.exe for this workflow to work.).
+To ensure everything is working correctly:
+1.  Launch **Autodesk Revit**.
+2.  Navigate to the **Paracore** tab in the ribbon.
+3.  Click the **Paracore Server** button (it will toggle from **Off** to **On**).
+4.  Confirm the popup message mentioning *"Listening on port 50051"*.
+5.  Launch the **Paracore Desktop App** and verify the **Connected** status.
 
-5.  **Verify Installation:**
-    *   Open Autodesk Revit and ensure the `Paracore` tab is visible in the Revit ribbon. Start the Paracore from the ribbon.
-    *   Launch rap-web (Paracore UI).
-## Post-Installation Setup
+---
 
-Once Paracore is installed:
-
-1.  **Launch rap-web:** Open the Paracore UI.
-2.  **Sign In:** Click the **"Continue Offline"** button on the login screen.
-    *   *Note:* The "Sign in with Google" and AI/Agent features require a running `rap-auth-server`. For local usage without these features, "Continue Offline" is sufficient.
-
-## Getting Sample Scripts
-
-To start experimenting with Paracore, you'll need some scripts to run.
-
-### For Users (Quick Start)
-1. Download the sample scripts: [Paracore-Scripts](https://github.com/Sey56/Paracore/tree/main/Paracore-Scripts) (click "Code" → "Download ZIP")
-2. Extract the ZIP to a folder on your computer (e.g., `C:\Users\YourName\Documents\Paracore-Scripts`)
-3. In Paracore UI, go to **Sidebar** → **Local Folders** → Click **+** to add the extracted folder
-
-### For Developers
-Clone the entire repository to get the scripts along with the source code:
-```bash
-git clone https://github.com/Sey56/Paracore.git
-```
-
-3.  **Start Automating:** You are now ready to use Paracore! Proceed to the [User Guide](../user-guide/script-execution.md) to learn how to run your first script.
+*Note: While end-users running protected `.ptool` files do not strictly need VS Code, it is essential for anyone participating in the creation or modification of the Paracore ecosystem.*

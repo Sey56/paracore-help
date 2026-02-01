@@ -1,0 +1,46 @@
+import VscodeAiInstructions from '@site/static/img/vscode-ai-instructions.png';
+
+# AI Script Generation
+
+Paracore is designed to work seamlessly with modern AI coding assistants. Instead of a limited built-in AI mode, Paracore leverages the full power of VS Code extensions. This allows you to choose the model and tool that best fits your workflow.
+
+## 🚀 The AI Generation Workflow
+
+By using VS Code as your editor, you can generate Revit automations by describing your requirements. The process is typically iterative: you generate a draft, run it, and refine the logic.
+
+### 1. Create a New Script
+In the Paracore Gallery, click **New Script** and select either **Single-File** or **Multi-File**.
+
+### 2. Open the AI-Ready Workspace
+Click the ellipses (**...**) on your script card and select **Edit Script**. Paracore will generate a temporary workspace.
+-   **System Instructions**: Paracore automatically generates a `.github/copilot.instructions.md` file.
+
+<img src={VscodeAiInstructions} alt="VS Code AI Instructions" />
+
+This file contains specific rules that teach your AI assistant about Paracore’s "Logic before Types" structure and global helpers like `Doc` and `Println`.
+
+### 3. Describe Your Task
+Open your preferred AI assistant in VS Code (e.g., Gemini Code Assist, GitHub Copilot, Cline, etc.):
+1.  **Prompt**: Describe what you want the script to do.
+2.  **Generate**: The AI will use the system instructions to produce code that follows the required Paracore format.
+
+> **💡 Pro Tip: The Existing Code Advantage**
+> While you can start with an empty file, having existing code in your script (even a small template) significantly improves AI accuracy. By seeing how you have already defined your `Params` class or execution logic, the LLM can more accurately reference and expand upon your existing work.
+
+### 4. Run and Iterate
+1.  Focus back to the **Paracore Desktop App**.
+2.  **Edit Parameters**: Go to the **Parameters Tab**. Any new properties defined by the AI will appear here automatically. Configure them as needed.
+3.  **Click Run Script**.
+4.  **Refine**: If there are logic errors or if you want to add features, describe the changes to the AI. If there are code errors, copy the text from the **Console Tab** and paste it back into the AI conversation. The AI will analyze the error and provide a corrected version.
+
+---
+
+## 🛠️ Choice of AI Assistant
+You can use any AI extension available for VS Code. Different assistants offer different benefits:
+
+-   **Gemini Code Assist**: Often provides a generous free quota for developers and excels at following the specific architectural instructions provided in the Paracore workspace.
+-   **GitHub Copilot / Cline / Others**: These are fully supported and will also read the provided system instructions to ensure your code is formatted correctly.
+
+---
+
+> *Next: Learn how to use the built-in [AI Debugging](./ai-debugging.mdx) for quick error fixes.*

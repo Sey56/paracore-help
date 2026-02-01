@@ -1,0 +1,37 @@
+import SystemArchitecture from '@site/static/img/system-architecture.png';
+
+# System Architecture
+
+Paracore is designed as a decoupled, high-performance ecosystem. This architecture provides a **Dynamic Execution Environment** that enables a rapid, iterative workflow for both human developers and AI agents.
+
+<img src={SystemArchitecture} alt="System Architecture" />
+
+## 🏗️ The Pillars of Paracore
+
+### 1. Paracore Desktop App (The Control Center)
+Built using **React**, **TypeScript**, and **Tauri**, the desktop application handles the high-level management of your automation library.
+- **Role**: Script discovery, parameter orchestration, and results visualization.
+- **Benefit**: By running as a separate process, Paracore provides a responsive, web-speed UI that operates independently of Revit's performance cycles.
+
+### 2. Paracore Local Server (The Sidecar)
+A lightweight **Python** and **FastAPI** application that runs as a sidecar to the desktop app. It acts as the central intelligence and communication hub.
+- **Role**: It acts as an API Gateway, translating the frontend's HTTP requests into gRPC calls for Revit. It also manages script discovery, local data persistence (SQLite), and the Paracore Agent's logic.
+- **Benefit**: By offloading heavy logic and filesystem operations to a local Python server, the UI stays lightning-fast and the Revit add-in remains lightweight.
+
+### 3. Paracore Revit Addin (The Host)
+A lightweight plugin that sits inside Revit. It acts as the execution bridge, providing the necessary context for your logic to interact with the model.
+- **Role**: It hosts a **gRPC server** inside Revit and manages Revit Transactions. Crucially, it embeds the **CoreScript Engine**, a powerful Roslyn-based compiler that enables dynamic, in-memory execution of C# scripts.
+- **Simplicity**: It removes the need for manual project setup, allowing you to run code instantly without deploying DLLs.
+
+## 📡 Responsive Communication
+
+Paracore uses a high-speed **HTTP/gRPC** bridge to ensure communication between your code, the UI, and Revit happens in milliseconds.
+
+### File Watchers & Synchronization
+Paracore maintains a live link between your **Temporary VS Code Workspaces** and your **Script Sources** using intelligent file watchers.
+- **The Link**: This connection is established based on the script's name/path.
+- **Renaming Rule**: To maintain synchronization, scripts should only be renamed while they are not actively being edited in VS Code. If a rename is necessary, closing and reopening the workspace ensures the name-based link is correctly re-established.
+
+---
+
+*Next: Understand the different [Script Types](./script-types.md) supported by Paracore.*

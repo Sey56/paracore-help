@@ -1,3 +1,35 @@
+announcement:
+  label: Announcement
+  permalink: /announcement
+
+paracore:
+  label: Paracore
+  permalink: /paracore
+
+revit:
+  label: Revit
+  permalink: /revit
+
+automation:
+  label: Automation
+  permalink: /automation
+
+story:
+  label: Story
+  permalink: /story
+
+developers:
+  label: Developers
+  permalink: /developers
+
+architecture:
+  label: Architecture
+  permalink: /architecture
+
+ai:
+  label: AI
+  permalink: /ai
+
 facebook:
   label: Facebook
   permalink: /facebook

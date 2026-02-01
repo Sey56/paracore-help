@@ -1,0 +1,53 @@
+import ExplainFixButton from '@site/static/img/explain-fix-button.png';
+import AiAnalysisFix from '@site/static/img/ai-analysis-fix.png';
+
+# AI-Powered Debugging
+
+Paracore includes a built-in AI assistant designed to help you debug Revit API scripts in seconds. This feature, known as **Explain & Fix**, uses an LLM (Large Language Model) to analyze execution errors and suggest immediate code corrections.
+
+<img src={ExplainFixButton} alt="Explain Fix Button" />
+
+## 🛠️ The "Explain & Fix" Workflow
+
+When a script fails to execute or compile, a red **Explain & Fix** button appears on the **far left** of the **Console Tab** footer. Clicking this button initiates the following process:
+
+### 1. Analysis
+The AI scans your execution environment. It distinguishes between **Single-File Scripts** and **Multi-File Scripts**. 
+- For multi-file scripts, it analyzes the entire folder context to understand how your classes and entry points interact.
+
+### 2. Explanation
+In the **Explain & Fix window**, the AI provides a natural language summary of why the code failed.
+- It translates complex Revit API or C# exceptions into simple, easy-to-understand explanations.
+- It identifies the specific line and file where the error occurred.
+
+### 3. Suggested Correction
+The AI generates a complete rewrite of the affected file(s). 
+- **Code View**: You will see the filename followed by the full, corrected code in a syntax-highlighted editor.
+- **Review**: The code is read-only, allowing you to review the AI's logic before committing the change.
+
+<img src={AiAnalysisFix} alt="AI Analysis and Fix" />
+
+### 4. Direct Application
+Click the **Apply Fix** button to commit the changes. Paracore handles the file synchronization intelligently:
+
+- **If a Temporary Workspace is open**: The fix is applied to the copied script in the temporary workspace. Paracore's file watchers then instantly sync this change back to your original script in the **Script Source**. This ensures your IntelliSense and the execution engine stay in perfect harmony.
+- **If no Workspace is open**: The fix is applied directly to the original script file in your library.
+
+In both cases, once you click **Apply Fix**, you can immediately return to the **Parameters Tab** and click **Run Script** again to verify the solution.
+
+---
+
+## 🛡️ Privacy & Connectivity
+
+### Connectivity & Configuration
+This feature requires an active internet connection and configured LLM settings in the **Settings** menu.
+
+- **Supported Providers**: Currently, only **Google Gemini** (models **2.5 and 3.0**) and **OpenRouter** are fully implemented.
+- **Other Providers**: While Anthropic, DeepSeek, and OpenAI are listed in the settings menu, they are not yet active and will be supported in future updates.
+
+### Data Scope
+Only the script source code and the specific error log are sent to the AI provider for analysis. Your Revit model data, geometry, and project paths remain **entirely local** and are never transmitted to the cloud.
+
+---
+
+> *Next: Learn about the core [Script Execution](./execution.mdx) lifecycle.*

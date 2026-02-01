@@ -1,0 +1,89 @@
+import GalleryMain from '@site/static/img/gallery-main.png';
+import SearchPills from '@site/static/img/search-pills.png';
+
+# Script Gallery
+
+The **Script Gallery** is the central hub for browsing and launching your automation library. It displays the contents of your **Active Script Source**.
+
+<img src={GalleryMain} alt="Script Gallery Main" />
+
+## 📂 Active Script Source
+
+Paracore allows you to load multiple **Script Sources** (folders) into your library, but the Gallery focuses on one source at a time.
+
+### The "Local Folders" Dropdown
+Located in the Sidebar, this dropdown acts as your library switcher:
+-   **Switching**: Selecting a different folder from the dropdown instantly repopulates the Gallery with that folder's contents.
+-   **Isolation**: This ensures that scripts from different projects or sources don't clutter your view.
+-   **Persistence**: Paracore remembers your loaded folders across sessions.
+
+---
+
+## ✏️ Native Renaming
+
+You can rename any script (Single-file or Multi-file) directly from the Gallery using the **Rename** button on the script card.
+
+> ⚠️ **IMPORTANT: Renaming & VS Code Sync**
+>
+> Paracore links your temporary VS Code workspace to your script via its **Name**. If you rename a script while a workspace is already open, the synchronization link will break.
+>
+> **The Safe Renaming Workflow:**
+> 1. **Close the Workspace**: In VS Code, close the folder or the instance containing the script's temporary workspace.
+> 2. **Rename in Paracore**: Click the Rename button and enter the new name.
+> 3. **Re-edit**: Click **Edit Script** again to re-establish the sync link.
+
+---
+
+## 🏷️ Category Filtering
+
+Filtering relies entirely on the `Categories` field in your [Script Metadata](./metadata.md).
+
+### 1. Default Category Checkboxes (Header)
+The top of the gallery provides three "Quick Isolation" checkboxes: **Architecture**, **Structure**, and **MEP**.
+-   **Logic**: Checking a box immediately isolates scripts that have that specific category in their metadata.
+
+### 2. Custom Categories
+Use the **"+"** button under **Custom Categories** in the Sidebar to create your own filters. Once added, you can toggle them on or off with a single click.
+
+---
+
+## 🔍 Advanced Search & Pills
+
+The search bar supports advanced prefix-based queries. When you enter a valid search term, Paracore creates a **Search Pill**.
+
+<img src={SearchPills} alt="Search Pills" />
+
+### Search Prefixes
+| Prefix | Description | Example |
+| :--- | :--- | :--- |
+| `author:` | Filter by script author | `author:John` |
+| `categories:` | Filter by any category | `categories:Audit` |
+| `param:` | Search scripts with specific parameters | `param:Width` |
+
+---
+
+## 🎯 Focus Mode
+
+**Focus Mode** centers the selected script and hides the rest of the gallery, providing a distraction-free environment for repetitive execution.
+
+### How to enter Focus Mode:
+1.  Select a script in the Gallery.
+2.  Locate the **Focus Action Button** (🎯) in the Gallery toolbar.
+3.  Click the button to isolate your active script.
+
+### How to exit Focus Mode:
+-   While in Focus Mode, an exit button appears at the **top-right corner** of the enlarged script card. 
+
+---
+
+## 🗂️ Script Types
+
+The footer toolbar allows you to toggle between different script distribution types:
+-   **All**: Every script available in the current source.
+-   **Single**: Standalone `.cs` files.
+-   **Multi**: Folder-based modular projects (indicated by a blue left border).
+-   **Tool**: Protected `.ptool` files (indicated by an amber right border).
+
+---
+
+> *Next: Learn about configuring inputs in the [Script Inspector](./inspector.mdx).*

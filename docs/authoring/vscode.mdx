@@ -1,0 +1,59 @@
+import VscodeTempWorkspace from '@site/static/img/vscode-temp-workspace.png';
+
+# VS Code Integration
+
+Paracore provides a professional development experience by leveraging Visual Studio Code. Depending on your workflow, Paracore handles script editing in two fundamentally different ways to balance **Script Management** with **Developer Experience**.
+
+---
+
+## 🏗️ The IntelliSense Model
+
+In Revit automation, IntelliSense requires reference assemblies and project metadata. Paracore handles this automatically by generating **Workspaces**. 
+
+### Workspace Anatomy
+When a workspace is generated, it contains the following files:
+- **`[ScriptName].csproj`**: The C# project file that handles Revit API references.
+- **`[ScriptName].sln`**: The solution file for the project.
+- **`Global.cs`**: A generated file that provides IntelliSense for injected globals like `Doc` and `Println`.
+- **`Scripts/` (Folder)**: The most important directory. **All source code files must live inside this folder.**
+
+---
+
+## 🛠️ Workflow 1: Via Paracore Desktop App (Managed Isolation)
+
+This workflow is optimized for users managing a large library of scripts within the Paracore Gallery.
+
+### 1. The Solution: Temporary Workspaces
+To keep your library clean, Paracore uses a **Copy & Sync** strategy:
+- **Isolation**: When you click **Edit Script**, Paracore **copies** only your source code to a temporary directory and scaffolds the project files listed above.
+- **Location**: In the VS Code Explorer, you will find your script(s) inside the **`Scripts/`** folder.
+- **Live Sync**: You edit the files inside the `Scripts/` folder. Every time you save, Paracore's file watchers instantly sync the changes back to the **original script** in your source folder.
+
+> 🛑 **Sync Safety: Renaming Scripts**
+> Because the link between the temporary copy and the original is name-based, you must close the workspace in VS Code before renaming a script in the Gallery.
+
+---
+
+## 🚀 Workflow 2: Standalone Extension (Direct Source)
+
+This workflow is for developers who manage their own project structures manually.
+
+### 1. Permanent Workspaces
+The Standalone Extension assumes you are managing your own files:
+- **Direct Editing**: You open your own folder and run `CoreScript: Initialize Workspace`. 
+- **Structure**: The extension generates the same `.csproj`, `sln`, and `Scripts/` folder structure **directly inside your folder**.
+- **Execution**: When you run `Ctrl+Shift+R`, the code is sent directly from your active window to Revit.
+
+---
+
+## 🛡️ Global Helpers
+
+When writing code in either workflow, you have access to these injected globals:
+
+| Helper | Description |
+| :--- | :--- |
+| **`Doc`** | The current active Revit Document. |
+| **`UIApp`** | The Revit UIApplication instance. |
+| **`Println(msg)`** | Prints a message to the Console. |
+| **`Transact(action)`** | Automatically handles Revit Transactions. |
+| **`Show(type, data)`** | Sends data to the Table Tab. |

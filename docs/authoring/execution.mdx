@@ -1,0 +1,47 @@
+import RunScriptButton from '@site/static/img/run-script-button.png';
+
+# Script Execution
+
+Running a script in Paracore is designed to be a safe, predictable, and informative process. Paracore handles the complex tasks of dependency resolution, compilation, and Revit transaction management, allowing you to focus on the results.
+
+## 🚀 How to Run a Script
+
+1.  **Select**: Choose a script from the **Script Gallery**.
+2.  **Configure**: Adjust the values in the **Parameters** tab of the Script Inspector.
+3.  **Validate**: Ensure there are no red validation warnings (e.g., missing required fields).
+4.  **Run**: Click the **Run Script** button in the footer of the Inspector.
+
+<img src={RunScriptButton} alt="Run Script Button" />
+
+## ⚙️ The Execution Lifecycle
+
+When you click "Run", Paracore performs the following steps in sequence:
+
+1.  **UI Sync**: The current parameter values are gathered from the UI.
+2.  **Source Check**: Paracore checks if the script is a single-file, multi-file, or protected tool (`.ptool`).
+3.  **Compilation**: For source scripts, the **CoreScript Engine** compiles the code using the Roslyn compiler.
+4.  **Handshake**: The compiled byte-code (or ptool package) is sent to the **Paracore Revit Addin** inside Revit via the **rap-server** mediator.
+5.  **Revit Execution**: The code runs within the Revit API context. If a `Transact` block is used, a Revit Transaction is automatically started and committed.
+6.  **Reporting**: Output and status are streamed back to the Paracore Desktop App.
+
+## 📊 Monitoring Results
+
+After execution, the Inspector provides several ways to review the outcome:
+
+-   **Success/Failure Indicators**: A green checkmark (✅) or red cross (❌) appears next to the Run button.
+-   **Console Output**: Every execution displays its standard output followed by a final status message.
+-   **Success Message**: `✅ Code executed successfully | [Day], [Date] | [Time]`
+-   **Failure Message**: If a script fails, the errors and the final status line are displayed in **Red**:
+    - `[ERROR] Filename.cs(line, col): error CSXXXX: ...`
+    - `❌ Script failed to [compile/execute] | [Day], [Date] | [Time]`
+
+## 🛑 Handling Errors
+
+If a script fails, use the **Console** tab to identify the root cause.
+-   **Compiler Errors**: Syntax issues (e.g., a misspelled class name like `Referenc`).
+-   **Runtime Exceptions**: Revit API errors (e.g., trying to modify an element that is no longer valid).
+-   **AI Fix**: When a failure occurs, use the **Explain & Fix** button to automatically analyze and resolve the issue.
+
+---
+
+*Next: Deepen your knowledge with the [Scripting Reference](../scripting-reference/index.md).*

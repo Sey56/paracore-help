@@ -1,0 +1,42 @@
+import PresetsUI from '@site/static/img/presets-ui.png';
+
+# Parameter Presets
+
+Presets allow you to save specific configurations of parameter values, making it easy to switch between different scenarios without re-typing values every time.
+
+<img src={PresetsUI} alt="Presets UI" />
+
+## 📂 The Preset Lifecycle
+
+Presets are linked to the specific script's file path. When you select a script in the Gallery, Paracore automatically fetches its associated presets from the server.
+
+### 1. Default Parameters
+By default, every script starts in the **`<Default Parameters>`** state. This state uses the values defined in the script's source code. Paracore keeps a "draft" cache of your edits in this state, so you can navigate between scripts without losing your work.
+
+### 2. Creating a Preset
+1.  Configure your parameters in the **Parameters Tab**.
+2.  Click the **Plus (+)** icon next to the preset dropdown.
+3.  Enter a descriptive name and click **Save**.
+
+### 3. Updating & Managing
+-   **Update (🔄)**: Saves current UI values into the active custom preset.
+-   **Rename (✏️)**: Changes the title of the active custom preset.
+-   **Delete (🗑️)**: Removes the active custom preset from your library.
+
+## 🧠 Intelligent Features
+
+### Scene State & Persistence
+Presets save your selected values exactly as they are at the moment of saving, even for dynamic "Computable" parameters (like a specific Wall Type or Level name).
+
+- **Scene Changes**: If the Revit model changes (e.g., an element you saved in a preset is deleted), the preset will still display the old value in the UI. 
+- **Execution Safety**: Running a script with a missing element will result in an execution error. 
+- **Recovery**: If a saved value is no longer valid, simply click the **Compute (🔄)** button to refresh the available options, select a new valid item, and click **Update** to save the new state to your preset.
+
+### Safe Hard Reset
+In the `<Default Parameters>` state, a **Reset (↺)** button appears. 
+- **What it does**: Clears your local draft cache for that script and reloads values directly from the C# source code defaults.
+- **Safety**: This operation **does not touch** your saved custom presets. It only resets the "Default" draft state.
+
+---
+
+*Next: Learn how to add rich [Script Metadata](./metadata.md) to your tools.*

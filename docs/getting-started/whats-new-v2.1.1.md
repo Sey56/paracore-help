@@ -9,9 +9,9 @@ Release Date: January 2026
 ## 🚀 Highlights
 
 ### 1. Robust Workspace Synchronization
-We've resolved critical sync issues between the temporary implementation workspace and your actual script sources.
+We've resolved critical sync issues between the temporary implementation workspace and your actual script sources.    
 *   **Renaming:** Renaming files in the temporary workspace now correctly renames them in the source.
-*   **Creation:** Creating new files in a multi-file script correctly persists them back to the source folder.
+*   **Creation:** Creating new files in a multi-file script correctly persists them back to the source folder.        
 *   **Duplicates Eliminated:** No more "ghost" duplicate files appearing in your workspace.
 
 ### 2. Enhanced Table & Visualization Tab
@@ -31,7 +31,7 @@ When a script execution fails, a new **"Explain & Fix"** button appears in the C
 
 ---
 
-## 🛠️ Parameter Engine V2 Enhancements
+## 🛠️ Parameter Engine Enhancements
 
 The **Parameter Engine** has been significantly refined for a smoother developer experience.
 
@@ -46,10 +46,11 @@ New native selection attributes inject Revit API objects directly:
 *   `[Select(SelectionType.Face)]` → Returns `Reference`
 *   `[Select(SelectionType.Edge)]` → Returns `Reference`
 
-###*   **File System Inputs:** Native OS dialogs for file processing.
-    *   `[InputFile("csv,xlsx")]`: Open File Dialog.
-    *   `[FolderPath]`: Folder Picker.
-    *   `[OutputFile("json")]`: Save File Dialog.
+### 3. File System Inputs
+Native OS dialogs for file processing:
+*   `[InputFile("csv,xlsx")]`: Open File Dialog.
+*   `[FolderPath]`: Folder Picker.
+*   `[OutputFile("json")]`: Save File Dialog.
 
 ### 4. Custom Filtering
 While `[RevitElements]` handles magic extraction, you can now use `_Options` properties to apply custom `FilteredElementCollector` logic for granular control over dropdowns.

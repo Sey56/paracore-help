@@ -1,0 +1,45 @@
+import InspectorMain from '@site/static/img/inspector-main.png';
+import TableTabGrid from '@site/static/img/table-tab-grid.png';
+import TableTabCharts from '@site/static/img/table-tab-charts.png';
+
+# Script Inspector
+
+The **Script Inspector** is the right-side panel where you configure, execute, and monitor the selected automation.
+
+<img src={InspectorMain} alt="Script Inspector Main" />
+
+## 🛠️ Parameters Tab
+The **Parameters** tab is where you provide inputs to your script.
+- **Grouping**: Click group headers (e.g., "Base Level") to expand related parameters.
+- **Compute (🔄)**: Click to fetch live data from Revit (like Level names) and convert text boxes into dropdowns.
+- **Execution**: Click **Run Script** at the bottom to execute.
+
+## 📊 Table Tab
+The **Table Tab** is a high-performance data visualization dashboard. It renders the structured data returned by your script via the `Show()` or `Table()` globals.
+
+### 1. Data Tables
+When your script calls `Table(data)` or `Show("table", data)`, it is rendered as an interactive grid.
+
+<img src={TableTabGrid} alt="Table Tab Grid" />
+
+- **Search & Sort**: Use the search bar to filter rows and click column headers to sort the data.
+- **Revit Interaction**: If a table contains a column named **Id** or **ElementId**, clicking that row will immediately **Select the Element** in your active Revit session.
+- **Table Controls**: Located at the bottom of the tab, you can **Copy** the data to your clipboard or **Export to CSV**.
+
+### 2. Graphical Charts
+The Table Tab also renders high-quality graphs for visual analysis:
+
+<img src={TableTabCharts} alt="Table Tab Charts" />
+
+- **Supported Types**: Pie Charts, Bar Charts, and Line Charts.
+- **Graph Controls**: Each graph features two buttons at the top-right corner:
+    - **Export CSV**: Download the raw data used to generate the graph.
+    - **Export SVG**: Download a high-resolution vector image of the graph.
+
+## 💻 Console Tab
+The **Console** tab provides the raw execution log.
+- **Live Feed**: See all `Print` and `Println` statements as they happen.
+- **Status Link**: Click the **Execution Status (✅/❌)** button to quickly jump here and see the final success or failure message.
+
+## ℹ️ Metadata Tab
+Displays non-functional details like the Author, Description, and required Revit Document Type.

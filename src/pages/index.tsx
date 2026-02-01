@@ -22,8 +22,8 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="https://youtu.be/Q-PtjA_aSe4">
-            Paracore promo
+            to="https://www.youtube.com/@Codarch46">
+            Paracore YouTube
           </Link>
         </div>
       </div>

@@ -29,11 +29,11 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Unified Script Hub',
-    Svg: require('@site/static/img/team-icon.svg').default,
+    title: 'Instant UI Generation',
+    Svg: require('@site/static/img/list-icon.svg').default,
     description: (
       <>
-        Organize all your personal and team scripts in one central location. With built-in Git integration, you can manage versions, collaborate with your team, and ensure everyone is working from the same source of truth.
+        Turn every script into a professional Revit add-in. Paracore's Parameter Engine automatically generates interactive UI controls like dropdowns, multi-select checkboxes, and sliders directly from your C# properties, giving your tools a polished interface with zero UI code.
       </>
     ),
   },
