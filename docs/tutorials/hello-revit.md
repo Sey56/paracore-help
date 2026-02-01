@@ -3,7 +3,7 @@
 This is your first step into Paracore automation.
 We will create a pure "Hello World" script that prints a message to the console. This teaches you the basic structure of every Paracore script: **Setup**, **Logic**, **Transactions**, and **Parameters**.
 
-## ðŸŽ¯ Objective
+## 🎯 Objective
 Create a script that greets the user and prints current Revit session details.
 
 ## 1. Create the Script
@@ -41,6 +41,6 @@ public class Params {
 3.  Change the text to something like "Hello there,".
 4.  Click **Run Script**.
 
-### ðŸŽ‰ Result
+### 🎉 Result
 The console will print:
 `Hello there, [YourRevitUserName]`
