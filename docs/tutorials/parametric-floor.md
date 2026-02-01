@@ -1,4 +1,4 @@
-# Tutorial 2: Parametric Floor
+# Tutorial 3: Parametric Floor
 
 This tutorial introduces **Transactions** and the **Parameter Engine**. We will create a floor based on user-defined dimensions.
 
