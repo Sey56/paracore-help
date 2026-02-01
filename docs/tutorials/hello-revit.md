@@ -1,7 +1,7 @@
 # Tutorial 1: Hello Revit
 
 This is your first step into Paracore automation.
-We will create a pure "Hello World" script that prints a message to the console. This teaches you the basic structure of every Paracore script: **Setup**, **Logic**, **Transactions**, and **Parameters**.
+We will create a simple script that prints a message to the console. This teaches you the basic structure of a Paracore script: **Setup**, **Logic**, and **Parameters**.
 
 ## 🎯 Objective
 Create a script that greets the user and prints current Revit session details.
