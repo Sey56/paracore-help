@@ -1,6 +1,6 @@
-# Zero-Boilerplate Architecture
+# Focused Script Architecture
 
-Today we explore the "Zen" of Paracore scripting. Unlike traditional Revit Add-ins, Paracore uses **C# Top-Level Statements** to keep your code focused on logic, not boilerplate.
+Today we explore the "Zen" of Paracore scripting. Paracore uses **C# Top-Level Statements** to provide a streamlined environment optimized for rapid logic and quick iterations.
 
 ## 🏛️ The Three Golden Rules
 

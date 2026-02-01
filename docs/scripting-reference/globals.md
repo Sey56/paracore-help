@@ -1,6 +1,6 @@
 # Global Helpers
 
-Paracore injects several global variables and functions into your script's execution context. These helpers eliminate the need for common Revit API boilerplate.
+Paracore injects several global variables and functions into your script's execution context. These helpers eliminate the need for common Revit API setup code.
 
 ## 🏢 Revit Context
 - **`Doc`**: The active Revit Document (`Autodesk.Revit.DB.Document`).

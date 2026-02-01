@@ -25,4 +25,4 @@ Paracore works as a bridge between Revit and your code.
 2.  Switch back to Revit—you should see a standard "Hello World" message or log in the Paracore console!
 
 ---
-**Next Step:** Learn why Paracore scripts look so clean and how to use the Zero-Boilerplate architecture. 🚀🏗️🏁
+**Next Step:** Learn why Paracore scripts look so clean and how to use the Focused Script Architecture. 🚀🏗️🏁

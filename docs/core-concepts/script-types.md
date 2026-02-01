@@ -24,7 +24,7 @@ A multi-file script is a **folder** residing within a Script Source. Paracore tr
 ### The Rules of Multi-File Scripts
 1.  **Mandatory Entry Point**: The folder must contain **exactly one** script with **Top-Level Statements** (code written outside of a class). This acts as the single entry point for execution.
 2.  **Supporting Files**: All other files in the folder must contain **User-Defined Types** (classes, interfaces, records, structs) and cannot have top-level statements.
-3.  **No Boilerplate**: You do not write `namespace` or `class Program`. Write the logic directly in the entry file and types in the supporting files.
+3.  **Direct Definitions**: You do not write `namespace` or `class Program`. Write the logic directly in the entry file and types in the supporting files.
 
 ### 💡 When to use a Folder?
 If your automation consists of only one script file and does not require modular helpers or separate class files, do not put it in a folder. Instead, keep it as a **Single-File Script** directly in the Script Source root to keep your library organized. Use folders only when you need to separate your logic into multiple files.
