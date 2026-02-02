@@ -48,7 +48,7 @@ Transact("Update Wall Comment", () => {
     Println($"Updated wall {wall.Id} with comment: {p.Comment}");
 });
 
-// --- 2. USER-DEFINED TYPES ---
+// --- the Params class and other user defined types ---
 
 public class Params
 {

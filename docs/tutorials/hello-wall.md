@@ -66,7 +66,7 @@ Transact("Create Tutorial Wall", () =>
     Println($"✅ Wall created: {wall.Id}");
 });
 
-// --- 2. USER-DEFINED TYPES ---
+// --- the Params class and other user defined types ---
 
 public class Params {
     [RevitElements(TargetType = "Level")]

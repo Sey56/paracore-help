@@ -61,7 +61,7 @@ Transact("Create Floor", () => {
     Println($"Created floor: {p.Width} x {p.Depth}");
 });
 
-// --- 2. USER-DEFINED TYPES ---
+// --- the Params class and other user defined types ---
 
 public class Params
 {
