@@ -14,6 +14,8 @@ Create a script that takes a Level and Wall Type as input and generates a linear
 This script introduces **Geometry** (Line), **Collectors** (finding Levels/Types), and **Transactions** (modifying the model).
 
 ```csharp
+using Autodesk.Revit.DB;
+
 /*
 DocumentType: Project
 Categories: Tutorial, Getting Started

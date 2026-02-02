@@ -4,9 +4,19 @@ Metadata allows you to add rich, descriptive information to your scripts. This i
 
 ## 📝 Metadata Block
 
-To define metadata, add a multi-line comment block at the very top of your primary script file (`Main.cs` for multi-file scripts). Use the `Key: Value` format for each field.
+To define metadata, add a multi-line comment block to your primary script file (`Main.cs` for multi-file scripts). 
+
+**Placement Rule:**
+1.  **If `using` statements exist**: Place the metadata block immediately **AFTER** the last `using` statement.
+2.  **If NO `using` statements exist**: Place the metadata block at the **very top** of the file.
+
+Use the `Key: Value` format for each field.
 
 ```csharp
+using System;
+using System.Linq;
+using Autodesk.Revit.DB;
+
 /*
 DocumentType: Project
 Categories: Architectural, Structural, MEP
@@ -16,10 +26,6 @@ Dependencies: RevitAPI 2025, CoreScript.Engine, Paracore.Addin
 Description:
 Creates a wall along the X-axis at a user-defined level with specified length and height.
 Parameters allow customizing geometry in meters. Great for layout prototyping.
-
-UsageExamples:
-- "Create a linear wall along X-axis"
-- "Create a wall of 8m length and 3m height on 'Level 1'"
 */
 ```
 

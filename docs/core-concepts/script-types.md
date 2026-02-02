@@ -12,9 +12,8 @@ Inside a Script Source, Paracore recognizes two kinds of scripts:
 **Best for**: Simple automations, utilities, and quick logic.
 
 A single-file script is a standalone C# file.
--   **Structure**: It contains everything: your using statements, metadata, top-level logic, and any helper classes.
--   **Naming**: The filename (without extension) becomes the script name in the Gallery.
--   **Execution**: Paracore compiles this file directly.
+-   **Structure**: It contains everything: your `using` statements, metadata block (which must follow imports), top-level logic, and any helper classes.  
+-   **Naming**: The filename (without extension) becomes the script name in the Gallery.-   **Execution**: Paracore compiles this file directly.
 
 ## 📁 Multi-File Scripts (Folders)
 **Best for**: Modularizing complex logic and organizing large amounts of code across multiple files.

@@ -13,7 +13,8 @@ Forget `public class Program` or `static void Main`. The execution starts immedi
 ### 3. The Logical Flow
 Every professional Paracore script follows this order:
 1.  **Using Statements**: Imports (e.g., `using Autodesk.Revit.DB;`).
-2.  **Metadata Block**: A comment section for the script’s description and author.
+2.  **Metadata Block**: A comment section for the script’s description and author. 
+    > **Note**: Metadata must be placed **after** all `using` statements. If no `using` statements are present, it goes at the absolute top.
 3.  **Execution Logic**: Your Revit API code and Top-Level methods.
 4.  **Classes**: Any helper classes (and the `Params` class) go at the very bottom.
 

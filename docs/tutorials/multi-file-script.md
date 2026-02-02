@@ -50,6 +50,8 @@ public class Params
 Now open the existing `Main.cs` file and replace its content with the logic below. Notice we don't define the `Params` class here, but we can still use it!
 
 ```csharp
+using Autodesk.Revit.DB;
+
 /*
 DocumentType: Any
 Categories: Basics, Tutorials
