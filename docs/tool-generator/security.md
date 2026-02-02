@@ -2,11 +2,12 @@
 
 ## 🔒 Code Protection
 
-The **Tool Generator** packages your automation into a proprietary `.ptool` container. This provides a layer of protection for your intellectual property:
+The **Tool Generator** packages your automation into a proprietary `.ptool` container. This provides a basic layer of protection for your intellectual property:
 
-- **Removal of Source**: The original `.cs` source files are completely removed.
+- **Removal of Source**: The original `.cs` source files are completely removed from the distributed package.
 - **Binary Encoding**: The logic is compiled into a .NET Assembly and stored as a Base64-encoded string within a JSON structure.
-- **Obfuscation**: By compiling to MSIL (Microsoft Intermediate Language), the high-level C# logic is abstracted, making it significantly harder to read than raw source code.
+
+> **Note**: This is not a security guarantee. A determined user could still extract and decompile the assembly. For true intellectual property protection, consider additional measures like code obfuscation tools or licensing systems.
 
 ## ⚠️ Execution Warning
 
@@ -20,9 +21,10 @@ Protected Tools are subject to the same operational constraints as source script
 - **Execution Timeout**: They must complete within the configured timeout period (Default: 10s).
 - **API Scope**: They are restricted to the Revit API capabilities provided by the active user session.
 
-## 🔐 Future Roadmap: Signing & Verification
+## 🔐 Future Roadmap
 
-To address the trust issue, we are developing a **Digital Signing** system:
-- **Verified Authors**: Tools will be signed with a unique developer certificate.
-- **Integrity Checks**: Paracore will verify that the tool has not been tampered with since it was built.
-- **Marketplace Trust**: All tools on the future Paracore Marketplace will undergo rigorous automated and manual security reviews.
+We are exploring additional security features for future releases:
+- **Obfuscation**: Integration with .NET obfuscation tools
+- **Digital Signing**: Tools signed with a developer certificate
+- **Integrity Checks**: Verification that tools haven't been tampered with
+- **Marketplace Trust**: Security reviews for tools on the future Paracore Marketplace

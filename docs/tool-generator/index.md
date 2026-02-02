@@ -27,7 +27,7 @@ A "Tool" in Paracore (extension `.ptool`) is a binary package that contains:
 -   **[Overview](./overview.md)**: The tool generation workflow.
 -   **[Creating Tools](./creating-tools.mdx)**: Step-by-step guide to compiling your first `.ptool`.
 -   **[Distributing Tools](./distributing-tools.md)**: How to share tools with your team or clients.
--   **[Security](./security.md)**: Understanding the encryption and signing mechanisms.
+-   **[Security](./security.md)**: Understanding the protection model and limitations.
 
 ---
 

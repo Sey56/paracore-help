@@ -41,7 +41,7 @@ Wall_Generator/
 ## 🛡️ Protected Tools (`.ptool`)
 **Best for**: Intellectual property protection and commercial distribution.
 
-Protected tools are compiled, encrypted packages.
+Protected tools are proprietary binary packages.
 -   **Naming**: The script name is the filename without the `.ptool` extension.
 -   **Identification**: Displayed with an **Amber Right Border** and a "Tool" badge.
 
