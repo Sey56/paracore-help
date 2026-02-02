@@ -13,7 +13,7 @@ The **Tool Generator** packages your automation into a proprietary `.ptool` cont
 
 While Protected Tools hide their source code, they are **still executable code**. 
 
-> **Important**: You should only run `.ptool` files from trusted sources. Because the source code is hidden, it is possible for malicious actors to bundle harmful C# code within a tool. Paracore executes these tools with the same privileges as any Revit Add-in.
+> **Important**: You should only run `.ptool` files from trusted sources. Because the source code is hidden, it is possible for malicious actors to bundle harmful C# code within a tool. Paracore executes these tools with the same privileges as any standard script (Single-File or Multi-File).
 
 ## 🛡️ Sandbox & Limits
 
