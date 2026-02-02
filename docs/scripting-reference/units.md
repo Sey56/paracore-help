@@ -54,20 +54,27 @@ If you **do not** specify a unit attribute, Paracore assumes the input is "Raw".
 
 While Paracore handles the conversion **into** your script, you are responsible for converting values **out** of your script if you want to display them in a specific unit (e.g., in the console or a table).
 
-Since Revit stores everything in Feet, you must convert **from** Internal Units to your target unit.
-
-### Example: Printing in Meters
+### Primary Method: `UnitUtils` (Revit 2025+ Standard)
+The authoritative way to convert units in modern Revit (2025 and above) is using the `UnitUtils` class with `ForgeTypeId`.
 
 ```csharp
-// Get a wall's length (Revit returns this in Feet)
+// 1. Get a wall's length in Internal Units (Feet)
 double lengthFeet = wall.get_Parameter(BuiltInParameter.CURVE_ELEM_LENGTH).AsDouble();
 
-// Convert to Meters for the user
-double lengthMeters = lengthFeet * 0.3048;
+// 2. Convert to Meters using the official Revit API
+double lengthMeters = UnitUtils.ConvertFromInternalUnits(lengthFeet, UnitTypeId.Meters);
 
 Println($"The wall is {lengthMeters:F2} meters long.");
 ```
 
+### Secondary Method: Manual Math
+For quick calculations or when you want to avoid Revit API overhead for simple logic, you can use standard conversion factors:
+
+```csharp
+// Quick conversion (1 foot = 0.3048 meters)
+double lengthMeters = lengthFeet * 0.3048;
+```
+
 > [!IMPORTANT]
 > - **Input**: `[Unit]` handles the math for you.
-> - **Output**: You must perform the math for the user.
+> - **Output**: Prioritize `UnitUtils` for production-grade scripts.
