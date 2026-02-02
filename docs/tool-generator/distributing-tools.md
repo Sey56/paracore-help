@@ -17,10 +17,16 @@ For Enterprise teams, upload the `.ptool` to a shared **Git Workspace**.
 2.  Paracore automatically syncs the file to all team members.
 3.  The tool appears instantly in their Gallery.
 
-## 📦 Versioning
+## 📦 Versioning & Metadata
 
-We recommend including the version number in the filename for manual distribution:
--   `WallFinisher_v1.0.0.ptool`
--   `WallFinisher_v1.1.0.ptool`
+Because `.ptool` files can be renamed by users, filename-based versioning (e.g., `WallFinisher_v1.0.ptool`) is useful for organization but not a substitute for internal identification.
 
-Paracore treats these as separate scripts, allowing you to roll out updates side-by-side if necessary.
+### 1. In-Code Identification
+We recommend adding a header or greeting in your code using `Println` to identify the version and author at runtime:
+
+```csharp
+Println("🏗️ Wall Finisher v1.2.5 (Author: John Doe)");
+```
+
+### 2. Baked-in Metadata
+When you build a tool, Paracore bakes the script's metadata (Name, Author, Description) directly into the `.ptool` file structure. This data is stored as a structured JSON object and remains visible if the file is opened in a text editor, ensuring the author's identity is preserved regardless of the filename.
