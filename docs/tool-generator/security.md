@@ -7,7 +7,7 @@ The **Tool Generator** packages your automation into a proprietary `.ptool` cont
 - **Removal of Source**: The original `.cs` source files are completely removed from the distributed package.
 - **Binary Encoding**: The logic is compiled into a .NET Assembly and stored as a Base64-encoded string within a JSON structure.
 
-> **Note**: This is not a security guarantee. A determined user could still extract and decompile the assembly. For true intellectual property protection, consider additional measures like code obfuscation tools or licensing systems.
+> **Note**: This is not a security guarantee. A determined user could still extract and decompile the assembly. The current `.ptool` implementation (JSON + Base64) is the **v3.0 "Foundation"**—it is designed to be "Correct & Functional" first. While it effectively hides source code and simplifies distribution, it currently provides a "test project" level of security as we prepare for more advanced binary protection.
 
 ## ⚠️ Execution Warning
 
