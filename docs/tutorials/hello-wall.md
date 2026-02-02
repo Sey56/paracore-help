@@ -7,10 +7,21 @@ We will create a simple script that generates a linear wall in the model.
 Create a script that takes a Level and Wall Type as input and generates a linear wall.
 
 ## 1. Create the Script
-1. Create a new script named `HelloWall`.
-2. Open the code editor.
+1.  In Paracore, click **New Script**.
+2.  Name it: `HelloWall`.
+3.  Click **Create**.
+    - *The script card appears and is immediately selected in the Gallery.*
 
-## 2. Write the Code
+## 2. Open VS Code
+1.  Locate the new **HelloWall** card.
+2.  Click the ellipses (**...**) at the bottom right corner of the card.
+3.  Click **Edit Script**.
+4.  **Wait**: Paracore generates a temporary workspace and opens VS Code.
+5.  In VS Code, expand the **`Scripts`** folder. You will see `HelloWall.cs`.
+
+## 3. Write the Code
+Open `HelloWall.cs` and replace all content with:
+
 This script introduces **Geometry** (Line), **Collectors** (finding Levels/Types), and **Transactions** (modifying the model).
 
 ```csharp
@@ -72,7 +83,10 @@ public class Params {
 }
 ```
 
-## 3. Run and Verify
-1. **Select Inputs**: In the Paracore UI, select a valid Level and Wall Type from the dropdowns.
-2. **Run Script**: Click Run.
-3. **Check Revit**: A visible wall should appear at the project origin (0,0,0).
+## 4. Run and Verify
+1.  **Save** the file in VS Code (`Ctrl+S`).
+    - *File watchers automatically sync your changes back to the original script.*
+2.  Switch back to **Paracore**.
+3.  **Select Inputs**: In the Parameters tab, select a valid Level and Wall Type from the dropdowns.
+4.  Click **Run Script**.
+5.  **Check Revit**: A visible wall should appear at the project origin (0,0,0).

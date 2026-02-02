@@ -7,7 +7,13 @@ Learn how to interact with existing model elements using **Pickers** and the Rev
 ## 🎯 Objective
 Select a Wall in Revit and update its "Comments" parameter via code.
 
-## 1. Write the Code
+## 1. Create the Script
+1.  Click **New Script** and name it `ElementSelection`.
+2.  Click the ellipses (**...**) on the script card → **Edit Script**.
+3.  Wait for VS Code to open the workspace.
+
+## 2. Write the Code
+In VS Code, open `ElementSelection.cs` in the `Scripts` folder and paste:
 
 ```csharp
 /*
@@ -56,8 +62,9 @@ public class Params
 }
 ```
 
-## 2. Run and Verify
-1. Click **Pick Element** in the Paracore UI.
-2. Select a wall in Revit.
-3. Enter a comment.
-4. Click **Run Script**.
+## 3. Run and Verify
+1.  **Save** in VS Code (`Ctrl+S`).
+2.  Switch to Paracore. Click **Pick Element** in the Parameters tab.
+3.  Select a wall in Revit.
+4.  Enter a comment.
+5.  Click **Run Script**.

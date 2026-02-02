@@ -7,8 +7,13 @@ Create a script that accepts Width and Depth inputs and creates a rectangular fl
 
 > 💡 **Tip**: Run this in a sample project. All modifications can be reversed with Revit's **Undo** command.
 
-## 1. Write the Code
-Following the **Logic before Types** and **Instantiation** rules, paste this into your script:
+## 1. Create the Script
+1.  Click **New Script** and name it `ParametricFloor`.
+2.  Click the ellipses (**...**) on the script card → **Edit Script**.
+3.  Wait for VS Code to open the workspace.
+
+## 2. Write the Code
+In VS Code, open `ParametricFloor.cs` in the `Scripts` folder and paste:
 
 ```csharp
 /*
@@ -70,13 +75,13 @@ public class Params
 }
 ```
 
-## 2. Run and Verify
-1.  Enter dimensions in the Paracore UI.
-2.  Click **Run Script**.
-3.  Check Revit to see your new floor centered at the origin.
+## 3. Run and Verify
+1.  **Save** in VS Code (`Ctrl+S`).
+2.  Switch to Paracore. Enter dimensions in the Parameters tab.
+3.  Click **Run Script**.
+4.  Check Revit to see your new floor at the origin.
 
-### ⚠️ Verification Check (Hotfix Feb 2026)
+### ⚠️ Verification Check
 Select the created floor in Revit and check its dimensions:
 *   **Correct:** If the dimensions match your input (e.g., 3000mm / ~9.84ft), you are all set.
-*   **Incorrect:** If the dimensions are significantly smaller or rounded down (e.g., 2743mm / 9.0ft), you are running an older version of the add-in.
-    *   **Fix:** Please download and install the latest **Paracore Add-in v3.0.0** (updated Feb 2) from the release page to fix this unit conversion issue.
+*   **Incorrect:** If the dimensions are significantly smaller, you may be running an older version of the add-in. Please update to the latest version.
