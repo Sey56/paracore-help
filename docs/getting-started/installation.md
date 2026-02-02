@@ -40,4 +40,4 @@ To ensure everything is working correctly:
 
 ---
 
-*Note: While end-users running protected `.ptool` files do not strictly need VS Code, it is essential for anyone participating in the creation or modification of the Paracore ecosystem.*
+*Note: While end-users running protected `.ptool` files do not strictly need VS Code, it is essential for anyone authoring, editing, or utilizing the AI script generation features within Paracore.*

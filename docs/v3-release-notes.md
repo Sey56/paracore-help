@@ -1,5 +1,10 @@
 # Paracore v3.0.0 — The "Professional Automation" Update 🏮🏛️🚀
 
+> **⚠️ Hotfix Update (Feb 2, 2026 @ 9:00 AM)**
+> The **Paracore Add-in Installer** has been updated to fix a critical unit conversion precision issue where floating-point values were being truncated to integers.
+> *   **If you downloaded before Feb 2 @ 9:00 AM:** Please re-download and install `Paracore_Addin_v3.0.0.exe`.
+> *   **If you are new:** You are already getting the fixed version.
+
 Welcome to Paracore v3.0! This release marks our transition into a **Long Term Support (LTS)** environment for professional C# automation in Revit. This update focuses on **Authoring Precision**, **UI Clarity**, and **Integrated Industry Libraries**.
 
 ## 🚀 Key Features
