@@ -49,3 +49,25 @@ If you **do not** specify a unit attribute, Paracore assumes the input is "Raw".
 -   If you use this raw value to set a Wall Height, it will be **10 Feet**.
 
 **Best Practice**: Always add `[Unit("...")]` to any parameter that represents a physical length or area.
+
+## 📺 Manual Conversion for Output
+
+While Paracore handles the conversion **into** your script, you are responsible for converting values **out** of your script if you want to display them in a specific unit (e.g., in the console or a table).
+
+Since Revit stores everything in Feet, you must convert **from** Internal Units to your target unit.
+
+### Example: Printing in Meters
+
+```csharp
+// Get a wall's length (Revit returns this in Feet)
+double lengthFeet = wall.get_Parameter(BuiltInParameter.CURVE_ELEM_LENGTH).AsDouble();
+
+// Convert to Meters for the user
+double lengthMeters = lengthFeet * 0.3048;
+
+Println($"The wall is {lengthMeters:F2} meters long.");
+```
+
+> [!IMPORTANT]
+> - **Input**: `[Unit]` handles the math for you.
+> - **Output**: You must perform the math for the user.
