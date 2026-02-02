@@ -79,10 +79,12 @@ const config: Config = {
         theme: {
           customCss: './src/css/custom.css',
         },
-        gtag: {
-          trackingID: 'G-QEHWHWW12T',
-          anonymizeIP: true,
-        },
+        ...(process.env.NODE_ENV === 'production' && {
+          gtag: {
+            trackingID: 'G-QEHWHWW12T',
+            anonymizeIP: true,
+          },
+        }),
       } satisfies Preset.Options,
     ],
   ],
