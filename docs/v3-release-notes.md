@@ -2,8 +2,12 @@
 
 > **⚠️ Hotfix Update (Feb 2, 2026 @ 9:00 AM)**
 > The **Paracore Add-in Installer** has been updated to fix a critical unit conversion precision issue where floating-point values were being truncated to integers.
-> *   **If you downloaded before Feb 2 @ 9:00 AM:** Please re-download and install `Paracore_Addin_v3.0.0.exe`.
-> *   **If you are new:** You are already getting the fixed version.
+> 
+> **🚀 Post-Launch Enhancement (Feb 2, 2026 @ 10:00 PM)**
+> The **Furniture Path Placer** in the Examples library has been upgraded with a professional-grade distribution engine:
+> *   **Equidistant Sampling**: High-precision 1,000-point sampling for perfect distribution on Splines.
+> *   **New Modes**: Support for "Divide by Number" and "Centered" layouts.
+> *   **Bidirectional Support**: Toggle "Flip Direction" to reverse flow and orientation instantly.
 
 Welcome to Paracore v3.0! This release marks our transition into a **Long Term Support (LTS)** environment for professional C# automation in Revit. This update focuses on **Authoring Precision**, **UI Clarity**, and **Integrated Industry Libraries**.
 
