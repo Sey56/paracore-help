@@ -71,6 +71,12 @@ public class Params
 ```
 
 ## 2. Run and Verify
-1. Enter dimensions in the Paracore UI.
-2. Click **Run Script**.
-3. Check Revit to see your new floor centered at the origin.
+1.  Enter dimensions in the Paracore UI.
+2.  Click **Run Script**.
+3.  Check Revit to see your new floor centered at the origin.
+
+### ⚠️ Verification Check (Hotfix Feb 2026)
+Select the created floor in Revit and check its dimensions:
+*   **Correct:** If the dimensions match your input (e.g., 3000mm / ~9.84ft), you are all set.
+*   **Incorrect:** If the dimensions are significantly smaller or rounded down (e.g., 2743mm / 9.0ft), you are running an older version of the add-in.
+    *   **Fix:** Please download and install the latest **Paracore Add-in v3.0.0** (updated Feb 2) from the release page to fix this unit conversion issue.
