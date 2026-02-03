@@ -8,15 +8,15 @@ Today, we at Paras Codarch are thrilled to announce the official launch of Parac
 
 <!-- truncate -->
 
-For too long, the process of creating and testing Revit add-ins has been cumbersome. It involves a rigid cycle of project creation, coding in Visual Studio, compiling, and manually loading and unloading DLLs in Revit. This workflow is slow, and it stifles the creative and iterative process that is so crucial to effective automation.
+For years, I've looked for ways to make the automation process even more iterative. The traditional workflow is robust for large-scale enterprise development, but I wanted something that allowed for a more nimble, "design-centered" experience.
 
-Paracore changes everything.
+Paracore expands the possibilities.
 
 ### What is Paracore?
 
-Paracore is a desktop application that provides an integrated environment for executing and managing C# scripts for Autodesk Revit. It connects seamlessly to your active Revit session, allowing you to run scripts and see the results instantly, without ever needing to compile a single DLL or restart Revit.
+Paracore is a desktop application that provides an integrated environment for executing and managing C# scripts for Autodesk Revit. It complements your active Revit session, allowing you to run scripts and see the results instantly, providing a fluid environment for experimentation.
 
-Our philosophy is simple: empower users to automate Revit tasks with the full power of the Revit API, but without the traditional overhead. With Paracore, you write pure C# scripts that are executed dynamically.
+Our philosophy is simple: empower practitioners to "do more" with the Revit API by offering a dynamic environment for script execution.
 
 ### Key Features
 
