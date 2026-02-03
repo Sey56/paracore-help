@@ -18,7 +18,7 @@ A common task in my practice was bringing AutoCAD designs into Revit. While both
 I built **SH_Tools** (SynCad) to automate this conversion layer-by-layer.
 
 ## Refining the Automation Journey (2024)
-Building SH_Tools opened my eyes to the potential of a more fluid automation experience. I wanted to move faster than the traditional "Compile -> Restart" cycle allowed. I didn't want to change how Revit worked—I just wanted to build my own tools on top of it with more agility.
+Building SH_Tools opened my eyes to the potential of a more fluid automation experience. I wanted to build my own suite of tools with more agility, moving faster than the traditional "Compile -> Restart" cycle allowed to satisfy my specific architectural needs.
 
 <!-- truncate -->
 
