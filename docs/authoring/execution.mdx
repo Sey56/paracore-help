@@ -20,7 +20,7 @@ When you click "Run", Paracore performs the following steps in sequence:
 1.  **UI Sync**: The current parameter values are gathered from the UI.
 2.  **Source Check**: Paracore checks if the script is a single-file, multi-file, or protected tool (`.ptool`).
 3.  **Compilation**: For source scripts, the **CoreScript Engine** compiles the code using the Roslyn compiler.
-4.  **Handshake**: The compiled byte-code (or ptool package) is sent to the **Paracore Revit Addin** inside Revit via the **rap-server** mediator.
+4.  **Handshake**: The compiled byte-code (or ptool package) is sent to the **Paracore Revit Addin** inside Revit via the **Paracore Local Backend (Sidecar)** mediator.
 5.  **Revit Execution**: The code runs within the Revit API context. If a `Transact` block is used, a Revit Transaction is automatically started and committed.
 6.  **Reporting**: Output and status are streamed back to the Paracore Desktop App.
 

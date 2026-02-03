@@ -8,10 +8,17 @@ Presets allow you to save specific configurations of parameter values, making it
 
 ## 📂 The Preset Lifecycle
 
-Presets are linked to the specific script's file path. When you select a script in the Gallery, Paracore automatically fetches its associated presets from the server.
+Presets are linked to the specific script's file path. When you select a script in the Gallery, Paracore automatically retrieves its associated presets from your **local Paracore database**. 
+
+> [!NOTE]
+> **Privacy & Storage**: Your named presets are stored locally on your machine in the SQLite database located at:  
+> `%AppData%/Roaming/paracore-data/data/rap_local.db`  
+> These values are private to your computer and are never transmitted to any cloud server.
 
 ### 1. Default Parameters
-By default, every script starts in the **`<Default Parameters>`** state. This state uses the values defined in the script's source code. Paracore keeps a "draft" cache of your edits in this state, so you can navigate between scripts without losing your work.
+By default, every script starts in the **`<Default Parameters>`** state. This state uses the values defined in the script's source code. 
+
+Paracore keeps a **Draft Cache** of your edits in this state using your browser's local storage (`localStorage`). This ensures your temporary edits are preserved privately on your machine as you navigate between scripts, even without saving a formal preset.
 
 ### 2. Creating a Preset
 1.  Configure your parameters in the **Parameters Tab**.

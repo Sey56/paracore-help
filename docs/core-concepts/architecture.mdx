@@ -13,10 +13,10 @@ Built using **React**, **TypeScript**, and **Tauri**, the desktop application ha
 - **Role**: Script discovery, parameter orchestration, and results visualization.
 - **Benefit**: By running as a separate process, Paracore provides a responsive, web-speed UI that operates independently of Revit's performance cycles.
 
-### 2. Paracore Local Server (The Sidecar)
-A lightweight **Python** and **FastAPI** application that runs as a sidecar to the desktop app. It acts as the central intelligence and communication hub.
-- **Role**: It acts as an API Gateway, translating the frontend's HTTP requests into gRPC calls for Revit. It also manages script discovery, local data persistence (SQLite), and the Paracore Agent's logic.
-- **Benefit**: By offloading heavy logic and filesystem operations to a local Python server, the UI stays lightning-fast and the Revit add-in remains lightweight.
+### 2. Paracore Local Backend (The Sidecar)
+A lightweight **Python** and **FastAPI** application that runs as a sidecar to the desktop app on your local machine. It acts as the central intelligence and communication hub.
+- **Role**: It acts as an API Gateway, translating the frontend's HTTP requests into gRPC calls for Revit. It also manages script discovery, local data persistence via a **SQLite database** (`%AppData%/Roaming/paracore-data/data/rap_local.db`), and the Paracore Agent's logic.
+- **Benefit**: By offloading heavy logic and filesystem operations to a local Python process, the UI stays lightning-fast and the Revit add-in remains lightweight.
 
 ### 3. Paracore Revit Addin (The Host)
 A lightweight plugin that sits inside Revit. It acts as the execution bridge, providing the necessary context for your logic to interact with the model.
