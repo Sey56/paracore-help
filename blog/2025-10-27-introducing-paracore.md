@@ -8,7 +8,7 @@ Today, we at Paras Codarch are thrilled to announce the official launch of Parac
 
 <!-- truncate -->
 
-For years, I've looked for ways to make the automation process even more iterative. The traditional workflow is robust for large-scale enterprise development, but I wanted something that allowed for a more nimble, "design-centered" experience.
+For years, I've looked for ways to incorporate a more iterative, **Dynamic Execution** approach into the automation process. While traditional development is ideal for enterprise-scale tools, I wanted to provide an additional, "design-centered" choice for practitioners.
 
 Paracore expands the possibilities.
 

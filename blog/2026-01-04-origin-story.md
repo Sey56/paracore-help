@@ -18,19 +18,19 @@ A common task in my practice was bringing AutoCAD designs into Revit. While both
 I built **SH_Tools** (SynCad) to automate this conversion layer-by-layer.
 
 ## Refining the Automation Journey (2024)
-Building SH_Tools opened my eyes to the potential of a more fluid automation experience. I wanted to build my own suite of tools with more agility, moving faster than the traditional "Compile -> Restart" cycle allowed to satisfy my specific architectural needs.
+Building SH_Tools opened my eyes to the potential of **Dynamic Execution**. I realized that having an additional approach—one that allowed me to interact with the API through expressive, on-the-fly C# scripts—would be a powerful addition to my toolkit, satisfying my evolving architectural needs.
 
 <!-- truncate -->
 
 ## The Experiments: Deliberate Engineering for AI (Early 2025)
 I originally set out to build an **AI Agent for Revit**. I knew that for an agent to be useful, it couldn't just "hallucinate" code; it needed a robust, safe environment to select scripts, parameterize them, and execute them deterministically.
 1.  **RAssistant**: My first attempt using simple generation was unsafe.
-2.  **RToolkit (The Precursor)**: I built a complete add-in with its own isolated execution engine, WPF-based script management UI, and VSCode integration. It worked—I could write scripts in VSCode and run them dynamically without restarting Revit. But it had limitations: the engine wasn't refined yet, and the WPF UI was restrictive for the modern AI ecosystem I envisioned.
+2.  **RToolkit (The Precursor)**: I built a complete add-in with its own isolated execution engine, WPF-based script management UI, and VSCode integration. It provided a dedicated environment where I could write and run scripts dynamically within a live session. But it had limitations: the engine wasn't refined yet, and the WPF UI was restrictive for the modern AI ecosystem I envisioned.
 
 ## The Realization: Solving for the Human (Late 2025)
 By late 2025, I had refined RToolkit's engine into **CoreScript.Engine**—a robust, production-ready execution system. But I also realized something crucial: **This infrastructure wasn't just for AI.**
 
-The same capabilities I built to make the Agent safe (Hot-Reload, Dynamic Parameters, No Restarts) were exactly what **Human Developers** were missing. And to truly unlock the AI ecosystem (Python, React, TypeScript), I needed to move outside Revit's WPF constraints.
+The same capabilities I built to make the Agent safe (Hot-Reload, Dynamic Parameters, and Isolated Execution) were exactly what I realized would benefit other practitioners. And to truly unlock the AI ecosystem (Python, React, TypeScript), I needed to move outside Revit's WPF constraints.
 
 That's how **Paracore** was born: CoreScript.Engine + Modern Web UI (React/Tauri) + Full AI Integration. We built a way to "do more" with the Revit API, streamlining our own internal workflows while building the foundation for future AI capabilities.
 
