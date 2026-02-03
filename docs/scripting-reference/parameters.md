@@ -12,14 +12,58 @@ The engine implicitly maps C# types to specific UI controls.
 | `string` | Text Box | Becomes a dropdown if an Options Provider is present. |
 | `bool` | Toggle Switch | Standard On/Off switch. |
 | `int` / `double` | Number Input | Strictly validated for numeric values. |
-| `XYZ` | Point Picker | Shows a "Pick Point" button. |
-| `Reference` | Element Picker | Shows a "Pick Element" button. |
+| `XYZ` | Point Picker | Shows a "Pick Point" button. Requires `[Select(SelectionType.Point)]`. |
+| `long` | Element Picker | Shows a "Select" button. Requires `[Select(SelectionType.Element)]`. |
+| `Reference` | Face/Edge Picker | Shows a "Pick Face" button. Requires `[Select(SelectionType.Face)]` or `SelectionType.Edge`. |
 | `List<T>` | Checkbox Grid | Searchable grid for multi-selection. |
 
 ---
 
+## 🖱️ 2. Selection Attributes (`[Select]`)
+Selection attributes allow your script to pause and wait for the user to select objects directly in the Revit viewport.
+
+| SelectionType | Data Type | Result |
+| :--- | :--- | :--- |
+| **`Point`** | `XYZ` | Returns the coordinates of a clicked point. |
+| **`Element`** | `long` | Returns the `Id.Value` of a selected element. |
+| **`Face`** | `Reference` | Returns a Revit Reference to a selected face. |
+| **`Edge`** | `Reference` | Returns a Revit Reference to a selected edge. |
+
+---
+
 ## 🛡️ 2. Validation Attributes
-... (attributes list preserved)
+
+Attributes allow you to enforce constraints and data integrity before a script starts.
+
+| Attribute | Description |
+| :--- | :--- |
+| `[Required]` | **Built-in**. Prevents execution if field is empty. |
+| `[Mandatory]` | **Alias for [Required]**. Use this to avoid namespace conflicts. |
+| `[Unit("mm")]` | Defines the display unit; engine converts to Revit internal units. |
+| `[Range(min, max)]` | Enforces numeric bounds (projects as a slider). |
+| `[Stepper]` | Replaces input with **+/-** buttons for precise numeric control. |
+| `[Confirm("WORD")]` | **Safety Lock**. Disables execution until the user types the exact word. |
+| `[EmailAddress]` | Enforces valid email format. |
+| `[Url]` | Enforces valid URL format. |
+| `[CreditCard]` | Enforces valid credit card format. |
+| `[RegularExpression("...")]` | Advanced text validation via Regex patterns. |
+
+---
+
+## 🔒 3. The Deletion Safety Lock (`[Confirm]`)
+
+For destructive or high-risk operations (e.g., deleting all elements, mass renaming), use the `[Confirm]` attribute. This forces the user to perform a deliberate action before the **Run Script** button is enabled.
+
+```csharp
+public class Params {
+    /// Type 'DELETE' to confirm
+    [Confirm("DELETE")] [Mandatory]
+    public string ConfirmText { get; set; }
+}
+```
+
+> [!IMPORTANT]
+> Always pair `[Confirm]` with `[Mandatory]` (or `[Required]`) to ensure the field cannot be bypassed accidentally.
 
 ---
 
@@ -52,6 +96,31 @@ Define properties with these suffixes to drive dynamic UI logic for a property n
 
 ---
 
+## 🔄 5. The "Compute" Action Button
+To maintain performance, Paracore only extracts complex Revit data or runs logic-heavy providers when explicitly requested by the user.
+
+### When does the "Compute" button appear?
+The engine automatically shows a **Refresh/Compute** button next to a parameter in three cases:
+
+1.  **Revit Extraction**: Any parameter using the `[RevitElements]` attribute.
+2.  **Logic-Heavy Providers**: If your `_Options` provider contains C# logic (e.g., `.OrderBy()`, `.Where()`, or `new FilteredElementCollector(...)`).
+3.  **Active Document Sync**: When the list depends on the current Revit context (checked every time the button is clicked).
+
+### Static vs Dynamic Lists
+```csharp
+public class Params {
+    // CASE A: Static (No Button)
+    // List is hardcoded; loaded instantly.
+    public List<string> Colors_Options => ["Red", "Green", "Blue"];
+
+    // CASE B: Logic (Triggers Button)
+    // Uses C# transformation; requires manual refresh.
+    public List<string> SortedNames_Options => (new List<string> {"Z", "A"}).OrderBy(n => n).ToList();
+}
+```
+
+---
+
 ## 📦 7. UI Organization & Tooltips
 
 ### Documentation (Tooltips)
@@ -79,3 +148,14 @@ public class Params {
     #endregion
 }
 ```
+
+---
+
+## 📂 8. File & Folder Attributes
+Attributes for selecting paths from the local file system using native Windows dialogs.
+
+| Attribute | Description |
+| :--- | :--- |
+| **`[InputFile("ext1,ext2")]`** | Opens an "Open File" dialog with extension filters. |
+| **`[OutputFile("ext")]`** | Opens a "Save File" dialog. |
+| **`[FolderPath]`** | Opens a folder selection dialog. |
