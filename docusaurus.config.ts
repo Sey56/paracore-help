@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Paracore',
-  tagline: 'A desktop application for executing and managing C# scripts for Autodesk Revit. Paracore connects to your Revit session, offering a comprehensive solution for automation, team collaboration, and script management—all without the need for traditional add-in development.',
+  tagline: 'Bringing the full power of the Revit API to a professional, dynamic execution environment. Paracore enables instant C# automation through live script execution and a zero-boilerplate Parameter Engine that generates rich UI controls directly from your parameters—all integrated seamlessly with VS Code.',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
