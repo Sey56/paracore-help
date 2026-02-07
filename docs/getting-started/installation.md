@@ -16,9 +16,7 @@ Paracore is a self-sufficient platform for Revit automation managed via the **Pa
 ## 📥 1. Download the Components
 
 Visit the **[Downloads](./downloads.md)** page to get:
-1. **Paracore Revit Addin** (`Paracore_Addin_v3.0.0.exe`) - **Required**.
-2. **Paracore Desktop App** (`Paracore_v3.0.0_x64.msi`).
-3. **CoreScript VSCode Extension** (`.vsix`) - **Optional (Developers Only)**.
+3. **CoreScript VSCode Extension** (`.vsix`) - **Optional** (For direct execution without the Paracore Desktop UI).
 
 ## 🛠️ 2. Installation Steps
 
@@ -26,8 +24,10 @@ Visit the **[Downloads](./downloads.md)** page to get:
 Run the installer. This installs the execution host and the **Paracore** ribbon tab in Revit. 
 
 ### Step 2: Choose Your Workflow
-- **Main Workflow: Paracore Desktop App**: Run the MSI installer. This is the primary way to manage and run your script library.
-- **Developer Workflow: VSCode Extension (Optional)**: Install the `.vsix` file if you wish to bypass the desktop UI and execute code directly from VS Code.
+*Both paths require the Paracore Revit Addin (Step 1) to communicate with Revit.*
+
+- **Main Workflow: Paracore Desktop App**: Run the MSI installer. This is the primary way to manage and run your script library with rich parameter UI and management features.
+- **Direct Execution: VSCode Extension (Optional)**: Install the `.vsix` file if you wish to bypass the desktop UI and execute code directly from VS Code.
 
 ## 🚀 3. Verification
 
