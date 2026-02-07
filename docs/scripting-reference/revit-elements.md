@@ -43,24 +43,24 @@ public class Params {
 }
 ```
 
-## ⚙️ Advanced / Legacy (Reference)
+## ⚙️ Advanced Selection (Reference)
 
-For advanced scenarios (pick any face, pick any edge) or legacy scripts, you can use `Reference` or `long` (Element ID).
+For advanced scenarios (pick any face, pick any edge) where you need geometric precision, you can use the Revit `Reference` type.
 
 ```csharp
 public class Params {
-    /// Pick any element (returns ID)
-    [Select(SelectionType.Element)]
-    public long ElementId { get; set; }
-
     /// Pick a Face (returns Reference)
     [Select(SelectionType.Face)]
     public Reference FaceRef { get; set; }
-}
 
-// Usage requires manual retrieval
-var element = Doc.GetElement(new ElementId(p.ElementId));
+    /// Pick an Edge (returns Reference)
+    [Select(SelectionType.Edge)]
+    public Reference EdgeRef { get; set; }
+}
 ```
+
+Usage requires manual retrieval within your script:
+`var element = Doc.GetElement(p.FaceRef);`
 
 ## 🏗️ Filtering Selections
 

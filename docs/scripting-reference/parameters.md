@@ -15,7 +15,7 @@ The engine implicitly maps C# types to specific UI controls.
 | `Level`, `WallType`, etc. | Dropdown | **Automatic Hydration**. Lists all elements of that type. |
 | `Wall`, `Floor`, etc. | Element Picker | **Strongly Typed Selection**. Shows a "Pick [Type]" button. |
 | `XYZ` | Point Picker | Shows a "Pick Point" button. Requires `[Select(SelectionType.Point)]`. |
-| `long` | Element Picker | Shows a "Select" button. Requires `[Select(SelectionType.Element)]`. |
+| `long` | Number Input | **Legacy**. Use actual Revit Classes instead of long IDs. |
 | `List<T>` | Checkbox Grid | Searchable grid for multi-selection. |
 
 ---
@@ -27,7 +27,7 @@ Selection attributes allow your script to pause and wait for the user to select 
 | :--- | :--- | :--- |
 | **`Point`** | `XYZ` | Returns the coordinates of a clicked point. |
 | **`Element`** | `Wall`, `Door`, etc. | Returns the **actual Revit Element** (Hydrated). |
-| **`Element`** | `long` | Returns the `Id.Value` (Legacy). |
+| **`Element`** | `long` | Returns the `Id.Value` (Legacy - Not Recommended). |
 | **`Face`** | `Reference` | Returns a Revit Reference to a selected face. |
 | **`Edge`** | `Reference` | Returns a Revit Reference to a selected edge. |
 
@@ -49,6 +49,7 @@ Attributes allow you to enforce constraints and data integrity before a script s
 | `[Url]` | Enforces valid URL format. |
 | `[CreditCard]` | Enforces valid credit card format. |
 | `[RegularExpression("...")]` | Advanced text validation via Regex patterns. |
+| `[Confirm("WORD")]` | **Safety Lock**. Disables execution until the user types the exact word. |
 
 ---
 
@@ -100,7 +101,7 @@ No collectors, no `GetElement()`, no casting. The objects are ready to use in yo
 
 ---
 
-## 🤝 4. Options Providers (Conventions)
+## 🤝 6. Options Providers (Conventions)
 Define properties with these suffixes to drive dynamic UI logic for a property named `MyParam`.
 
 | Suffix | Type | Description |
@@ -112,15 +113,15 @@ Define properties with these suffixes to drive dynamic UI logic for a property n
 
 ---
 
-## 🔄 5. The "Compute" Action Button
+## 🔄 7. The "Compute" Action Button
 To maintain performance, Paracore only extracts complex Revit data or runs logic-heavy providers when explicitly requested by the user.
 
 ### When does the "Compute" button appear?
-The engine automatically shows a **Refresh/Compute** button next to a parameter in three cases:
+The engine automatically shows a **Refresh/Compute** button next to a parameter in two cases:
 
-1.  **Revit Extraction**: Any parameter using the `[RevitElements]` attribute.
+1.  **Revit Class Properties**: Any Hydrated property (e.g. `Level`, `WallType`) or those using the `[RevitElements]` attribute.
 2.  **Logic-Heavy Providers**: If your `_Options` provider contains C# logic (e.g., `.OrderBy()`, `.Where()`, or `new FilteredElementCollector(...)`).
-3.  **Active Document Sync**: When the list depends on the current Revit context (checked every time the button is clicked).
+3.  **Active Document Sync**: Checked every time the button is clicked to ensure data matches the open document.
 
 ### Static vs Dynamic Lists
 ```csharp
@@ -131,7 +132,7 @@ public class Params {
 
     // CASE B: Logic (Triggers Button)
     // Uses C# transformation; requires manual refresh.
-    public List<string> SortedNames_Options => (new List<string> {"Z", "A"}).OrderBy(n => n).ToList();
+    public List<Wall> ComplexWalls_Options => new FilteredElementCollector(Doc).OfClass(typeof(Wall)).ToList();
 }
 ```
 

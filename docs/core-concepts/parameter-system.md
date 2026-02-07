@@ -6,7 +6,7 @@ The **Paracore Parameter Engine** is the specialized component that drives the u
 
 The Parameter Engine operates on the principle of **Inference**. Instead of forcing you to define UI components manually, it infers the UI from your data types and naming conventions:
 
-1.  **Type Inference**: A `bool` becomes a toggle; a `double` becomes a numeric input; a `List<string>` becomes a multi-select dropdown.
+1.  **Type Inference**: A `bool` becomes a toggle; a `double` becomes a numeric input; a `List<Wall>` becomes a multi-select dropdown of wall elements.
 2.  **Constraint Inference**: A property decorated with `[Range(0, 100)]` is automatically projected as a slider.
 3.  **Convention Inference**: A property named `Level_Options` is automatically linked as a data provider for a property named `Level`.
 

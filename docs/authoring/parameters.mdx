@@ -1,105 +1,105 @@
-import ParameterUIComplex from '@site/static/img/parameter-ui-complex.png';
-import ComputeTransformation from '@site/static/img/compute-transformation.png';
-import RunScriptButton from '@site/static/img/run-script-button.png';
-
-# The Parameter Engine
-
-Paracore's **Parameter Engine** automatically transforms your C# code into a rich, validated user interface. By following simple naming conventions or using specialized attributes, you can create professional-grade tools with zero UI code.
-
-<img src={ParameterUIComplex} alt="Parameter UI Complex" />
-
-## 🏗️ The "Params" Pattern
-
-To define parameters, create a public class named `Params` at the bottom of your script. Every **public property** with both a getter and a setter in this class is automatically detected as a script parameter.
-
-```csharp
-// --- LOGIC ---
-var p = new Params();
-Println($"Processing Project: {p.ProjectName}");
-
-// --- TYPES ---
-public class Params
-{
-    /// <summary>
-    /// This summary appears as a tooltip in the UI.
-    /// </summary>
-    public string ProjectName { get; set; } = "New Project";
-
-    public int NumberOfIterations { get; set; } = 5;
-}
-```
-
-## 🪄 Magic Extraction (`[RevitElements]`)
-
-The `[RevitElements]` attribute is the fastest way to populate dropdowns or checkbox lists with Revit data without writing complex collectors.
-
-- **Single Selection**: Use a `string` property to get a dropdown.
-- **Multi-Selection**: Use a `List<string>` property to get a checkbox grid.
-
-## 🔄 The Compute Action
-
-The **Compute** (🔄) button is an intelligent tool that fetches live data from Revit via **Options Providers**.
-
-<img src={ComputeTransformation} alt="Compute Transformation" />
-
--   **Workflow**: Computed parameters start as a **Standard Text Box**. You can type a value manually, but clicking **Compute** is the recommended way to fetch accurate model data.
--   **Transformation**: Upon clicking, the text box transforms into a **Dropdown** (for single types) or a **Searchable Checkbox Grid** (for collection types).
--   **Discovery**: The button appears automatically if the parameter uses `[RevitElements]` or an **Options Provider** containing logic (such as collectors or sorting).
-
-### Static vs. Dynamic Providers
-```csharp
-using Autodesk.Revit.DB;
-
-// --- 1. EXECUTION LOGIC ---
-
-// Instantiate params
-var p = new Params();
-
-
-public class Params
-{
-    public string Name { get; set; }
-
-    // CASE A: Static Provider (No Compute button)
-    // List is hardcoded; UI is ready immediately.
-    public List<string> Name_Options => ["John", "Jack", "Jasper"];
-
-    // CASE B: Dynamic Provider (Triggers Compute button)
-    // Uses C# logic; requires manual trigger to run in Revit.
-
-    public string Apps { get; set; }
-    public List<string> Apps_Options
-    {
-        get
-        {
-            List<string> apps = ["Paracore", "Dynamo", "Rhino"];
-            return apps.OrderBy(n => n).ToList();
-
-        }
-    }
-}
-```
-
----
-
-## 🚀 Execution
-
-Once you have finished configuring your parameters, locate the **Run Script** button at the **very bottom** of the Parameters tab. 
-
-<img src={RunScriptButton} alt="Run Script Button" />
-
+import ParameterUIComplex from '@site/static/img/parameter-ui-complex.png';
+import ComputeTransformation from '@site/static/img/compute-transformation.png';
+import RunScriptButton from '@site/static/img/run-script-button.png';
+
+# The Parameter Engine
+
+Paracore's **Parameter Engine** automatically transforms your C# code into a rich, validated user interface. By following simple naming conventions or using specialized attributes, you can create professional-grade tools with zero UI code.
+
+<img src={ParameterUIComplex} alt="Parameter UI Complex" />
+
+## 🏗️ The "Params" Pattern
+
+To define parameters, create a public class named `Params` at the bottom of your script. Every **public property** with both a getter and a setter in this class is automatically detected as a script parameter.
+
+```csharp
+// --- LOGIC ---
+var p = new Params();
+Println($"Processing Project: {p.ProjectName}");
+
+// --- TYPES ---
+public class Params
+{
+    /// <summary>
+    /// This summary appears as a tooltip in the UI.
+    /// </summary>
+    public string ProjectName { get; set; } = "New Project";
+
+    public int NumberOfIterations { get; set; } = 5;
+}
+```
+
+## 🪄 Type-Safe Hydration
+
+**Hydration** is the fastest way to get Revit data into your script. Instead of using strings or IDs, you use the actual Revit API types (e.g., `Level`, `WallType`, `Material`) as your property types.
+
+- **Automatic Dropdowns**: Properties like `public Level MyLevel { get; set; }` automatically generate a searched dropdown.
+- **Loadable Families**: Use the `[RevitElements]` attribute on a Revit Class property (like `FamilyInstance`) to specify a target category (e.g., `[RevitElements(Category="Doors")]`).
+
+## 🔄 The Compute Action
+
+The **Compute** (🔄) button is an intelligent tool that fetches live data from Revit.
+
+<img src={ComputeTransformation} alt="Compute Transformation" />
+
+-   **Workflow**: For complex lists (like all Walls in a project), Paracore waiting for a manual "Compute" trigger ensures the UI remains fast and responsive.
+-   **Transformation**: Upon clicking, the property is instantly **Hydrated** with the latest model data and presented as a searchable list.
+-   **Discovery**: The button appears automatically for Revit Class properties or any parameter with an **Options Provider** containing logic.
+
+### Static vs. Dynamic Providers
+```csharp
+using Autodesk.Revit.DB;
+
+// --- 1. EXECUTION LOGIC ---
+
+// Instantiate params
+var p = new Params();
+
+
+public class Params
+{
+    public string Name { get; set; }
+
+    // CASE A: Static Provider (No Compute button)
+    // List is hardcoded; UI is ready immediately.
+    public List<string> Name_Options => ["John", "Jack", "Jasper"];
+
+    // CASE B: Dynamic Provider (Triggers Compute button)
+    // Uses C# logic; requires manual trigger to run in Revit.
+
+    public string Apps { get; set; }
+    public List<string> Apps_Options
+    {
+        get
+        {
+            List<string> apps = ["Paracore", "Dynamo", "Rhino"];
+            return apps.OrderBy(n => n).ToList();
+
+        }
+    }
+}
+```
+
+---
+
+## 🚀 Execution
+
+Once you have finished configuring your parameters, locate the **Run Script** button at the **very bottom** of the Parameters tab. 
+
+<img src={RunScriptButton} alt="Run Script Button" />
+
 -   **Validation**: The button will be disabled if any `[Required]` or `[Mandatory]` fields are empty, or if a `[Confirm]` field does not match the required text.
 
-
 
 
-
+
+
 > 💡 **Tip**: If you encounter an "ambiguous reference" error in VS Code for `[Required]`, you can use **`[Mandatory]`** instead. Both perform the same logical validation.
 
-
-
--   **Feedback**: Immediately to the right of the Run button, an **Execution Status** icon (✅/❌) will appear once the script finishes, allowing you to quickly check the result.
-
----
-
-*Next: Learn how to save your configurations with [Presets](./presets.mdx).*
+
+
+-   **Feedback**: Immediately to the right of the Run button, an **Execution Status** icon (✅/❌) will appear once the script finishes, allowing you to quickly check the result.
+
+---
+
+*Next: Learn how to save your configurations with [Presets](./presets.mdx).*
