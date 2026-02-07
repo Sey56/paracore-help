@@ -34,5 +34,27 @@ Transact("Update Wall", () => {
 
 ---
 
-## 📊 Structured Output (`Show`)
-... (rest of content preserved)
+## 📊 Visual Helpers
+These helpers automatically format and send data to the **Table Tab** for analysis and visualization.
+
+| Method | Description |
+| :--- | :--- |
+| **`Table(data)`** | Renders a list of objects as a searchable, sortable grid. |
+| **`BarChart(data)`** | Renders data as a Bar Chart. |
+| **`PieChart(data)`** | Renders data as a Pie Chart. |
+| **`LineChart(data)`** | Renders data as a Line Chart. |
+
+### Example: Quick Table
+```csharp
+var walls = new FilteredElementCollector(Doc).OfCategory(BuiltInCategory.OST_Walls).ToElements();
+Table(walls.Select(w => new { w.Name, w.Id }));
+```
+
+---
+
+## 🛠️ Advanced: `Show(type, data)`
+The underlying engine uses the `Show` method. While you can use it directly, the specialized helpers above are recommended.
+
+```csharp
+Show("table", myData);
+```

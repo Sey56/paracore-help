@@ -86,7 +86,7 @@ foreach (var element in elements)
     });
 }
 
-Show("table", tableData);
+Table(tableData);
 ```
 
 ## 💡 Try This

@@ -112,7 +112,7 @@ var report = grouped
     })
     .OrderByDescending(x => x.InstanceCount);
 
-Show("table", report.ToList());
+Table(report.ToList());
 ```
 
 ## 💡 Try This
