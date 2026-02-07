@@ -12,10 +12,9 @@ The engine implicitly maps C# types to specific UI controls.
 | `string` | Text Box | Becomes a dropdown if an Options Provider is present. |
 | `bool` | Toggle Switch | Standard On/Off switch. |
 | `int` / `double` | Number Input | Strictly validated for numeric values. |
-| `Level`, `WallType`, etc. | Dropdown | **Automatic Hydration**. Lists all elements of that type. |
-| `Wall`, `Floor`, etc. | Element Picker | **Strongly Typed Selection**. Shows a "Pick [Type]" button. |
+| `Level`, `WallType`, etc. | Dropdown | **Type-Safe Hydration**. Lists all elements of that type. |
+| `Wall`, `Floor`, etc. | Element Picker | **Type-Safe Selection**. Shows a "Pick [Type]" button. |
 | `XYZ` | Point Picker | Shows a "Pick Point" button. Requires `[Select(SelectionType.Point)]`. |
-| `long` | Number Input | **Legacy**. Use actual Revit Classes instead of long IDs. |
 | `List<T>` | Checkbox Grid | Searchable grid for multi-selection. |
 
 ---
@@ -26,8 +25,7 @@ Selection attributes allow your script to pause and wait for the user to select 
 | SelectionType | Data Type | Result |
 | :--- | :--- | :--- |
 | **`Point`** | `XYZ` | Returns the coordinates of a clicked point. |
-| **`Element`** | `Wall`, `Door`, etc. | Returns the **actual Revit Element** (Hydrated). |
-| **`Element`** | `long` | Returns the `Id.Value` (Legacy - Not Recommended). |
+| **`Element`** | `Wall`, `Door`, etc. | Returns the **Revit Element** object. |
 | **`Face`** | `Reference` | Returns a Revit Reference to a selected face. |
 | **`Edge`** | `Reference` | Returns a Revit Reference to a selected edge. |
 
@@ -70,8 +68,8 @@ public class Params {
 
 ---
 
-## 🪄 5. Automatic Hydration
-The fastest way to get Revit data into your script. Paracore automatically finds elements based on the type you request.
+## 🪄 5. Type-Safe Hydration
+The standard way to get Revit data into your script. Paracore automatically finds elements based on the type you request.
 
 ### Element Types (Dropdowns)
 If you ask for a **Type**, **Level**, **View**, or **Material**, Paracore creates a searched dropdown list.
@@ -81,8 +79,18 @@ public class Params {
     // Automatically list all Wall Types
     public WallType MyWallType { get; set; }
 
-    // Automatically list all Levels
-    public Level BaseLevel { get; set; }
+    // Multi-select Checkbox Grid for Levels
+    public List<Level> ProjectLevels { get; set; }
+}
+```
+
+### Loadable Families (`[RevitElements]`)
+For loadable families (e.g., Doors, Windows, Furniture), use the `[RevitElements]` attribute to specify the target category. This works for both single elements and lists.
+
+```csharp
+public class Params {
+    [RevitElements(Category = "Doors")]
+    public List<FamilyInstance> SelectedDoors { get; set; }
 }
 ```
 

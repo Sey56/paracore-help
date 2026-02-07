@@ -2,7 +2,7 @@
 
 Paracore provides specialized support for interacting with Revit elements directly from the UI. This page details how the **Revit Pickers** work.
 
-## 🧱 Strongly Typed Selection (Recommended)
+## 🧱 Type-Safe Selection (Picking)
 
 The best way to select elements is to ask for the specific **Revit Type** you need. Paracore handles the UI, validation, and object retrieval for you.
 
@@ -24,6 +24,53 @@ public class Params {
 
 // Usage in Main.cs - No casting needed!
 Println($"Selected Wall Id: {p.TargetWall.Id}");
+```
+
+## ⚡ Automatic Hydration (Listing)
+
+**Hydration** is the standard way to present a list of Revit elements to the user. Instead of picking a single element on screen, Paracore automatically fetches all available elements of that type and presents them as a searchable dropdown.
+
+- **Trigger**: Simply use a Revit API class (e.g., `Level`, `WallType`, `Material`) as a property type.
+- **UI**: Paracore generates a searched dropdown.
+- **Sync**: Click the **Compute (🔄)** button in the UI to refresh the list with the latest model data.
+
+```csharp
+public class Params {
+    /// Paracore creates a searched dropdown of all Levels
+    public Level BaseLevel { get; set; }
+
+    /// Paracore creates a list of all Floor Types
+    public FloorType TargetType { get; set; }
+}
+```
+
+### 🗂️ Multi-Select Hydration (Checkboxes)
+To allow users to select multiple elements at once, simply wrap the Revit Class in a `List<T>`. Paracore will automatically generate a **Searchable Checkbox Grid**.
+
+```csharp
+public class Params {
+    /// Paracore creates a checkbox grid of ALL Walls
+    public List<Wall> AllWalls { get; set; }
+}
+```
+
+## 🚪 Loadable Families (`[RevitElements]`)
+
+For loadable families (e.g., Doors, Windows, Furniture), the Engine needs to know which category to filter for. Use the `[RevitElements]` attribute to define the target category.
+
+- **Single Selection**: Returns one element.
+- **Multi-Selection**: Use `List<T>` to return a collection.
+
+```csharp
+public class Params {
+    /// List all Door Types in the project
+    [RevitElements(Category = "Doors")]
+    public List<FamilySymbol> SelectedTypes { get; set; }
+
+    /// Select specific Door Instances
+    [RevitElements(Category = "Doors")]
+    public List<FamilyInstance> SelectedDoors { get; set; }
+}
 ```
 
 ## 📍 XYZ (Point Picker)

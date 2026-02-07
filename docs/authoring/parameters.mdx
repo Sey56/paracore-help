@@ -31,7 +31,7 @@ public class Params
 
 ## 🪄 Type-Safe Hydration
 
-**Hydration** is the fastest way to get Revit data into your script. Instead of using strings or IDs, you use the actual Revit API types (e.g., `Level`, `WallType`, `Material`) as your property types.
+**Hydration** is the standard way to get Revit data into your script. Instead of using strings or IDs, you use the actual Revit API types (e.g., `Level`, `WallType`, `Material`) as your property types.
 
 - **Automatic Dropdowns**: Properties like `public Level MyLevel { get; set; }` automatically generate a searched dropdown.
 - **Loadable Families**: Use the `[RevitElements]` attribute on a Revit Class property (like `FamilyInstance`) to specify a target category (e.g., `[RevitElements(Category="Doors")]`).
