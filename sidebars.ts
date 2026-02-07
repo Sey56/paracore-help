@@ -28,7 +28,7 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: '✍️ Authoring',
+      label: '✒️ Authoring',
       items: [
         'authoring/index',
         'authoring/gallery',
@@ -71,19 +71,6 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: '📚 Tutorials',
-      items: [
-        'tutorials/index',
-        'tutorials/hello-revit',
-        'tutorials/hello-wall',
-        'tutorials/parametric-floor',
-        'tutorials/element-selection',
-        'tutorials/multi-file-script',
-      ],
-    },
-
-    {
-      type: 'category',
       label: '🏢 Enterprise (Roadmap)',
       items: [
         'enterprise/index',
@@ -93,6 +80,35 @@ const sidebars: SidebarsConfig = {
     'release-notes',
     'support',
     'privacy',
+  ],
+
+  // NEW: Dedicated Tutorials Sidebar
+  tutorialsSidebar: [
+    'tutorials/index',
+    {
+      type: 'category',
+      label: '🌟 Paracore Fundamentals',
+      link: { type: 'generated-index' },
+      items: [
+        'tutorials/fundamentals/hello-revit',
+        'tutorials/fundamentals/hello-wall',
+        'tutorials/fundamentals/parametric-floor',
+        'tutorials/fundamentals/element-selection',
+        'tutorials/fundamentals/multi-file-script',
+      ],
+    },
+    {
+      type: 'category',
+      label: '🏗️ Revit API Fundamentals',
+      link: { type: 'generated-index' },
+      items: [
+        'tutorials/revit-api/reading-the-model',
+        'tutorials/revit-api/parameters-deep-dive',
+        'tutorials/revit-api/conditional-logic',
+        'tutorials/revit-api/bulk-updates',
+        'tutorials/revit-api/types-vs-instances',
+      ],
+    },
   ],
 };
 

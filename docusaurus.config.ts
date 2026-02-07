@@ -108,6 +108,12 @@ const config: Config = {
           position: 'left',
           label: 'Documentation',
         },
+        {
+          type: 'docSidebar',
+          sidebarId: 'tutorialsSidebar',
+          position: 'left',
+          label: 'Tutorials',
+        },
         { to: '/blog', label: 'Blog', position: 'left' },
         { to: '/docs/getting-started/downloads', label: 'Download', position: 'left' },
         { to: '/docs/support', label: 'Support', position: 'left' },

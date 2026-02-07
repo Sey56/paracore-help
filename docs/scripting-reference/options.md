@@ -9,7 +9,7 @@ Paracore allows you to create dynamic, data-driven selection lists using **Optio
 To create an Options Provider for a parameter named **`X`**, you define a companion property named **`X_Options`**.
 
 ### Type Matching Rule
-The return type of your **Options Provider** must match the type of your main parameter (e.g., `List<string>`, `List<double>`, or `List<int>`).
+The return type of your **Options Provider** must match the type of your main parameter (e.g., `List<string>`, `List<double>`, or `List<WallType>`).
 
 ---
 
@@ -33,15 +33,15 @@ The engine detects "Computable" providers by analyzing the complexity of the exp
 Use dynamic providers for fine-grained filtering that goes beyond standard magic extraction.
 
 ```csharp
+// In V3, we return the actual elements!
 public class Params {
-    public string WallTypeName { get; set; }
+    public WallType MyWallType { get; set; }
 
     // Custom dynamic provider
-    public List<string> WallTypeName_Options => new FilteredElementCollector(Doc)
+    public List<WallType> MyWallType_Options => new FilteredElementCollector(Doc)
                 .OfClass(typeof(WallType))
                 .Cast<WallType>()
                 .Where(wt => wt.Kind == WallKind.Basic)
-                .Select(l => l.Name)
                 .ToList();
 }
 ```

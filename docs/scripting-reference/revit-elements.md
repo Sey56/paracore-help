@@ -1,6 +1,30 @@
-# Revit Element Mapping
+# Revit Element Selection
 
 Paracore provides specialized support for interacting with Revit elements directly from the UI. This page details how the **Revit Pickers** work.
+
+## 🧱 Strongly Typed Selection (Recommended)
+
+The best way to select elements is to ask for the specific **Revit Type** you need. Paracore handles the UI, validation, and object retrieval for you.
+
+### Logic Flow
+1.  **UI**: User clicks "Pick Wall" (Paracore knows to filter for Walls).
+2.  **Revit**: Paracore prompts the user to select a Wall. User *cannot* select other categories.
+3.  **Execution**: Paracore retrieves the `Wall` object and injects it into your `Params` class.
+
+```csharp
+public class Params {
+    /// Paracore creates a "Pick" button that only accepts Walls
+    [Select(SelectionType.Element)]
+    public Wall TargetWall { get; set; }
+
+    /// Paracore creates a "Pick" button for Floors
+    [Select(SelectionType.Element)]
+    public Floor TargetFloor { get; set; }
+}
+
+// Usage in Main.cs - No casting needed!
+Println($"Selected Wall Id: {p.TargetWall.Id}");
+```
 
 ## 📍 XYZ (Point Picker)
 
@@ -9,34 +33,33 @@ When you define a parameter of type `Autodesk.Revit.DB.XYZ`, Paracore automatica
 ### Logic Flow
 1.  **UI**: User clicks "Pick Point".
 2.  **Revit**: Paracore prompts the user to pick a point in the active view.
-3.  **Bridge**: The coordinates (X, Y, Z) are captured and sent back to the UI.
-4.  **Execution**: When the script runs, Paracore injects a `new XYZ(x, y, z)` object into your `Params` class.
+3.  **Execution**: Paracore injects a `new XYZ(x, y, z)` object.
 
 ```csharp
 public class Params {
     /// Pick the insertion point
+    [Select(SelectionType.Point)]
     public XYZ Origin { get; set; }
 }
 ```
 
-## 🧱 Reference (Element Picker)
+## ⚙️ Advanced / Legacy (Reference)
 
-When you define a parameter of type `Autodesk.Revit.DB.Reference`, Paracore generates an **Element Picker**.
-
-### Logic Flow
-1.  **UI**: User clicks "Pick Element".
-2.  **Revit**: Paracore prompts the user to select an element.
-3.  **Bridge**: The element's **Stable Representation** string is captured.
-4.  **Execution**: Paracore uses `Reference.ParseFromStableRepresentation(Doc, ...)` to reconstruct the valid reference inside the execution transaction.
+For advanced scenarios (pick any face, pick any edge) or legacy scripts, you can use `Reference` or `long` (Element ID).
 
 ```csharp
 public class Params {
-    /// Select the host wall
-    public Reference WallRef { get; set; }
+    /// Pick any element (returns ID)
+    [Select(SelectionType.Element)]
+    public long ElementId { get; set; }
+
+    /// Pick a Face (returns Reference)
+    [Select(SelectionType.Face)]
+    public Reference FaceRef { get; set; }
 }
 
-// Usage in Main.cs
-var wall = Doc.GetElement(Params.WallRef) as Wall;
+// Usage requires manual retrieval
+var element = Doc.GetElement(new ElementId(p.ElementId));
 ```
 
 ## 🏗️ Filtering Selections

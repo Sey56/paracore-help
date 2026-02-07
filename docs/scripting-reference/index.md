@@ -10,7 +10,7 @@ Instant access to the Revit context (`Doc`, `UIDoc`, `UIApp`), logging (`Println
 ### [The Parameter Engine](./parameters.md) (Reference)
 A detailed breakdown of all supported attributes, naming conventions, and data providers.
 
-### [Revit Element Mapping](./revit-elements.md)
+### [Revit Element Selection](./revit-elements.md)
 How to use specialized Revit pickers (Point, Element) and filter model data efficiently.
 
 ### [Units & Conversion](./units.md)

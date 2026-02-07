@@ -12,9 +12,10 @@ The engine implicitly maps C# types to specific UI controls.
 | `string` | Text Box | Becomes a dropdown if an Options Provider is present. |
 | `bool` | Toggle Switch | Standard On/Off switch. |
 | `int` / `double` | Number Input | Strictly validated for numeric values. |
+| `Level`, `WallType`, etc. | Dropdown | **Automatic Hydration**. Lists all elements of that type. |
+| `Wall`, `Floor`, etc. | Element Picker | **Strongly Typed Selection**. Shows a "Pick [Type]" button. |
 | `XYZ` | Point Picker | Shows a "Pick Point" button. Requires `[Select(SelectionType.Point)]`. |
 | `long` | Element Picker | Shows a "Select" button. Requires `[Select(SelectionType.Element)]`. |
-| `Reference` | Face/Edge Picker | Shows a "Pick Face" button. Requires `[Select(SelectionType.Face)]` or `SelectionType.Edge`. |
 | `List<T>` | Checkbox Grid | Searchable grid for multi-selection. |
 
 ---
@@ -25,13 +26,14 @@ Selection attributes allow your script to pause and wait for the user to select 
 | SelectionType | Data Type | Result |
 | :--- | :--- | :--- |
 | **`Point`** | `XYZ` | Returns the coordinates of a clicked point. |
-| **`Element`** | `long` | Returns the `Id.Value` of a selected element. |
+| **`Element`** | `Wall`, `Door`, etc. | Returns the **actual Revit Element** (Hydrated). |
+| **`Element`** | `long` | Returns the `Id.Value` (Legacy). |
 | **`Face`** | `Reference` | Returns a Revit Reference to a selected face. |
 | **`Edge`** | `Reference` | Returns a Revit Reference to a selected edge. |
 
 ---
 
-## 🛡️ 2. Validation Attributes
+## 🛡️ 3. Validation Attributes
 
 Attributes allow you to enforce constraints and data integrity before a script starts.
 
@@ -50,7 +52,7 @@ Attributes allow you to enforce constraints and data integrity before a script s
 
 ---
 
-## 🔒 3. The Deletion Safety Lock (`[Confirm]`)
+## 🔒 4. The Deletion Safety Lock (`[Confirm]`)
 
 For destructive or high-risk operations (e.g., deleting all elements, mass renaming), use the `[Confirm]` attribute. This forces the user to perform a deliberate action before the **Run Script** button is enabled.
 
@@ -67,20 +69,34 @@ public class Params {
 
 ---
 
-## 🪄 3. Magic Extraction (`[RevitElements]`)
-The fastest way to populate selection lists with Revit data without writing collectors.
+## 🪄 5. Automatic Hydration
+The fastest way to get Revit data into your script. Paracore automatically finds elements based on the type you request.
+
+### Element Types (Dropdowns)
+If you ask for a **Type**, **Level**, **View**, or **Material**, Paracore creates a searched dropdown list.
 
 ```csharp
-// --- LOGIC ---
-var p = new Params();
-Println($"Selected: {p.SelectedWall}");
-
-// --- TYPES ---
 public class Params {
-    [RevitElements(TargetType = "WallType")]
-    public string SelectedWall { get; set; }
+    // Automatically list all Wall Types
+    public WallType MyWallType { get; set; }
+
+    // Automatically list all Levels
+    public Level BaseLevel { get; set; }
 }
 ```
+
+### Element Instances (Pickers)
+If you ask for a specific **Instance Class** (like `Wall`, `Door`, `FamilyInstance`), Paracore creates a "Pick" button that filters checking for that type.
+
+```csharp
+public class Params {
+    // Creates a "Pick" button that only allows selecting Walls
+    [Select(SelectionType.Element)]
+    public Wall MyWall { get; set; }
+}
+```
+
+No collectors, no `GetElement()`, no casting. The objects are ready to use in your script.
 
 ---
 
