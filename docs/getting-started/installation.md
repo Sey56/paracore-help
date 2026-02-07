@@ -16,6 +16,8 @@ Paracore is a self-sufficient platform for Revit automation managed via the **Pa
 ## 📥 1. Download the Components
 
 Visit the **[Downloads](./downloads.md)** page to get:
+1. **Paracore Revit Addin** (`Paracore_Addin_v3.0.0.exe`) - **Required**.
+2. **Paracore Desktop App** (`Paracore_v3.0.0_x64.msi`).
 3. **CoreScript VSCode Extension** (`.vsix`) - **Optional** (For direct execution without the Paracore Desktop UI).
 
 ## 🛠️ 2. Installation Steps
