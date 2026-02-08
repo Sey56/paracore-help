@@ -11,16 +11,19 @@ This release marks a fundamental shift in the Paracore engine, moving away from 
 > [!CAUTION]
 > **CRITICAL BREAKING CHANGE**: V3.0.2 officially removes support for string-based Revit element extraction. 
 > **Legacy scripts using strings for Revit elements will no longer function.** 
-> All scripts must be updated to the new **Hydration** system. Please refer to the updated [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) for the new "Gold Standard" implementation patterns.
+> All scripts must be updated to the professional **Hydration** system. Please refer to the updated [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) for the new "Gold Standard" implementations.
 
 - **💎 Type-Safe Hydration**: Direct access to real Revit objects like `Wall`, `Level`, or `List<Room>` in your `Params` class.
 - **⚡ Reactive Compute**: `_Options` providers are now reactive, allowing dynamic UI updates based on other parameters.
 - **🪄 Stateless Logic**: The engine now clears previous selections when clicking "Compute," ensuring a clean state for every run.
 
-### 🎨 Comprehensive UI Overhaul
-- **🇽 "Hero" Focus Mode**: A distraction-free authoring environment that centers your script and hides background clutter for maximum concentration.
-- **🎛️ Premium Controls**: Introduced professional-grade parameter types including **Numerical Steppers**, **Color Pickers**, and **Segmented Toggles**.
-- **🚦 Smart Validation**: Errors and missing parameters are now highlighted with pulsing indicators, replacing intrusive modals with a sleek, non-blocking feedback loop.
+### 🎨 UI & Engine Refinements
+- **🔄 Smart Multi-Document Awareness (Context Sync)**: Compute buttons and selection pickers are now context-aware. Paracore saves computed results (like lists of elements) in the UI state. If you switch Revit documents, these references become stale—the elements simply don't exist in the new scene. A **Triangle Warning** and tooltip now identify exactly which document the data was "Computed In" vs your "Current Document," preventing execution failures caused by referencing non-existent elements.
+- **🚀 Virtualized High-Scale Inputs**: Dropdowns and Multi-Select checkboxes are now fully virtualized. They can handle lists of **tens of thousands of elements** with zero performance lag. We've also added a **search box to standard dropdowns** (previously only available in multi-select).
+- **🇽 Focus/Hero Mode Refinement**: 
+    - Enhanced look and feel with a smooth **zoom-out animation** when entering Focus Mode.
+    - **Stability Fix**: Resolved a critical bug where the gallery would become blank when switching script sources or signing out while in Focus Mode. The engine now gracefully exits Focus Mode during these actions.
+- **📂 Bulk Group Controls**: Added **"Expand All"** and **"Collapse All"** buttons to the parameter groups, enabling quick navigation for complex scripts with many parameter categories.
 
 ---
 
