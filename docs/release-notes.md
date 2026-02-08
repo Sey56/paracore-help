@@ -17,13 +17,14 @@ This release marks a fundamental shift in the Paracore engine, moving away from 
 - **⚡ Reactive Compute**: `_Options` providers are now reactive, allowing dynamic UI updates based on other parameters.
 - **🪄 Stateless Logic**: The engine now clears previous selections when clicking "Compute," ensuring a clean state for every run.
 
-### 🎨 UI & Engine Refinements
-- **🔄 Smart Multi-Document Awareness (Context Sync)**: Compute buttons and selection pickers are now context-aware. Paracore saves computed results (like lists of elements) in the UI state. If you switch Revit documents, these references become stale—the elements simply don't exist in the new scene. A **Triangle Warning** and tooltip now identify exactly which document the data was "Computed In" vs your "Current Document," preventing execution failures caused by referencing non-existent elements.
-- **🚀 Virtualized High-Scale Inputs**: Dropdowns and Multi-Select checkboxes are now fully virtualized. They can handle lists of **tens of thousands of elements** with zero performance lag. We've also added a **search box to standard dropdowns** (previously only available in multi-select).
+### 🎨 Comprehensive UI Overhaul & Refinements
+- **🔄 Smart Context Sync (Multi-Doc Safety)**: The UI is now aware of which Revit document a value was computed in. If you switch files, a **Triangle Warning** appears on compute/selection buttons. The tooltips now identify both the "Previous Document" and "Current Document," prompting a recompute to prevent execution failures from stale or non-existent element references.
+- **🚀 High-Scale Input Virtualization**: We've implemented heavy-duty virtualization for Dropdowns and Multi-Select checkboxes, easily handling **tens of thousands of elements** with zero lag. 
+- **🔍 Universal Search**: Every dropdown now includes a search box (previously reserved for multi-select), ensuring effortless navigation through large datasets.
+- **📂 Bulk Group Controls**: Added **"Expand All"** and **"Collapse All"** buttons to the parameter groups, allowing users to toggle all categories at once.
 - **🇽 Focus/Hero Mode Refinement**: 
-    - Enhanced look and feel with a smooth **zoom-out animation** when entering Focus Mode.
-    - **Stability Fix**: Resolved a critical bug where the gallery would become blank when switching script sources or signing out while in Focus Mode. The engine now gracefully exits Focus Mode during these actions.
-- **📂 Bulk Group Controls**: Added **"Expand All"** and **"Collapse All"** buttons to the parameter groups, enabling quick navigation for complex scripts with many parameter categories.
+    - Enhanced look and feel with a new smooth **zoom-out animation** upon entry.
+    - **Stability Fix**: Resolved a critical bug where the gallery would become blank when switching sources or signing out while in Focus Mode. The app now gracefully exits Focus Mode during these lifecycle changes.
 
 ---
 
