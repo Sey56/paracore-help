@@ -13,7 +13,7 @@ Get the latest versions of the Paracore ecosystem components.
 ## 📚 Resources & Samples
 
 - **[Paracore Examples Library](https://github.com/Sey56/Paracore-Examples)**: A collection of production-ready scripts and tutorial files.
-- **[Revit API Docs](https://www.revitapidocs.com/)**: Essential reading for every Paracore developer.
+- **[Revit API Docs](https://www.revitapidocs.com/)**: Essential technical reference dictionary for every Paracore developer.
 
 ---
 

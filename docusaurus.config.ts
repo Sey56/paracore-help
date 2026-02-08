@@ -114,6 +114,7 @@ const config: Config = {
           position: 'left',
           label: 'Tutorials',
         },
+        { to: '/docs/release-notes', label: 'Releases', position: 'right' },
         { to: '/blog', label: 'Blog', position: 'left' },
         { to: '/docs/getting-started/downloads', label: 'Download', position: 'left' },
         { to: '/docs/support', label: 'Support', position: 'left' },
