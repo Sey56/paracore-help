@@ -26,6 +26,9 @@ This release marks a fundamental shift in the Paracore engine, moving away from 
     - Enhanced look and feel with a new smooth **zoom-out animation** upon entry.
     - **Stability Fix**: Resolved a critical bug where the gallery would become blank when switching sources or signing out while in Focus Mode. The app now gracefully exits Focus Mode during these lifecycle changes.
 
+### 🛠️ Professional Stability & Reliability
+- **🚀 Sidecar Process Management**: We've overhauled the lifecycle management of the local Python sidecar (`rap-server`). Paracore now correctly terminates the server process upon app exit. This prevents orphaned processes from hanging on **Port 8000**, ensuring a clean environment for local development and preventing system resource waste.
+
 ---
 
 ## V3.0.1 (February 2026) — Stability Patch
