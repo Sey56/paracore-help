@@ -2,18 +2,18 @@
 
 Version history and changelog for Paracore.
 
-## V3.0.2 (February 2026) — The Shift to Hydration
+## V3.0.2 (February 2026) — The Magic of Automatic Data Discovery
 
-This release marks a fundamental shift in the Paracore engine, moving away from string-based lookups toward a professional, type-safe **Hydration-First** architecture.
+This release marks a fundamental shift in the Paracore engine, moving away from string-based lookups toward a professional, type-safe architecture that automatically discovers Revit elements for you.
 
 ### 🏛️ Major Architectural Shift (Breaking Change)
 
 > [!CAUTION]
 > **CRITICAL BREAKING CHANGE**: V3.0.2 officially removes support for string-based Revit element extraction. 
 > **Legacy scripts using strings for Revit elements will no longer function.** 
-> All scripts must be updated to the professional **Hydration** system. Please refer to the updated [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) for the new "Gold Standard" implementations.
+> All scripts must be updated to the professional **Automatic Discovery** system. Please refer to the updated [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) for the new "Gold Standard" implementations.
 
-- **💎 Type-Safe Hydration**: Direct access to real Revit objects like `Wall`, `Level`, or `List<Room>` in your `Params` class.
+- **💎 Automatic Revit Discovery**: Direct access to real Revit objects like `Wall`, `Level`, or `List<Room>` in your `Params` class. Paracore finds them and lists them for you automatically.
 - **⚡ Reactive Compute**: `_Options` providers are now reactive, allowing dynamic UI updates based on other parameters.
 - **🪄 Stateless Logic**: The engine now clears previous selections when clicking "Compute," ensuring a clean state for every run.
 

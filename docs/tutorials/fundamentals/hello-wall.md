@@ -1,12 +1,12 @@
 # Tutorial 2: Hello Wall
 
-Create your first Revit element! Learn about **Hydration** (Paracore's superpower), transactions, and how to create a wall.
+Create your first Revit element! Learn about **Automatic Lists** (Paracore's superpower), transactions, and how to create a wall.
 
 **Finished Script**: `03_Tutorials/Paracore_Fundamentals/02_HelloWall.cs`
 
 ## 🎯 What You'll Learn
 
-- **Hydration**: Getting Revit elements (Levels, Types) automatically via inputs
+- **Automatic Element Discovery**: Getting Revit elements (Levels, Types) automatically via inputs
 - The `Transact()` wrapper for model modifications
 - Creating geometry with `XYZ` points and `Line.CreateBound()`
 - Using `Wall.Create()` to generate walls
@@ -27,8 +27,8 @@ var level = new FilteredElementCollector(Doc)
     .FirstElement() as Level;
 ```
 
-### The Paracore Way (Hydration)
-Paracore uses a system called **Hydration**. You simply define what you need in your `Params` class, and Paracore finds it for you and presents it as a dropdown in the UI.
+### The Paracore Way (Automatic Discovery)
+Paracore uses a "Magic" system of **Automatic Discovery**. You simply define what you need in your `Params` class, and Paracore finds it for you and presents it as a list in the UI.
 
 Let's define our inputs first. Add this to the bottom of your script:
 
@@ -52,8 +52,8 @@ public class Params {
 
 **That's it!** By simply declaring `public Level TargetLevel`, Paracore knows to:
 1. Scan your project for all Levels.
-2. Show them in a dropdown.
-3. pass the *real* `Level` object to your script when you run it.
+2. Show them in a dropdown list.
+3. Pass the *real* `Level` object to your script when you run it.
 
 ## Step 3: Define the Wall Geometry
 
@@ -101,13 +101,13 @@ Transact("Create Tutorial Wall", () =>
 ## Step 5: Run and Verify
 
 1. **Save** and switch to Paracore.
-2. You will see **Dropdowns** for "TargetLevel" and "WallType". This is Hydration in action!
+2. You will see **Dropdowns** for "TargetLevel" and "WallType". This is the automatic discovery in action!
 3. Pick a Level (e.g., "Level 1") and a Wall Type (e.g., "Generic - 200mm").
 4. Click **Run Script**.
 5. Check Revit - your wall is there, using the exact type and level you chose.
 
 ## 💡 Key Takeaway
-**Hydration** saves you from writing boring "boilerplate" code. If you need a `Level`, just ask for a `Level`. If you need a `Door`, just ask for a `FamilyInstance`.
+**Automatic Lists** save you from writing boring "boilerplate" code. If you need a `Level`, just ask for a `Level`. If you need a `Door`, just ask for a `FamilyInstance`.
 
 ---
 

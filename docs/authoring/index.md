@@ -13,7 +13,7 @@ Learn how to use Paracore's professional toolset to browse, configure, and execu
 -   **[Presets](./presets.mdx)**: Save and restore common parameter configurations.
 
 ### The Developer Experience
--   **[Parameter Engine](./parameters.mdx)**: How to generate high-fidelity UIs directly from C# code.
+-   **[Parameter Engine](../scripting-reference/parameters.mdx)**: How to generate high-fidelity UIs directly from C# code.
 -   **[Script Metadata](./metadata.md)**: Adding rich descriptions, authors, and compatibility checks.
 -   **[VS Code Integration](./vscode.mdx)**: Setting up your IDE for full authoring and direct-run support.
 

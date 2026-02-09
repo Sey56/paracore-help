@@ -10,7 +10,7 @@ Paracore uses a "Decoupled Architecture." This means the interface you use to ma
 ### [Script Distribution Types](./script-types.md)
 Understand the difference between a **Single-File Script** and a **Multi-File Script**. Learn how Paracore identifies your scripts within a Script Source and how to organize complex logic into folders.
 
-### [The Parameter Engine](./parameter-system.md)
+### [The Parameter Engine](../scripting-reference/parameters.mdx)
 Discover how Paracore "reads" your code to build a user interface automatically. This section explains how your C# properties turn into sliders, dropdowns, and Revit element pickers.
 
 ---

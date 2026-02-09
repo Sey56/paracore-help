@@ -22,7 +22,6 @@ const sidebars: SidebarsConfig = {
         'core-concepts/index',
         'core-concepts/architecture',
         'core-concepts/script-types',
-        'core-concepts/parameter-system',
       ],
     },
 
@@ -36,7 +35,6 @@ const sidebars: SidebarsConfig = {
         'authoring/ai-generation',
         'authoring/ai-debugging',
         'authoring/execution',
-        'authoring/parameters',
         'authoring/presets',
         'authoring/metadata',
         'authoring/vscode',

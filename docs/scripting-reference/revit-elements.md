@@ -26,13 +26,13 @@ public class Params {
 Println($"Selected Wall Id: {p.TargetWall.Id}");
 ```
 
-## ⚡ Automatic Hydration (Listing)
+## ⚡ Automatic Listing (Element Choice)
 
-**Hydration** is the standard way to present a list of Revit elements to the user. Instead of picking a single element on screen, Paracore automatically fetches all available elements of that type and presents them as a searchable dropdown.
+The "Magic" of Paracore is how it automatically presents a list of Revit elements to the user based on your code. Instead of picking a single element on screen, Paracore automatically fetches all available elements of that type and presents them as a searchable dropdown.
 
 - **Trigger**: Simply use a Revit API class (e.g., `Level`, `WallType`, `Material`) as a property type.
-- **UI**: Paracore generates a searched dropdown.
-- **Sync**: Click the **Compute (🔄)** button in the UI to refresh the list with the latest model data.
+- **UI**: Paracore generates a searchable dropdown.
+- **Sync**: Click the **Compute (🔄)** button in the UI to fetch the latest elements from your model.
 
 ```csharp
 public class Params {
@@ -44,12 +44,12 @@ public class Params {
 }
 ```
 
-### 🗂️ Multi-Select Hydration (Checkboxes)
-To allow users to select multiple elements at once, simply wrap the Revit Class in a `List<T>`. Paracore will automatically generate a **Searchable Checkbox Grid**.
+### 🗂️ Multi-Select Lists (Checkboxes)
+To allow users to select multiple elements at once, simply wrap the Revit Class in a `List<T>`. Paracore will automatically generate a **Virtualized Checkbox List** optimized for large projects.
 
 ```csharp
 public class Params {
-    /// Paracore creates a checkbox grid of ALL Walls
+    /// Paracore creates a checkbox list of ALL Walls
     public List<Wall> AllWalls { get; set; }
 }
 ```

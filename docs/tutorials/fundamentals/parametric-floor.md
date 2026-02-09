@@ -1,6 +1,6 @@
 # Tutorial 3: Parametric Floor
 
-Build on your geometry skills by creating a floor with user-defined dimensions, using **Hydration** to handle the heavy lifting.
+Build on your geometry skills by creating a floor with user-defined dimensions, using **Automatic Discovery** to handle the heavy lifting.
 
 **Finished Script**: `03_Tutorials/Paracore_Fundamentals/03_ParametricFloor.cs`
 
@@ -8,16 +8,16 @@ Build on your geometry skills by creating a floor with user-defined dimensions, 
 
 - Creating closed curve loops for floor boundaries
 - Using `Floor.Create()` with CurveLoops
-- **Automatic Hydration** of Levels and Floor Types
+- **Automatic Lists** for Levels and Floor Types
 
-## Step 1: Define Inputs (Hydration First)
+## Step 1: Define Inputs (Automatic Discovery)
 
 Let's start by defining everything we need in our `Params` class. This time we need a **Level** and a **Floor Type**.
 
 ```csharp
 public class Params
 {
-    // --- Revit Objects (Hydrated Automatically) ---
+    // --- Revit Objects (Discovered Automatically) ---
     
     /// <summary>Base level for the floor</summary>
     public Level TargetLevel { get; set; }
@@ -73,7 +73,7 @@ var loop = CurveLoop.Create(curves);
 
 ## Step 3: Create the Floor
 
-Now we create the floor using the **hydrated** objects (`p.FloorType` and `p.TargetLevel`).
+Now we create the floor using the objects discovered for us (`p.FloorType` and `p.TargetLevel`).
 
 ```csharp
 Transact("Create Floor", () => {

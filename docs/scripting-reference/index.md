@@ -7,7 +7,7 @@ The **Scripting Reference** provides a technical deep dive into the Paracore exe
 ### [Global Helpers](./globals.md)
 Instant access to the Revit context (`Doc`, `UIDoc`, `UIApp`), logging (`Println`), and transaction management (`Transact`).
 
-### [The Parameter Engine](./parameters.md) (Reference)
+### [The Parameter Engine](./parameters.mdx) (Reference)
 A detailed breakdown of all supported attributes, naming conventions, and data providers.
 
 ### [Revit Element Selection](./revit-elements.md)
