@@ -36,7 +36,7 @@ Run the `Paracore_Addin` installer. This installs the high-performance execution
 2. Navigate to the **Paracore** tab in the ribbon.
 3. Locate the **Paracore Server** toggle button. It will initially show the Paracore icon with the text **"Off"**.
 4. Click the button. A Task Dialog will appear confirming the connection.
-5. Close the dialog. The button text will now display **"On"**. You are now listening for automation requests.
+5. Close the confirmation task dialog. The button text will now display **"On"**. You are now ready to communicate with the desktop application.
 
 ### Step 3: Install the Paracore Desktop App
 Now that the Revit host is ready, run the `.msi` installer for the **Paracore Desktop App**. This is your primary dashboard for managing and running your script library.
@@ -46,12 +46,18 @@ Now that the Revit host is ready, run the `.msi` installer for the **Paracore De
 ## 🚀 3. Verification & Connection
 
 1.  Launch the **Paracore Desktop App**.
-2.  **Wait a few seconds**: The app automatically manages the lifecycle of the internal mediator server. 
+2.  **Wait a few seconds**: The app automatically manages the lifecycle of the mediator server that connects itself with Revit.
 3.  **Check Connection**: Look at the TopBar. Once the mediator starts and hooks into Revit, the status will change to **Connected** with green text.
 
 <img src={ConnectionStatus} alt="Connection Status" />
 
-4.  **Continue Offline**: Click the **"Continue Offline"** button in the TopBar to access your local script library immediately.
+4.  **Sign In**: Click the **"Continue Offline"** button in the TopBar to the right. Now you can work with Paracore.
+
+---
+
+## 🌟 Next Steps
+
+Now that you are connected, proceed to **[Your First Script](./first-script.mdx)** to learn how to load a script source from the examples and execute your first automation.
 
 ---
 
