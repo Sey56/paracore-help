@@ -5,10 +5,10 @@ Paracore has officially reached its "Gold" milestone. This version represents a 
 ## 🛠️ Features at a Glance
 
 ### 1. 🎯 "Hero" Focus Mode
-Selecting a script now isolates it into a distraction-free overlay.
+Isolate any script directly from its Gallery card for an immersive experience.
 -   **Absolute Isolation**: No more gallery scrolling or visual clutter.
--   **Centric Design**: Your active script is always mathematically centered.
--   **Premium Backdrop**: Features a modern, animated glassmorphic atmosphere.
+-   **Centric Design**: Your active script is mathematically centered.
+-   **One-Click Entry**: Accessible via the 🎯 button on the bottom-right of every script card.
 
 ### 2. 🔋 "Batteries-Included" Libraries
 Paracore v3.0 now includes industry-standard libraries available globally in **every** script:

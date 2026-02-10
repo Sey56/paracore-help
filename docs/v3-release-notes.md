@@ -12,8 +12,8 @@ Welcome to Paracore v3.0! This release marks our transition into a **Long Term S
 
 ### 1. 🇽 "Hero" Focus Mode
 - **Zero-Scroll Isolation**: A premium interface that isolates your selected script into a centered, distraction-free environment.
-- **Enhanced Concentration**: Focuses the UI entirely on the active script, removing all background clutter.
-- **Exit Focus Controls**: Minimalist control for instant navigation back to the gallery.
+- **Card-Level Controls**: Enter and exit Focus Mode directly from the bottom-right of the script card.
+- **Improved Workflow**: Provides a "Hero" view with high-fidelity atmospheric effects, keeping the focus strictly on the task at hand.
 
 ### 2. 📁 Multi-File Script Awareness
 - **Visual Differentiation**: High-fidelity visual markers to instantly distinguish between **Single-File scripts** and **Multi-File scripts**.
