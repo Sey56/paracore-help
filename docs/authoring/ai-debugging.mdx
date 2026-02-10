@@ -45,8 +45,15 @@ This feature requires an active internet connection and configured LLM settings 
 - **Supported Providers**: Currently, only **Google Gemini** (models **2.5 and 3.0**) and **OpenRouter** are fully implemented.
 - **Other Providers**: While Anthropic, DeepSeek, and OpenAI are listed in the settings menu, they are not yet active and will be supported in future updates.
 
-### Data Scope
-Only the script source code and the specific error log are sent to the AI provider for analysis. Your Revit model data, geometry, and project paths remain **entirely local** and are never transmitted to the cloud.
+### ⚠️ Data Privacy & Usage Advisory
+
+When you use **Explain & Fix**, your **script source code** and error logs are transmitted to the active AI provider (e.g., Google Gemini, OpenAI) for analysis.
+
+-   **Educational Use Only**: This feature is intended for **Learning** and debugging standard Revit API workflows.
+-   **Proprietary Code Warning**: If you are working on confidential, proprietary, or trade-secret algorithms, we **do not recommend** using this feature, as third-party providers may use submitted data for model training depending on their policies.
+-   **Your Risk**: Use this feature with the understanding that you are sharing your code logic with the AI provider.
+
+*Note: Your **Revit Model Data** (geometry, element parameters, project files) remains **entirely local** and is never transmitted to the cloud.*
 
 ---
 
