@@ -31,15 +31,6 @@ Run the installer. This installs the execution host and the **Paracore** ribbon 
 - **Main Workflow: Paracore Desktop App**: Run the MSI installer. This is the primary way to manage and run your script library with rich parameter UI and management features.
 - **Direct Execution: VSCode Extension (Optional)**: Install the `.vsix` file if you wish to bypass the desktop UI and execute code directly from VS Code.
 
-## 🚀 3. Verification
-
-To ensure everything is working correctly:
-1.  Launch **Autodesk Revit**.
-2.  Navigate to the **Paracore** tab in the ribbon.
-3.  Click the **Paracore Server** button (it will toggle from **Off** to **On**).
-4.  Confirm the popup message mentioning *"Listening on port 50051"*.
-5.  Launch the **Paracore Desktop App** and verify the **Connected** status.
-
 ---
 
 *Note: While end-users running protected `.ptool` files do not strictly need VS Code, it is essential for anyone authoring, editing, or utilizing the AI script generation features within Paracore.*
