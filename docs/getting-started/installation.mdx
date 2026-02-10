@@ -1,0 +1,58 @@
+---
+sidebar_position: 1
+---
+
+import ConnectionStatus from '@site/static/img/connection-status.png';
+
+# Installation & Setup
+
+Paracore is a professional C# automation ecosystem for Revit. This guide covers the complete setup process, from installing the execution host to verifying your first connection.
+
+## 💻 System Requirements
+
+- **Operating System**: Windows 10 or 11 (64-bit).
+- **Autodesk Revit**: Version 2025 or later.
+- **.NET Runtime**: .NET Desktop Runtime 8.0.
+- **Visual Studio Code**: **Required for Authoring**.
+
+## 📥 1. Download the Components
+
+Visit the **[Downloads](./downloads.md)** page to get the latest versions:
+1. **Paracore Revit Addin** (`Paracore_Addin_v3.0.0.exe`) - **Required**.
+2. **Paracore Desktop App** (`Paracore_v3.0.0_x64.msi`) - **Required**.
+3. **CoreScript VSCode Extension** (`.vsix`) - **Optional**.
+
+---
+
+## 🛠️ 2. Installation Steps
+
+### Step 1: Install the Paracore Revit Addin
+> ⚠️ **IMPORTANT**: Ensure **Autodesk Revit is closed** before running this installer.
+
+Run the `Paracore_Addin` installer. This installs the high-performance execution host and the **Paracore** ribbon tab inside Revit.
+
+### Step 2: Activate the Paracore Server
+1. Launch **Autodesk Revit**.
+2. Navigate to the **Paracore** tab in the ribbon.
+3. Locate the **Paracore Server** toggle button. It will initially show the Paracore icon with the text **"Off"**.
+4. Click the button. A Task Dialog will appear confirming the connection.
+5. Close the dialog. The button text will now display **"On"**. You are now listening for automation requests.
+
+### Step 3: Install the Paracore Desktop App
+Now that the Revit host is ready, run the `.msi` installer for the **Paracore Desktop App**. This is your primary dashboard for managing and running your script library.
+
+---
+
+## 🚀 3. Verification & Connection
+
+1.  Launch the **Paracore Desktop App**.
+2.  **Wait a few seconds**: The app automatically manages the lifecycle of the internal mediator server. 
+3.  **Check Connection**: Look at the TopBar. Once the mediator starts and hooks into Revit, the status will change to **Connected** with green text.
+
+<img src={ConnectionStatus} alt="Connection Status" />
+
+4.  **Continue Offline**: Click the **"Continue Offline"** button in the TopBar to access your local script library immediately.
+
+---
+
+*Note: While end-users running protected `.ptool` files do not strictly need VS Code, it is essential for anyone authoring, editing, or utilizing the AI script generation features within Paracore.*
