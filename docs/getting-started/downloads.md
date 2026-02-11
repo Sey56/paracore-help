@@ -18,4 +18,4 @@ Get the latest versions of the Paracore ecosystem components.
 ---
 
 ### 💡 Pro Tip
-Check the **[Release Notes](../v3-release-notes.md)** for detailed information on what's new in the latest version.
+Check the **[Release Notes](../release-notes.md)** for detailed information on what's new in the latest version.

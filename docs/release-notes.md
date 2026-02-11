@@ -2,6 +2,28 @@
 
 Version history and changelog for Paracore.
 
+## V3.0.3 (February 2026) — Engine Refinement & UI Polish
+
+A refinement update focused on engine reliability, UI improvements, and developer experience.
+
+### 🔧 Engine & Architecture
+- **CoreScript.Engine Modularization**: Decomposed `CodeRunner` into `ScriptCompiler`, `ScriptCombiner`, `ScriptRewriter`, `ScriptExecutor`, and `ParameterService`. Decoupled parameter hydration for cleaner architecture.
+- **Paracore.Addin Refactoring**: Decomposed `CoreScriptRunnerService` into specialized handlers for execution, metadata, context, and file system operations.
+
+### 🐛 Error Reporting
+- **DiagnosticMapper**: Multi-file scripts now report errors with the correct source file name and line number, matching exactly what you see in VS Code.
+- **Friendly Error Messages**: Actionable messages when the gRPC connection to Revit fails, replacing cryptic error codes.
+
+### 🎨 UI Improvements
+- **Layout Swap**: New button in the TopBar to toggle the positions of the Script Gallery and Script Inspector.
+- **Multi-Source Loading**: Sidebar now supports loading multiple script sources simultaneously. Use `.paracore` marker files to enable recursive discovery from a parent folder.
+- **Glassmorphism & Polish**: Backdrop-blur effects on Sidebar and Inspector panels. Consolidated parameter group controls. Smoother transitions.
+
+### 🧹 Maintenance
+- Removed compiler warnings for a clean build process.
+
+---
+
 ## V3.0.2 (February 2026) — The Magic of Automatic Data Discovery
 
 This release marks a fundamental shift in the Paracore engine, moving away from string-based lookups toward a professional, type-safe architecture that automatically discovers Revit elements for you.
