@@ -36,6 +36,8 @@ const sidebars: SidebarsConfig = {
         'authoring/ai-debugging',
         'authoring/execution',
         'authoring/presets',
+        'authoring/query-builder',
+        'authoring/sentinels',
         'authoring/metadata',
         'authoring/vscode',
       ],

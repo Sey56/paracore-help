@@ -27,10 +27,11 @@ A lightweight plugin that sits inside Revit. It acts as the execution bridge, pr
 
 Paracore uses a high-speed **HTTP/gRPC** bridge to ensure communication between your code, the UI, and Revit happens in milliseconds.
 
-### File Watchers & Synchronization
-Paracore maintains a live link between your **Temporary VS Code Workspaces** and your **Script Sources** using intelligent file watchers.
-- **The Link**: This connection is established based on the script's name/path.
-- **Renaming Rule**: To maintain synchronization, scripts should only be renamed while they are not actively being edited in VS Code. If a rename is necessary, closing and reopening the workspace ensures the name-based link is correctly re-established.
+### One Source of Truth (Project Scaffolding)
+In V4, Paracore establishes a permanent link between your script source and your development environment.
+- **In-Place Scaffolding**: When editing a script, Paracore scaffolds the necessary C# project files directly into the script's folder.
+- **Integration**: This model allows you to leverage the full power of VS Code (IntelliSense, Debugging) on the actual source files that Revit executes, ensuring perfect synchronization without the need for periodic file-watching cycles.
+- **Cleanliness**: Files are organized with executable logic in the `Scripts/` folder, keeping your library tidy while providing a full professional IDE context.
 
 ---
 
