@@ -21,6 +21,13 @@ We have unified the development and execution environments into a permanent, pro
 - **Zero-Manual-Management**: Paracore automates the entire C# lifecycle—from initialization to professional scaffolding—transparently at the source.
 - **Integrated Scaffolding**: Editing a script builds a permanent development environment (csproj, sln) directly within your project tree, ensuring zero synchronization lag.
 
+### ✨ Universal UI Overhaul
+Paracore has undergone a total visual transformation. Every interface element—from the TopBar and Sidebar to the Gallery and Script Inspector—has been modernized for a premium, precision-tool experience.
+- **Glassmorphic Design**: Refined transparency and backdrop-blur effects create a modern, depth-focused interface across the entire application.
+- **Sentinel Control FAB**: A new Floating Action Button (FAB) provides instant access to the expanded Sentinel Control & Status window, centralizing real-time monitoring and reporting.
+- **Enhanced Parameters & Modals**: The Parameters tab and all application modals have been significantly upgraded. The `NewScriptModal` is completely redesigned to seamlessly accommodate the new Visual Query Builder workflow.
+- **Professional Polish**: Optimized typography, color palettes, and micro-animations ensure that every click and transition feels responsive, lively, and state-of-the-art.
+
 ### ⚡ Performance & Examples
 - **Forge (Binary Distribution)**: Package your logic into sealed `.ptool` (Automation) or `.wtool` (Sentinel) binaries for professional distribution. For Sentinels, Forge compilation supercharges performance—ensuring that live background validation remains ultra-efficient and highly optimized.
 - **Modernized Library**: The [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) repository has been fully upgraded to the V4 Structure, featuring starter templates for building your own custom automations and Sentinels.
