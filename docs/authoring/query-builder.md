@@ -1,24 +1,32 @@
 # Visual Query Builder
 
-The **Visual Query Builder** is a professional logic engine that allows you to filter and select Revit elements without writing a single line of C# code. 
+The **Visual Query Builder (VQB)** is a professional-grade low-code engine designed to generate high-performance Revit filtering logic without writing a single line of C#. It transforms element selection from a manual coding task into a surgical, visual workflow.
 
-## 🧠 Logic at Your Fingertips
+## 🧠 High-Performance Logic Generation
 
-Instead of complex LINQ queries or manual iteration, you can build hierarchical logic workflows directly in the Paracore UI.
+Unlike standard iteration, the VQB generates optimized C# code that leverages the Revit API's native `ElementParameterFilter` and `FilteredElementCollector`. This ensures that even queries targeting tens of thousands of elements execute with near-zero overhead.
 
 ### Key Capabilities:
-- **Hierarchical Logic**: Nest multiple conditions using **AND** and **OR** operators to create complex filter chains.
-- **Dynamic Category Selection**: Search and select any Revit category to start your query.
-- **Parameter-Aware**: The builder understands Revit parameters, allowing you to filter by built-in or custom shared parameters.
-- **Real-Time Preview**: (Coming Soon) See your elements light up in Revit as you build your query.
+- **Hierarchical AND/OR Logic**: Nest multiple conditions into complex logical trees.
+- **Prefix-Aware Naming**: Automatically aliases parameters (e.g., `RoomName`, `WallMark`) to ensure unique C# properties and error-free compilation.
+- **Strict Nullability**: Generated parameters are nullable (`double?`, `string?`), allowing the engine to safely skip empty UI values and prevent "matching empty string" errors.
+- **BIM Precision**: Preserves trailing zeros (e.g., `6.00`) across the entire pipeline to maintain Revit's numerical accuracy.
 
-## 🏗️ Building a Query
+## 🏗️ Building a Pro-Grade Query
 
-1.  **Open the Builder**: Click the **"Open Builder"** button in any automation or script that supports query-based inputs.
-2.  **Select a Category**: Start by choosing the primary category of elements you want to target (e.g., *Walls*, *Rooms*, *Windows*).
-3.  **Add Filters**: Create rules based on parameter values, such as "Area > 100" or "Comments contains 'Draft'".
-4.  **Group Logic**: Use the grouping controls to switch between "All of these" (AND) and "Any of these" (OR) logic blocks.
+1.  **Open the Builder**: Click the **"Builder"** tab in the New Script modal.
+2.  **Context Selection**: Choose between **Project Scope** or **Active Selection** to define where your query starts.
+3.  **Category Targeting**: Select your primary Revit category (e.g., *Rooms*, *Mechanical Equipment*).
+4.  **Add Filter Rules**: Create rules based on any Revit parameter. The UI provides dynamic dropdowns for Operators and Units (mm, m, in, etc.).
+5.  **Select Reporting Columns**: Choose which data fields you want to see in your results table.
+
+## 🏛️ Using the Template Gallery
+
+The VQB is integrated with a **Template Gallery** that allows you to reuse proven logic:
+- **Save as Template**: Paracore automatically saves your query graph inside the generated `.cs` file as a `// __PARACORE_QUERY_DATA__` metadata block.
+- **One-Click Loading**: When creating a new script, use the **Template Selector** dropdown to start from an existing query.
+- **Surgical Replacement**: Use the **"Replace Code"** feature on any script to open its original graph, tweak the values, and redeploy instantly.
 
 ---
 
-*The Visual Query Builder transforms element selection from a coding task into a visual workflow.*
+*The Visual Query Builder isn't just a filter; it's a way to visually program the Revit API.*
