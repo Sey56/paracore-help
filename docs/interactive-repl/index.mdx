@@ -12,8 +12,11 @@ The **Paracore REPL** (Read-Eval-Print Loop) is a persistent C# scratchpad with 
 
 The REPL is located in the **Console Tab** and provides two primary entry modes:
 
-1.  **Single-Line REPL**: A fast command-line at the footer for quick one-off commands and API queries.
-2.  **Multi-Line Workspace**: A full-featured editor for complex logic and script prototyping.
+1.  **Single-Line REPL**: A fast command-line at the footer for quick one-off commands and API queries. Entries here are saved in a **Command Cache**; use the **Up** and **Down** arrows to cycle through your history.
+2.  **Multi-Line Workspace**: A dedicated scratchpad for longer snippets and logic prototyping. It features a standalone **Run** button and supports **`Ctrl + Enter`** for execution.
+
+> [!NOTE]
+> While the Multi-Line Workspace supports the same "magic" syntax as the single-line input, entries written here are **not** saved in the arrow-key Command Cache.
 
 <img src={ConsoleFull} alt="Console Full View" />
 
@@ -32,9 +35,15 @@ When the multi-line editor is collapsed, the single-line REPL remains active at 
 The REPL operates on a "Read-Eval-Print" cycle. You write pure C# code (no classes or namespaces required) and execute it instantly in the active Revit session.
 
 ### 1. Instant Execution
-You can run the entire editor or select a specific block of code and press **`Ctrl + Enter`** to execute only that selection.
+- **Single-Line**: Type your command and press **Enter**.
+- **Multi-Line**: Click the **Run** button or press **`Ctrl + Enter`**. You can run the entire workspace or select a specific block to execute only that selection.
 
-### 2. Multi-Turn Interaction
+### 2. Syntax & Discovery
+Both modes are designed for speed:
+- **Optional Semicolons**: For simple expressions and one-liners, semicolons are optional.
+- **Magic Discovery**: Use the [Magic Accessors](#element-accessors-extension-methods) to bypass standard Revit API boilerplate.
+
+### 3. Multi-Turn Interaction
 Because the environment is persistent, you can define a variable in one turn and reference it in the next:
 ```csharp
 var rooms = GetElements<Room>(); // Turn 1
