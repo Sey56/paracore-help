@@ -4,7 +4,7 @@ Learn how to let the user "Pick" elements from the model, using Paracore's **Str
 
 **Finished Script**: `03_Tutorials/Paracore_Fundamentals/04_ElementSelection.cs`
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - The `[Select]` attribute
 - **Strongly Typed Selection**: Asking for a `Wall` instead of a generic ID
@@ -42,7 +42,7 @@ var p = new Params();
 
 if (p.TargetWall == null)
 {
-    Println("🚫 No wall selected.");
+    Println("No wall selected.");
     return;
 }
 ```
@@ -59,7 +59,7 @@ Transact("Update Wall Comment", () => {
     var param = p.TargetWall.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS);
     param?.Set(p.Comment);
     
-    Println($"✅ Updated Wall {p.TargetWall.Id} with comment: {p.Comment}");
+    Println($"Updated Wall {p.TargetWall.Id} with comment: {p.Comment}");
 });
 ```
 
@@ -72,11 +72,11 @@ Transact("Update Wall Comment", () => {
 5. Enter a comment and click **Run Script**.
 6. Select the wall in Revit and check its properties.
 
-## 💡 Try This
+## Try This
 
 1. Change `public Wall` to `public Window` and see how the selection filter changes.
 2. Use `[Select(SelectionType.Point)]` with `public XYZ Point` to pick a location in 3D space.
 
 ---
 
-**Next**: [Tutorial 5: Multi-File Scripts →](./multi-file-script.md)
+**Next**: [Tutorial 5: Modular Projects ->](./modular-projects.md)

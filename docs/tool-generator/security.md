@@ -1,27 +1,27 @@
 # Security & Protection
 
-## 🔒 Code Protection
+## Code Protection
 
 The **Tool Generator** packages your automation into a proprietary `.ptool` container. This provides a basic layer of protection for your intellectual property:
 
 - **Removal of Source**: The original `.cs` source files are completely removed from the distributed package.
 - **Binary Encoding**: The logic is compiled into a .NET Assembly and stored as a Base64-encoded string within a JSON structure.
 
-> **Note**: This is not a security guarantee. A determined user could still extract and decompile the assembly. The current `.ptool` implementation (JSON + Base64) is the **v3.0 "Foundation"**—it is designed to be "Correct & Functional" first. While it effectively hides source code and simplifies distribution, it currently provides a "test project" level of security as we prepare for more advanced binary protection.
+> **Note**: This is not a security guarantee. A determined user could still extract and decompile the assembly. The current `.ptool` implementation (JSON + Base64) is the **v3.0 "Foundation"** - it is designed to be "Correct & Functional" first. While it effectively hides source code and simplifies distribution, it currently provides a "test project" level of security as we prepare for more advanced binary protection.
 
-## ⚠️ Execution Warning
+## Execution Warning
 
 While Protected Tools hide their source code, they are **still executable code**. 
 
 > **Important**: You should only run `.ptool` files from trusted sources. Because the source code is hidden, it is possible for malicious actors to bundle harmful C# code within a tool. Paracore executes these tools with the same privileges as any standard script.
 
-## 🛡️ Sandbox & Limits
+## Sandbox & Limits
 
 Protected Tools are subject to the same operational constraints as source scripts:
 - **Execution Timeout**: They must complete within the configured timeout period (Default: 10s).
 - **API Scope**: They are restricted to the Revit API capabilities provided by the active user session.
 
-## 🔐 Future Roadmap
+## Future Roadmap
 
 We are exploring additional security features for future releases:
 - **Obfuscation**: Integration with .NET obfuscation tools

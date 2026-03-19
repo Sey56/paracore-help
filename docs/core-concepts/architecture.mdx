@@ -6,7 +6,7 @@ Paracore is designed as a decoupled, high-performance ecosystem. This architectu
 
 <img src={SystemArchitecture} alt="System Architecture" />
 
-## 🏗️ The Pillars of Paracore
+## The Pillars of Paracore
 
 ### 1. Paracore Desktop App (The Control Center)
 Built using **React**, **TypeScript**, and **Tauri**, the desktop application handles the high-level management of your automation library.
@@ -29,9 +29,10 @@ Paracore uses a high-speed **HTTP/gRPC** bridge to ensure communication between 
 
 ### One Source of Truth (Project Scaffolding)
 In V4, Paracore establishes a permanent link between your script source and your development environment.
-- **In-Place Scaffolding**: When editing a script, Paracore scaffolds the necessary C# project files directly into the script's folder.
-- **Integration**: This model allows you to leverage the full power of VS Code (IntelliSense, Debugging) on the actual source files that Revit executes, ensuring perfect synchronization without the need for periodic file-watching cycles.
-- **Cleanliness**: Files are organized with executable logic in the `Scripts/` folder, keeping your library tidy while providing a full professional IDE context.
+- **In-Place Scaffolding**: When editing a script, Paracore scaffolds the necessary C# project files (`.csproj`, `.sln`, `Global.cs`) directly into the script's folder.
+- **Non-Destructive**: This process is entirely additive. It does not move or overwrite your source files; it simply builds a professional IDE environment around them.
+- **Direct Workspace**: This model allows you to leverage the full power of VS Code on the actual source files that Revit executes, ensuring perfect synchronization without the need for temporary copies or file-watching cycles.
+- **Cleanliness**: Files are organized with executable logic in the **`Scripts/`** folder, keeping your library tidy while providing a full professional IDE context.
 
 ---
 

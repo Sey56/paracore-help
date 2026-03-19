@@ -4,7 +4,7 @@ Understand the fundamental Revit data model: the relationship between Element Ty
 
 **Finished Script**: `03_Tutorials/RevitAPI_Fundamentals/05_TypesVsInstances.cs`
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - The Type/Instance hierarchy
 - `FamilySymbol` vs `FamilyInstance`
@@ -15,8 +15,8 @@ Understand the fundamental Revit data model: the relationship between Element Ty
 
 ```
 Category (e.g., Doors)
-  └── Type (e.g., "Single-Flush: 36" x 84"")
-        └── Instance (the actual door in your model)
+  |-- Type (e.g., "Single-Flush: 36" x 84"")
+        |-- Instance (the actual door in your model)
 ```
 
 | Concept | Description | Example |
@@ -95,7 +95,7 @@ var unusedTypes = allDoorTypes
 
 foreach (var unused in unusedTypes)
 {
-    Println($"⚠️ Unused type: {unused.Name}");
+    Println($"Warning: Unused type: {unused.Name}");
 }
 ```
 
@@ -115,7 +115,7 @@ var report = grouped
 Table(report.ToList());
 ```
 
-## 💡 Try This
+## Try This
 
 1. Create a report for Wall Types with their thickness
 2. Find and list all unused Floor Types
@@ -123,7 +123,7 @@ Table(report.ToList());
 
 ---
 
-🎉 **Congratulations!** You've completed the Revit API Fundamentals series.
+**Congratulations!** You've completed the Revit API Fundamentals series.
 
 You now understand:
 - Finding elements with collectors

@@ -1,6 +1,6 @@
 import InspectorMain from '@site/static/img/inspector-main.png';
-import TableTabGrid from '@site/static/img/table-tab-grid.png';
-import TableTabCharts from '@site/static/img/table-tab-charts.png';
+import AnalyticsGrid from '@site/static/img/analytics-grid.png';
+import AnalyticsCharts from '@site/static/img/analytics-charts.png';
 
 # Script Inspector
 
@@ -8,38 +8,49 @@ The **Script Inspector** is the right-side panel where you configure, execute, a
 
 <img src={InspectorMain} alt="Script Inspector Main" />
 
-## 🛠️ Parameters Tab
+## Parameters Tab
 The **Parameters** tab is where you provide inputs to your script.
 - **Grouping**: Click group headers (e.g., "Base Level") to expand related parameters.
 - **Compute (🔄)**: Click to fetch live data from Revit (like Level names) and convert text boxes into dropdowns.
-- **Execution**: Click **Run Script** at the bottom to execute.
+- **Execution**: Click the play icon to execute. Successful runs will automatically populate the **Analytics Tab** with your results.
 
-## 📊 Table Tab
-The **Table Tab** is a high-performance data visualization dashboard. It renders the structured data returned by your script via the `Show()` or `Table()` globals.
+## Analytics Tab
+The **Analytics Tab** is a high-performance data visualization dashboard. It renders the structured data returned by your script via the `Show()` or `Table()` globals.
 
 ### 1. Data Tables
 When your script calls `Table(data)` or `Show("table", data)`, it is rendered as an interactive grid.
 
-<img src={TableTabGrid} alt="Table Tab Grid" />
+<img src={AnalyticsGrid} alt="Analytics Tab Grid" />
 
-- **Search & Sort**: Use the search bar to filter rows and click column headers to sort the data.
-- **Revit Interaction**: If a table contains a column named **Id** or **ElementId**, clicking that row will immediately **Select the Element** in your active Revit session.
-- **Table Controls**: Located at the bottom of the tab, you can **Copy** the data to your clipboard or **Export to CSV**.
+- **Search & Sort**: Use the search bar for instant filtering and click column headers to sort the data.
+- **Element Selection**: Clicking a row immediately **Selects the Element** in your active Revit session (if the table contains an `Id` or `ElementId`).
 
-### 2. Graphical Charts
-The Table Tab also renders high-quality graphs for visual analysis:
+### 2. Interactive Data Editing (NEW)
+Paracore is a high-performance data visualization and monitoring hub. While Revit handles geometry, Paracore allows you to manage the underlying BIM data without opening complex property palettes.
 
-<img src={TableTabCharts} alt="Table Tab Charts" />
+- **Single-Cell Edit**: Double-click any data-centric cell (e.g., **Room Names**, **Comments**, **Mark**, or **Finishes**) to edit its value. Press **Enter** or click away to commit the change instantly to Revit.
+- **Mass Editing (CSV Round-Trip)**: For bulk updates, export the table to CSV, perform your edits in Excel, and upload the file back. Paracore uses the **Id** column to map and sync your changes back to the model in a single transaction.
+- **Modeling Boundary**: Geometric parameters like **Length**, **Width**, and **Area** are reserved for Revit's modeling engine and are **Read-Only** within the Analytics Tab. 
+    > [!TIP]
+    > To modify geometry or perform complex model transformations, create a custom **C# Script** in the gallery. Scripts have full access to the Revit API and can manipulate any parameter or element property programmatically.
+
+### 3. Table Controls
+Located at the bottom of the tab, you can **Copy** the data to your clipboard or **Export to CSV** for external use.
+
+### 4. Graphical Charts
+The Analytics Tab also renders high-quality graphs for visual analysis:
+
+<img src={AnalyticsCharts} alt="Analytics Tab Charts" />
 
 - **Supported Types**: Pie Charts, Bar Charts, and Line Charts.
 - **Graph Controls**: Each graph features two buttons at the top-right corner:
     - **Export CSV**: Download the raw data used to generate the graph.
     - **Export SVG**: Download a high-resolution vector image of the graph.
 
-## 💻 Console Tab
+## Console Tab
 The **Console** tab provides the raw execution log.
 - **Live Feed**: See all `Print` and `Println` statements as they happen.
 - **Status Link**: Click the **Execution Status (✅/❌)** button to quickly jump here and see the final success or failure message.
 
-## ℹ️ Metadata Tab
+## Metadata Tab
 Displays non-functional details like the Author, Description, and required Revit Document Type.

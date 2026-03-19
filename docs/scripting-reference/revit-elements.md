@@ -1,141 +1,123 @@
 # Revit Element Selection
 
-Paracore provides specialized support for interacting with Revit elements directly from the UI. This page details how the **Revit Pickers** work.
+Paracore provides a dual-model approach to element selection: **Paracore UI Selection** (Automatic Hydration) and **Revit Selection** (Manual Picking). Understanding the difference is key to building professional automation tools.
 
-## 🧱 Type-Safe Selection (Picking)
+---
 
-The best way to select elements is to ask for the specific **Revit Type** you need. Paracore handles the UI, validation, and object retrieval for you.
+## Paracore UI Selection (Hydration)
 
-### Logic Flow
-1.  **UI**: User clicks "Pick Wall" (Paracore knows to filter for Walls).
-2.  **Revit**: Paracore prompts the user to select a Wall. User *cannot* select other categories.
-3.  **Execution**: Paracore retrieves the `Wall` object and injects it into your `Params` class.
+When you define a Revit element type as a property in your `Params` class, Paracore automatically "hydrates" the UI with a searchable list of matching elements from the model. This allows users to select elements directly from the Paracore interface without focusing on the Revit window.
 
+### Single-Select Dropdown
+Defining a single element type creates a searchable dropdown.
 ```csharp
-public class Params {
-    /// Paracore creates a "Pick" button that only accepts Walls
-    [Select(SelectionType.Element)]
-    public Wall TargetWall { get; set; }
-
-    /// Paracore creates a "Pick" button for Floors
-    [Select(SelectionType.Element)]
-    public Floor TargetFloor { get; set; }
-}
-
-// Usage in Main.cs - No casting needed!
-Println($"Selected Wall Id: {p.TargetWall.Id}");
-```
-
-## ⚡ Automatic Listing (Element Choice)
-
-The "Magic" of Paracore is how it automatically presents a list of Revit elements to the user based on your code. Instead of picking a single element on screen, Paracore automatically fetches all available elements of that type and presents them as a searchable dropdown.
-
-- **Trigger**: Simply use a Revit API class (e.g., `Level`, `WallType`, `Material`) as a property type.
-- **UI**: Paracore generates a searchable dropdown.
-- **Sync**: Click the **Compute (🔄)** button in the UI to fetch the latest elements from your model.
-
-```csharp
-public class Params {
-    /// Paracore creates a searched dropdown of all Levels
-    public Level BaseLevel { get; set; }
-
-    /// Paracore creates a list of all Floor Types
-    public FloorType TargetType { get; set; }
+public class Params 
+{
+    // Lists all wall instances in the project automatically.
+    public Wall? MyWall { get; set; } 
 }
 ```
 
-### 🗂️ Multi-Select Lists (Checkboxes)
-To allow users to select multiple elements at once, simply wrap the Revit Class in a `List<T>`. Paracore will automatically generate a **Virtualized Checkbox List** optimized for large projects.
-
+### Multi-Select Dropdown
+Wrapping the type in `List<T>` creates a multi-select dropdown with checkboxes.
 ```csharp
-public class Params {
-    /// Paracore creates a checkbox list of ALL Walls
-    public List<Wall> AllWalls { get; set; }
+public class Params 
+{
+    // Lists all walls in a multi-select checkbox list.
+    public List<Wall>? MyWallInstances { get; set; }
 }
 ```
 
-## 🚪 Loadable Families (`[RevitElements]`)
-
-For loadable families (e.g., Doors, Windows, Furniture), the Engine needs to know which category to filter for. Use the `[RevitElements]` attribute to define the target category.
-
-- **Single Selection**: Returns one element.
-- **Multi-Selection**: Use `List<T>` to return a collection.
+### Predicate Filtering (_Filter)
+To filter the hydrated list based on logic (e.g., area, volume, or parameter values), use the `_Filter` naming convention. This runs a predicate check on every element in the document before it reaches the UI.
 
 ```csharp
-public class Params {
-    /// List all Door Types in the project
-    [RevitElements(Category = "Doors")]
-    public List<FamilySymbol> SelectedTypes { get; set; }
+public class Params 
+{
+    public Room? LargeRoom { get; set; }
 
-    /// Select specific Door Instances
-    [RevitElements(Category = "Doors")]
-    public List<FamilyInstance> SelectedDoors { get; set; }
+    // Pre-filters elements: only rooms with Area > Threshold appear in the dropdown.
+    public bool LargeRoom_Filter(Room? r)
+    {
+        return r?.Area > 50.0.InputUnit("m2");
+    }
+}
+```
+*Note: This works identically for `List<Room>` parameters.*
+
+### Options Provider (_Options)
+For maximum flexibility, use an `_Options` provider to define exactly which elements should appear. This is useful for complex cross-referenced filtering that `_Filter` cannot easily handle.
+
+```csharp
+public class Params 
+{
+    public Wall? WallInstance { get; set; }
+
+    // Manually define the list for the WallInstance dropdown.
+    public List<Wall> WallInstance_Options => 
+        new FilteredElementCollector(Doc)
+            .OfClass(typeof(Wall))
+            .Cast<Wall>()
+            .Where(w => w.Width > 200.InputUnit("mm"))
+            .ToList();
 }
 ```
 
-## 📍 XYZ (Point Picker)
+---
 
-When you define a parameter of type `Autodesk.Revit.DB.XYZ`, Paracore automatically generates a **Point Picker** in the UI.
+## Revit Selection (Manual Picking)
 
-### Logic Flow
-1.  **UI**: User clicks "Pick Point".
-2.  **Revit**: Paracore prompts the user to pick a point in the active view.
-3.  **Execution**: Paracore injects a `new XYZ(x, y, z)` object.
+Revit Selection enables users to "Pick" elements, points, or geometry directly from the Revit model space using the mouse cursor.
 
-```csharp
-public class Params {
-    /// Pick the insertion point
-    [Select(SelectionType.Point)]
-    public XYZ Origin { get; set; }
-}
-```
+### Basic Picking Types
+Paracore supports native Revit types for geometric and element picking. Defining these will render a selection button (with a cursor or point icon) in the UI.
 
-## ⚙️ Advanced Selection (Reference)
-
-For advanced scenarios (pick any face, pick any edge) where you need geometric precision, you can use the Revit `Reference` type.
-
-```csharp
-public class Params {
-    /// Pick a Face (returns Reference)
-    [Select(SelectionType.Face)]
-    public Reference FaceRef { get; set; }
-
-    /// Pick an Edge (returns Reference)
-    [Select(SelectionType.Edge)]
-    public Reference EdgeRef { get; set; }
-}
-```
-
-Usage requires manual retrieval within your script:
-`var element = Doc.GetElement(p.FaceRef);`
-
-## 🏗️ Filtering Selections
-
-You can restrict what the user can select using the `[Select]` attribute.
-
-| SelectionType | Description |
+| Type | Description |
 | :--- | :--- |
-| `SelectionType.Element` | Select a full element (Default). |
-| `SelectionType.Point` | Select a coordinate point in the view. |
-| `SelectionType.Face` | Select a specific face of an element. |
-| `SelectionType.Edge` | Select a specific edge. |
+| **`Reference?`** | Enables picking **any** Revit element (No attribute required). |
+| **`XYZ?`** | Renders a point selection button for 3D coordinates. |
+| **`Edge`** | Enables picking a specific geometric edge in Revit. |
+| **`Face`** | Enables picking a specific geometric face. |
 
 ```csharp
-public class Params {
-    /// Pick a face to paint
-    [Select(SelectionType.Face)]
-    public Reference TargetFace { get; set; }
+public class Params 
+{
+    // Enables picking any element in Revit.
+    public Reference? MySelectedRef { get; set; }
+
+    public XYZ? MyPoint { get; set; }   // Renders a point selection button
+    public Edge SelectedEdge { get; set; } // Enables edge picking
+    public Face SelectedFace { get; set; } // Enables face picking
+}
+```
+
+### Filtering Picked Elements
+You can restrict the Revit picker to specific categories to prevent invalid selections.
+
+#### Type-Safe Filter
+Adding the `[Select]` attribute to a specific Revit class (like `Room`) changes the UI from an automatic dropdown to a manual Revit picker limited to that class.
+```csharp
+public class Params 
+{
+    [Select(SelectionType.Element)]
+    public Room? MyRoom { get; set; } // Picker limited to Rooms
+}
+```
+
+#### Category Attribute Filter
+Alternatively, use the `[RevitElements]` attribute to constrain a `Reference` picker.
+```csharp
+public class Params 
+{
+    [RevitElements(Category = "Rooms")]
+    public Reference? MyRoomRef { get; set; } // Picker limited to Rooms
 }
 ```
 
 ---
 
-## 📊 Interaction: Selection via Table
+## Interaction: Selection via Table
 
-Paracore supports a "Click to Select" workflow for audit results and schedules. 
+Paracore supports a "Sync to Model" workflow for audit results and schedules. If your script outputs a table (via `Table(data)`) that contains an **Id** or **ElementId** property, the **Summary Tab** becomes interactive. 
 
-If your script outputs a table (via `Table(data)`) that contains a column named **Id** or **ElementId**, the Paracore **Table Tab** will automatically make those rows interactive. Clicking a row in the table will immediately **Select and Highlight** that element within the active Revit session.
-
----
-
-*Note: Paracore handles the complex `StableRepresentation` parsing for you, ensuring that references remain valid even if the script execution creates a new transaction.*
+Clicking an entry in the table will automatically **Select and Focus** (Zoom) the element within the active Revit session, bridging the gap between data and the 3D model.

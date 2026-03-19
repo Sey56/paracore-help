@@ -2,7 +2,7 @@
 
 Paracore is evolving into a comprehensive ecosystem for AEC professionals. The following features represent our vision for advanced automation and collaboration.
 
-## 🚀 Coming Soon
+## Coming Soon
 
 *   **Team & Workspace Management**: Sync your firm's standardized scripts via Git workspaces with role-based access control.
 *   **Agentic Automation**: AI orchestration for multi-script, complex Revit tasks.

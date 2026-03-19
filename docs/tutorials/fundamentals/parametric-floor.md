@@ -4,7 +4,7 @@ Build on your geometry skills by creating a floor with user-defined dimensions, 
 
 **Finished Script**: `03_Tutorials/Paracore_Fundamentals/03_ParametricFloor.cs`
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - Creating closed curve loops for floor boundaries
 - Using `Floor.Create()` with CurveLoops
@@ -49,7 +49,7 @@ var p = new Params();
 // 1. Validation
 if (p.TargetLevel == null || p.FloorType == null)
 {
-    Println("🚫 No Level or Floor Type selected.");
+    Println("No Level or Floor Type selected.");
     return;
 }
 
@@ -80,7 +80,7 @@ Transact("Create Floor", () => {
     // Note: We use p.FloorType.Id and p.TargetLevel.Id directly
     Floor.Create(Doc, new List<CurveLoop> { loop }, p.FloorType.Id, p.TargetLevel.Id);
     
-    Println($"✅ Created {p.FloorType.Name} floor: {p.Width} x {p.Depth}");
+    Println($"Created {p.FloorType.Name} floor: {p.Width} x {p.Depth}");
 });
 ```
 
@@ -92,7 +92,7 @@ Transact("Create Floor", () => {
 4. Run the script.
 5. Check Revit - a new floor is created at (0,0,0) on the selected level!
 
-## 💡 Try This
+## Try This
 
 1. Create an L-shaped floor (requires more points)
 2. Add an "Offset" parameter (`double`) to raise the floor above the level
@@ -100,4 +100,4 @@ Transact("Create Floor", () => {
 
 ---
 
-**Next**: [Tutorial 4: Element Selection →](./element-selection.md)
+**Next**: [Tutorial 4: Element Selection ->](./element-selection.md)

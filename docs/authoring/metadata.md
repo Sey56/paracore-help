@@ -2,9 +2,9 @@
 
 Metadata allows you to add rich, descriptive information to your scripts. This information is used by the Paracore Gallery for searching, filtering, and displaying technical details.
 
-## 📝 Metadata Block
+## Metadata Block
 
-To define metadata, add a multi-line comment block to your primary script file (`Main.cs` for multi-file scripts). 
+To define metadata, add a multi-line comment block to your primary script file (the file within the `Scripts/` folder named after the project).
 
 **Placement Rule:**
 1.  **If `using` statements exist**: Place the metadata block immediately **AFTER** the last `using` statement.
@@ -29,7 +29,7 @@ Parameters allow customizing geometry in meters. Great for layout prototyping.
 */
 ```
 
-## 📋 Available Fields
+## Available Fields
 
 | Field | Description | Example |
 | :--- | :--- | :--- |
@@ -40,7 +40,7 @@ Parameters allow customizing geometry in meters. Great for layout prototyping.
 | `Dependencies` | Required libraries, assemblies, or engines. | `RevitAPI 2025` |
 | `UsageExamples` | A bulleted list of common use cases or natural language commands. | `- Case A` |
 
-## 🏗️ Compatibility (DocumentType)
+## Compatibility (DocumentType)
 
 The `DocumentType` field is a proactive safety feature. It tells Paracore which Revit environment your script is designed for.
 

@@ -2,7 +2,7 @@
 
 One of the most common sources of bugs in Revit automation is **Unit Conversion**. Paracore solves this by handling conversions strictly at the engine level, ensuring your script always receives the correct internal values.
 
-## 📏 The Rule of Internal Units
+## The Rule of Internal Units
 
 Revit's internal database **always** uses Imperial units (Feet) for length, regardless of the project's settings.
 -   1 Unit = 1 Foot
@@ -10,7 +10,7 @@ Revit's internal database **always** uses Imperial units (Feet) for length, rega
 
 However, users want to enter values in their project units (e.g., Millimeters).
 
-## 🔄 Automatic Conversion
+## Automatic Conversion
 
 If you specify a unit for a parameter, Paracore treats the user's input as that unit and converts it to **Revit Internal Units** just before your script executes.
 
@@ -42,7 +42,7 @@ public class Params {
 | `sqm` / `m2` | Square Meters | `x / 0.092903` |
 | `sqft` / `ft2`| Square Feet | `x * 1.0` |
 
-## ⚠️ No-Unit Parameters
+## No-Unit Parameters
 
 If you **do not** specify a unit attribute, Paracore assumes the input is "Raw".
 -   If the user enters `10`, the script receives `10.0`.
@@ -50,7 +50,7 @@ If you **do not** specify a unit attribute, Paracore assumes the input is "Raw".
 
 **Best Practice**: Always add `[Unit("...")]` to any parameter that represents a physical length or area.
 
-## 📺 Manual Conversion for Output
+## Manual Conversion for Output
 
 While Paracore handles the conversion **into** your script, you are responsible for converting values **out** of your script if you want to display them in a specific unit (e.g., in the console or a table).
 

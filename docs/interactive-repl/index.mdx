@@ -1,0 +1,150 @@
+import ConsoleFull from '@site/static/img/console-full.png';
+import ConsoleEditor from '@site/static/img/console-editor.png';
+import ConsoleRepl from '@site/static/img/console-repl.png';
+import ConsoleHistory from '@site/static/img/console-history.png';
+import AnalyticsCharts from '@site/static/img/analytics-charts.png';
+
+# Interactive REPL (BIM Laboratory)
+
+The **Paracore REPL** (Read-Eval-Print Loop) is a persistent C# scratchpad with direct, real-time access to the Revit API and Paracore's high-level automation helpers. It is designed for iterative API discovery and rapid data exploration.
+
+## Interactive Modes
+
+The REPL is located in the **Console Tab** and provides two primary entry modes:
+
+1.  **Single-Line REPL**: A fast command-line at the footer for quick one-off commands and API queries.
+2.  **Multi-Line Workspace**: A full-featured editor for complex logic and script prototyping.
+
+<img src={ConsoleFull} alt="Console Full View" />
+
+### File Management
+Unlike Modular Projects, scripts for the multi-line REPL do not require a specific folder structure. You can **Save** and **Load** pure `.cs` files from any folder on your machine, making the REPL the ideal environment for rough drafts and scratchpad logic.
+
+<img src={ConsoleEditor} alt="Multi-Line Editor Controls" />
+
+### Fast-Run Command Line
+When the multi-line editor is collapsed, the single-line REPL remains active at the bottom, allowing you to fire off commands while maximizing the visibility of your **Console History**.
+
+<img src={ConsoleRepl} alt="Single-Line REPL" />
+
+## The Interactive Workflow
+
+The REPL operates on a "Read-Eval-Print" cycle. You write pure C# code (no classes or namespaces required) and execute it instantly in the active Revit session.
+
+### 1. Instant Execution
+You can run the entire editor or select a specific block of code and press **`Ctrl + Enter`** to execute only that selection.
+
+### 2. Multi-Turn Interaction
+Because the environment is persistent, you can define a variable in one turn and reference it in the next:
+```csharp
+var rooms = GetElements<Room>(); // Turn 1
+Println($"Found {rooms.Count} rooms");
+```
+```csharp
+Table(rooms.Select(r => new { r.Name, r.Area })); // Turn 2
+```
+
+<img src={ConsoleHistory} alt="REPL Session History" />
+
+---
+
+## Global Reference
+
+These objects and helpers are globally injected into every REPL turn.
+
+| Object | Type | Description |
+| :--- | :--- | :--- |
+| **`Doc`** | `Document` | The active Revit database Document. |
+| **`UIDoc`** | `UIDocument` | The Revit UI Document (active window). |
+| **`Selection`** | `List<Element>` | Elements currently selected in the Revit viewport. |
+| **`Println(msg)`** | `void` | Formatted console output with string interpolation support. |
+
+---
+
+## Element Accessors (Extension Methods)
+
+Paracore extends standard Revit elements with "Magic" accessors that handle unit conversion and identity resolution automatically.
+
+### Reading Data
+| Method | Returns | Notes |
+| :--- | :--- | :--- |
+| **`GetStr(name)`** | `string` | Smart resolution: returns the **Name** if the parameter is an ID (e.g., Level). |
+| **`GetNum(name)`** | `double` | Returns raw internal units (feet/sqft). |
+| **`GetNum(name, unit)`** | `double` | Converts internal units to requested unit (e.g., `"mm"`, `"m2"`). |
+| **`GetVal(name)`** | `string` | Returns the formatted string exactly as seen in the Revit Properties palette. |
+
+### Writing Data
+| Method | Description |
+| :--- | :--- |
+| **`SetVal(name, value)`** | **The Smart Setter**. Automatically parses units, IDs, and strings. |
+| **`SetNum(name, num, unit)`** | Explicit unit-aware numeric setter. |
+
+---
+
+## Magic Discovery
+
+Use these helpers to find elements by name, category, or class without writing complex collectors.
+
+```csharp
+GetElements("Doors");             // All Door instances
+GetElements<Wall>();               // All Wall instances via C# class
+GetElement("Level 1");             // Find one element by name
+GetMagicNames();                    // List all targetable category and class names
+```
+
+---
+
+## Visualization API
+
+Pipe your data directly into the **Analytics Tab** for interactive analysis.
+
+| Command | Description |
+| :--- | :--- |
+| **`Table(data)`** | Renders any list or projection as a searchable, sortable grid. |
+| **`PieGraph(data)`** | Renders a high-contrast pie chart (requires `name` and `value`). |
+| **`BarGraph(data)`** | Renders a high-contrast bar chart. |
+| **`Select()`** / **`Zoom()`** | Chain these to any collection to select or focus elements in Revit. |
+
+<img src={AnalyticsCharts} alt="Analytics Visualization" />
+
+---
+
+## Example Recipes
+
+### 1. Element Audit
+Find elements more than 1000m from the origin (likely CAD import errors).
+```csharp
+var limit = 1000.InputUnit("m");
+var lost = GetElements().Where(e => {
+    var pt = (e.Location as LocationPoint)?.Point;
+    return pt != null && (Math.Abs(pt.X) > limit || Math.Abs(pt.Y) > limit);
+});
+Table(lost).Select().Zoom();
+```
+
+### 2. Room Data Sync
+Copy the Room Name to the "Comments" of every door hosted within that room.
+```csharp
+Transact("Sync Room Data", () => {
+    foreach (var door in GetElements<FamilyInstance>("Doors")) {
+        var room = door.Room ?? door.FromRoom ?? door.ToRoom;
+        if (room != null) door.SetVal("Comments", $"In: {room.Name}");
+    }
+});
+```
+
+### 3. Quick Area Chart
+Visualize the distribution of Room areas by Level.
+```csharp
+var stats = GetElements<Room>().Where(r => r.Area > 0)
+    .GroupBy(r => r.Level.Name)
+    .Select(g => new { name = g.Key, value = g.Sum(r => r.GetNum("Area", "m2")) });
+
+PieGraph(stats);
+```
+
+---
+
+> 📖 **Full API Reference**: For an exhaustive list of every available helper, parameter accessor, and unit conversion method, see the **[Extension Methods Reference](./extension-methods.mdx)**.
+
+---

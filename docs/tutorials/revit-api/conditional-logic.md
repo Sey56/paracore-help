@@ -4,7 +4,7 @@ Learn to make decisions in your code with `if/else` statements and filter collec
 
 **Finished Script**: `03_Tutorials/RevitAPI_Fundamentals/03_ConditionalLogic.cs`
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - `if/else` statements for decision making
 - Comparison operators (`>`, `<`, `==`, etc.)
@@ -124,7 +124,7 @@ else
 }
 ```
 
-## 💡 Try This
+## Try This
 
 1. Add a "Medium Walls" category
 2. Filter walls by wall type name (contains "Exterior")
@@ -132,4 +132,4 @@ else
 
 ---
 
-**Next**: [Tutorial 4: Bulk Updates →](./bulk-updates.md)
+**Next**: [Tutorial 4: Bulk Updates ->](./bulk-updates.md)

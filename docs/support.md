@@ -10,7 +10,7 @@ We are here to help you get the most out of Paracore.
 
 For support inquiries, bug reports, or feature requests, please contact us via email:
 
-📧 **[codarch46@gmail.com](mailto:codarch46@gmail.com)**
+**[codarch46@gmail.com](mailto:codarch46@gmail.com)**
 
 ---
 
@@ -18,12 +18,12 @@ For support inquiries, bug reports, or feature requests, please contact us via e
 
 Subscribe to our YouTube channel for tutorials, demos, and updates on the latest Paracore features:
 
-📺 **[YouTube: @Codarch46](https://www.youtube.com/@Codarch46)**
+**[YouTube: @Codarch46](https://www.youtube.com/@Codarch46)**
 
 ---
 
 ## Resources
 
-- **[Installation Guide](./getting-started/installation.md)**
+- **[Installation Guide](./getting-started/installation.mdx)**
 - **[Scripting Reference](./scripting-reference/index.md)**
 - **[GitHub Repository](https://github.com/Sey56/Paracore)**

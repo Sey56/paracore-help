@@ -2,10 +2,13 @@
 
 The **Scripting Reference** provides a technical deep dive into the Paracore execution environment. This is the definitive guide for developers looking to leverage the full power of the Revit API and Paracore's global helpers.
 
-## 🛠️ Essential API Reference
+## Essential API Reference
 
 ### [Global Helpers](./globals.md)
 Instant access to the Revit context (`Doc`, `UIDoc`, `UIApp`), logging (`Println`), and transaction management (`Transact`).
+
+### [Extension Methods (Master Guide)](./extension_methods.mdx)
+The definitive, exhaustive reference for every global object (`Doc`, `Selection`, etc.) and "Magic" extension method (`GetNum`, `SetVal`, `Table`) with comprehensive usage examples.
 
 ### [The Parameter Engine](./parameters.mdx) (Reference)
 A detailed breakdown of all supported attributes, naming conventions, and data providers.

@@ -4,7 +4,7 @@ Create your first Revit element! Learn about **Automatic Lists** (Paracore's sup
 
 **Finished Script**: `03_Tutorials/Paracore_Fundamentals/02_HelloWall.cs`
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - **Automatic Element Discovery**: Getting Revit elements (Levels, Types) automatically via inputs
 - The `Transact()` wrapper for model modifications
@@ -21,7 +21,7 @@ Create your first Revit element! Learn about **Automatic Lists** (Paracore's sup
 ### The "Old" Way (Manual API)
 In standard Revit API coding, to get a Level or a Wall Type, you have to write complex "Collector" code:
 ```csharp
-// 🚫 Complex and tedious
+// Complex and tedious
 var level = new FilteredElementCollector(Doc)
     .OfClass(typeof(Level))
     .FirstElement() as Level;
@@ -65,7 +65,7 @@ var p = new Params();
 // 1. Validation (Good practice!)
 if (p.TargetLevel == null || p.WallType == null)
 {
-    Println("🚫 Please ensure both a Level and a Wall Type are selected in the UI.");
+    Println("Please ensure both a Level and a Wall Type are selected in the UI.");
     return;
 }
 
@@ -94,7 +94,7 @@ Transact("Create Tutorial Wall", () =>
     // Note: BuiltInParameters are the internal IDs for parameters
     wall.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM)?.Set(p.WallHeight);
 
-    Println($"✅ Wall created: {wall.Id} on {p.TargetLevel.Name}");
+    Println($"Wall created: {wall.Id} on {p.TargetLevel.Name}");
 });
 ```
 
@@ -106,9 +106,9 @@ Transact("Create Tutorial Wall", () =>
 4. Click **Run Script**.
 5. Check Revit - your wall is there, using the exact type and level you chose.
 
-## 💡 Key Takeaway
+## Key Takeaway
 **Automatic Lists** save you from writing boring "boilerplate" code. If you need a `Level`, just ask for a `Level`. If you need a `Door`, just ask for a `FamilyInstance`.
 
 ---
 
-**Next**: [Tutorial 3: Parametric Floor →](./parametric-floor.md)
+**Next**: [Tutorial 3: Parametric Floor ->](./parametric-floor.md)

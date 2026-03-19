@@ -4,7 +4,7 @@ import RunScriptButton from '@site/static/img/run-script-button.png';
 
 Running a script in Paracore is designed to be a safe, predictable, and informative process. Paracore handles the complex tasks of dependency resolution, compilation, and Revit transaction management, allowing you to focus on the results.
 
-## 🚀 How to Run a Script
+## How to Run a Script
 
 1.  **Select**: Choose a script from the **Script Gallery**.
 2.  **Configure**: Adjust the values in the **Parameters** tab of the Script Inspector.
@@ -13,18 +13,18 @@ Running a script in Paracore is designed to be a safe, predictable, and informat
 
 <img src={RunScriptButton} alt="Run Script Button" />
 
-## ⚙️ The Execution Lifecycle
+## The Execution Lifecycle
 
 When you click "Run", Paracore performs the following steps in sequence:
 
 1.  **UI Sync**: The current parameter values are gathered from the UI.
-2.  **Source Check**: Paracore checks if the script is a single-file, multi-file, or protected tool (`.ptool`).
-3.  **Compilation**: For source scripts, the **CoreScript Engine** compiles the code using the Roslyn compiler.
-4.  **Handshake**: The compiled byte-code (or ptool package) is sent to the **Paracore Revit Addin** inside Revit via the **Paracore Local Backend (Sidecar)** mediator.
+2.  **Project Check**: Paracore validates the project structure, ensuring the **`Scripts/`** folder exists and contains exactly one valid entry point.
+3.  **Compilation**: The **CoreScript Engine** discovers and compiles all `.cs` files originating from the `Scripts/` folder using the Roslyn compiler.
+4.  **Handshake**: The compiled byte-code is sent to the **Paracore Revit Addin** inside Revit via the **Paracore Local Backend (Sidecar)** mediator.
 5.  **Revit Execution**: The code runs within the Revit API context. If a `Transact` block is used, a Revit Transaction is automatically started and committed.
 6.  **Reporting**: Output and status are streamed back to the Paracore Desktop App.
 
-## 📊 Monitoring Results
+## Monitoring Results
 
 After execution, the Inspector provides several ways to review the outcome:
 
@@ -35,7 +35,7 @@ After execution, the Inspector provides several ways to review the outcome:
     - `[ERROR] Filename.cs(line, col): error CSXXXX: ...`
     - `❌ Script failed to [compile/execute] | [Day], [Date] | [Time]`
 
-## 🛑 Handling Errors
+## Handling Errors
 
 If a script fails, use the **Console** tab to identify the root cause.
 -   **Compiler Errors**: Syntax issues (e.g., a misspelled class name like `Referenc`).

@@ -2,21 +2,21 @@
 
 Paracore injects several global variables and functions into your script's execution context. These helpers eliminate the need for common Revit API setup code.
 
-## 🏢 Revit Context
+## Revit Context
 - **`Doc`**: The active Revit Document (`Autodesk.Revit.DB.Document`).
 - **`UIDoc`**: The active UI Document (`Autodesk.Revit.UI.UIDocument`).
 - **`UIApp`**: The Revit Application instance (`Autodesk.Revit.UI.UIApplication`).
 
-## 📝 Logging & Console
+## Logging & Console
 - **`Println(string message)`**: Prints a message followed by a newline to the Paracore Console.
 - **`Print(string message)`**: Prints a message without a newline.
 
-> 💡 **Why use Println?**
+> **Why use Println?**
 > We strongly recommend using `Println()` instead of the standard `TaskDialog.Show()`.
 > - **Non-Blocking**: `Println()` streams messages to the Paracore Dashboard instantly without pausing your script.
 > - **Clean Workflow**: Avoid distracting popups that interrupt your focus.
 
-## 🏗️ Transactions (`Transact`)
+## Transactions (Transact)
 The `Transact` helper automatically handles the Revit Transaction lifecycle (Start, Commit, and Rollback on error). 
 
 **Document modifications MUST be wrapped in a Transact block.**
@@ -34,15 +34,13 @@ Transact("Update Wall", () => {
 
 ---
 
-## 📊 Visual Helpers
-These helpers automatically format and send data to the **Table Tab** for analysis and visualization.
+## Visual Helpers
+These helpers automatically format and send data to the **Analytics Tab** for analysis and visualization.
 
-| Method | Description |
-| :--- | :--- |
-| **`Table(data)`** | Renders a list of objects as a searchable, sortable grid. |
-| **`BarChart(data)`** | Renders data as a Bar Chart. |
-| **`PieChart(data)`** | Renders data as a Pie Chart. |
-| **`LineChart(data)`** | Renders data as a Line Chart. |
+| Method | Extension | Description | Example |
+| :--- | :--- | :--- | :--- |
+| **`.Table()`** | Extension | Sends element data to the **Analytics Tab**. | `walls.Table()` |
+| **`.ChartPie()`** | Extension | Renders element data as a Pie Chart in the **Analytics Tab**. | `list.ChartPie()` |
 
 ### Example: Quick Table
 ```csharp
@@ -52,7 +50,7 @@ Table(walls.Select(w => new { w.Name, w.Id }));
 
 ---
 
-## 🛠️ Advanced: `Show(type, data)`
+## Advanced: Show(type, data)
 The underlying engine uses the `Show` method. While you can use it directly, the specialized helpers above are recommended.
 
 ```csharp

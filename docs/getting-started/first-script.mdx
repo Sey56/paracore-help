@@ -6,13 +6,12 @@ import TwistingTowerImg from '@site/static/img/twisting-tower.png';
 In this guide, you will load the **Paracore Examples** library, configure dynamic parameters, and execute your first automation.
 **Note**: The "TwistingTower" script used here is just to demonstrate Paracore's capabilities. Don't worry about understanding its code yet! We will start from scratch in the [Tutorials](/tutorials).
 
-> [!TIP]
 > **Understanding Units**: If you use the `[Unit]` attribute for a parameter, the engine automatically converts the user's input to Revit internal units (Feet). You **don't** need to manually convert these values in your logic. However, for **output/display** (like printing a wall's length in meters), you must convert *from* internal units to your target unit.
 
-## 🎯 Goal
+## Goal
 Experience **Dynamic Execution** in action. Run a pre-made script to see how Paracore provides a streamlined environment for parameter orchestration, logic compilation, and instant code execution.
 
-## 🚀 Steps
+## Steps
 
 ### 1. Connect to Revit
 1.  Open **Autodesk Revit 2025+**.
@@ -34,8 +33,7 @@ Experience **Dynamic Execution** in action. Run a pre-made script to see how Par
     *   *Important: Do not select the root 'Paracore-Examples' folder. You must select a specific sub-folder (Script Source).*
 4.  Click **Select Folder**. The "TwistingTower" script will appear in the Gallery.
 
-> [!TIP]
-> **v3.0.3+**: You can select the root `Paracore-Examples` folder directly. Paracore will automatically discover all script sources inside it (folders containing a `.paracore` marker file). Switch between sources using the **Script Sources** dropdown in the Sidebar.
+**v3.0.3+**: You can select the root `Paracore-Examples` folder directly. Paracore will automatically discover all script sources inside it (folders containing a `.paracore` marker file). Switch between sources using the **Script Sources** dropdown in the Sidebar.
 
  ### 4. Configure Parameters
  1.  Click on the **TwistingTower** card.
@@ -48,15 +46,15 @@ Experience **Dynamic Execution** in action. Run a pre-made script to see how Par
 2.  Click the **Run Script** button at the bottom of the Parameters tab.
 
 ### 6. Monitor Status
-1.  Look at the **Execution Status** button. It will turn **Green (✅)** on success.
+1.  Look at the **Execution Status** button. It will turn **Green** on success.
 
-## 🎉 Expected Result
+## Expected Result
 
 <img src={TwistingTowerImg} alt="Twisting Tower Result" />
 
 1. **In Revit**: Look at the origin point. A twisting tower structure will be created on all levels above your base level.
 2. **In Paracore Desktop**: The **Console Tab** will show:
-   `✅ Created twisting house on X levels starting from: Level 1`
+   `Created twisting house on X levels starting from: Level 1`
 
 ---
 

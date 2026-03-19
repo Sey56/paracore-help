@@ -1,60 +1,66 @@
-import VscodeTempWorkspace from '@site/static/img/vscode-temp-workspace.png';
+import VSCodeSync from '@site/static/img/vscode-temp-workspace.png';
 
 # VS Code Integration
 
-Paracore provides a professional development experience by leveraging Visual Studio Code. Depending on your workflow, Paracore handles script editing in two fundamentally different ways to balance **Script Management** with **Developer Experience**.
+Paracore provides a professional development experience by leveraging Visual Studio Code. In V4, Paracore uses a **Single Source of Truth** model, where your IDE interacts directly with the same files that Revit executes.
 
 ---
 
-## 🏗️ The IntelliSense Model
+## The Project-Based Model
 
-In Revit automation, IntelliSense requires reference assemblies and project metadata. Paracore handles this automatically by generating **Workspaces**. 
+For a professional C# experience, IntelliSense requires reference assemblies and project metadata. Paracore handles this automatically by generating in-place **Workspaces** directly inside your script folder.
 
-### Workspace Anatomy
-When a workspace is generated, it contains the following files:
-- **`[ScriptName].csproj`**: The C# project file that handles Revit API references.
+### Project Anatomy
+When you click **Edit Script**, Paracore scaffolds the following professional project files:
+- **`[ScriptName].csproj`**: The C# project file that handles Revit API and Paracore library references.
 - **`[ScriptName].sln`**: The solution file for the project.
-- **`Global.cs`**: A generated file that provides IntelliSense for injected globals like `Doc` and `Println`.
-- **`Scripts/` (Folder)**: The most important directory. **All source code files must live inside this folder.**
+- **`.editorconfig`**: Enforces strict, professional C# coding styles (Allman braces).
+- **`Global.cs`**: Provides IntelliSense for injected globals and extension methods.
+- **`Scripts/` (Folder)**: The designated home for your C# source code. **All executable script files must reside in this folder.**
 
 ---
 
-## 🛠️ Workflow 1: Via Paracore Desktop App (Managed Isolation)
+## Unified Development Workflow
 
-This workflow is optimized for users managing a large library of scripts within the Paracore Gallery.
+Whether you are managing a large library in the Paracore Gallery or working on a standalone tool, the workflow is now unified and direct.
 
-### 1. The Solution: Temporary Workspaces
-To keep your library clean, Paracore uses a **Copy & Sync** strategy:
-- **Isolation**: When you click **Edit Script**, Paracore **copies** only your source code to a temporary directory and scaffolds the project files listed above.
-- **Location**: In the VS Code Explorer, you will find your script(s) inside the **`Scripts/`** folder.
-- **Live Sync**: You edit the files inside the `Scripts/` folder. Every time you save, Paracore's file watchers instantly sync the changes back to the **original script** in your source folder.
+### 1. Direct Editing
+When you click **Edit Script**, Paracore opens the script's folder directly in VS Code. 
+- **No Temporary Files**: There are no copies or temporary directories. You are editing the final source code.
+- **Instant Synchronization**: Changes saved in VS Code are immediately available to the Paracore engine without needing periodic "sync" or "file-watching" cycles.
 
-> 🛑 **Sync Safety: Renaming Scripts**
-> Because the link between the temporary copy and the original is name-based, you must close the workspace in VS Code before renaming a script in the Gallery.
+<img src={VSCodeSync} alt="VS Code Synchronization" />
 
----
-
-## 🚀 Workflow 2: Standalone Extension (Optional Developer Path)
-
-This workflow is for developers who manage their own project structures manually.
-
-### 1. Permanent Workspaces
-The Standalone Extension assumes you are managing your own files:
-- **Direct Editing**: You open your own folder and run `CoreScript: Initialize Workspace`. 
-- **Structure**: The extension generates the same `.csproj`, `sln`, and `Scripts/` folder structure **directly inside your folder**.
-- **Execution**: When you run `Ctrl+Shift+R`, the code is sent directly from your active window to Revit.
+### 2. Isolation vs. Intellisense
+The project files (`.csproj`, `.sln`, etc.) coexist with your code but are logically separated. 
+- **The Execution boundary**: The Paracore engine only looks inside the **`Scripts/`** folder for code to compile.
+- **Clean Library**: You can click **Remove Scaffolding** in the Paracore UI at any time. This deletes the IDE-specific files while leaving your `Scripts/` folder and its source code intact and ready for execution.
 
 ---
 
-## 🛡️ Global Helpers
+## Global Helpers & Extensions
 
-When writing code in either workflow, you have access to these injected globals:
+Paracore injects a rich set of globals and extension methods to simplify Revit automation.
 
+### Injected Globals
 | Helper | Description |
 | :--- | :--- |
 | **`Doc`** | The current active Revit Document. |
 | **`UIApp`** | The Revit UIApplication instance. |
 | **`Println(msg)`** | Prints a message to the Console. |
 | **`Transact(action)`** | Automatically handles Revit Transactions. |
-| **`Table(data)`** | Sends a list of objects to the Table Tab grid. |
-| **`BarChart(data)`** | Renders data as a Bar Chart in the Table Tab. |
+
+### Visualization API (Analytics Tab)
+| Method | Description |
+| :--- | :--- |
+| **`Table(data)`** | Renders data as an interactive grid. |
+| **`PieChart(data)`** / **`PieGraph(data)`** | Renders a high-contrast pie chart. |
+| **`BarChart(data)`** / **`BarGraph(data)`** | Renders a high-contrast bar chart. |
+| **`LineChart(data)`** / **`LineGraph(data)`** | Renders a line chart for trends. |
+
+### Precision & Math Extensions
+| Method | Description |
+| :--- | :--- |
+| **`.Round(n)`** | Rounds a number to 'n' decimal places (fluent). |
+| **`IsLessThan(n)`** | Fluent comparison for Revit units. |
+| **`IsGreaterThan(n)`** | Fluent comparison for Revit units. |

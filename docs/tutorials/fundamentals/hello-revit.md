@@ -4,7 +4,7 @@ Your first Paracore script! Learn the basic structure, the `Params` class, and h
 
 **Finished Script**: `03_Tutorials/Paracore_Fundamentals/01_HelloRevit.cs`
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - The basic structure of a Paracore script
 - How to create the `Params` class for user inputs
@@ -15,7 +15,7 @@ Your first Paracore script! Learn the basic structure, the `Params` class, and h
 
 1. In Paracore, click **New Script** in the toolbar
 2. Name it `HelloRevit`
-3. Click the ellipses (**...**) on the script card → **Edit Script**
+3. Click the ellipses (**...**) on the script card -> **Edit Script**
 4. VS Code will open with your new script
 
 ## Step 2: Write the Code
@@ -80,7 +80,7 @@ You should see something like:
 Welcome to Paracore YourRevitUsername
 ```
 
-## 💡 Try This
+## Try This
 
 1. Add another parameter for a number and print it
 2. Try accessing `Doc.Title` to print the document name
@@ -88,4 +88,4 @@ Welcome to Paracore YourRevitUsername
 
 ---
 
-**Next**: [Tutorial 2: Hello Wall →](./hello-wall.md)
+**Next**: [Tutorial 2: Hello Wall ->](./hello-wall.md)

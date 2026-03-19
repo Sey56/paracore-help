@@ -4,7 +4,7 @@ Paracore allows you to create dynamic, data-driven selection lists using **Optio
 
 ---
 
-## 🤝 The Provider Convention
+## The Provider Convention
 
 To create an Options Provider for a parameter named **`X`**, you define a companion property named **`X_Options`**.
 
@@ -13,7 +13,7 @@ The return type of your **Options Provider** must match the type of your main pa
 
 ---
 
-## 🔄 The Compute Workflow
+## The Compute Workflow
 
 For providers that require processing, the UI follows a dynamic lifecycle triggered by the **Compute (🔄)** button.
 
@@ -28,7 +28,7 @@ The engine detects "Computable" providers by analyzing the complexity of the exp
 
 ---
 
-## 🏗️ Dynamic Providers (Revit API)
+## Dynamic Providers (Revit API)
 
 Use dynamic providers for fine-grained filtering that goes beyond standard magic extraction.
 
@@ -46,7 +46,7 @@ public class Params {
 }
 ```
 
-## 📦 Static Providers
+## Static Providers
 
 Use static providers for fixed choices.
 
@@ -61,7 +61,7 @@ public class Params {
 
 ---
 
-## 💡 Best Practices
+## Best Practices
 
 -   **Safety**: Always prefer clicking **Compute** for dynamic providers to ensure the value matches Revit's data exactly.
 -   **Default Values**: If the main property has an initializer, the UI will be pre-filled with that value before the provider is triggered.

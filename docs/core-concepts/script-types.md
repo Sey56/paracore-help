@@ -1,59 +1,42 @@
-# Script Distribution Types
+# Script Structure & Projects
 
-Paracore supports three distinct ways to organize and distribute your Revit automations. 
+In Paracore v4, all automations are organized as **Projects**. This project-based architecture ensures a professional development experience with "Single Source of Truth" synchronization between Paracore and your IDE.
 
-## 📂 The "Script Source" Container
+## The Script Project
+A Paracore script is essentially a **folder** residing within one of your [Script Sources](./index.md). 
 
-Before diving into types, it's important to understand the **Script Source**. This is simply a folder on your computer that you have loaded into Paracore via the Sidebar. It acts as a container for your automation library. 
+### 1. The `Scripts/` Isolation Folder
+The most important part of any Paracore project is the **`Scripts/`** subfolder. 
+- **Role**: This is the designated home for your C# source code. 
+- **Isolation**: By keeping your logic inside this folder, Paracore separates your executable code from the intellisense scaffolding files (like `.csproj` or `.sln`) that may be generated in the project root.
+- **Discovery**: Paracore automatically discovers all `.cs` files within this folder and combines them for execution.
 
-Inside a Script Source, Paracore recognizes two kinds of scripts:
-
-## 📄 Single-File Scripts (`.cs`)
-**Best for**: Simple automations, utilities, and quick logic.
-
-A single-file script is a standalone C# file.
--   **Structure**: It contains everything: your `using` statements, metadata block (which must follow imports), top-level logic, and any helper classes.  
--   **Naming**: The filename (without extension) becomes the script name in the Gallery.-   **Execution**: Paracore compiles this file directly.
-
-## 📁 Multi-File Scripts (Folders)
-**Best for**: Modularizing complex logic and organizing large amounts of code across multiple files.
-
-A multi-file script is a **folder** residing within a Script Source. Paracore treats this entire folder as a **single script unit**.
-
-### The Rules of Multi-File Scripts
-1.  **Mandatory Entry Point**: The folder must contain **exactly one** script with **Top-Level Statements** (code written outside of a class). This acts as the single entry point for execution.
-2.  **Supporting Files**: All other files in the folder must contain **User-Defined Types** (classes, interfaces, records, structs) and cannot have top-level statements.
-3.  **Direct Definitions**: You do not write `namespace` or `class Program`. Write the logic directly in the entry file and types in the supporting files.
-
-### 💡 When to use a Folder?
-If your automation consists of only one script file and does not require modular helpers or separate class files, do not put it in a folder. Instead, keep it as a **Single-File Script** directly in the Script Source root to keep your library organized. Use folders only when you need to separate your logic into multiple files.
+### 2. Entry Point Logic
+For a project to be executable, it must have **exactly one** file within the `Scripts/` folder that uses **Top-Level Statements** (code written outside of a class). This acts as the entry point for Revit. All other files in the `Scripts/` folder should contain supporting types (classes, interfaces, etc.).
 
 ### Example Structure
-If you have a folder named **Wall_Generator**, it appears as **Wall_Generator** in the Gallery.
+A project named **WallGenerator** would look like this on your filesystem:
 
 ```text
-Wall_Generator/
-├── Main.cs          (The single Entry Point with top-level logic)
-├── Params.cs        (Supporting file: contains 'public class Params')
-└── WallUtils.cs     (Supporting file: contains helper classes)
+WallGenerator/
+├── Scripts/
+│   ├── WallGenerator.cs (Entry Point: Top-level logic)
+│   ├── Params.cs        (Supporting: class Params)
+│   └── WallUtils.cs     (Supporting: helper classes)
+├── WallGenerator.csproj (Optional: Scaffolding)
+└── WallGenerator.sln    (Optional: Scaffolding)
 ```
 
-## 🛡️ Protected Tools (`.ptool`)
+---
+
+## Protected Tools (.ptool)
 **Best for**: Intellectual property protection and commercial distribution.
 
 Protected tools are proprietary binary packages.
 -   **Naming**: The script name is the filename without the `.ptool` extension.
 -   **Identification**: Displayed with an **Amber Right Border** and a "Tool" badge.
-
-## 📊 Comparison At A Glance
-
-| Feature | Single-File | Multi-File | Protected Tool |
-| :--- | :---: | :---: | :---: |
-| **Storage Unit** | File (`.cs`) | Folder | File (`.ptool`) |
-| **Entry Point** | Top-Level Logic | Exactly 1 Top-Level File | Compiled Binary |
-| **Gallery Name** | Filename | Folder Name | Filename |
-| **Visual ID** | Standard Card | Blue Left Border | Amber Right Border |
+-   **Execution**: These are compiled binaries and do not contain user-editable source code in the gallery.
 
 ---
 
-> *Next: Learn how to browse your library in the [Script Gallery](../authoring/gallery.mdx).*
+> *Next: Learn how to manage your library in the [Script Gallery](../authoring/gallery.mdx).*

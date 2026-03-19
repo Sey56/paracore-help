@@ -1,0 +1,226 @@
+---
+id: extension-methods
+sidebar_label: Extension Methods (Master Guide)
+---
+
+# Scripting Reference (Master Guide)
+
+This guide provides an exhaustive reference for the global objects, session commands, and extension methods available within the Paracore REPL and script execution engine. Every method is designed to simplify the Revit API, providing "Magic" resolution for strings, units, and element identities.
+
+---
+
+## Global Context
+These objects are automatically injected into every script and REPL session.
+
+| Object | Type | Description | Example |
+| :--- | :--- | :--- | :--- |
+| **`Doc`** | `Document` | The active Revit Document. | `Doc.Title` |
+| **`UIDoc`** | `UIDocument` | The active Revit UI Document. | `UIDoc.ActiveView` |
+| **`UIApp`** | `UIApplication` | The top-level Revit UI Application. | `UIApp.VersionBuild` |
+| **`ActiveView`** | `View` | The currently active Revit view. | `ActiveView.Name` |
+| **`Selection`** | `List<Element>` | Elements currently selected in Revit. | `Selection.Count` |
+| **`Parameters`** | `Dictionary` | Parameters passed from the UI/Agent. | `Parameters["Mark"]` |
+| **`Println(msg)`** | `void` | Prints to the Paracore Console. | `Println("Log message")` |
+| **`Print(msg)`** | `void` | Alias for `Println`. | `Print("Log message")` |
+
+---
+
+## Session & Memory Management
+The REPL is persistent. Use these commands (no semicolons required in REPL) to manage active memory.
+
+### `list` / `vars`
+Enumerates all variables currently stored in the active REPL memory.
+- **Example**: `list`
+
+### `clear vars` / `reset`
+Wipes the entire memory state to start a fresh session.
+- **Example**: `reset`
+
+### `inspect <name>`
+Returns a formatted JSON tree of a specific variable.
+- **Example**: `inspect myWall`
+
+---
+
+## Discovery & Filtering
+Find elements by name, category, or class without writing boilerplate collectors.
+
+### `GetElements("Category")`
+Gets instances or types of a specific category or family. Use the `Types` suffix for symbols.
+- **Example**: `var doors = GetElements("Doors");`
+- **Example**: `var types = GetElements("DoorTypes");`
+
+### `GetElements<T>(name)`
+Gets elements filtered by C# class (e.g. `Wall`, `Room`).
+- **Example**: `var walls = GetElements<Wall>();`
+- **Example**: `var instances = GetElements<FamilyInstance>("Doors");`
+
+### `GetElement<T>(name)`
+Finds a single element by its name or identity.
+- **Example**: `var level = GetElement<Level>("Level 1");`
+
+### `GetMagicNames()`
+Lists all strings (categories, classes) that can be resolved by the engine.
+- **Example**: `GetMagicNames();`
+
+### `GetCategories()`
+Lists all Revit categories available in the active document.
+- **Example**: `GetCategories();`
+
+---
+
+## Element Accessors (Extension Methods)
+Paracore extends the Revit `Element` class with smart, unit-aware getters and setters.
+
+### `GetStr(name)`
+**Smart String Getter.** Returns name (for IDs) or formatted string.
+- **Example**: `var levelName = wall.GetStr("Base Constraint");`
+
+### `GetVal(name)`
+**WYSIWYG Getter.** Returns the exact string shown in the Revit Properties palette.
+- **Example**: `var displayValue = wall.GetVal("Length");`
+
+### `GetNum(name, unit)`
+**Numeric Getter.** Returns internal units or converted units.
+- **Example**: `var rawFeet = wall.GetNum("Length");`
+- **Example**: `var mmValue = wall.GetNum("Length", "mm");`
+
+### `GetInt(name)`
+**Integer Getter.** Returns the integer value of the parameter.
+- **Example**: `var count = wall.GetInt("Mark");`
+
+### `SetVal(name, value)`
+**The Smart Setter.** Resolves unit-strings, names, and IDs automatically.
+- **Example**: `wall.SetVal("Base Offset", "500 mm");`
+- **Example**: `wall.SetVal("Level", "Level 2");`
+
+### `SetNum(name, value, unit)`
+**Numeric Setter.** Explicitly sets value with unit conversion.
+- **Example**: `wall.SetNum("Base Offset", 100, "mm");`
+
+---
+
+## Metadata & API Reflection (Peeks)
+Techniques to inspect elements and their properties in a tabular format.
+
+### `AllParams()`
+Returns every non-empty parameter (Name, Storage, Value) as a table.
+- **Example**: `Table(myWall.AllParams());`
+
+### `TypeParams()`
+Returns parameters from the element's `ElementType`.
+- **Example**: `Table(myWall.TypeParams());`
+
+### `AllProperties()`
+**The API Peek.** Lists non-parameter properties like Category, Location, Design Option.
+- **Example**: `Table(myWall.AllProperties());`
+
+### `AllGeometry()`
+**The Geometry Peek.** Lists solid count, total volume, and surface area.
+- **Example**: `Table(myWall.AllGeometry());`
+
+### `Peek(element)`
+The definitive "Source of Truth" view. Lists Name, Storage, GetStr, GetNum, and UI Value side-by-side.
+- **Example**: `Peek(Selection[0]);`
+
+| Alias Helper | Description | Example |
+| :--- | :--- | :--- |
+| **`ListParams(el)`** | Shortcut for `Table(el.AllParams())` | `ListParams(myWall)` |
+| **`ListBIPs(el)`** | Lists BuiltInParameter strings. | `ListBIPs(myWall)` |
+| **`ListProperties(el)`** | Shortcut for `Table(el.AllProperties())` | `ListProperties(myWall)` |
+| **`ListGeometry(el)`** | Shortcut for `Table(el.AllGeometry())` | `ListGeometry(myWall)` |
+
+---
+
+## Geometry & Instance Handling
+
+### `GetInstanceGeometry()`
+Returns geometry coordinates relative to the Revit **Project Space**. (Result is a COPY).
+- **Example**: `var projectPts = inst.GetInstanceGeometry();`
+
+### `GetSymbolGeometry()`
+Returns raw coordinates relative to the family/CAD **Local Space**. (Result is a REFERENCE).
+- **Example**: `var localPts = inst.GetSymbolGeometry();`
+
+---
+
+## Unit Conversions & Snapping
+
+### `InputUnit(unit)`
+Converts a human value *to* Revit internal units.
+- **Example**: `var target = 1500.InputUnit("mm");`
+
+### `OutputUnit(unit)`
+Converts internal units *from* feet/sqft to a human unit.
+- **Example**: `var mm = val.OutputUnit("mm");`
+
+### `FormatUnit(unit)`
+Returns a formatted string with the unit suffix (e.g. `"1500.0 mm"`).
+- **Example**: `val.FormatUnit("mm");`
+
+### `RoundTo(unit)`
+Snaps the internal value to the nearest incremental precision of the unit.
+- **Example**: `val.RoundTo("mm");`
+
+---
+
+## Precision-Aware Math
+Always use these fuzzy comparison methods for Revit geometry.
+
+| Method | Description | Example |
+| :--- | :--- | :--- |
+| **`.AlmostZero()`** | Checks if value is effectively 0. | `if (val.AlmostZero()) ...` |
+| **`.IsAlmostEqualTo(v)`** | Fuzzy equality check (1e-9). | `val.IsAlmostEqualTo(target)` |
+| **`.IsLessThan(limit)`** | Strictly less than (ignores noise). | `val.IsLessThan(limit)` |
+| **`.IsGreaterThan(limit)`** | Strictly greater than (ignores noise). | `val.IsGreaterThan(limit)` |
+| **`.Round(decimals)`** | Fluent rounding. | `val.Round(2)` |
+| **`.IsPositive()`** / **`.IsNegative()`** | Directional check vs noise. | `val.IsPositive()` |
+
+---
+
+## Fluent Visualization & Action
+Chain these to elements or collections to trigger UI updates or Revit actions.
+
+| Method | Description | Example |
+| :--- | :--- | :--- |
+| **`.Table()`** | Renders data in the Summary Grid. | `walls.Table();` |
+| **`.ChartPie()`** / **`.ChartBar()`** | Renders Pie/Bar charts. | `data.ChartPie();` |
+| **`.Select()`** / **`.Seek()`** | Selects and focuses elements. | `room.Select();` |
+| **`.Zoom()`** / **`.Pick()`** | Zooms view to fit elements. | `Selection.Zoom();` |
+| **`.Isolate()`** | Isolates elements in view. | `rooms.Isolate();` |
+| **`.Hide()`** / **`.Unhide()`** | Toggles visibility in view. | `Selection.Hide();` |
+| **`.Delete()`** | Deletes elements (Auto-Transaction). | `trash.Delete();` |
+
+---
+
+## Advanced Automation
+
+### `id.ToElement(Doc)`
+Resolves a numeric/string ID directly to a Revit Element.
+- **Example**: `12345.ToElement(Doc).Select();`
+
+### `WhereParam(name, val)`
+High-speed filtering by string value.
+- **Example**: `walls.WhereParam("Mark", "A1");`
+
+### `SumParam(name, unit)`
+Quickly sum a numeric parameter across a collection.
+- **Example**: `rooms.SumParam("Area", "m2");`
+
+### `Transact(name, action)`
+Wraps modifications in a named transaction.
+- **Example**: `Transact("TitleCase", () => element.Name = element.Name.ToTitleCase());`
+
+### `Watchdog(action, interval)`
+Registers a background task that runs periodically.
+- **Example**: `Watchdog(() => CheckHealth(), 10);`
+
+### `SetExecutionTimeout(n)`
+Increases the script timeout limit (default 10s).
+- **Example**: `SetExecutionTimeout(60);`
+
+---
+
+:::info IntelliSense
+When using **Edit Script**, all of these methods are available in VS Code with full documentation and autocomplete.
+:::

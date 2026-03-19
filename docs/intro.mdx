@@ -1,10 +1,13 @@
 import SystemArchitecture from '@site/static/img/system-architecture.png';
+import ConsoleFull from '@site/static/img/console-full.png';
+import SentinelMonitor from '@site/static/img/sentinel-monitor.png';
+import AnalyticsGrid from '@site/static/img/analytics-grid.png';
 
 # Introduction to Paracore
 
 **Paracore** is a professional-grade C# automation platform for Autodesk Revit. Born from an architect's passion for the Revit ecosystem, it serves as a high-performance **BIM Logic Engine** designed to transform complex design automation into high-speed, repeatable workflows.
 
-## 🤝 A New Paradigm in BIM Management
+## A New Paradigm in BIM Management
 
 Paracore V4.1.0 represents a major evolution in Revit automation. It moves beyond simple scripting by providing a **Visual Low-Code Environment** that generates Revit-native C# logic automatically. It is designed for BIM Managers and Developers who need the power of the Revit API without the traditional barriers of manual code management.
 
@@ -16,7 +19,33 @@ Paracore V4.1.0 represents a major evolution in Revit automation. It moves beyon
 - **Zero-Boilerplate Parameter Engine**: Turn C# properties into rich UI controls instantly. Paracore automatically generates dropdowns, sliders, and validation logic without any UI coding.
 - **Professional Stability**: Engineered for the Windows filesystem, featuring a robust "Safe-Swap" engine that eliminates file locks and ensures reliable script management.
 
-## 🏗️ Architecture at a Glance
+## The Three Pillars of Productivity
+
+Paracore provides three distinct environments tailored to different stages of the BIM automation lifecycle:
+
+### 1. Script Authoring (Modular Projects)
+Standardize your most complex, repeatable Revit automations. Use **Modular Projects** to organize C# logic into structured, reusable tools with rich UI metadata and cross-team distribution support.
+
+### 2. Interactive REPL (BIM Laboratory)
+The **REPL** is your persistent C# scratchpad for real-time API discovery. Use it to prototype logic, explore model data, and execute one-off commands using Paracore's simplified **Extension Methods**.
+
+<img src={ConsoleFull} alt="Paracore REPL Laboratory" />
+
+### 3. Sentinels (BIM Watchdogs)
+Achieve **BIM Quality at the Source** with background monitoring. Sentinels run continuously, "watching" for compliance breaches and reporting them directly to your secondary monitors for instant resolution.
+
+<img src={SentinelMonitor} alt="Sentinels Watchdog Window" />
+
+---
+
+## Active Data Workflow
+Paracore transforms script results into an interactive results table. Edit parameters directly in the grid or use the CSV engine for mass-updates in external tools like Excel.
+
+<img src={AnalyticsGrid} alt="Active Data Workflows" />
+
+---
+
+## Architecture at a Glance
 
 Paracore consists of three primary layers working in harmony:
 

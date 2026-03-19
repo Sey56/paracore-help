@@ -6,12 +6,12 @@ sidebar_position: 1
 
 Release Date: January 2026
 
-## 🚀 Highlights
+## Highlights
 
 ### 1. Robust Workspace Synchronization
 We've resolved critical sync issues between the temporary implementation workspace and your actual script sources.    
 *   **Renaming:** Renaming files in the temporary workspace now correctly renames them in the source.
-*   **Creation:** Creating new files in a multi-file script correctly persists them back to the source folder.        
+*   **Creation:** Creating new files in a Modular Project correctly persists them back to the source folder.        
 *   **Duplicates Eliminated:** No more "ghost" duplicate files appearing in your workspace.
 
 ### 2. Enhanced Table & Visualization Tab
@@ -31,7 +31,7 @@ When a script execution fails, a new **"Explain & Fix"** button appears in the C
 
 ---
 
-## 🛠️ Parameter Engine Enhancements
+## Parameter Engine Enhancements
 
 The **Parameter Engine** has been significantly refined for a smoother developer experience.
 

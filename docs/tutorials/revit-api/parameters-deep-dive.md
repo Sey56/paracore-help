@@ -4,7 +4,7 @@ Learn to read element parameters, understand storage types, and handle Revit's i
 
 **Finished Script**: `03_Tutorials/RevitAPI_Fundamentals/02_ParametersDeepDive.cs`
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - Accessing Built-in Parameters
 - The four Parameter Storage Types
@@ -83,8 +83,8 @@ Println($"Height: {heightInMeters:F2} m");
 Common unit conversions:
 - `UnitTypeId.Meters` - Length in meters
 - `UnitTypeId.Millimeters` - Length in millimeters  
-- `UnitTypeId.SquareMeters` - Area in m²
-- `UnitTypeId.CubicMeters` - Volume in m³
+- `UnitTypeId.SquareMeters` - Area in m2
+- `UnitTypeId.CubicMeters` - Volume in m3
 
 ## Step 4: Common Built-in Parameters
 
@@ -103,7 +103,7 @@ BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS
 BuiltInParameter.ALL_MODEL_MARK
 ```
 
-## 💡 Try This
+## Try This
 
 1. Read and display the Area of all Rooms
 2. Create a table showing Door widths and heights
@@ -111,4 +111,4 @@ BuiltInParameter.ALL_MODEL_MARK
 
 ---
 
-**Next**: [Tutorial 3: Conditional Logic →](./conditional-logic.md)
+**Next**: [Tutorial 3: Conditional Logic ->](./conditional-logic.md)

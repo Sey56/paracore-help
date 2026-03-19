@@ -6,7 +6,7 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: '🚀 Getting Started',
+      label: 'Getting Started',
       items: [
         'getting-started/index',
         'getting-started/installation',
@@ -17,7 +17,7 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: '🧠 Core Concepts',
+      label: 'Core Concepts',
       items: [
         'core-concepts/index',
         'core-concepts/architecture',
@@ -27,7 +27,7 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: '✒️ Authoring',
+      label: 'Script Authoring',
       items: [
         'authoring/index',
         'authoring/gallery',
@@ -37,15 +37,31 @@ const sidebars: SidebarsConfig = {
         'authoring/execution',
         'authoring/presets',
         'authoring/query-builder',
-        'authoring/sentinels',
         'authoring/metadata',
         'authoring/vscode',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Interactive REPL',
+      items: [
+        'interactive-repl/index',
+        'interactive-repl/extension-methods',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Sentinels (Watchdogs)',
+      items: [
+        'sentinels/index',
+        'sentinels/deployment',
+        'sentinels/control-window',
       ],
     },
 
     {
       type: 'category',
-      label: '🛠️ Tool Generator',
+      label: 'Tool Generator',
       items: [
         'tool-generator/index',
         'tool-generator/overview',
@@ -57,7 +73,7 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: '📖 Scripting Reference',
+      label: 'Scripting Reference',
       items: [
         'scripting-reference/index',
         'scripting-reference/globals',
@@ -71,7 +87,7 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: '🏢 Enterprise (Roadmap)',
+      label: 'Enterprise (Roadmap)',
       items: [
         'enterprise/index',
       ],
@@ -87,19 +103,19 @@ const sidebars: SidebarsConfig = {
     'tutorials/index',
     {
       type: 'category',
-      label: '🌟 Paracore Fundamentals',
+      label: 'Paracore Fundamentals',
       link: { type: 'generated-index' },
       items: [
         'tutorials/fundamentals/hello-revit',
         'tutorials/fundamentals/hello-wall',
         'tutorials/fundamentals/parametric-floor',
         'tutorials/fundamentals/element-selection',
-        'tutorials/fundamentals/multi-file-script',
+        'tutorials/fundamentals/modular-projects',
       ],
     },
     {
       type: 'category',
-      label: '🏗️ Revit API Fundamentals',
+      label: 'Revit API Fundamentals',
       link: { type: 'generated-index' },
       items: [
         'tutorials/revit-api/reading-the-model',

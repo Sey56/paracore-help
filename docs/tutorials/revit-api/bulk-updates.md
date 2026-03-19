@@ -4,13 +4,13 @@ Learn to modify parameters across multiple elements in a single transaction.
 
 **Finished Script**: `03_Tutorials/RevitAPI_Fundamentals/04_BulkUpdates.cs`
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - Wrapping modifications in transactions
 - String manipulation methods
 - Batch processing patterns
 
-## ⚠️ Safety First
+## Safety First
 
 This tutorial **modifies your model**. Always:
 - Test in a sample project
@@ -86,7 +86,7 @@ Transact("Bulk Update", () =>
     }
 });
 
-Println($"✅ Updated {successCount} elements");
+Println($"Updated {successCount} elements");
 ```
 
 ## Step 5: Add User Options
@@ -123,7 +123,7 @@ string newValue = p.Operation switch
 };
 ```
 
-## 💡 Try This
+## Try This
 
 1. Add a "Replace Text" option
 2. Create a "Clear All" option that sets to empty string
@@ -131,4 +131,4 @@ string newValue = p.Operation switch
 
 ---
 
-**Next**: [Tutorial 5: Types vs Instances →](./types-vs-instances.md)
+**Next**: [Tutorial 5: Types vs Instances ->](./types-vs-instances.md)

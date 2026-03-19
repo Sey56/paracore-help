@@ -4,7 +4,7 @@ Learn to use `FilteredElementCollector` to find and count elements in your Revit
 
 **Finished Script**: `03_Tutorials/RevitAPI_Fundamentals/01_ReadingTheModel.cs`
 
-## 🎯 What You'll Learn
+## What You'll Learn
 
 - `FilteredElementCollector` - the foundation of querying
 - `BuiltInCategory` enumeration
@@ -89,7 +89,7 @@ foreach (var element in elements)
 Table(tableData);
 ```
 
-## 💡 Try This
+## Try This
 
 1. Try different categories: `OST_Doors`, `OST_Rooms`, `OST_Floors`
 2. Add the element's Level to the table output
@@ -97,4 +97,4 @@ Table(tableData);
 
 ---
 
-**Next**: [Tutorial 2: Parameters Deep Dive →](./parameters-deep-dive.md)
+**Next**: [Tutorial 2: Parameters Deep Dive ->](./parameters-deep-dive.md)

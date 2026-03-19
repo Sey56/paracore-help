@@ -7,13 +7,13 @@ Paracore includes a built-in AI assistant designed to help you debug Revit API s
 
 <img src={ExplainFixButton} alt="Explain Fix Button" />
 
-## 🛠️ The "Explain & Fix" Workflow
+## The "Explain & Fix" Workflow
 
 When a script fails to execute or compile, a red **Explain & Fix** button appears on the **far left** of the **Console Tab** footer. Clicking this button initiates the following process:
 
 ### 1. Analysis
-The AI scans your execution environment. It distinguishes between **Single-File Scripts** and **Multi-File Scripts**. 
-- For multi-file scripts, it analyzes the entire folder context to understand how your classes and entry points interact.
+The AI scans your execution project. It automatically maps the logic residing inside your **`Scripts/`** folder.
+- For Modular Projects, it analyzes the entire folder context to understand how your classes and entry points interact.
 
 ### 2. Explanation
 In the **Explain & Fix window**, the AI provides a natural language summary of why the code failed.
@@ -28,16 +28,16 @@ The AI generates a complete rewrite of the affected file(s).
 <img src={AiAnalysisFix} alt="AI Analysis and Fix" />
 
 ### 4. Direct Application
-Click the **Apply Fix** button to commit the changes. Paracore handles the file synchronization intelligently:
+Click the **Apply Fix** button to commit the changes. Paracore handles the file updates directly:
 
-- **If a Temporary Workspace is open**: The fix is applied to the copied script in the temporary workspace. Paracore's file watchers then instantly sync this change back to your original script in the **Script Source**. This ensures your IntelliSense and the execution engine stay in perfect harmony.
-- **If no Workspace is open**: The fix is applied directly to the original script file in your library.
+- **Single Source of Truth**: The fix is applied directly to the source code file(s) within your script project.
+- **IDE Sync**: If the project is currently open in VS Code, the changes will reflect immediately in the editor.
 
 In both cases, once you click **Apply Fix**, you can immediately return to the **Parameters Tab** and click **Run Script** again to verify the solution.
 
 ---
 
-## 🛡️ Privacy & Connectivity
+## Privacy & Connectivity
 
 ### Connectivity & Configuration
 This feature requires an active internet connection and configured LLM settings in the **Settings** menu.
@@ -45,7 +45,7 @@ This feature requires an active internet connection and configured LLM settings 
 - **Supported Providers**: Currently, only **Google Gemini** (models **2.5 and 3.0**) and **OpenRouter** are fully implemented.
 - **Other Providers**: While Anthropic, DeepSeek, and OpenAI are listed in the settings menu, they are not yet active and will be supported in future updates.
 
-### ⚠️ Data Privacy & Usage Advisory
+### Data Privacy & Usage Advisory
 
 When you use **Explain & Fix**, your **script source code** and error logs are transmitted to the active AI provider (e.g., Google Gemini, OpenAI) for analysis.
 

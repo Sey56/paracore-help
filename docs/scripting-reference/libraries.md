@@ -2,7 +2,7 @@
 
 Paracore includes a suite of industry-standard libraries ("batteries included") so you can perform complex tasks without managing DLLs manually.
 
-## 📦 Built-In Libraries
+## Built-In Libraries
 
 These namespaces are automatically imported into every script. You do not need `using` statements for them.
 
@@ -14,7 +14,7 @@ These namespaces are automatically imported into every script. You do not need `
 | **ImageSharp** | 3.1.12 | Modern, cross-platform image processing library. |
 | **System.Text.Json** | 8.0.5 | Native, high-performance JSON serialization. |
 
-## 📖 Usage Examples
+## Usage Examples
 
 ### 1. Parsing JSON (System.Text.Json)
 
@@ -44,7 +44,7 @@ var response = client.Execute(request);
 Println($"Response: {response.Content}");
 ```
 
-## 🔌 Referencing External DLLs
+## Referencing External DLLs
 
 Paracore is designed to be a self-contained ecosystem. While you can technically use `System.Reflection.Assembly.LoadFrom()` to load external DLLs, we recommend sticking to the built-in libraries to ensure your scripts are portable and compatible across different machines.
 

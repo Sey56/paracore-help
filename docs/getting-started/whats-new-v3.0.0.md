@@ -2,38 +2,38 @@
 
 Paracore has officially reached its "Gold" milestone. This version represents a fundamental shift towards **Focus & Agency**, providing a premium environment for professional Revit automation.
 
-## 🛠️ Features at a Glance
+## Features at a Glance
 
-### 1. 🎯 "Hero" Focus Mode
+### 1. "Hero" Focus Mode
 Isolate any script directly from its Gallery card for an immersive experience.
 -   **Absolute Isolation**: No more gallery scrolling or visual clutter.
 -   **Centric Design**: Your active script is mathematically centered.
--   **One-Click Entry**: Accessible via the 🎯 button on the bottom-right of every script card.
+-   One-Click Entry: Accessible via the button on the bottom-right of every script card.
 
-### 2. 🔋 "Batteries-Included" Libraries
+### 2. "Batteries-Included" Libraries
 Paracore v3.0 now includes industry-standard libraries available globally in **every** script:
 -   **MathNet.Numerics**: High-performance linear algebra, statistics, and mathematics.
 -   **RestSharp**: Simple, professional logic for HTTP and REST API integrations.
 -   **MiniExcel**: Blazing-fast Excel support without requiring local Office installations.
 -   **ImageSharp**: Advanced image processing and pixel manipulation.
 
-### 3. 🎨 v3 Rich Input Suite
+### 3. v3 Rich Input Suite
 We've expanded the Parameter Engine to support high-end design controls:
 -   **Numerical Steppers**: Precision +/- controls for exact iteration counts.
 -   **Color Pickers**: Visual hex selection for architectural design overrides.
 -   **Segmented Toggles**: Modern horizontal buttons for clear option selection.
 
-### 4. 🗂️ Gallery Organization & Toolbar
+### 4. Gallery Organization & Toolbar
 The gallery is now smarter and more organized:
--   **Standardized Types**: Clear visual distinction between Single-File and Multi-File scripts.
--   **Filter Toolbar**: Instantly toggle your view between **All**, **Single**, or **Multi** script types.
+-   **Standardized Structure**: Clear visual distinction for all script projects.
+-   **Filter Toolbar**: Instantly toggle your view between your script sources and projects.
 -   **Native Renaming**: Rename any project or script directly from the Paracore dashboard.
 
-### 5. 🛡️ Ironclad Scoping & Stability
+### 5. Ironclad Scoping & Stability
 Under the hood, we've hardened the engine for production use:
 -   **Strict Parameter Isolation**: An architectural breakthrough ensures that Paracore only touches properties inside your `Params` class. Your top-level local variables are now 100% protected.
 -   **Smart Hard-Reset**: The reset button now intelligently preserves your custom presets while restoring code defaults.
 
 ---
 
-**Ready to dive in?** Start with our [Introduction](../intro.mdx) or explore the [Authoring Guide](../authoring/index.md). 🚀🏗️⚡
+**Ready to dive in?** Start with our [Introduction](../intro.mdx) or explore the [Authoring Guide](../authoring/index.md).

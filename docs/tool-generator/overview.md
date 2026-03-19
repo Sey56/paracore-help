@@ -2,7 +2,7 @@
 
 The workflow for creating a tool is identical to your normal authoring process, with one final "Build" step at the end.
 
-## 🔄 The "No-Interface" Workflow
+## The "No-Interface" Workflow
 
 Because the Tool Generator is a native feature of the Paracore environment, you don't need to export files or use external compilers.
 
@@ -11,7 +11,7 @@ Because the Tool Generator is a native feature of the Paracore environment, you 
 3.  **Build**: Click **Build Protected Tool**.
 4.  **Done**: Your `.ptool` is ready in the source folder.
 
-## 🧩 Seamless Integration
+## Seamless Integration
 
 Once generated, your tool behaves exactly like a script within the Paracore ecosystem:
 -   It appears in the **Gallery** alongside your scripts (marked with a "Tool" badge).
