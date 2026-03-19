@@ -10,7 +10,7 @@ The **Paracore REPL** (Read-Eval-Print Loop) is a persistent C# scratchpad with 
 
 ## Interactive Modes
 
-The REPL is located in the **Console Tab** and provides two primary entry modes:
+The REPL is located in the **Console Tab** and provides two **mutually exclusive** entry modes designed to toggle based on your active task:
 
 1.  **Single-Line REPL**: A fast command-line at the footer for quick one-off commands and API queries. Entries here are saved in a **Command Cache**; use the **Up** and **Down** arrows to cycle through your history.
 2.  **Multi-Line Workspace**: A dedicated scratchpad for longer snippets and logic prototyping. It features a standalone **Run** button and supports **`Ctrl + Enter`** for execution.
@@ -25,8 +25,9 @@ Unlike Modular Projects, scripts for the multi-line REPL do not require a specif
 
 <img src={ConsoleEditor} alt="Multi-Line Editor Controls" />
 
-### Fast-Run Command Line
-When the multi-line editor is collapsed, the single-line REPL remains active at the bottom, allowing you to fire off commands while maximizing the visibility of your **Console History**.
+### Mode Switching
+- **Expanding**: Clicking the expand icon transitions the UI to the **Multi-Line Workspace**, removing the single-line input to maximize the editor area.
+- **Collapsing**: Collapsing the workspace removes the larger editor and restores the **Single-Line REPL** at the footer, providing a streamlined view with maximum [Console History](#3-multi-turn-interaction) visibility.
 
 <img src={ConsoleRepl} alt="Single-Line REPL" />
 
@@ -43,7 +44,9 @@ Both modes are designed for speed:
 - **Optional Semicolons**: For simple expressions and one-liners, semicolons are optional.
 - **Magic Discovery**: Use the [Magic Accessors](#element-accessors-extension-methods) to bypass standard Revit API boilerplate.
 
-### 3. Multi-Turn Interaction
+### 3. Shared Context & Multi-Turn Interaction
+Both modes share the same persistent execution environment. This means you can initialize complex data in the Multi-Line Workspace and surgically query it later from the Single-Line REPL.
+
 Because the environment is persistent, you can define a variable in one turn and reference it in the next:
 ```csharp
 var rooms = GetElements<Room>(); // Turn 1
