@@ -1,4 +1,5 @@
-import InspectorMain from '@site/static/img/inspector-main.png';
+import InspectorTabs from '@site/static/img/inspector-tabs.png';
+import ParametersTab from '@site/static/img/parameters-tab.png';
 import AnalyticsGrid from '@site/static/img/analytics-grid.png';
 import AnalyticsCharts from '@site/static/img/analytics-charts.png';
 
@@ -6,13 +7,15 @@ import AnalyticsCharts from '@site/static/img/analytics-charts.png';
 
 The **Script Inspector** is the right-side panel where you configure, execute, and monitor the selected automation.
 
-<img src={InspectorMain} alt="Script Inspector Main" />
+<img src={InspectorTabs} alt="Script Inspector Tabs" />
 
 ## Parameters Tab
 The **Parameters** tab is where you provide inputs to your script.
 - **Grouping**: Click group headers (e.g., "Base Level") to expand related parameters.
 - **Compute (🔄)**: Click to fetch live data from Revit (like Level names) and convert text boxes into dropdowns.
 - **Execution**: Click the play icon to execute. Successful runs will automatically populate the **Analytics Tab** with your results.
+
+<img src={ParametersTab} alt="Parameters Tab View" />
 
 ## Analytics Tab
 The **Analytics Tab** is a high-performance data visualization dashboard. It renders the structured data returned by your script via the `Show()` or `Table()` globals.
