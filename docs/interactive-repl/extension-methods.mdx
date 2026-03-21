@@ -23,6 +23,11 @@ These objects are automatically injected into every script and REPL session.
 | **`Println(msg)`** | `void` | Prints to the Paracore Console. | `Println("Log message")` |
 | **`Print(msg)`** | `void` | Alias for `Println`. | `Print("Log message")` |
 
+## REPL Syntax Rules
+To ensure successful execution in the REPL environment:
+- **Semicolons**: Mandatory for variable assignments (`var rooms = GetElements<Room>();`), but optional for one-line queries (`Selection.Count`).
+- **Count vs Count()**: Use the `.Count` property for immediate lists (e.g., `Selection.Count`, `GetMagicNames().Count`) and the `.Count()` method for dynamic enumerable queries (e.g., `GetElements<Wall>().Where(w => ...).Count()`).
+
 ---
 
 ## Session & Memory Management
@@ -46,9 +51,9 @@ Returns a formatted JSON tree of a specific variable.
 Find elements by name, category, or class without writing boilerplate collectors.
 
 ### `GetElements("Category")`
-Gets instances or types of a specific category or family. Use the `Types` suffix for symbols.
-- **Example**: `var doors = GetElements("Doors");`
-- **Example**: `var types = GetElements("DoorTypes");`
+Gets instances or types of a specific category or family. Use the generic `FamilySymbol` for types.
+- **Example**: `var doors = GetElements("Doors");` // All instances
+- **Example**: `var types = GetElements<FamilySymbol>("Doors");` // All types
 
 ### `GetElements<T>(name)`
 Gets elements filtered by C# class (e.g. `Wall`, `Room`).
@@ -61,11 +66,11 @@ Finds a single element by its name or identity.
 
 ### `GetMagicNames()`
 Lists all strings (categories, classes) that can be resolved by the engine.
-- **Example**: `GetMagicNames();`
+- **Example**: `foreach(var n in GetMagicNames()) Println(n);`
 
 ### `GetCategories()`
 Lists all Revit categories available in the active document.
-- **Example**: `GetCategories();`
+- **Example**: `foreach(var c in GetCategories()) Println(c);`
 
 ---
 
@@ -116,8 +121,8 @@ Returns parameters from the element's `ElementType`.
 - **Example**: `Table(myWall.AllProperties());`
 
 ### `AllGeometry()`
-**The Geometry Peek.** Lists solid count, total volume, and surface area.
-- **Example**: `Table(myWall.AllGeometry());`
+Returns the complete collection of `GeometryObject` instances (Solids, Curves, Points) for the element.
+- **Example**: `myWall.AllGeometry().Table();`
 
 ### `Peek(element)`
 The definitive "Source of Truth" view. Lists Name, Storage, GetStr, GetNum, and UI Value side-by-side.
@@ -183,12 +188,11 @@ Chain these to elements or collections to trigger UI updates or Revit actions.
 
 | Method | Description | Example |
 | :--- | :--- | :--- |
-| **`.Table()`** | Renders dynamic, exhaustive parameter tables for Revit collections. | `walls.Table();` |
-| **`.ChartPie()`** / **`.ChartBar()`** | Renders Pie/Bar charts. | `data.ChartPie();` |
-| **`.Select()`** / **`.Seek()`** | Selects and focuses elements. | `room.Select();` |
-| **`.Zoom()`** / **`.Pick()`** | Zooms view to fit elements. | `Selection.Zoom();` |
-| **`.Isolate()`** | Isolates elements in view. | `rooms.Isolate();` |
-| **`.Hide()`** / **`.Unhide()`** | Toggles visibility in view. | `Selection.Hide();` |
+| **`.Table()`** | Renders dynamic parameter tables for collections. | `walls.Table();` |
+| **`.PieChart()`** / **`.BarChart()`** | Renders Pie/Bar charts in the Analytics tab. | `data.PieChart();` |
+| **`.Select()`** / **`.Zoom()`** | Selects and focuses elements in the Revit viewport. | `room.Select();` |
+| **`.Isolate()`** | Isolates elements in the active view. | `rooms.Isolate();` |
+| **`.Hide()`** / **`.Unhide()`** | Toggles visibility in the active view. | `Selection.Hide();` |
 | **`.Delete()`** | Deletes elements (Auto-Transaction). | `trash.Delete();` |
 
 ---
@@ -223,4 +227,25 @@ Increases the script timeout limit (default 10s).
 
 :::info IntelliSense
 When using **Edit Script**, all of these methods are available in VS Code with full documentation and autocomplete.
+:::
+
+---
+
+## 📊 Structured Output Reference
+Use this matrix to understand when to manually call `.Table()` versus using auto-rendering diagnostic helpers.
+
+| Method | Mode | Best For |
+| :--- | :--- | :--- |
+| **`.Table()`** | **Manual** | Dynamic element audits & custom projections. |
+| **`Peek(el)`** | **Auto** | Forensic API vs UI value comparison. |
+| **`ListParams(el)`** | **Auto** | Fast exhaustive parameter listings. |
+| **`ListProperties(el)`** | **Auto** | Internal metadata (Level, Workset, Location). |
+| **`ListGeometry(el)`** | **Auto** | Summary of geometry (Solid count, Volume, and Area). |
+
+*Note: `GetMagicNames()` and `GetCategories()` return string lists. Use a `foreach` loop with `Println()` to see them in the console.*
+
+---
+
+:::tip Pro Tip
+If you need to filter or sort data *before* rendering it to a table, use the extension method equivalents (e.g., `el.AllParams().Table()`) instead of the auto-rendering global functions.
 :::

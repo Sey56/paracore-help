@@ -1,0 +1,88 @@
+---
+title: 04 - The Parameter Engine and Params Class
+sidebar_label: 04 - Parameter Engine
+id: 04-parameter-engine-params-class
+---
+
+# The Parameter Engine and Params Class
+
+Learn how Paracore transforms simple C# properties into interactive UI widgets without writing a single line of UI code.
+
+## 1. The `Params` Class
+To create an interactive tool, define a `public class Params` at the bottom of your script. Paracore scans this class and generates corresponding UI elements for every public property.
+
+### Supported Types
+- **Primitives**: `double`, `int`, and `string` become standard input boxes.
+- **System Families**: Use the Revit type directly (e.g., `WallType` or `Wall`) to generate list-based pickers.
+- **Loadable Components**: Use the `[RevitElements]` attribute to list specific categories.
+
+```csharp
+public class Params 
+{
+    // A standard numeric input
+    public double OffsetDistance { get; set; } = 12.0;
+
+    // A dropdown listing every Wall Type in the project
+    public WallType TargetType { get; set; }
+
+    // Multi-select list of Rooms
+    public List<Room> MyRooms { get; set; }
+
+    // Curation: Listing specific loadable families
+    [RevitElements(Category = "Doors")]
+    public FamilySymbol? DoorType { get; set; }
+}
+```
+
+## 2. Element Hydration (The Magic)
+When you use a Revit element as a parameter, you are interacting with **Real Revit Objects**.
+
+- **The Compute Button**: Click the **Compute** icon in the UI to fetch real instances from the model. 
+- **Direct Access**: Because the elements are "Hydrated," you can access their BIM data immediately.
+
+```csharp
+public class Params { ... } // Defined below
+
+// Logic Space
+Params p = new();
+// p.MyRooms[0] is a real Autodesk.Revit.DB.Room!
+Println($"Area: {p.MyRooms[0].Area}");
+```
+
+## 3. Advanced Filtering
+Suffix providers (like `_Options` or `_Filter`) allow you to curate your UI lists. These **must** be paired with a primary property.
+
+### Custom Lists (`_Options`)
+Use the `_Options` suffix to provide a curated list of elements for a specific property.
+```csharp
+public class Params
+{
+    // 1. The Primary Property (The UI Widget)
+    public List<Room> SmallRooms { get; set; }
+
+    // 2. The Suffix Provider (The Data Source)
+    public List<Room> SmallRooms_Options => 
+        new FilteredElementCollector(Doc)
+            .OfCategory(BuiltInCategory.OST_Rooms)
+            .Cast<Room>()
+            .Where(r => r.Area < 10.0)
+            .ToList();
+}
+```
+
+### Predicate Filters (`_Filter`)
+Use a boolean `_Filter` method to validate elements before they reach the UI dropdown.
+```csharp
+public class Params
+{
+    // The Primary Property
+    public List<Room> LargeRooms { get; set; }
+
+    // The Filter Logic: Automatically called by the engine
+    public bool LargeRooms_Filter(Room r) => r.Area > 20.0;
+}
+```
+
+---
+
+*Managing inputs: [Parameter Defaults and Cache](./05-parameter-defaults-and-cache.mdx)*

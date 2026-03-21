@@ -1,0 +1,63 @@
+
+> paracore-help@3.0.0 build
+> docusaurus build
+
+
+ ------------------------------------------------------------------------------                                                                                                          Update available 3.9.1 ΓåÆ 3.9.2                                                                                                                 To upgrade Docusaurus packages with the latest version, run the                                       following command:                                        `npm i @docusaurus/core@latest @docusaurus/preset-classic@latest               @docusaurus/module-type-aliases@latest @docusaurus/tsconfig@latest                                  @docusaurus/types@latest`                                                                                                             ------------------------------------------------------------------------------ 
+
+[INFO] [en] Creating an optimized production build...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[90m[[90mwebpackbar[90m][39m [36mΓä╣[39m Compiling Client
+[90m[[90mwebpackbar[90m][39m [36mΓä╣[39m Compiling Server
+[WARNING] Markdown link with URL `./extension_methods.mdx` in source file "docs/scripting-reference/parameters.mdx" (217:114) couldn't be resolved.
+Make sure it references a local Markdown file that exists within the current plugin.
+[WARNING] Markdown link with URL `./extension_methods.mdx` in source file "docs/scripting-reference/index.md" (10:5) couldn't be resolved.
+Make sure it references a local Markdown file that exists within the current plugin.
+[WARNING] Markdown link with URL `./extension_methods.mdx` in source file "docs/scripting-reference/parameters.mdx" (217:114) couldn't be resolved.
+Make sure it references a local Markdown file that exists within the current plugin.
+[WARNING] Markdown link with URL `./extension_methods.mdx` in source file "docs/scripting-reference/index.md" (10:5) couldn't be resolved.
+Make sure it references a local Markdown file that exists within the current plugin.
+[90m[[90mwebpackbar[90m][39m [32mΓ£ö[39m Server: Compiled successfully in 35.16s
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[90m[[90mwebpackbar[90m][39m [32mΓ£ö[39m Client: Compiled successfully in 1.11m
+[WARNING] Docusaurus found broken links!
+
+Please check the pages of your site in the list below, and make sure you don't reference any path that does not exist.
+Note: it's possible to ignore broken links with the 'onBrokenLinks' Docusaurus configuration, and let the build pass.
+
+Exhaustive list of all broken links found:
+- Broken link on source page path = /paracore-help/tutorials:
+   -> linking to /paracore-help/docs/tutorials/fundamentals/hello-revit
+   -> linking to /paracore-help/docs/tutorials/fundamentals/hello-wall
+   -> linking to /paracore-help/docs/tutorials/fundamentals/parametric-floor
+   -> linking to /paracore-help/docs/tutorials/fundamentals/element-selection
+   -> linking to /paracore-help/docs/tutorials/fundamentals/multi-file-script
+- Broken link on source page path = /paracore-help/docs/fundamentals:
+   -> linking to ./01-script-sources-and-structure (resolved as: /paracore-help/docs/01-script-sources-and-structure)
+   -> linking to ./02-creating-and-managing-scripts (resolved as: /paracore-help/docs/02-creating-and-managing-scripts)
+   -> linking to ./03-editing-scripts-in-vscode (resolved as: /paracore-help/docs/03-editing-scripts-in-vscode)
+   -> linking to ./04-parameter-engine-params-class (resolved as: /paracore-help/docs/04-parameter-engine-params-class)
+   -> linking to ./05-parameter-defaults-and-cache (resolved as: /paracore-help/docs/05-parameter-defaults-and-cache)
+   -> linking to ./06-revit-vs-paracore-selection (resolved as: /paracore-help/docs/06-revit-vs-paracore-selection)
+   -> linking to ./07-visual-query-builder (resolved as: /paracore-help/docs/07-visual-query-builder)
+   -> linking to ./08-structured-output-table (resolved as: /paracore-help/docs/08-structured-output-table)
+   -> linking to ./09-paracore-sentinels (resolved as: /paracore-help/docs/09-paracore-sentinels)
+   -> linking to ./10-paracore-repl (resolved as: /paracore-help/docs/10-paracore-repl)
+- Broken link on source page path = /paracore-help/docs/scripting-reference:
+   -> linking to ./extension_methods.mdx (resolved as: /paracore-help/docs/extension_methods.mdx)
+- Broken link on source page path = /paracore-help/docs/scripting-reference/parameters:
+   -> linking to ./extension_methods.mdx (resolved as: /paracore-help/docs/scripting-reference/extension_methods.mdx)
+- Broken link on source page path = /paracore-help/docs/tutorials:
+   -> linking to /paracore-help/docs/tutorials/fundamentals/hello-revit
+
+[WARNING] Docusaurus found broken anchors!
+
+Please check the pages of your site in the list below, and make sure you don't reference any anchor that does not exist.
+Note: it's possible to ignore broken anchors with the 'onBrokenAnchors' Docusaurus configuration, and let the build pass.
+
+Exhaustive list of all broken anchors found:
+- Broken anchor on source page path = /paracore-help/docs/interactive-repl:
+   -> linking to #3-multi-turn-interaction (resolved as: /paracore-help/docs/interactive-repl#3-multi-turn-interaction)
+
+[SUCCESS] Generated static files in "build".
+[INFO] Use `npm run serve` command to test your build locally.

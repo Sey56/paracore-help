@@ -1,0 +1,73 @@
+---
+title: 06 - Revit Selection vs Paracore Selection
+sidebar_label: 06 - Selection Sync
+id: 06-revit-vs-paracore-selection
+---
+
+# Revit Selection vs Paracore Selection
+
+There are two primary ways to target Revit elements: selecting them from curated lists in the Paracore UI, or picking them directly from the Revit viewport.
+
+## 1. Paracore UI Selection
+The dropdowns and multi-select lists in the **Parameters** tab are examples of UI selection.
+- **Process**: You select items from a list prepared by the Parameter Engine.
+- **Benefit**: Ideal for curated tasks where you need to choose from specified types (e.g., "Wall Types") or managed lists (e.g., "Rooms in Phase 1").
+
+```csharp
+public class Params 
+{
+    // Renders a dropdown listing every Wall Type in the project
+    public WallType TargetType { get; set; }
+
+    // Renders a multi-select list for targeting specific Rooms
+    public List<Room> MyRooms { get; set; }
+
+    // Curation: Listing only 'Doors' using an attribute
+    [RevitElements(Category = "Doors")]
+    public FamilySymbol? DoorType { get; set; }
+}
+```
+
+## 2. Direct Revit Picking
+Some tasks require spatial precision, such as picking a specific wall or a coordinate point. 
+
+### Common Pick Types
+Define these types inside your `public class Params` to trigger Revit's native selection cursor:
+
+```csharp
+public class Params
+{
+    // Pick a coordinate point
+    public XYZ? MyPoint { get; set; }
+
+    // Pick any element in the active view
+    public Reference? MySelectedRef { get; set; }
+
+    // Specifically target element geometry
+    public Edge? SelectedEdge { get; set; }
+    public Face? SelectedFace { get; set; }
+}
+```
+
+### The `[Select]` Attribute
+You can force a standard element type to trigger a direct pick instead of a dropdown list using the `[Select]` attribute.
+
+```csharp
+public class Params
+{
+    [Select(SelectionType.Element)]
+    public Wall? MyTargetWall { get; set; } // Forces a direct Revit element pick
+
+    // Constraining the Pick: Only allow picking Walls
+    [RevitElements(Category = "Walls")]
+    public Reference? WallRef { get; set; } 
+}
+```
+
+## 3. Selection Feedback
+- **Visual Cues**: A selection cursor icon appears in the Parameters tab when a "Pick" type is detected in your `Params` class.
+- **Immediate Verification**: Once an object is picked, the Paracore UI instantly displays its Name or ID for verification.
+
+---
+
+*Visual Filtering: [Visual Query Builder](./07-visual-query-builder.mdx)*

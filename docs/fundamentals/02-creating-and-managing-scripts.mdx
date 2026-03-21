@@ -1,0 +1,49 @@
+---
+title: 02 - Creating and Managing Scripts
+sidebar_label: 02 - Script Management
+id: 02-creating-and-managing-scripts
+---
+
+# Creating and Managing Scripts
+
+Manage your personal automation library using the Script Gallery and the powerful CommandConsole.
+
+## 1. The New Script Modal
+When you're ready to create a new tool, the **New Script** modal offers two primary paths:
+
+- **Build Option**: Uses the **Visual Query Builder** to generate high-performance Revit filtering code automatically (perfect for data audits).
+- **Archetype Option**: Generates a lightweight template file—the ideal starting point for manual C# coding.
+
+## 2. Global Search & CommandConsole
+The Gallery is built for speed, allowing you to find thousands of tools instantly using the **CommandConsole**.
+
+### Advanced Search Keywords
+You can filter your gallery using targeted keywords:
+- `author:John`
+- `categories:Architectural`
+- `docType:Project`
+
+### Search Pills
+As you type your query, Paracore renders your keywords as **Search Pills**. These sit above the console and can be individually deleted to refine your search results in real-time.
+
+### Toggles & Sorting
+- **Toggles**: Quickly focus your view between **All**, **Scripts**, or **Sentinels**.
+- **Sorting**: Organize your tools by **Name**, **Date Created**, and more.
+
+## 3. Script Card Actions (The Ellipses Menu)
+The ellipses (**...**) menu on each script card provides advanced management tools:
+
+- **View & Edit**: Inspect the card metadata or launch VS Code.
+- **Rename & Delete**: Standard file management.
+- **Replace Script**: Overwrite an existing script's content with a new project or template.
+- **Remove Scaffolding**: Clean up IDE files (`bin`, `obj`, `.csproj`) to keep your folders tidy. This **never** touches your `Scripts/` folder or your `.cs` source files, ensuring your logic is perfectly safe.
+
+## 4. File System Synchronization
+Paracore operates on a **"Truth at Source"** philosophy. Any manual file operations you perform outside the app are reflected automatically:
+
+- **External Deletion**: Deleting a script source folder on your disk automatically removes it from the Sidebar dropdown.
+- **Project Removal**: Deleting a script project folder inside a source removes it from the Gallery instantly.
+
+---
+
+*Next: [Editing Scripts in VSCode](./03-editing-scripts-in-vscode.mdx)*

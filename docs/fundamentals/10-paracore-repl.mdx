@@ -1,0 +1,66 @@
+---
+title: 10 - Paracore REPL
+sidebar_label: 10 - Paracore REPL
+id: 10-paracore-repl
+---
+
+# Paracore REPL
+
+The **REPL** (Read-Eval-Print Loop) is your interactive BIM laboratory for real-time Revit API exploration and prototyping.
+
+## 1. Dual-Mode Architecture
+Paracore provide two distinct ways to interact with the engine:
+
+- **Single-line REPL**: Ideal for quick "fire and forget" commands. Use the Up/Down arrows to access your **Command History**.
+- **Multi-line Workshop**: A dedicated scratchpad for complex logic. Supports **Load** and **Save** for your .cs snippets without requiring any metadata blocks.
+- **Shared State**: Variables defined in the multi-line editor (e.g., `var walls = GetElements<Wall>();`) remain alive and accessible in the single-line REPL.
+
+Both are found under the **Console Tab** within the execution history. 
+- **To Switch to Multi-line**: Click the **Expand** button to the right of the single-line REPL input.
+- **To Switch to Single-line**: Click the **Collapse** button at the right end of the multi-line header.
+
+## 2. REPL Syntax Rules
+To ensure successful execution, follow these specific syntax rules:
+
+### Semicolons
+- **Mandatory for Assignment**: Always end variable declarations with a semicolon.
+  *   `var rooms = GetElements<Room>();`
+- **Optional for Queries**: Semicolons are optional for one-line queries or chains.
+  *   `Selection.Count`
+  *   `GetElements<Wall>().Table()`
+
+### Count (Property) vs Count() (Extension)
+- **`.Count` (Property)**: Use this for immediate element lists (e.g., `Selection.Count`, `GetMagicNames().Count`). In the REPL, properties provide instant numeric output.
+- **`.Count()` (Method)**: Use this for dynamic LINQ queries that haven't been materialized yet (e.g., `GetElements<Wall>().Where(w => ...).Count()`).
+
+## 3. Magic Discovery
+Use these helpers to find elements by name, category, or class without writing complex collectors.
+
+```csharp
+// Single-Line REPL examples
+var doors = GetElements("Doors");   // 1. All door instances
+var types = GetElements<FamilySymbol>("Doors"); // 2. All door types
+GetElement("Level 1").Select();      // 3. Chain with Select()
+GetMagicNames().Count                // 4. Get the total number of magic names
+```
+
+## 4. Using the REPL
+
+### Quick Queries (Single-Line)
+Use the footer input for rapid one-liners:
+- `ListParams(Selection[0])` — Instant property palette replacement.
+- `GetElements<Room>().Table()` — Audit all rooms in a grid.
+- `Selection.Count` — Get the total number of selected elements.
+
+### Complex Logic (Multi-Line Workshop)
+Use the expanded editor for multi-step operations:
+```csharp
+// Multi-Line Snippet (Workshop)
+var limit = 7.InputUnit("m");
+var highWalls = GetElements<Wall>().Where(w => w.GetNum("Unconnected Height") > limit);
+highWalls.Table().Select().Zoom();
+```
+
+---
+
+*Next Step: Explore the standalone [Interactive REPL Guide](../interactive-repl/index.mdx) for a complete reference of extension methods and visualization tools.*

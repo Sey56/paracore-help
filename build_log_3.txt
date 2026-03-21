@@ -1,0 +1,41 @@
+
+> paracore-help@3.0.0 build
+> docusaurus build
+
+
+ ------------------------------------------------------------------------------                                                                                                          Update available 3.9.1 ΓåÆ 3.9.2                                                                                                                 To upgrade Docusaurus packages with the latest version, run the                                       following command:                                        `npm i @docusaurus/core@latest @docusaurus/preset-classic@latest               @docusaurus/module-type-aliases@latest @docusaurus/tsconfig@latest                                  @docusaurus/types@latest`                                                                                                             ------------------------------------------------------------------------------ 
+
+[INFO] [en] Creating an optimized production build...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[90m[[90mwebpackbar[90m][39m [36mΓä╣[39m Compiling Client
+[90m[[90mwebpackbar[90m][39m [36mΓä╣[39m Compiling Server
+[90m[[90mwebpackbar[90m][39m [32mΓ£ö[39m Server: Compiled successfully in 4.16s
+[90m[[90mwebpackbar[90m][39m [32mΓ£ö[39m Client: Compiled successfully in 12.68s
+[WARNING] Docusaurus found broken links!
+
+Please check the pages of your site in the list below, and make sure you don't reference any path that does not exist.
+Note: it's possible to ignore broken links with the 'onBrokenLinks' Docusaurus configuration, and let the build pass.
+
+Exhaustive list of all broken links found:
+- Broken link on source page path = /paracore-help/tutorials:
+   -> linking to /paracore-help/docs/tutorials/fundamentals/hello-revit
+   -> linking to /paracore-help/docs/tutorials/fundamentals/hello-wall
+   -> linking to /paracore-help/docs/tutorials/fundamentals/parametric-floor
+   -> linking to /paracore-help/docs/tutorials/fundamentals/element-selection
+   -> linking to /paracore-help/docs/tutorials/fundamentals/multi-file-script
+- Broken link on source page path = /paracore-help/docs/fundamentals:
+   -> linking to ./09-paracore-sentinels (resolved as: /paracore-help/docs/09-paracore-sentinels)
+- Broken link on source page path = /paracore-help/docs/tutorials:
+   -> linking to /paracore-help/docs/fundamentals/index
+
+[WARNING] Docusaurus found broken anchors!
+
+Please check the pages of your site in the list below, and make sure you don't reference any anchor that does not exist.
+Note: it's possible to ignore broken anchors with the 'onBrokenAnchors' Docusaurus configuration, and let the build pass.
+
+Exhaustive list of all broken anchors found:
+- Broken anchor on source page path = /paracore-help/docs/interactive-repl:
+   -> linking to #3-multi-turn-interaction (resolved as: /paracore-help/docs/interactive-repl#3-multi-turn-interaction)
+
+[SUCCESS] Generated static files in "build".
+[INFO] Use `npm run serve` command to test your build locally.

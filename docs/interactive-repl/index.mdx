@@ -40,8 +40,9 @@ The REPL operates on a "Read-Eval-Print" cycle. You write pure C# code (no class
 - **Multi-Line**: Click the **Run** button or press **`Ctrl + Enter`**. You can run the entire workspace or select a specific block to execute only that selection.
 
 ### 2. Syntax & Discovery
-Both modes are designed for speed:
-- **Optional Semicolons**: For simple expressions and one-liners, semicolons are optional.
+Both modes are designed for speed, but follow specific rules to ensure successful execution:
+- **Semicolons**: Mandatory for variable assignments (`var x = 10;`), but optional for one-liners and queries (`Selection.Count`).
+- **Count vs Count()**: Use the `.Count` property for immediate lists (e.g., `Selection.Count`, `GetMagicNames().Count`) and the `.Count()` method for dynamic enumerable queries (e.g., `GetElements<Wall>().Where(w => ...).Count()`).
 - **Magic Discovery**: Use the [Magic Accessors](#element-accessors-extension-methods) to bypass standard Revit API boilerplate.
 
 ### 3. Shared Context & Multi-Turn Interaction
@@ -49,11 +50,13 @@ Both modes share the same persistent execution environment. This means you can i
 
 Because the environment is persistent, you can define a variable in one turn and reference it in the next:
 ```csharp
-var rooms = GetElements<Room>(); // Turn 1
+// Multi-Line Workspace (Turn 1)
+var rooms = GetElements<Room>();
 Println($"Found {rooms.Count} rooms");
 ```
 ```csharp
-Table(rooms.Select(r => new { r.Name, r.Area })); // Turn 2
+// Single-Line REPL (Turn 2)
+rooms.Table().Select(r => new { r.Name, r.Area });
 ```
 
 <img src={ConsoleHistory} alt="REPL Session History" />
@@ -98,10 +101,11 @@ Paracore extends standard Revit elements with "Magic" accessors that handle unit
 Use these helpers to find elements by name, category, or class without writing complex collectors.
 
 ```csharp
-GetElements("Doors");             // All Door instances
-GetElements<Wall>();               // All Wall instances via C# class
-GetElement("Level 1");             // Find one element by name
-GetMagicNames();                    // List all targetable category and class names
+// Single-Line REPL examples
+var doors = GetElements("Doors");   // 1. All door instances
+var types = GetElements<FamilySymbol>("Doors"); // 2. All door types
+GetElement("Level 1").Select();      // 3. Chain with Select()
+GetMagicNames().Count                // 4. Get the total number of magic names
 ```
 
 ---
@@ -112,12 +116,23 @@ Pipe your data directly into the **Analytics Tab** for interactive analysis.
 
 | Command | Description |
 | :--- | :--- |
-| **`Table(data)`** | Renders any list or projection as a searchable, sortable grid. |
+| **`Table(data)`** | (Command) Renders a grid. Returns **`void`** (not chainable). |
+| **`.Table()`** | (Extension) Renders a grid and returns the collection. **Chainable**. |
 | **`PieGraph(data)`** | Renders a high-contrast pie chart (requires `name` and `value`). |
 | **`BarGraph(data)`** | Renders a high-contrast bar chart. |
-| **`Select()`** / **`Zoom()`** | Chain these to any collection to select or focus elements in Revit. |
+| **`.Select()`** / **`.Zoom()`** | Chain these to any collection to select or focus elements. |
 
 <img src={AnalyticsCharts} alt="Analytics Visualization" />
+
+```csharp
+// Multi-Line Snippet (Workshop)
+// Create the "Walls per Level" bar graph shown above
+var data = GetElements<Wall>()
+    .GroupBy(w => w.GetStr("Base Constraint")) // Use the standard Revit parameter name
+    .Select(g => new { name = g.Key, value = g.Count() });
+
+BarGraph(data);
+```
 
 ---
 
@@ -126,17 +141,19 @@ Pipe your data directly into the **Analytics Tab** for interactive analysis.
 ### 1. Element Audit
 Find elements more than 1000m from the origin (likely CAD import errors).
 ```csharp
+// Multi-Line Snippet (Workshop)
 var limit = 1000.InputUnit("m");
 var lost = GetElements("Generic Models").Where(e => {
     var pt = (e.Location as LocationPoint)?.Point;
     return pt != null && (Math.Abs(pt.X) > limit || Math.Abs(pt.Y) > limit);
 });
-Table(lost).Select().Zoom();
+lost.Table().Select().Zoom();
 ```
 
 ### 2. Room Data Sync
 Copy the Room Name to the "Comments" of every door hosted within that room.
 ```csharp
+// Multi-Line Snippet (Workshop)
 Transact("Sync Room Data", () => {
     foreach (var door in GetElements<FamilyInstance>("Doors")) {
         var room = door.Room ?? door.FromRoom ?? door.ToRoom;
@@ -148,8 +165,9 @@ Transact("Sync Room Data", () => {
 ### 3. Quick Area Chart
 Visualize the distribution of Room areas by Level.
 ```csharp
+// Multi-Line Snippet (Workshop)
 var stats = GetElements<Room>().Where(r => r.Area > 0)
-    .GroupBy(r => r.Level.Name)
+    .GroupBy(r => r.GetStr("Level"))
     .Select(g => new { name = g.Key, value = g.Sum(r => r.GetNum("Area", "m2")) });
 
 PieGraph(stats);

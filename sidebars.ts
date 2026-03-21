@@ -17,11 +17,19 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: 'Core Concepts',
+      label: 'Fundamentals',
+      link: { type: 'doc', id: 'fundamentals/index' },
       items: [
-        'core-concepts/index',
-        'core-concepts/architecture',
-        'core-concepts/script-types',
+        'fundamentals/01-script-sources-and-structure',
+        'fundamentals/02-creating-and-managing-scripts',
+        'fundamentals/03-editing-scripts-in-vscode',
+        'fundamentals/04-parameter-engine-params-class',
+        'fundamentals/05-parameter-defaults-and-cache',
+        'fundamentals/06-revit-vs-paracore-selection',
+        'fundamentals/07-visual-query-builder',
+        'fundamentals/08-structured-output-table',
+        'fundamentals/09-paracore-sentinels',
+        'fundamentals/10-paracore-repl',
       ],
     },
 
@@ -103,14 +111,14 @@ const sidebars: SidebarsConfig = {
     'tutorials/index',
     {
       type: 'category',
-      label: 'Paracore Fundamentals',
+      label: 'Code Examples',
       link: { type: 'generated-index' },
       items: [
-        'tutorials/fundamentals/hello-revit',
-        'tutorials/fundamentals/hello-wall',
-        'tutorials/fundamentals/parametric-floor',
-        'tutorials/fundamentals/element-selection',
-        'tutorials/fundamentals/modular-projects',
+        'tutorials/examples/hello-revit',
+        'tutorials/examples/hello-wall',
+        'tutorials/examples/parametric-floor',
+        'tutorials/examples/element-selection',
+        'tutorials/examples/modular-projects',
       ],
     },
     {

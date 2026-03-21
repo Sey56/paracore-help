@@ -1,0 +1,112 @@
+
+> paracore-help@3.0.0 build
+> docusaurus build
+
+
+ ------------------------------------------------------------------------------                                                                                                          Update available 3.9.1 ΓåÆ 3.9.2                                                                                                                 To upgrade Docusaurus packages with the latest version, run the                                       following command:                                        `npm i @docusaurus/core@latest @docusaurus/preset-classic@latest               @docusaurus/module-type-aliases@latest @docusaurus/tsconfig@latest                                  @docusaurus/types@latest`                                                                                                             ------------------------------------------------------------------------------ 
+
+[INFO] [en] Creating an optimized production build...
+[ERROR] Loading of version failed for version current
+
+[ERROR] Error: Unable to build website for locale en.
+    at tryToBuildLocale (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\core\lib\commands\build\build.js:83:15)
+    at async C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\core\lib\commands\build\build.js:35:9
+    at async mapAsyncSequential (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\utils\lib\jsUtils.js:21:24)
+    at async Command.build (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\core\lib\commands\build\build.js:34:5)
+    at async Promise.all (index 0)
+    at async runCLI (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\core\lib\commands\cli.js:56:5)
+    at async file:///C:/Users/seyou/Paracore/paracore-help/node_modules/@docusaurus/core/bin/docusaurus.mjs:44:3 {
+  [cause]: Error: Invalid sidebar file at "sidebars.ts".
+  These sidebar document ids do not exist:
+  - fundamentals/01-script-sources-and-structure
+  - fundamentals/02-creating-and-managing-scripts
+  - fundamentals/03-editing-scripts-in-vscode
+  - fundamentals/04-parameter-engine-params-class
+  - fundamentals/05-parameter-defaults-and-cache
+  - fundamentals/06-revit-vs-paracore-selection
+  - fundamentals/07-visual-query-builder
+  - fundamentals/08-structured-output-table
+  - fundamentals/09-paracore-sentinels
+  - fundamentals/10-paracore-repl
+  
+  Available document ids are:
+  - authoring/ai-debugging
+  - authoring/ai-generation
+  - authoring/execution
+  - authoring/gallery
+  - authoring/index
+  - authoring/inspector
+  - authoring/metadata
+  - authoring/presets
+  - authoring/query-builder
+  - authoring/vscode
+  - core-concepts/active-data-workflows
+  - core-concepts/architecture
+  - core-concepts/index
+  - core-concepts/script-types
+  - enterprise/index
+  - fundamentals/creating-and-managing-scripts
+  - fundamentals/editing-scripts-in-vscode
+  - fundamentals/index
+  - fundamentals/paracore-repl
+  - fundamentals/paracore-sentinels
+  - fundamentals/parameter-defaults-and-cache
+  - fundamentals/parameter-engine-params-class
+  - fundamentals/revit-vs-paracore-selection
+  - fundamentals/script-sources-and-structure
+  - fundamentals/structured-output-table
+  - fundamentals/visual-query-builder
+  - getting-started/downloads
+  - getting-started/first-script
+  - getting-started/index
+  - getting-started/installation
+  - getting-started/whats-new-v2.1.1
+  - getting-started/whats-new-v3.0.0
+  - getting-started/whats-new-v4.1.0
+  - interactive-repl/extension-methods
+  - interactive-repl/index
+  - intro
+  - privacy
+  - release-notes
+  - releases/v3.0.2
+  - scripting-reference/globals
+  - scripting-reference/index
+  - scripting-reference/libraries
+  - scripting-reference/options
+  - scripting-reference/parameters
+  - scripting-reference/revit-elements
+  - scripting-reference/units
+  - sentinels/control-window
+  - sentinels/deployment
+  - sentinels/index
+  - support
+  - tool-generator/creating-tools
+  - tool-generator/distributing-tools
+  - tool-generator/index
+  - tool-generator/overview
+  - tool-generator/security
+[INFO] Docusaurus version: 3.9.1
+Node version: v22.16.0
+  - tutorials/examples/element-selection
+  - tutorials/examples/hello-revit
+  - tutorials/examples/hello-wall
+  - tutorials/examples/modular-projects
+  - tutorials/examples/parametric-floor
+  - tutorials/index
+  - tutorials/revit-api/bulk-updates
+  - tutorials/revit-api/conditional-logic
+  - tutorials/revit-api/parameters-deep-dive
+  - tutorials/revit-api/reading-the-model
+  - tutorials/revit-api/types-vs-instances
+  
+      at Object.checkSidebarsDocIds (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\plugin-content-docs\lib\sidebars\utils.js:245:19)
+      at doLoadVersion (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\plugin-content-docs\lib\versions\loadVersion.js:102:19)
+      at async loadVersion (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\plugin-content-docs\lib\versions\loadVersion.js:119:16)
+      at async Promise.all (index 0)
+      at async Object.loadContent (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\plugin-content-docs\lib\index.js:152:33)
+      at async C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\core\lib\server\plugins\plugins.js:40:23
+      at async Promise.all (index 1)
+      at async C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\core\lib\server\plugins\plugins.js:146:25
+      at async loadSite (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\core\lib\server\site.js:155:45)
+      at async buildLocale (C:\Users\seyou\Paracore\paracore-help\node_modules\@docusaurus\core\lib\commands\build\buildLocale.js:33:18)
+}

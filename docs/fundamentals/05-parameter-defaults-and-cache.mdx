@@ -1,0 +1,40 @@
+---
+title: 05 - Parameter Defaults and Cache
+sidebar_label: 05 - Parameter Cache
+id: 05-parameter-defaults-and-cache
+---
+
+# Parameter Defaults and Cache
+
+Paracore's **Cache Engine** ensures your last-used inputs are preserved, providing a seamless "sticky" user experience.
+
+## 1. Sticky Parameters
+Your inputs follow a specific priority logic to ensure consistency:
+
+1.  **Script Defaults**: Parameters start with the values defined in your C# code.
+2.  **UI Caching**: As soon as you edit a value in the Paracore UI, it is saved to a local cache.
+3.  **Persistence**: These user-edited values are "sticky." They persist even if you select a different script or restart the application.
+4.  **Priority**: Updating a default value in your C# code **will not** overwrite a value that you have manually edited in the UI.
+
+## 2. Resetting to Defaults
+If you need to revert your parameters, you have two options:
+
+- **Single Parameter Reset**:
+    1. Temporarily delete the property from your `Params` class in VSCode and save.
+    2. Focus on Paracore (the parameter will disappear).
+    3. Undo your deletion in VSCode and save again.
+    4. Focus back on Paracore—the parameter is now reset to its original code default.
+- **Full Script Reset (Hard Reset)**:
+    Click the **Hard-Reset** action button in the Parameters tab. This clears the cache for the entire script and reverts all fields to their original code defaults.
+
+## 3. Document-Aware Warnings
+Revit elements and selections are document-specific. To prevent errors, Paracore monitors your active Revit document.
+
+### The Yellow Triangle Warning
+If you see a yellow triangle icon on a selection picker or compute button, it means you have **switched the active document** in Revit. 
+
+Paracore is warning you that your "sticky" values from the previous document may not exist in the current one. You should re-compute or re-select to ensure you are targeting elements in the correct model.
+
+---
+
+*Model interaction: [Revit vs Paracore Selection](./06-revit-vs-paracore-selection.mdx)*

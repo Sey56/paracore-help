@@ -1,0 +1,50 @@
+---
+title: 01 - Script Sources and Script Structure
+sidebar_label: 01 - Script Sources
+id: 01-script-sources-and-structure
+---
+
+# Script Sources and Script Structure
+
+Understanding how Paracore finds and organizes your automation tools is the first step to a clean workflow.
+
+## 1. What is a Script Source?
+A **Script Source** is simply a folder on your computer that has been initialized for Paracore. The engine identifies a source by looking for a hidden `.paracore` marker file. This file acts as a "Signpost" telling Paracore: "Start scanning for scripts from this point."
+
+### Rules for Initialization
+- **Empty Folders Only**: You can only initialize an **empty folder** as a new script source.
+- **The Signpost**: Initializing creates the `.paracore` file and prepares the folder for your projects.
+
+## 2. Containers vs. Sources (The Scanning Logic)
+Paracore uses a smart scanning loop to load your tools efficiently:
+
+- **The Container**: A standard folder (like a project folder or a discipline root) that *is not* a source itself (it has no `.paracore` file). 
+- **Loading a Folder**: When you load a folder into Paracore, it checks for a `.paracore` file:
+    - **If NOT found**: It treats the folder as a **Container**. It scans the immediate children. If any child folder is a Script Source (has a `.paracore` file), it loads it into the sidebar. Use this to load many sources at once (e.g., loading an `ExampleProject` folder that contains both `Structural` and `Architectural` script sources).
+    - **If FOUND**: It loads the folder as a **Script Source** and **stops**. It will not scan deeper for other sources.
+
+:::danger No Nesting
+Never put a script source inside another script source. The outer source will mask the inner ones, making them invisible to Paracore.
+:::
+
+## 3. The "C# Project" Hierarchy
+When you create a new script or sentinel, Paracore scaffolds a professional directory structure:
+
+`ScriptSource / ProjectName / Scripts / ProjectName.cs`
+
+### Why this structure?
+1.  **Encapsulation**: Your executable code lives exclusively in the `Scripts/` subfolder.
+2.  **In-Place Scaffolding**: Clicking "Edit Script" generates IDE files (`.csproj`, `.sln`, etc.) in the `ProjectName/` root. 
+3.  **No Contamination**: By keeping your code in the `Scripts/` folder, the helper files created by VS Code never interfere with your pure execution scripts.
+
+## 4. Multi-File Support (Selective Compilation)
+Paracore supports complex tools spread across multiple files without slowing down execution:
+
+- **Entry Script Discovery**: The engine identifies your "Entry Script" (the top-level logic).
+- **Smart Combination**: The engine **does not** combine every `.cs` file in the folder automatically.
+- **Reference Scanning**: It scans your entry script to see which other files in the `Scripts/` folder are actually **referenced** (classes, methods, or helpers).
+- **Selective Compilation**: Only the referenced files are combined. This keeps your execution context efficient and focused.
+
+---
+
+*Load a Container folder to manage all your discipline-based sources (Architectural, Structural, etc.) in a single view.*

@@ -1,0 +1,39 @@
+---
+title: 09 - Paracore Sentinels
+sidebar_label: 09 - Paracore Sentinels
+id: 09-paracore-sentinels
+---
+
+# Paracore Sentinels
+
+**Sentinels** are background BIM watchdogs. They move beyond on-demand execution, providing continuous monitoring and automated model validation while you work in Revit.
+
+## 1. Testing in the Gallery
+Before deploying a Sentinel to the background, you should always perform a "Pre-Flight" check:
+1.  Select the Sentinel in the Gallery and adjust its parameters in the UI.
+2.  Click **Run** manually to verify the logic and see the reported data.
+This ensures your watchdog is configured correctly before it begins background monitoring.
+
+## 2. Deployment & The Snapshot Mechanism
+Deploying a Sentinel is done via the **Sentinel Settings** tab in the main settings menu.
+
+### The Snapshot Mechanism
+At the moment you click **Deploy**, the Sentinel performs a **Snapshot**. It "locks" the current parameter values from the UI into the background process. 
+
+### Independent Execution
+Once deployed, the background Sentinel runs independently with its snapshotted parameters. You can still modify those parameters in the Gallery to run manual checks without affecting the background watchdog.
+
+To update a Sentinel's background parameters: **Undeploy -> Adjust in Gallery -> Re-deploy.**
+
+## 3. Resource Protection & Lifecycle
+Sentinels are executed by the Revit engine. This means they will continue to run in the background as long as Revit is open, even if the Paracore application is closed.
+
+### Undeploy on Close
+When the Paracore UI is shut down, you lose the ability to see reports or access the Sentinel Control Window. To prevent Revit from wasting system resources on "silent" background tasks that you are no longer monitoring, Paracore automatically **undeploys all active Sentinels** when the application is closed.
+
+### Restoration
+When you reopen Paracore, your background watchdogs are not automatically resumed. You must use the **Deploy All** button in the Sentinel Settings tab to restore your monitoring workspace.
+
+---
+
+*Exploration: [Paracore REPL](./10-paracore-repl.mdx)*

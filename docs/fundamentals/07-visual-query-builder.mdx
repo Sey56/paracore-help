@@ -1,0 +1,28 @@
+---
+title: 07 - The Paracore Visual Query Builder
+sidebar_label: 07 - Visual Query Builder
+id: 07-visual-query-builder
+---
+
+# The Paracore Visual Query Builder
+
+The **Visual Query Builder (VQB)** is a professional bridge that allows you to build complex Revit model filters with zero code.
+
+## 1. Interface & Logic
+Accessible via the **New Script** modal, the VQB allows you to visually assemble queries by adding Categories, Parameters, and specific Rules.
+
+- **Rules Logic**: VQB supports nested **AND/OR** groupings, allowing for highly sophisticated data filtering.
+- **Ease of Use**: Search and select from every Revit Category and Parameter via intuitive dropdowns.
+
+## 2. Query Templates
+You don't have to start from scratch. Use existing **Query Templates** from the gallery as starting points. Select a template, refine the rules to match your project needs, and hit Build.
+
+## 3. High-Performance Generation
+When you build a query, Paracore automatically generates native C# code using the `ElementParameterFilter` API.
+
+- **Native Optimization**: These queries are faster than manual LINQ filtering because they target the Revit database at the lowest level.
+- **Ready for Action**: The generated code is immediately functional for both on-demand **Scripts** and background **Sentinels**.
+
+---
+
+*Data Auditing: [Structured Output](./08-structured-output-table.mdx)*

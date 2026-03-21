@@ -1,0 +1,31 @@
+---
+title: 08 - Paracore's Structured Output (Table)
+sidebar_label: 08 - Structured Output
+id: 08-structured-output-table
+---
+
+# Paracore's Structured Output (Table)
+
+The **Analytics Tab** serves as your BIM Data Inspection hub, allowing you to manipulate and audit Revit model data with ease.
+
+## 1. Inspection First
+The primary role of the table is **Inspection**. Paracore can draw any Revit element property into a structured list for comparison.
+
+- **Shorthand Magic**: Using helpers like `GetElements<T>().Table()` makes element inspection instantaneous.
+- **Multi-Element Context**: Compare Level, Area, Phase, and Categories across thousands of elements at a glance.
+
+## 2. Data Manipulation
+Sorting and filtering the table allows you to isolate specific datasets and see complex relationships—such as Rooms and their corresponding Areas—without leaving the inspection view.
+
+## 3. Bidirectional Editing
+While inspection is the priority, the table also supports updating data back to Revit.
+
+- **Single-Cell Updates**: Correct specific parameters (like a Mark or Comment) directly in the grid.
+- **Mass Edit via CSV**: For massive changes, export the table to CSV, manipulate the data in Excel, and batch import the updates back into Revit.
+
+## 4. Performance
+The table is powered by a high-performance **Virtualized Engine**, capable of managing audit lists exceeding 10,000 rows with zero UI lag.
+
+---
+
+*Automation: [Paracore Sentinels](./09-paracore-sentinels.mdx)*
