@@ -215,14 +215,6 @@ Quickly sum a numeric parameter across a collection.
 Wraps modifications in a named transaction.
 - **Example**: `Transact("TitleCase", () => element.Name = element.Name.ToTitleCase());`
 
-### `Watchdog(action, interval)`
-Registers a background task that runs periodically.
-- **Example**: `Watchdog(() => CheckHealth(), 10);`
-
-### `SetExecutionTimeout(n)`
-Increases the script timeout limit (default 10s).
-- **Example**: `SetExecutionTimeout(60);`
-
 ---
 
 :::info IntelliSense
