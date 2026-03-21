@@ -127,7 +127,7 @@ Pipe your data directly into the **Analytics Tab** for interactive analysis.
 Find elements more than 1000m from the origin (likely CAD import errors).
 ```csharp
 var limit = 1000.InputUnit("m");
-var lost = GetElements().Where(e => {
+var lost = GetElements("Generic Models").Where(e => {
     var pt = (e.Location as LocationPoint)?.Point;
     return pt != null && (Math.Abs(pt.X) > limit || Math.Abs(pt.Y) > limit);
 });
