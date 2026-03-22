@@ -105,8 +105,12 @@ Use these helpers to find elements by name, category, or class without writing c
 var doors = GetElements("Doors");   // 1. All door instances
 var types = GetElements<FamilySymbol>("Doors"); // 2. All door types
 GetElement("Level 1").Select();      // 3. Chain with Select()
-GetMagicNames().Count                // 4. Get the total number of magic names
-```
+| `GetMagicNames().Count` | 4. Get the total number of magic names |
+| `GetElements<Element>()` | **Universal Accessor**: Target everything in the model at once. |
+
+:::tip Master Tip: Target Everything
+Since `Element` is the base class for all Revit objects, calling `GetElements<Element>()` is the most powerful way to perform bulk audits or search for data across the entire model.
+:::
 
 ---
 

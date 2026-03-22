@@ -59,6 +59,7 @@ Gets instances or types of a specific category or family. Use the generic `Famil
 Gets elements filtered by C# class (e.g. `Wall`, `Room`).
 - **Example**: `var walls = GetElements<Wall>();`
 - **Example**: `var instances = GetElements<FamilyInstance>("Doors");`
+- **Example**: `var all = GetElements<Element>();` // Gets EVERY element in the model.
 
 ### `GetElement<T>(name)`
 Finds a single element by its name or identity.
