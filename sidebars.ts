@@ -54,7 +54,6 @@ const sidebars: SidebarsConfig = {
       label: 'Interactive REPL',
       items: [
         'interactive-repl/index',
-        'interactive-repl/extension-methods',
       ],
     },
     {
@@ -84,6 +83,7 @@ const sidebars: SidebarsConfig = {
       label: 'Scripting Reference',
       items: [
         'scripting-reference/index',
+        'scripting-reference/extension-methods',
         'scripting-reference/globals',
         'scripting-reference/parameters',
         'scripting-reference/units',
