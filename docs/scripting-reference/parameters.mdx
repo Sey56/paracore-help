@@ -235,8 +235,9 @@ Standard Windows dialogs for path selection.
 | :--- | :--- | :--- |
 | **`Point`** | `XYZ` | Returns the coordinates of a clicked point. |
 | **`Element`** | `Wall`, `Door`, etc. | Returns the **Revit Element** object. |
-| **`Face`** | `Reference` | Returns a Revit Reference to a selected face. |
-| **`Edge`** | `Reference` | Returns a Revit Reference to a selected edge. |
+| **`Face`** | `Face` | Returns the selected **Face** object. |
+| **`Edge`** | `Edge` | Returns the selected **Edge** object. |
+| **`Reference`** | `Reference` | Generic reference. Requires `[Select(SelectionType.Face)]` to specify target. |
 
 ---
 
@@ -277,17 +278,6 @@ public class Params {
 }
 ```
 
----
-
-## File and Folder Attributes
-
-Standard Windows dialogs for path selection:
-
-| Attribute | Description |
-| :--- | :--- |
-| **`[InputFile("ext")]`** | Opens an "Open File" dialog. |
-| **`[OutputFile("ext")]`** | Opens a "Save File" dialog. |
-| **`[FolderPath]`** | Opens a folder selection dialog. |
 
 ---
 
