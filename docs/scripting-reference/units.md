@@ -23,7 +23,7 @@ public class Params {
 }
 ```
 
-1.  **UI**: Displays "200" and a suffix "mm".
+1.  **UI**: Appends the unit to the parameter name (e.g., **`Width (mm)`**). The input box remains a pure number.
 2.  **User**: Enters "500".
 3.  **Transmission**: The value "500" is sent to the Revit Addin.
 4.  **Engine**: The **CoreScript Engine** detects the `[Unit("mm")]` attribute.
@@ -75,6 +75,44 @@ For quick calculations or when you want to avoid Revit API overhead for simple l
 double lengthMeters = lengthFeet * 0.3048;
 ```
 
+## Paracore Extension Methods (v4.2.0+)
+
+For even easier unit handling without direct `UnitUtils` calls, Paracore provides a set of fluent extension methods for `double`, `int`, and `decimal`.
+
+### 1. Manual Conversion
+These methods are useful when you need to perform conversions that aren't handled automatically by the `Params` engine.
+
+```csharp
+// Input: Convert FROM a human unit TO Revit internal (Feet/SqFt)
+double wallWidth = 200.0.InputUnit("mm"); // Converts 200mm to internal feet
+
+// Output: Convert FROM Revit internal TO a human unit for display
+double areaSqm = room.Area.OutputUnit("m2"); // Converts internal sqft to square meters
+```
+
+### 2. Formatting
+Quickly convert and format a value for logging or UI display.
+
+```csharp
+Println(wall.Area.FormatUnit("m2", 2)); // Outputs: "25.42 m2"
+Println(wall.Area.FormatValueOnly("m2", 2)); // Outputs: "25.42"
+```
+
+### 3. Precision-Aware Math
+Since floating-point math in Revit is notoriously "noisy," use these methods for safe comparisons.
+
+| Method | Description |
+| :--- | :--- |
+| `IsAlmostEqualTo(other)` | Returns true if two values are within Revit tolerance (1e-9). |
+| `AlmostZero()` | Returns true if the value is essentially zero. |
+| `Round(decimals)` | Standard numeric rounding. |
+| `RoundTo("mm")` | Snaps a raw internal value to a specific human unit's precision. |
+
+> [!TIP]
+> Use `.RoundTo("mm")` when setting Revit parameters (like Length) to ensure you aren't introducing tiny trailing decimals into the model database.
+
+---
+
 > [!IMPORTANT]
-> - **Input**: `[Unit]` handles the math for you.
-> - **Output**: Prioritize `UnitUtils` for production-grade scripts.
+> - **Input**: `[Unit]` handles the math for you automatically in the `Params` class.
+> - **Output**: Use `.OutputUnit("...")` or `UnitUtils` for production-grade scripts.
