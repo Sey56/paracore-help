@@ -183,27 +183,54 @@ Once you have finished configuring your parameters, locate the **Run Script** bu
 
 ---
 
-## Validation Attributes
+## Parameter Attributes
 
-Attributes allow you to enforce constraints and data integrity before a script starts.
+Attributes allow you to enforce constraints, curate UI behavior, and add logic to your parameters.
+
+### 1. Validation & Constraints
+Enforce data integrity before a script starts.
 
 | Attribute | Description |
 | :--- | :--- |
-| `[Required]` | Prevents execution if the field is empty. |
-| `[Mandatory]` | Alias for `[Required]`. Use to avoid namespace conflicts. |
-| `[Unit("mm")]` | Defines the display unit; engine converts to Revit internal units. |
-| `[Range(min, max)]` | Enforces numeric bounds (projects as a slider in the UI). |
-| `[Stepper]` | Replaces numeric input with **+/-** buttons for precise control. |
-| `[Confirm("WORD")]` | **Safety Lock**. Disables execution until the user types the exact word. |
-| `[EmailAddress]` | Enforces valid email format. |
-| `[Url]` | Enforces valid URL format. |
-| `[RegularExpression("...")]` | Advanced text validation via Regex patterns. |
+| `[Required]` / `[Mandatory]` | Prevents execution if the field is empty or null. |
+| `[Range(min, max, step)]` | Enforces numeric bounds. Renders as a slider by default. |
+| `[Min(val)]` / `[Max(val)]` | Enforces a single-sided numeric bound. |
+| `[Unit("code")]` | Handles [Unit Conversion](./units.md). Appends unit to the name. |
+| `[Pattern("regex")]` | Validates text input against a Regular Expression. |
+| `[Confirm("WORD")]` | **Safety Lock**. Requires the user to type the exact word to run. |
+
+### 2. UI Enhancement
+Change how a parameter is rendered in the Paracore sidebar.
+
+| Attribute | Description |
+| :--- | :--- |
+| `[Segmented]` | Replaces a list/dropdown with **Horizontal Buttons** (Segmented Control). |
+| `[Stepper]` | Adds **+/-** buttons to numeric inputs for precise stepping. |
+| `[Color]` | Replaces a text/int input with a professional **Color Picker**. |
+| `[Suffix("text")]` | Appends a static label or unit code to the right of the input box. |
+| `[Description("text")]` | Explicitly sets a tooltip (alternative to using `///` XML comments). |
+
+### 3. Conditional Logic
+Control the visibility or state of a parameter based on other inputs.
+
+| Attribute | Description |
+| :--- | :--- |
+| `[EnabledWhen("Name", val)]` | Enables this input only when another parameter matches a value. |
+| `[VisibleWhen("Name", val)]`| Shows this input only when another parameter matches a value. |
+
+### 4. File & Folder System
+Standard Windows dialogs for path selection.
+
+| Attribute | Description |
+| :--- | :--- |
+| `[InputFile("filter")]` | File picker (Open). Filter example: `"csv,txt"`. |
+| `[OutputFile("filter")]`| File picker (Save). |
+| `[FolderPath]` | Standard folder selection dialog. |
 
 ---
 
 ## Selection Attributes ([Select])
 
-Selection attributes pause script execution and allow users to pick objects directly from the Revit viewport.
 
 | SelectionType | Data Type | Result |
 | :--- | :--- | :--- |
