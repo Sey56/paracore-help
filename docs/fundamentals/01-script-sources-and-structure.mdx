@@ -6,68 +6,31 @@ id: 01-script-sources-and-structure
 
 # Script Sources and Script Structure
 
-Understanding how Paracore finds and organizes your automation tools is the first step to a clean workflow.
+This guide provides a step-by-step walkthrough for managing your automation library in Paracore. Use these steps to familiarize yourself with the UI or as a checklist for recording action videos.
 
-## Video Recording Checklist: Script Sources
-Use these steps to record the "Action Videos" for this section. Focusing on the **Local Sources** section in the Sidebar.
-
-### 1. Initialize a Script Source
+## 1. Initialize a Script Source
 - Click the hamburger menu to show the **Sidebar**.
 - Click the **Initialize/Load** folder button in the **Local Sources** section.
 - Select an **empty folder** in your local storage and click **Select Folder**.
 - The folder is initialized (marker file created), set as the **Active Source**, and added to the sidebar.
 
-### 2. Load an Existing Script Source
-- Click the **Initialize/Load** folder button.
+## 2. Load a Script Source
+- Click the **Initialize/Load** folder button in the **Local Sources** section.
 - Select a folder that was **already initialized** (contains a `.paracore` file).
 - Click **Select Folder**.
 - The source is loaded, set as **Active**, and its scripts are instantly populated in the Gallery.
 
-### 3. Load Multiple Sources at Once
-- Click the **Initialize/Load** folder button.
+## 3. Load Multiple Script Sources
+- Click the **Initialize/Load** folder button in the **Local Sources** section.
 - Select a **Parent Folder** that contains multiple sub-folders (each being a valid source).
 - Click **Select Folder**.
-- All script sources within that folder are loaded simultaneously. One is set to Active.
+- All script sources within that folder are loaded simultaneously. One of them will be set as Active.
 
-### 4. Unloading Sources
-- **Unload Non-Active**: Click the **Broom Button** to remove all sources except the one you are currently working on.
-- **Unload Active**: Click the **Unload Active Source** button to remove the current source.
+## 4. Unloading Script Sources
+- **Unload Non-Active**: Click the **broom button** (Clean) to remove all sources except the one you are currently working on.
+- **Unload Active**: Click the **Unload active source** button to remove the current source.
 - *Note: Unloading only removes the source from Paracore; it never deletes files from your hard drive.*
 
 ---
 
-## Technical: Containers vs. Sources (Scanning Logic)
-Paracore uses a smart scanning loop to load your tools efficiently:
-
-- **The Container**: A standard folder (like a project folder or a discipline root) that *is not* a source itself (no `.paracore` file). 
-- **The Source**: A folder identified by the `.paracore` signpost.
-
-When you load a folder into Paracore, it checks for a `.paracore` file:
-- **If NOT found**: It treats the folder as a **Container**. It scans the immediate children. If any child folder is a Script Source, it loads it. This is how you load multiple sources at once.
-- **If FOUND**: It loads the folder as a **Script Source** and stops. It will not scan deeper for other sources.
-
-:::danger No Nesting
-Never put a script source inside another script source. The outer source will mask the inner ones, making them invisible.
-:::
-
-## 3. The "C# Project" Hierarchy
-When you create a new script or sentinel, Paracore scaffolds a professional directory structure:
-
-`ScriptSource / ProjectName / Scripts / ProjectName.cs`
-
-### Why this structure?
-1.  **Encapsulation**: Your executable code lives exclusively in the `Scripts/` subfolder.
-2.  **In-Place Scaffolding**: Clicking "Edit Script" generates IDE files (`.csproj`, `.sln`, etc.) in the `ProjectName/` root. 
-3.  **No Contamination**: By keeping your code in the `Scripts/` folder, the helper files created by VS Code never interfere with your pure execution scripts.
-
-## 4. Multi-File Support (Selective Compilation)
-Paracore supports complex tools spread across multiple files without slowing down execution:
-
-- **Entry Script Discovery**: The engine identifies your "Entry Script" (the top-level logic).
-- **Smart Combination**: The engine **does not** combine every `.cs` file in the folder automatically.
-- **Reference Scanning**: It scans your entry script to see which other files in the `Scripts/` folder are actually **referenced** (classes, methods, or helpers).
-- **Selective Compilation**: Only the referenced files are combined. This keeps your execution context efficient and focused.
-
----
-
-*Load a Container folder to manage all your discipline-based sources (Architectural, Structural, etc.) in a single view.*
+*Next: [02 - Creating and Managing Scripts](./02-creating-and-managing-scripts.mdx)*
