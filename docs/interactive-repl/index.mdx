@@ -118,13 +118,13 @@ Since `Element` is the base class for all Revit objects, calling `GetElements<El
 
 Pipe your data directly into the **Analytics Tab** for interactive analysis.
 
-| Command | Description |
-| :--- | :--- |
-| **`Table(data)`** | (Command) Renders a grid. Returns **`void`** (not chainable). |
-| **`.Table()`** | (Extension) Renders a grid and returns the collection. **Chainable**. |
-| **`PieGraph(data)`** | Renders a high-contrast pie chart (requires `name` and `value`). |
-| **`BarGraph(data)`** | Renders a high-contrast bar chart. |
-| **`.Select()`** / **`.Zoom()`** | Chain these to any collection to select or focus elements. |
+| Command / Method | Type | Description |
+| :--- | :--- | :--- |
+| **`Table(data)`** | Global | Renders a grid. Returns **`void`** (not chainable). |
+| **`.Table()`** | Extension | Renders a grid and returns the collection. **Chainable**. |
+| **`.PieChart()`** / **`PieGraph(data)`** | Both | Renders a high-contrast pie chart (requires `name` and `value`). |
+| **`.BarChart()`** / **`BarGraph(data)`** | Both | Renders a high-contrast bar chart. |
+| **`.Select()`** / **`.Zoom()`** | Extension | Chain these to any collection to select or focus elements. |
 
 <img src={AnalyticsCharts} alt="Analytics Visualization" />
 

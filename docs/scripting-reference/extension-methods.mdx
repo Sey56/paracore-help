@@ -184,17 +184,19 @@ Always use these fuzzy comparison methods for Revit geometry.
 
 ---
 
-## Fluent Visualization & Action
-Chain these to elements or collections to trigger UI updates or Revit actions.
+## Universal Visualizers & Actions
+These methods bridge the gap between "Code" and "UI". Every fluent extension has a corresponding global helper (e.g., `data.Table()` vs `Table(data)`) for maximum flexibility.
 
-| Method | Description | Example |
+| Extension Method | Global Alias | Description |
 | :--- | :--- | :--- |
-| **`.Table()`** | Renders dynamic parameter tables for collections. | `walls.Table();` |
-| **`.PieChart()`** / **`.BarChart()`** | Renders Pie/Bar charts in the Analytics tab. | `data.PieChart();` |
-| **`.Select()`** / **`.Zoom()`** | Selects and focuses elements in the Revit viewport. | `room.Select();` |
-| **`.Isolate()`** | Isolates elements in the active view. | `rooms.Isolate();` |
-| **`.Hide()`** / **`.Unhide()`** | Toggles visibility in the active view. | `Selection.Hide();` |
-| **`.Delete()`** | Deletes elements (Auto-Transaction). | `trash.Delete();` |
+| **`.Table()`** | `Table(data)` | Renders dynamic parameter tables for collections/objects. |
+| **`.PieChart()`** | `PieChart(data)` / `PieGraph()` | Renders high-contrast Pie Charts in the Summary tab. |
+| **`.BarChart()`** | `BarChart(data)` / `BarGraph()` | Renders high-contrast Bar Charts in the Summary tab. |
+| **`.LineChart()`**| `LineChart(data)` / `LineGraph()` | Renders high-contrast Line Charts in the Summary tab. |
+| **`.Select()`** / **`.Zoom()`**| - | Selects and focuses elements in the Revit viewport. |
+| **`.Isolate()`** | - | Isolates elements in the active view (Temporary). |
+| **`.Hide()` / **`.Unhide()`** | - | Toggles element visibility in the active view. |
+| **`.Delete()`** | `Delete(data)` | Deletes elements (Automatic Transaction). |
 
 ---
 
