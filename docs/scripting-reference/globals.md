@@ -37,10 +37,12 @@ Transact("Update Wall", () => {
 ## Visual Helpers
 These helpers automatically format and send data to the **Analytics Tab** for analysis and visualization.
 
-| Method | Extension | Description | Example |
-| :--- | :--- | :--- | :--- |
-| **`.Table()`** | Extension | Sends element data to the **Analytics Tab**. | `walls.Table()` |
-| **`.ChartPie()`** | Extension | Renders element data as a Pie Chart in the **Analytics Tab**. | `list.ChartPie()` |
+| Method | Type | Description |
+| :--- | :--- | :--- |
+| **`Table(data)`** | Global / Extension | Sends element data to the **Analytics Tab**. |
+| **`BarChart()`** | Global / Extension | Renders data as a Bar Chart. Alias: `BarGraph()` |
+| **`PieChart()`** | Global / Extension | Renders data as a Pie Chart. Alias: `PieGraph()` |
+| **`LineChart()`** | Global / Extension | Renders data as a Line Chart. Alias: `LineGraph()` |
 
 ### Example: Quick Table
 ```csharp
@@ -51,7 +53,7 @@ Table(walls.Select(w => new { w.Name, w.Id }));
 ---
 
 ## Advanced: Show(type, data)
-The underlying engine uses the `Show` method. While you can use it directly, the specialized helpers above are recommended.
+The underlying engine uses the `Show` method. While you can use it directly, the specialized helpers above (which call `Show` internally) are recommended.
 
 ```csharp
 Show("table", myData);
