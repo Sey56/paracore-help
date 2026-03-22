@@ -1,0 +1,43 @@
+---
+id: exercise-10
+slug: 10-step-by-step
+title: "Step-by-Step: 10 - Paracore REPL"
+sidebar_label: "10 - Step-by-Step"
+---
+
+# 10 - Step-by-Step: Paracore REPL
+
+Practice interactive C# exploration and action chains in the Revit environment.
+
+## 1. Preparation
+1. In Revit, **Select at least one element** (e.g., a Wall or Room) in the active view.
+
+## 2. Using the Single-Line REPL
+1. In Paracore, navigate to the **Console** tab.
+2. If the workshop is open, click the **Collapse** button.
+3. Click the **REPL** input bar.
+4. Type `Selection[0].Id` and press **Enter** to execute.
+5. Use the **Up/Down arrow keys** to cycle through your command history.
+
+## 3. Using the Multi-Line Workshop
+1. Click the **Expand** button on the right to open the multi-line **Workshop**.
+2. Type:
+   ```csharp
+   var walls = GetElements<Wall>();
+   Println($"Found {walls.Count} walls");
+   ```
+3. Press **CTRL + ENTER** to execute.
+4. Click **Collapse** and type `walls.Count` in the single-line REPL to verify persistent state.
+
+## 4. Extension Method Power
+1. **Action Chains**: In the REPL, type:
+   `GetElements<Room>().Table().Select().Zoom();`
+2. **Batch Actions**: Type `GetElements<Wall>().Hide();` and observe Revit.
+
+## 5. Saving Snippets
+1. Click the **Save** or **Save As** icons in the Workshop header.
+2. Name your snippet and save it as a `.cs` file.
+
+---
+
+*Congratulations! You've finished the Fundamentals series.*

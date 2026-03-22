@@ -1,0 +1,39 @@
+---
+id: exercise-08
+slug: 08-step-by-step
+title: "Step-by-Step: 08 - Structured Output (Table)"
+sidebar_label: "08 - Step-by-Step"
+---
+
+# 08 - Step-by-Step: Structured Output (Table)
+
+Practice auditing and mass-editing BIM data using the Paracore Analytics grid.
+
+## 1. Generate a Table
+1. Open the Interactive **REPL** in the Console tab.
+2. Type: `GetElements<Room>().Table();` and hit **Enter**.
+3. Paracore will switch to the **Analytics** tab.
+
+## 2. Dynamic Inspection
+1. **Sorting**: Click any column header to sort.
+2. **Grouping**: Drag a column header into the **Grouping Bar** above the table.
+
+## 3. Sync and Selection
+1. Click on any row in the table.
+2. Switch to Revit to see the corresponding element highlighted.
+
+## 4. Editing Cells
+1. Double-click a cell (e.g., **Room Name**).
+2. Type a new value and hit **Enter**.
+3. Check the update in your Revit Properties palette.
+
+## 5. Mass Editing (CSV)
+1. Click the **Export CSV** button.
+2. Open the file in an external editor and update several values.
+3. **Important**: Do not change the **Id** or **ElementId** columns.
+4. Save the CSV and click the **Upload CSV** button in Paracore.
+5. Verify the updates appear in both Paracore and Revit.
+
+---
+
+*Next Exercise: [09 - Paracore Sentinels](./09-step-by-step.mdx)*

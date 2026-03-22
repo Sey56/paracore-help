@@ -1,6 +1,6 @@
 ---
-title: 03 - Editing Scripts in VSCode
-sidebar_label: 03 - VSCode Integration
+title: 03 - Editing Scripts in VS Code
+sidebar_label: 03 - Editing Scripts in VS Code
 id: 03-editing-scripts-in-vscode
 ---
 
@@ -26,13 +26,15 @@ Paracore utilizes a top-level statement environment (Roslyn Scripting), meaning 
 Every script must begin with a multi-line comment containing its metadata:
 ```csharp
 /*
-{
-    "DocumentType": "Project",
-    "Categories": ["Architectural", "Audit"],
-    "Author": "Your Name",
-    "Dependencies": [],
-    "Description": "A short summary of your tool."
-}
+DocumentType: Project
+Categories: Architectural, MEP
+Author: Paracore Team
+Dependencies: RevitAPI 2025+, Paracore.Addin
+
+Description:
+This is a top level statement script. Doc, UIDoc, Transact, Println,...
+are accessible everywhere in this script or other scripts in the Scripts folder
+
 */
 ```
 Paracore reads this block to render the script card and determine if the "Run" button should be enabled based on the current active document.
@@ -53,4 +55,4 @@ You rarely need `using` statements at the top of your scripts. Global usings are
 
 ---
 
-*Ready to add UI? [The Parameter Engine](./04-parameter-engine-params-class.mdx)*
+*Next Step: Try the [03 - Step-by-Step Exercise](./step-by-step/03-step-by-step.mdx) to practice the VS Code round-trip.*

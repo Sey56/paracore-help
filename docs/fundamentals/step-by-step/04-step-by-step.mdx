@@ -1,0 +1,56 @@
+---
+id: exercise-04
+slug: 04-step-by-step
+title: "Step-by-Step: 04 - Parameter Engine and the Params class"
+sidebar_label: "04 - Step-by-Step"
+---
+
+# 04 - Step-by-Step: Parameter Engine and the Params class
+
+Practice transforming C# properties into interactive UI elements.
+
+## 1. Create a Params Class
+1. Open a script in VS Code.
+2. At the bottom of the file (outside other classes), add:
+   ```csharp
+   public class Params {
+       public double OffsetDistance { get; set; } = 12.0;
+   }
+   ```
+3. **Save (Ctrl+S)** and return to the **Parameters** tab in Paracore.
+
+## 2. Add Revit Types (Single & Lists)
+1. In VS Code, add these properties to your `Params` class:
+   ```csharp
+   public WallType TargetType { get; set; }
+   public List<WallType> AllTypes { get; set; }
+   ```
+2. **Save** and observe the new UI fields.
+3. Click the **Compute** button next to these parameters to populate them from your Revit model.
+
+## 3. Advanced Filtering ([RevitElements])
+1. Add a filtered property:
+   ```csharp
+   [RevitElements(Category = "Doors")]
+   public FamilySymbol? DoorType { get; set; }
+   ```
+2. **Save**, click **Compute**, and verify that only Door Symbols appear.
+
+## 4. Custom Providers (_Options and _Filter)
+1. Add a curated list property and its provider:
+   ```csharp
+   public List<Wall> GenericWalls { get; set; }
+   public List<Wall> GenericWalls_Options => 
+       new FilteredElementCollector(Doc).OfClass(typeof(Wall)).Cast<Wall>()
+       .Where(w => w.Name.Contains("Generic")).ToList();
+   ```
+2. Add a filtered list property and its predicate:
+   ```csharp
+   public List<Room> LargeRooms { get; set; }
+   public bool LargeRooms_Filter(Room r) => r.Area > 20.0;
+   ```
+3. **Save**, click **Compute**, and observe the filtered lists.
+
+---
+
+*Next Exercise: [05 - Parameter Defaults and Cache](./05-step-by-step.mdx)*

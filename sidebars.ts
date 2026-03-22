@@ -30,6 +30,23 @@ const sidebars: SidebarsConfig = {
         'fundamentals/08-structured-output-table',
         'fundamentals/09-paracore-sentinels',
         'fundamentals/10-paracore-repl',
+        {
+          type: 'category',
+          label: 'Step-by-Step Exercises',
+          collapsed: true,
+          items: [
+            'fundamentals/step-by-step/exercise-01',
+            'fundamentals/step-by-step/exercise-02',
+            'fundamentals/step-by-step/exercise-03',
+            'fundamentals/step-by-step/exercise-04',
+            'fundamentals/step-by-step/exercise-05',
+            'fundamentals/step-by-step/exercise-06',
+            'fundamentals/step-by-step/exercise-07',
+            'fundamentals/step-by-step/exercise-08',
+            'fundamentals/step-by-step/exercise-09',
+            'fundamentals/step-by-step/exercise-10',
+          ],
+        },
       ],
     },
 

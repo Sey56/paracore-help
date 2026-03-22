@@ -15,28 +15,28 @@ The Paracore Fundamentals series is optimized for the **[v4.2.0 Release](https:/
 
 ## 🏁 The Learning Path
 
-### [01 - Script Sources and Script Structure](./01-script-sources-and-structure.mdx)
+### [01 - Script Sources and Structure](./01-script-sources-and-structure.mdx)
 How Paracore finds your code and keeps it organized.
 
 ### [02 - Creating and Managing Scripts](./02-creating-and-managing-scripts.mdx)
 The workflow for building new tools in the Gallery.
 
-### [03 - Editing Scripts in VSCode](./03-editing-scripts-in-vscode.mdx)
+### [03 - Editing Scripts in VS Code](./03-editing-scripts-in-vscode.mdx)
 Deep-dive into the IDE integration.
 
-### [04 - The Parameter Engine and Params Class](./04-parameter-engine-params-class.mdx)
+### [04 - Parameter Engine and the Params class](./04-parameter-engine-params-class.mdx)
 How C# variables become UI inputs.
 
 ### [05 - Parameter Defaults and Cache](./05-parameter-defaults-and-cache.mdx)
 Understanding how Paracore remembers your inputs.
 
-### [06 - Revit Selection vs Paracore Selection](./06-revit-vs-paracore-selection.mdx)
+### [06 - Revit vs Paracore Selection](./06-revit-vs-paracore-selection.mdx)
 Bridging the gap between the Revit model and your scripts.
 
 ### [07 - The Paracore Visual Query Builder](./07-visual-query-builder.mdx)
 Building complex filters without writing code.
 
-### [08 - Paracore's Structured Output (Table)](./08-structured-output-table.mdx)
+### [08 - Structured Output (Table)](./08-structured-output-table.mdx)
 Visualizing and auditing BIM data instantly.
 
 ### [09 - Paracore Sentinels](./09-paracore-sentinels.mdx)
@@ -44,6 +44,12 @@ Proactive BIM management with background watchdogs.
 
 ### [10 - Paracore REPL](./10-paracore-repl.mdx)
 Interactive prototyping and exploration.
+
+## 🚀 Take Action: Step-by-Step Exercises
+
+Every topic above includes a corresponding **Step-by-Step Exercise**. We highly recommend following these interactive guides in your own Revit environment to solidify your understanding of the platform.
+
+[Start the first exercise: 01 - Script Sources and Structure](./step-by-step/01-step-by-step.mdx)
 
 ---
 

@@ -1,0 +1,36 @@
+---
+id: exercise-09
+slug: 09-step-by-step
+title: "Step-by-Step: 09 - Paracore Sentinels"
+sidebar_label: "09 - Step-by-Step"
+---
+
+# 09 - Step-by-Step: Paracore Sentinels
+
+Practice deploying and managing background BIM watchdogs.
+
+## 1. Pre-Flight Check
+1. Select a Sentinel script (e.g., a "Room Name Case Checker") in the Gallery.
+2. Adjust the parameters in the UI.
+3. Click **Run** manually to verify the output in the Console.
+
+## 2. Deploy Background Sentinel
+1. Open the **Sidebar**, click the **Settings (Gear)**, and go to the **Sentinels** tab.
+2. Click the **Deploy toggle** for your script. Notice the "Snapshot Mechanism" locks in the current values.
+
+## 3. Test Background Reaction
+1. Switch to Revit and perform an action that violates the Sentinel's rules.
+2. Observe the notification or the **Sentinel Control Window**.
+
+## 4. Independent Updates
+1. Go back to the **Gallery** and change the script parameters.
+2. Click **Run** manually and notice the output differs from the background Sentinel.
+3. To update the background watchdog, **Undeploy** and then **Re-deploy**.
+
+## 5. Lifecycle Management
+1. Close Paracore and notice the Sentinels undeploy (Resource Protection).
+2. Reopen Paracore and use the **Deploy All** button in Sentinel Settings to restore your watchdogs.
+
+---
+
+*Next Exercise: [10 - Paracore REPL](./10-step-by-step.mdx)*

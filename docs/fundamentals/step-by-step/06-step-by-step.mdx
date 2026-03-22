@@ -1,0 +1,40 @@
+---
+id: exercise-06
+slug: 06-step-by-step
+title: "Step-by-Step: 06 - Revit vs Paracore Selection"
+sidebar_label: "06 - Step-by-Step"
+---
+
+# 06 - Step-by-Step: Revit vs Paracore Selection
+
+Practice different ways to target elements in the Revit viewport.
+
+## 1. Direct Point Picking (XYZ)
+1. Add `public XYZ? MyPoint { get; set; }` to your `Params` class.
+2. **Save** and look for the **Selection Cursor** icon in the Parameters tab.
+3. Click the icon, switch to Revit, and click a point in the view.
+
+## 2. Picking Elements (Reference)
+1. Add `public Reference? UserPick { get; set; }` to your `Params` class.
+2. **Save**, click the **Selection** button, and pick an element in Revit.
+3. Verify the element's name appears in the Paracore UI.
+
+## 3. Forced Pick ([Select] Attribute)
+1. Force a direct pick for a standard type:
+   ```csharp
+   [Select(SelectionType.Element)]
+   public Wall? TargetWall { get; set; }
+   ```
+2. **Save**, click the **Selection** button, and pick a wall directly. Notice this bypasses the standard dropdown list.
+
+## 4. Constrained Element Picking
+1. Restrict the selection to a specific category:
+   ```csharp
+   [RevitElements(Category = "Doors")]
+   public Reference? MyDoor { get; set; }
+   ```
+2. **Save**, click the **Selection** button, and attempt to pick various objects. Notice only Doors are selectable.
+
+---
+
+*Next Exercise: [07 - The Paracore Visual Query Builder](./07-step-by-step.mdx)*

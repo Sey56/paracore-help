@@ -1,0 +1,34 @@
+---
+id: exercise-05
+slug: 05-step-by-step
+title: "Step-by-Step: 05 - Parameter Defaults and Cache"
+sidebar_label: "05 - Step-by-Step"
+---
+
+# 05 - Step-by-Step: Parameter Defaults and Cache
+
+Practice managing sticky parameters and resetting your workspace.
+
+## 1. Setting Defaults
+1. In your `Params` class, set a default value: `public double Distance { get; set; } = 50.0;`.
+2. **Save** and verify the value appears in Paracore.
+
+## 2. Test "Sticky" Persistence
+1. Change the value in the Paracore UI to **100**.
+2. Select a different script in the Gallery, then switch back.
+3. Observe that the value remains **100**.
+
+## 3. Practice Hard-Reset
+1. In VS Code, change the code default to **200** and save.
+2. In Paracore, notice the UI value is still **100** (user override takes priority).
+3. Click the **Hard-Reset** (Reset icon) in the top-right of the Parameters tab.
+4. Verify the value reverts to the code default of **200**.
+
+## 4. Document-Aware Warning
+1. Switch your active project in Revit.
+2. Observe the **Yellow Triangle Warning** appearing on your selection parameters.
+3. Click **Compute** to refresh the data for the new document.
+
+---
+
+*Next Exercise: [06 - Revit vs Paracore Selection](./06-step-by-step.mdx)*
