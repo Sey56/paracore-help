@@ -139,11 +139,11 @@ BarGraph(data);
 ## Example Recipes
 
 ### 1. Element Audit
-Find elements more than 1000m from the origin (likely CAD import errors).
+Find elements more than 1000m from the origin (likely misplaced or CAD import artifacts).
 ```csharp
 // Multi-Line Snippet (Workshop)
 var limit = 1000.InputUnit("m");
-var lost = GetElements("Generic Models").Where(e => {
+var lost = GetElements<Element>().Where(e => {
     var bb = e.get_BoundingBox(null);
     if (bb == null) return false;
     var center = (bb.Min + bb.Max) / 2.0;
