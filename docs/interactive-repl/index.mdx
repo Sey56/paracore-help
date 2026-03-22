@@ -144,8 +144,10 @@ Find elements more than 1000m from the origin (likely CAD import errors).
 // Multi-Line Snippet (Workshop)
 var limit = 1000.InputUnit("m");
 var lost = GetElements("Generic Models").Where(e => {
-    var pt = (e.Location as LocationPoint)?.Point;
-    return pt != null && (Math.Abs(pt.X) > limit || Math.Abs(pt.Y) > limit);
+    var bb = e.get_BoundingBox(null);
+    if (bb == null) return false;
+    var center = (bb.Min + bb.Max) / 2.0;
+    return Math.Abs(center.X) > limit || Math.Abs(center.Y) > limit;
 });
 lost.Table().Select().Zoom();
 ```
