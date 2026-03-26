@@ -109,32 +109,32 @@ Paracore extends the Revit `Element` class with smart, unit-aware getters and se
 ## Metadata & API Reflection (Peeks)
 Techniques to inspect elements and their properties in a tabular format.
 
-### `AllParams()`
-Returns every non-empty parameter (Name, Storage, Value) as a table.
-- **Example**: `Table(myWall.AllParams());`
+### `InstanceParams()`
+Returns every non-empty instance parameter (Name, Storage, Value) as a table.
+- **Example**: `myWall.InstanceParams().Table();`
 
 ### `TypeParams()`
-Returns parameters from the element's `ElementType`.
-- **Example**: `Table(myWall.TypeParams());`
+Returns parameters from the element's `ElementType` as a table.
+- **Example**: `myWall.TypeParams().Table();`
 
-### `AllProperties()`
+### `NativeProperties()`
 **The API Peek.** Lists non-parameter properties like Category, Location, Design Option.
-- **Example**: `Table(myWall.AllProperties());`
+- **Example**: `myWall.NativeProperties().Table();`
 
-### `AllGeometry()`
+### `GeometrySummary()`
 Returns the complete collection of `GeometryObject` instances (Solids, Curves, Points) for the element.
-- **Example**: `myWall.AllGeometry().Table();`
+- **Example**: `myWall.GeometrySummary().Table();`
 
-### `Peek(element)`
+### `.Peek()`
 The definitive "Source of Truth" view. Lists Name, Storage, GetStr, GetNum, and UI Value side-by-side.
-- **Example**: `Peek(Selection[0]);`
+- **Example**: `Selection[0].Peek();`
 
-| Alias Helper | Description | Example |
+| Tool | Description | Example |
 | :--- | :--- | :--- |
-| **`ListParams(el)`** | Shortcut for `Table(el.AllParams())` | `ListParams(myWall)` |
-| **`ListBIPs(el)`** | Lists BuiltInParameter strings. | `ListBIPs(myWall)` |
-| **`ListProperties(el)`** | Shortcut for `Table(el.AllProperties())` | `ListProperties(myWall)` |
-| **`ListGeometry(el)`** | Shortcut for `Table(el.AllGeometry())` | `ListGeometry(myWall)` |
+| **`.CombinedParams()`** | Combined Instance & Type params | `myWall.CombinedParams().Table()` |
+| **`.BuiltInParams()`** | Lists BuiltInParameter strings. | `myWall.BuiltInParams().Table()` |
+| **`.ReflectionProperties()`** | Lists native C# properties via Reflection. | `myWall.ReflectionProperties().Table()` |
+| **`.GeometrySummary()`** | Detailed solid/face/mesh breakdown. | `myWall.GeometrySummary().Table()` |
 
 ---
 
@@ -232,15 +232,13 @@ Use this matrix to understand when to manually call `.Table()` versus using auto
 | Method | Mode | Best For |
 | :--- | :--- | :--- |
 | **`.Table()`** | **Manual** | Dynamic element audits & custom projections. |
-| **`Peek(el)`** | **Auto** | Forensic API vs UI value comparison. |
-| **`ListParams(el)`** | **Auto** | Fast exhaustive parameter listings. |
-| **`ListProperties(el)`** | **Auto** | Internal metadata (Level, Workset, Location). |
-| **`ListGeometry(el)`** | **Auto** | Summary of geometry (Solid count, Volume, and Area). |
+| **`.Peek()`** | **Auto** | Forensic API vs UI value comparison. |
+| **`.Delete()`** | **Auto** | Safely deletes elements. |
 
 *Note: `GetMagicNames()` and `GetCategories()` return string lists. Use a `foreach` loop with `Println()` to see them in the console.*
 
 ---
 
 :::tip Pro Tip
-If you need to filter or sort data *before* rendering it to a table, use the extension method equivalents (e.g., `el.AllParams().Table()`) instead of the auto-rendering global functions.
+If you need to filter or sort data *before* rendering it to a table, use the extension method equivalents (e.g., `el.InstanceParams().OrderBy(p => p.Name).Table()`) instead of chaining them directly.
 :::
