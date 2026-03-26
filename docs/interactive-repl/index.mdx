@@ -157,7 +157,7 @@ var lost = GetElements<Element>().Where(e => {
     // Magnitude check: distance from (0,0,0)
     return center.GetLength() > limit;
 });
-if (lost.Count > 0) {
+if (lost.Count() > 0) {
     lost.Select();
     Selection[0].Peek();
 }
