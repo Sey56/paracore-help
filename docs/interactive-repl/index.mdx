@@ -154,8 +154,8 @@ var lost = GetElements<Element>().Where(e => {
     var bb = e.get_BoundingBox(null);
     if (bb == null) return false;
     var center = (bb.Min + bb.Max) / 2.0;
-    // Magnitude check: distance from (0,0,0)
-    return center.GetLength() > limit;
+    // Semantically clear: Distance from one point to another
+    return center.DistanceTo(XYZ.Zero) > limit;
 });
 if (lost.Count() > 0) {
     lost.Select();
