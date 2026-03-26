@@ -2,6 +2,18 @@
 
 Version history and changelog for Paracore.
 
+### V4.2.1 (March 2026) - The API Alignment & Resiliency Patch
+
+This patch finalizes the architectural transition to a "Pure Chained" Fluent API and addresses critical assembly resolution issues for external deployments.
+
+*   **"Pure Chained" Fluent API**: Standardized all C# extension methods into a uniform Noun/Verb syntax (e.g., `.FamilyName()`, `.ReflectionProperties()`) and moved forensic diagnostics to a chained `.Peek()` method.
+*   **High-Performance UI Hydration**: Resolved a severe scoping bug in Magic Hydration. Custom `_Filter` predicates now respect category attributes *before* evaluation, ensuring lightning-fast UI dropdowns for large models.
+*   **Filtered CSV Export**: The Analytics table export now strictly honors the frontend search/filter state, allowing for surgical data extraction.
+*   **Autodesk Deployment Resiliency**: Strictly pinned the .NET 8 SDK and downgraded library dependencies to `v8.0.1` to ensure total binary compatibility with Revit 2025's native AppDomain, even in heavily modded environments.
+*   **Dynamic Analytics**: Graphing widgets now dynamically parse custom REPL projections without requiring rigid schemas.
+
+---
+
 ### V4.2.0 (March 2026) - The BIM Laboratory & Intelligence Update
 
 V4.2.0 is a massive milestone that transforms Paracore from a script orchestrator into a full-scale **BIM Laboratory**. This release introduces live interactive coding, reusable logic templates, a high-performance results grid, and professional-grade ergonomics.
