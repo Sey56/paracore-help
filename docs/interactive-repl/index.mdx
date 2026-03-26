@@ -43,7 +43,7 @@ The REPL operates on a "Read-Eval-Print" cycle. You write pure C# code (no class
 Both modes are designed for speed, but follow specific rules to ensure successful execution:
 - **Semicolons**: Mandatory for variable assignments (`var x = 10;`), but optional for one-liners and queries (`Selection.Count`).
 - **Count vs Count()**: Use the `.Count` property for immediate lists (e.g., `Selection.Count`, `GetMagicNames().Count`) and the `.Count()` method for dynamic enumerable queries (e.g., `GetElements<Wall>().Where(w => ...).Count()`).
-- **Magic Discovery**: Use the [Magic Accessors](#element-accessors-extension-methods) to bypass standard Revit API boilerplate.
+- **Magic Discovery**: Use the [Magic Accessors](#element-accessors-extension-methods) for direct and simplified property access.
 
 ### 3. Shared Context & Multi-Turn Interaction
 Both modes share the same persistent execution environment. This means you can initialize complex data in the Multi-Line Workspace and surgically query it later from the Single-Line REPL.
@@ -98,7 +98,7 @@ Paracore extends standard Revit elements with "Magic" accessors that handle unit
 
 ## Magic Discovery
 
-Use these helpers to find elements by name, category, or class without writing complex collectors.
+Use these high-level accessors to instantly find elements by name, category, or class.
 
 ```csharp
 // Single-Line REPL examples
