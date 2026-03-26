@@ -8,9 +8,12 @@ Version 4.2.1 finalizes the **"Pure Chained" Fluent API**, implements a massive 
 
 *   **"Pure Chained" Fluent API**: Standardized all C# extension methods into a uniform Noun/Verb syntax (e.g., `.FamilyName()`, `.ReflectionProperties()`) and moved forensic diagnostics to a chained `.Peek()` method.
 *   **High-Performance UI Hydration**: Resolved a severe scoping bug in Magic Hydration. Custom `_Filter` predicates now respect category attributes *before* evaluation, ensuring lightning-fast UI dropdowns for large models.
+*   **High-Density Data Guardrails**: Introduced a protective threshold (30 items) for Pie and Bar charts to prevent unreadable "nonsense" visualizations from raw un-aggregated data.
+* **REPL "Sandbox" Workflow**: Added a **"New"** button to the multi-line REPL. This enables ephemeral experimentation by clearing the editor and unloading the current file, ensuring saved automation snippets are never accidentally modified during "what-if" testing.
 *   **Filtered CSV Export**: The Analytics table export now strictly honors the frontend search/filter state, allowing for surgical data extraction.
 *   **Autodesk Deployment Resiliency**: Strictly pinned the .NET 8 SDK and downgraded library dependencies to `v8.0.1` to ensure total binary compatibility with Revit 2025's native AppDomain, even in heavily modded environments.
 *   **Dynamic Analytics**: Graphing widgets now dynamically parse custom REPL projections without requiring rigid schemas.
+*   **Sentinel Output Consolidation**: Refactored the Visual Query Builder's sentinel generation logic to utilize a unified C# local function (`ShowResults()`). This eliminates redundant table-generation code while maintaining the distinct execution paths for background reporting and on-demand gallery runs.
 
 ---
 
