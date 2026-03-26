@@ -149,7 +149,6 @@ BarGraph(data);
 ### 1. Element Audit
 Find elements more than 1000m from the origin (likely misplaced or CAD import artifacts).
 ```csharp
-// Multi-Line Snippet (Workshop)
 var limit = 1000.InputUnit("m");
 var lost = GetElements<Element>().Where(e => {
     var bb = e.get_BoundingBox(null);
