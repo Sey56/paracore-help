@@ -118,8 +118,12 @@ Returns parameters from the element's `ElementType` as a table.
 - **Example**: `myWall.TypeParams().Table();`
 
 ### `NativeProperties()`
-**The API Peek.** Lists non-parameter properties like Category, Location, Design Option.
+**The BIM Manager's Peek.** A curated list of essential metadata like Category, Location, Design Option, Level, and Workset.
 - **Example**: `myWall.NativeProperties().Table();`
+
+### `ReflectionProperties()`
+**The Developer's Peek.** Uses C# Reflection to dump the actual public properties defined in the Revit API classes (e.g. `Wall.Width`, `Room.Area`, `FamilyInstance.IsFlipped`).
+- **Example**: `myWall.ReflectionProperties().Table();`
 
 ### `GeometrySummary()`
 Returns the complete collection of `GeometryObject` instances (Solids, Curves, Points) for the element.
@@ -133,7 +137,8 @@ The definitive "Source of Truth" view. Lists Name, Storage, GetStr, GetNum, and 
 | :--- | :--- | :--- |
 | **`.CombinedParams()`** | Combined Instance & Type params | `myWall.CombinedParams().Table()` |
 | **`.BuiltInParams()`** | Lists BuiltInParameter strings. | `myWall.BuiltInParams().Table()` |
-| **`.ReflectionProperties()`** | Lists native C# properties via Reflection. | `myWall.ReflectionProperties().Table()` |
+| **`.NativeProperties()`** | **BIM Manager View.** Hand-picked metadata (Level, Workset, Design Option, Location). | `myWall.NativeProperties().Table()` |
+| **`.ReflectionProperties()`**| **Developer View.** Raw C# Class properties (e.g. `Wall.Width`, `Wall.Flipped`) via Reflection. | `myWall.ReflectionProperties().Table()` |
 | **`.GeometrySummary()`** | Detailed solid/face/mesh breakdown. | `myWall.GeometrySummary().Table()` |
 
 ---
