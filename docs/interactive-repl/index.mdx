@@ -157,7 +157,7 @@ var lost = GetElements<Element>().Where(e => {
     var center = (bb.Min + bb.Max) / 2.0;
     return Math.Abs(center.X) > limit || Math.Abs(center.Y) > limit;
 });
-Selection[0].Peek();
+lost.Table().Select().Zoom();
 ```
 
 ### 2. Room Data Sync
