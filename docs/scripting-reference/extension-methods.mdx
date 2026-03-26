@@ -67,11 +67,11 @@ Finds a single element by its name or identity.
 
 ### `GetMagicNames()`
 Lists all strings (categories, classes) that can be resolved by the engine.
-- **Example**: `foreach(var n in GetMagicNames()) Println(n);`
+- **Example**: `foreach(var n in GetMagicNames()) Println(n)`
 
 ### `GetCategories()`
 Lists all Revit categories available in the active document.
-- **Example**: `foreach(var c in GetCategories()) Println(c);`
+- **Example**: `foreach(var c in GetCategories()) Println(c)`
 
 ---
 
@@ -80,29 +80,31 @@ Paracore extends the Revit `Element` class with smart, unit-aware getters and se
 
 ### `GetStr(name)`
 **Smart String Getter.** Returns name (for IDs) or formatted string.
-- **Example**: `var levelName = wall.GetStr("Base Constraint");`
+- **REPL**: `wall.GetStr("Base Constraint")`
+- **Script**: `var levelName = wall.GetStr("Base Constraint");`
 
 ### `GetVal(name)`
 **WYSIWYG Getter.** Returns the exact string shown in the Revit Properties palette.
-- **Example**: `var displayValue = wall.GetVal("Length");`
+- **REPL**: `wall.GetVal("Length")`
+- **Script**: `var displayValue = wall.GetVal("Length");`
 
 ### `GetNum(name, unit)`
 **Numeric Getter.** Returns internal units or converted units.
-- **Example**: `var rawFeet = wall.GetNum("Length");`
-- **Example**: `var mmValue = wall.GetNum("Length", "mm");`
-
+- **REPL**: `wall.GetNum("Length")`
+- **Script**: `var rawFeet = wall.GetNum("Length");`
 ### `GetInt(name)`
 **Integer Getter.** Returns the integer value of the parameter.
-- **Example**: `var count = wall.GetInt("Mark");`
+- **REPL**: `wall.GetInt("Mark")`
+- **Script**: `var count = wall.GetInt("Mark");`
 
 ### `SetVal(name, value)`
 **The Smart Setter.** Resolves unit-strings, names, and IDs automatically.
-- **Example**: `wall.SetVal("Base Offset", "500 mm");`
-- **Example**: `wall.SetVal("Level", "Level 2");`
-
+- **REPL**: `wall.SetVal("Base Offset", "500 mm")`
+- **Script**: `wall.SetVal("Base Offset", "500 mm");`
 ### `SetNum(name, value, unit)`
 **Numeric Setter.** Explicitly sets value with unit conversion.
-- **Example**: `wall.SetNum("Base Offset", 100, "mm");`
+- **REPL**: `wall.SetNum("Base Offset", 100, "mm")`
+- **Script**: `wall.SetNum("Base Offset", 100, "mm");`
 
 ---
 
@@ -111,27 +113,27 @@ Techniques to inspect elements and their properties in a tabular format.
 
 ### `InstanceParams()`
 Returns every non-empty instance parameter (Name, Storage, Value) as a table.
-- **Example**: `myWall.InstanceParams().Table();`
+- **Example**: `myWall.InstanceParams().Table()`
 
 ### `TypeParams()`
 Returns parameters from the element's `ElementType` as a table.
-- **Example**: `myWall.TypeParams().Table();`
+- **Example**: `myWall.TypeParams().Table()`
 
 ### `NativeProperties()`
 **The BIM Manager's Peek.** A curated list of essential metadata like Category, Location, Design Option, Level, and Workset.
-- **Example**: `myWall.NativeProperties().Table();`
+- **Example**: `myWall.NativeProperties().Table()`
 
 ### `ReflectionProperties()`
 **The Developer's Peek.** Uses C# Reflection to dump the actual public properties defined in the Revit API classes (e.g. `Wall.Width`, `Room.Area`, `FamilyInstance.IsFlipped`).
-- **Example**: `myWall.ReflectionProperties().Table();`
+- **Example**: `myWall.ReflectionProperties().Table()`
 
 ### `GeometrySummary()`
 Returns the complete collection of `GeometryObject` instances (Solids, Curves, Points) for the element.
-- **Example**: `myWall.GeometrySummary().Table();`
+- **Example**: `myWall.GeometrySummary().Table()`
 
 ### `.Peek()`
 The definitive "Source of Truth" view. Lists Name, Storage, GetStr, GetNum, and UI Value side-by-side.
-- **Example**: `Selection[0].Peek();`
+- **Example**: `Selection[0].Peek()`
 
 | Tool | Description | Example |
 | :--- | :--- | :--- |
