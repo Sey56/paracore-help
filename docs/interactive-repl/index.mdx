@@ -155,7 +155,7 @@ var lost = GetElements<Element>().Where(e => {
     var bb = e.get_BoundingBox(null);
     if (bb == null) return false;
     var center = (bb.Min + bb.Max) / 2.0;
-    return Math.Abs(center.X) > limit || Math.Abs(center.Y) > limit;
+    return center.DistanceTo(XYZ.Zero) > limit;
 });
 if (lost.Count > 0) {
     lost.Select();
