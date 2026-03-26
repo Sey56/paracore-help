@@ -4,7 +4,7 @@ Version history and changelog for Paracore.
 
 ### V4.2.1 (March 2026) - The API Alignment & Resiliency Patch
 
-This patch finalizes the architectural transition to a "Pure Chained" Fluent API and addresses critical assembly resolution issues for external deployments.
+Version 4.2.1 finalizes the **"Pure Chained" Fluent API**, implements a massive performance fix for UI Predicate Hydration, and bulletproofs the `.NET 8` assembly resolution layer for external deployments.
 
 *   **"Pure Chained" Fluent API**: Standardized all C# extension methods into a uniform Noun/Verb syntax (e.g., `.FamilyName()`, `.ReflectionProperties()`) and moved forensic diagnostics to a chained `.Peek()` method.
 *   **High-Performance UI Hydration**: Resolved a severe scoping bug in Magic Hydration. Custom `_Filter` predicates now respect category attributes *before* evaluation, ensuring lightning-fast UI dropdowns for large models.
