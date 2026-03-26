@@ -158,7 +158,7 @@ var lost = GetElements<Element>().Where(e => {
     return center.DistanceTo(XYZ.Zero) > limit;
 });
 if (lost.Count() > 0) {
-    lost.Select();
+    lost.Select().Zoom();
     Selection[0].Peek();
 }
 ```
