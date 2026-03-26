@@ -157,7 +157,7 @@ var lost = GetElements<Element>().Where(e => {
     // Semantically clear: Distance from one point to another
     return center.DistanceTo(XYZ.Zero) > limit;
 });
-if (lost.Count() > 0) {
+if (lost.Any()) {
     lost.Select().Zoom();
     Selection[0].Peek();
 }
