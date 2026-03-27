@@ -211,15 +211,15 @@ These methods bridge the gap between "Code" and "UI". Every fluent extension has
 
 ### `id.ToElement(Doc)`
 Resolves a numeric/string ID directly to a Revit Element.
-- **Example**: `12345.ToElement(Doc).Select();`
+- **Example**: `12345.ToElement(Doc).Select()`
 
 ### `WhereParam(name, val)`
 High-speed filtering by string value.
-- **Example**: `walls.WhereParam("Mark", "A1");`
+- **Example**: `walls.WhereParam("Mark", "A1")`
 
 ### `SumParam(name, unit)`
 Quickly sum a numeric parameter across a collection.
-- **Example**: `rooms.SumParam("Area", "m2");`
+- **Example**: `rooms.SumParam("Area", "m2")`
 
 ### `Transact(name, action)`
 Wraps modifications in a named transaction.

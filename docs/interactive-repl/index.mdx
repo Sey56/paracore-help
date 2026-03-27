@@ -56,7 +56,7 @@ Println($"Found {rooms.Count} rooms");
 ```
 ```csharp
 // Single-Line REPL (Turn 2)
-rooms.Table().Select(r => new { r.Name, r.Area });
+rooms.Table().Select(r => new { r.Name, r.Area })
 ```
 
 <img src={ConsoleHistory} alt="REPL Session History" />
@@ -104,7 +104,7 @@ Use these high-level accessors to instantly find elements by name, category, or 
 // Single-Line REPL examples
 var doors = GetElements("Doors");            // All door instances
 var types = GetElements<FamilySymbol>("Doors"); // All door types
-GetElement("Level 1").Select();              // Chain with Select()
+GetElement("Level 1").Select()              // Chain with Select()
 GetMagicNames().Count                        // Total number of magic names
 GetElements<Element>()                       // Universal Accessor: Target everything
 
@@ -158,8 +158,8 @@ var lost = GetElements<Element>().Where(e => {
     return center.DistanceTo(XYZ.Zero) > limit;
 });
 if (lost.Any()) {
-    lost.Select().Zoom();
-    Selection[0].Peek();
+    lost.Select().Zoom()
+    Selection[0].Peek()
 }
 ```
 
