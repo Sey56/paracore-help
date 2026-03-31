@@ -2,6 +2,17 @@
 
 Version history and changelog for Paracore.
 
+### V4.3.0 (April 2026) - The Isolation & Compatibility Release
+
+Version 4.3.0 is a monumental architectural shift that permanently solves the two biggest deployment and compatibility struggles for Paracore users.
+
+*   **Reliable "Zero-Prerequisite" Installation (Paracore.Server)**: Previously, the add-in might work perfectly on a developer's PC but show missing DLLs and fail on an end-user's computer. We fixed this by introducing the `Paracore.Server` sidecar. Now, the add-in is exactly the same in both developer and user environments, working instantly without missing dependencies.
+*   **Absolute Add-in Isolation (Paracore.Shim)**: Previously, if you had pyRevit installed in Revit, Paracore would often fail due to severe `Microsoft.CodeAnalysis` DLL conflicts regardless of load order. We solved this by isolating all of our Paracore DLLs using the new `Paracore.Shim` project. Now, Paracore won't conflict with any other add-in installed—and it works perfectly alongside pyRevit as if it isn't even there!
+
+> **What do I need to do?** Nothing. Simply update to v4.3.0 and enjoy a conflict-free, crash-free Revit experience!
+
+---
+
 ### V4.2.1 (March 2026) - The API Alignment & Resiliency Patch
 
 Version 4.2.1 finalizes the **"Pure Chained" Fluent API**, implements a massive performance fix for UI Predicate Hydration, and bulletproofs the `.NET 8` assembly resolution layer for external deployments.
