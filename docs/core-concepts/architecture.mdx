@@ -1,29 +1,21 @@
-import SystemArchitecture from '@site/static/img/system-architecture.png';
-
 # System Architecture
 
 Paracore is designed as a decoupled, high-performance ecosystem. This architecture provides a **Dynamic Execution Environment** that enables a rapid, iterative workflow for both human developers and AI agents.
 
-<img src={SystemArchitecture} alt="System Architecture" />
+![Paracore System Architecture](/img/system-architecture.png)
 
 *<small>© 2026 Paracore. All rights reserved.<br/>Autodesk® Revit® is a registered trademark of Autodesk, Inc. Paracore is an independent software and is not affiliated with, endorsed by, or sponsored by Autodesk, Inc.</small>*
 
 ## The Pillars of Paracore
 
 ### 1. Paracore Desktop App (The Control Center)
-Built using **React**, **TypeScript**, and **Tauri**, the desktop application handles the high-level management of your automation library.
-- **Role**: Script discovery, parameter orchestration, and results visualization.
-- **Benefit**: By running as a separate process, Paracore provides a responsive, web-speed UI that operates independently of Revit's performance cycles.
+Built using **React**, **TypeScript**, and **Tauri**, this is the main standalone application installed on the user's computer. It handles script discovery, parameter orchestration, and results visualization.
+- **The Python Sidecar (`rap-server`)**: Bound entirely to the lifecycle of the desktop app, this lightweight Python/FastAPI environment acts as the central middleman. It translates the frontend's HTTP requests into gRPC calls for Revit. It also manages local data persistence and the Paracore Agent's logic via a local SQLite database.
 
-### 2. Paracore Local Backend (The Sidecar)
-A lightweight **Python** and **FastAPI** application that runs as a sidecar to the desktop app on your local machine. It acts as the central intelligence and communication hub.
-- **Role**: It acts as an API Gateway, translating the frontend's HTTP requests into gRPC calls for Revit. It also manages script discovery, local data persistence via a **SQLite database** (`%AppData%/Roaming/paracore-data/data/rap_local.db`), and the Paracore Agent's logic.
-- **Benefit**: By offloading heavy logic and filesystem operations to a local Python process, the UI stays lightning-fast and the Revit add-in remains lightweight.
-
-### 3. Paracore Revit Addin (The Host)
-A lightweight plugin that sits inside Revit. It acts as the execution bridge, providing the necessary context for your logic to interact with the model.
-- **Role**: It hosts a **gRPC server** inside Revit and manages Revit Transactions. Crucially, it embeds the **CoreScript Engine**, a powerful Roslyn-based compiler that enables dynamic, in-memory execution of C# scripts.
-- **Interactivity**: It enables high-performance, in-memory execution of C# scripts, allowing for rapid iteration and testing within the live Revit model.
+### 2. Paracore Revit Add-in (The Execution Engine)
+From the user's perspective, this is a single, lightweight plugin installed into Revit. It acts as the execution bridge, enabling your C# logic to interact with the live model. Internally, the Add-in achieves this through two highly resilient components:
+- **`Paracore.Shim` (Absolute Isolation)**: A specialized entry point inside Revit that dynamically bootstraps the core engine into a dedicated **AssemblyLoadContext (ALC)**. This strict memory boundary encapsulates internal dependencies (such as Roslyn and Protobuf) preventing them from leaking into Revit's default AppDomain. This guarantees Paracore will never conflict with complex third-party extensions like pyRevit.
+- **`Paracore.Server` (The .NET Sidecar)**: A dedicated `.NET 8` process that runs as a sidecar to the Revit Add-in. This out-of-process sidecar hosts the gRPC communication layer, receiving tasks from the Desktop App's Python middleman. By bundling its own ASP.NET Core framework, it permanently eliminates "missing DLL" failures and deployment headaches.
 
 ## 📡 Responsive Communication
 
