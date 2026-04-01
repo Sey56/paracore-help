@@ -17,6 +17,17 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
+      label: 'Core Concepts',
+      items: [
+        'core-concepts/index',
+        'core-concepts/architecture',
+        'core-concepts/script-types',
+        'core-concepts/active-data-workflows',
+      ],
+    },
+
+    {
+      type: 'category',
       label: 'Fundamentals',
       link: { type: 'doc', id: 'fundamentals/index' },
       items: [
