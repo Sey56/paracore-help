@@ -2,6 +2,15 @@
 
 Version history and changelog for Paracore.
 
+### V4.3.1 (April 2026) - Connection Stability Patch
+
+Version 4.3.1 improves the reliability of the background server connections introduced in 4.3.0.
+
+*   **Flawless Toggling**: Fixed a bug where rapidly toggling the Paracore Server on and off in the Revit ribbon could occasionally cause the background process to get stuck and fail to reconnect.
+*   **Instant Reconnections**: Eliminated a timeout issue that could cause the desktop app to wait upward of two minutes before realizing the server was back online. Now, the connection snaps back instantly the moment you toggle it back on.
+
+---
+
 ### V4.3.0 (April 2026) - The Isolation & Compatibility Release
 
 Version 4.3.0 is a monumental architectural shift that permanently solves the two biggest deployment and compatibility struggles for Paracore users.
