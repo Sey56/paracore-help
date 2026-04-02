@@ -58,6 +58,13 @@ Println($"Walls in active view: {viewWalls}");
 ## Step 3: Loop Through Elements with foreach
 
 ```csharp
+// First, gather the walls
+var walls = new FilteredElementCollector(Doc)
+    .OfCategory(BuiltInCategory.OST_Walls)
+    .WhereElementIsNotElementType()
+    .ToElements();
+
+// Then loop through them
 foreach (var wall in walls)
 {
     Println($"Wall: {wall.Name}, ID: {wall.Id}");
@@ -74,6 +81,12 @@ The `foreach` loop:
 Create structured output using anonymous objects:
 
 ```csharp
+// Gather elements
+var elements = new FilteredElementCollector(Doc)
+    .OfCategory(BuiltInCategory.OST_Walls)
+    .WhereElementIsNotElementType()
+    .ToElements();
+
 var tableData = new List<object>();
 
 foreach (var element in elements)

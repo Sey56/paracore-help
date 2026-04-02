@@ -106,8 +106,37 @@ Transact("Create Tutorial Wall", () =>
 4. Click **Run Script**.
 5. Check Revit - your wall is there, using the exact type and level you chose.
 
-## Key Takeaway
-**Automatic Lists** save you from writing boring "boilerplate" code. If you need a `Level`, just ask for a `Level`. If you need a `Door`, just ask for a `FamilyInstance`.
+## Key Takeaway: System Families vs Loadable Components
+**Automatic Lists** save you from writing boring boilerplate code. However, you must understand the difference between how Revit handles system families versus loadable components.
+
+### 1. System Families (Walls, Floors, Floors)
+System families have specific C# classes (`Wall`, `WallType`). Paracore handles these automatically without any extra attributes:
+```csharp
+public class Params {
+    // ✅ Lists all Wall Types in a single dropdown
+    public WallType MyWallType { get; set; } 
+    
+    // ✅ Lists all placed Wall instances in a multi-select dropdown
+    public List<Wall> MyWallInstances { get; set; } 
+}
+```
+
+### 2. Loadable Components (Doors, Windows, Furniture)
+Loadable components all share generic classes (`FamilyInstance` for placed objects, `FamilySymbol` for types). You **must** use the `[RevitElements]` attribute to specify the category, otherwise Paracore will load every single component in your model!
+```csharp
+public class Params {
+    // ❌ BAD: Loads every single Family Instance in the entire model
+    public FamilyInstance AnyInstance { get; set; }
+
+    // ✅ GOOD: Lists ONLY placed Door instances in a dropdown
+    [RevitElements(Category = "Doors")]
+    public FamilyInstance MyDoor { get; set; }
+    
+    // ✅ GOOD: Lists ONLY Window Types in a multi-select dropdown
+    [RevitElements(Category = "Windows")]
+    public List<FamilySymbol> MyWindowTypes { get; set; }
+}
+```
 
 ---
 

@@ -12,18 +12,20 @@ Practice auditing and mass-editing BIM data using the Paracore Analytics grid.
 ## 1. Generate a Table
 1. Open the Interactive **REPL** in the Console tab.
 2. Type: `GetElements<Room>().Table();` and hit **Enter**.
-3. Paracore will switch to the **Analytics** tab.
+3. The **Analytics** tab will show a blue pulsating badge indicating new data is ready. Click the tab to view it.
 
 ## 2. Dynamic Inspection
-1. **Sorting**: Click any column header to sort.
-2. **Grouping**: Drag a column header into the **Grouping Bar** above the table.
+1. **Sorting**: Click any column header to sort the data.
+2. **Filtering**: Enter text in the search box above the headers to instantly filter the table. Note that exporting to CSV will honor your filtered view!
 
-## 3. Sync and Selection
-1. Click on any row in the table.
+## 3. Element Selection
+1. Click on the **Id** or **ElementId** cell for any row in the table.
 2. Switch to Revit to see the corresponding element highlighted.
 
 ## 4. Editing Cells
-1. Double-click a cell (e.g., **Room Name**).
+*Note: The **Id** or **ElementId** column must be present in your table to edit parameters.* The analytics grid is designed for fast metadata editing, not geometry manipulation. You can freely edit non-read-only string or numeric values like Room Names, Floor Finishes, Marks, and Comments. Geometry-related properties cannot be changed here.
+
+1. Double-click an editable cell (e.g., **Room Name**).
 2. Type a new value and hit **Enter**.
 3. Check the update in your Revit Properties palette.
 

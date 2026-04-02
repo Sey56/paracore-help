@@ -26,31 +26,43 @@ Category (e.g., Doors)
 
 ## Step 1: Get an Instance's Type
 
-For system families (Wall, Floor, Ceiling):
+For system families (Wall, Floor, Ceiling). **Select a Wall in Revit:**
 
 ```csharp
-Wall wall = element as Wall;
+var wall = Selection.FirstOrDefault(e => e.Category?.Id.Value == (int)BuiltInCategory.OST_Walls);
+if (wall == null) return;
+
 ElementId typeId = wall.GetTypeId();
 WallType wallType = Doc.GetElement(typeId) as WallType;
+
+Println($"Wall Type: {wallType.Name}");
 ```
 
-For loadable families (Doors, Furniture, etc.):
+For loadable families (Doors, Furniture, etc.). **Select a Door in Revit:**
 
 ```csharp
-FamilyInstance door = element as FamilyInstance;
+var door = Selection.FirstOrDefault(e => e.Category?.Id.Value == (int)BuiltInCategory.OST_Doors) as FamilyInstance;
+if (door == null) return;
+
 FamilySymbol doorType = door.Symbol;  // FamilySymbol IS the type
+Println($"Door Type: {doorType.Name}");
 ```
 
 ## Step 2: Type Parameters vs Instance Parameters
 
-Some parameters exist only on Types, others only on Instances:
+Some parameters exist only on Types, others only on Instances. **Select a Door in Revit:**
 
 ```csharp
+var door = Selection.FirstOrDefault(e => e.Category?.Id.Value == (int)BuiltInCategory.OST_Doors) as FamilyInstance;
+if (door == null) return;
+
 // Instance parameter (on the placed door)
-var comments = door.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS);
+var comments = door.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.AsString() ?? "None";
 
 // Type parameter (on the door type)
-var fireRating = door.Symbol.get_Parameter(BuiltInParameter.DOOR_FIRE_RATING);
+var fireRating = door.Symbol.get_Parameter(BuiltInParameter.DOOR_FIRE_RATING)?.AsString() ?? "Not Set";
+
+Println($"Comments: {comments}, Fire Rating: {fireRating}");
 ```
 
 ## Step 3: Group Instances by Type
@@ -83,36 +95,47 @@ var allDoorTypes = new FilteredElementCollector(Doc)
     .WhereElementIsElementType()  // Note: IS element type
     .ToElements();
 
+var doors = new FilteredElementCollector(Doc)
+    .OfCategory(BuiltInCategory.OST_Doors)
+    .WhereElementIsNotElementType()
+    .Cast<FamilyInstance>();
+
 // Get IDs of types that have instances
 var usedTypeIds = doors
     .Select(d => d.Symbol.Id)
     .Distinct()
     .ToHashSet();
 
-// Find unused
+// Find unused types safely
 var unusedTypes = allDoorTypes
     .Where(t => !usedTypeIds.Contains(t.Id));
 
 foreach (var unused in unusedTypes)
 {
-    Println($"Warning: Unused type: {unused.Name}");
+    Println($"Warning: Unused door type: {unused.Name}");
 }
 ```
 
 ## Step 5: Create a Type Usage Report
 
 ```csharp
-var report = grouped
+var doors = new FilteredElementCollector(Doc)
+    .OfCategory(BuiltInCategory.OST_Doors)
+    .WhereElementIsNotElementType()
+    .Cast<FamilyInstance>();
+
+var report = doors.GroupBy(d => d.Symbol.Id)
     .Select(g => new
     {
         TypeName = Doc.GetElement(g.Key).Name,
         InstanceCount = g.Count(),
-        // Read a type parameter
-        FireRating = GetFireRating(g.Key)
+        // Read a type parameter safely
+        FireRating = (Doc.GetElement(g.Key) as FamilySymbol)?.get_Parameter(BuiltInParameter.DOOR_FIRE_RATING)?.AsString() ?? "Not Set"
     })
-    .OrderByDescending(x => x.InstanceCount);
+    .OrderByDescending(x => x.InstanceCount)
+    .ToList();
 
-Table(report.ToList());
+Table(report);
 ```
 
 ## Try This

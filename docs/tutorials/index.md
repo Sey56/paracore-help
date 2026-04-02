@@ -11,10 +11,10 @@ Welcome to the Paracore Tutorials. This section is designed to help you master R
 ### [Paracore Fundamentals](../fundamentals/index.md)
 Master the core architecture and UI generation of Paracore in 10 concise chapters.
 
-### [Code Examples](./examples/hello-revit)
+### [Code Examples](./examples/hello-revit.md)
 Ready-to-run scripts covering basic Revit wall, floor, and element selection.
 
-### [Revit API Fundamentals](./revit-api/reading-the-model)
+### [Revit API Fundamentals](./revit-api/reading-the-model.md)
 Deep dive into the Revit API. Learn about bulk updates, parameters, and complex filtering.
 
 ---

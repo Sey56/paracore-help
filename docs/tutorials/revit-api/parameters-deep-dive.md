@@ -30,9 +30,18 @@ var param = element.LookupParameter("My Custom Parameter");
 
 ## Step 1: Check if Parameter Exists
 
-Always check for null:
+Always check for null. **To run this example, select a Wall in Revit first:**
 
 ```csharp
+// Get a wall from the user's current Revit selection
+var wall = Selection.FirstOrDefault(e => e.Category?.Id.Value == (int)BuiltInCategory.OST_Walls);
+
+if (wall == null)
+{
+    Println("Please select a wall in Revit first.");
+    return;
+}
+
 var param = wall.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM);
 
 if (param == null)
@@ -40,6 +49,8 @@ if (param == null)
     Println("Parameter not found on this element");
     return;
 }
+
+Println($"Found parameter: {param.Definition.Name}");
 ```
 
 ## Step 2: Read Based on Storage Type
@@ -54,6 +65,11 @@ Parameters store values in one of four types:
 | `ElementId` | `ElementId` | `param.AsElementId()` |
 
 ```csharp
+var wall = Selection.FirstOrDefault(e => e.Category?.Id.Value == (int)BuiltInCategory.OST_Walls);
+var param = wall?.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM);
+
+if (param == null) return;
+
 string value = param.StorageType switch
 {
     StorageType.String => param.AsString() ?? "(empty)",
@@ -62,6 +78,8 @@ string value = param.StorageType switch
     StorageType.ElementId => param.AsElementId().ToString(),
     _ => "Unknown type"
 };
+
+Println($"Safely extracted value: {value}");
 ```
 
 ## Step 3: Handle Units
@@ -69,6 +87,11 @@ string value = param.StorageType switch
 **Critical**: Revit stores all lengths in **feet** internally!
 
 ```csharp
+var wall = Selection.FirstOrDefault(e => e.Category?.Id.Value == (int)BuiltInCategory.OST_Walls);
+var param = wall?.get_Parameter(BuiltInParameter.WALL_USER_HEIGHT_PARAM);
+
+if (param == null) return;
+
 double heightInFeet = param.AsDouble();
 
 // Convert to meters
@@ -77,7 +100,8 @@ double heightInMeters = UnitUtils.ConvertFromInternalUnits(
     UnitTypeId.Meters
 );
 
-Println($"Height: {heightInMeters:F2} m");
+Println($"Height in internal feet: {heightInFeet:F2}");
+Println($"Height in display meters: {heightInMeters:F2} m");
 ```
 
 Common unit conversions:

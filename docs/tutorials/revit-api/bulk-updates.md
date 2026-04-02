@@ -18,13 +18,21 @@ This tutorial **modifies your model**. Always:
 
 ## Step 1: The Transaction Wrapper
 
-All Revit model changes must be inside a transaction:
+All Revit model changes must be inside a transaction. **To run this example, select any element in Revit first:**
 
 ```csharp
-Transact("My Operation Name", () =>
+// Select an element in Revit first
+var element = Selection.FirstOrDefault();
+if (element == null) return;
+
+Transact("My Modification Name", () =>
 {
-    // All modifications go here
-    element.get_Parameter(...).Set(newValue);
+    // All modifications go here inside the wrapper
+    var param = element.LookupParameter("Comments");
+    if (param != null && !param.IsReadOnly)
+    {
+        param.Set("New Value");
+    }
 });
 ```
 
@@ -32,9 +40,12 @@ The transaction name appears in Revit's Undo history.
 
 ## Step 2: Find a Parameter by Name
 
-Use `LookupParameter` for custom or shared parameters:
+Use `LookupParameter` for custom or shared parameters. **Select an element to test this:**
 
 ```csharp
+var element = Selection.FirstOrDefault();
+if (element == null) return;
+
 var param = element.LookupParameter("Comments");
 
 if (param == null)
@@ -48,6 +59,8 @@ if (param.IsReadOnly)
     Println($"Parameter is read-only");
     return;
 }
+
+Println($"Targeting Parameter: {param.Definition.Name}");
 ```
 
 ## Step 3: String Manipulation
@@ -67,9 +80,15 @@ text + "-SUFFIX"    // "Hello World-SUFFIX"
 ## Step 4: Bulk Update Pattern
 
 ```csharp
+// Gather your targets cleanly
+var elements = new FilteredElementCollector(Doc)
+    .OfCategory(BuiltInCategory.OST_Walls)
+    .WhereElementIsNotElementType()
+    .ToElements();
+
 int successCount = 0;
 
-Transact("Bulk Update", () =>
+Transact("Bulk Update Wall Comments", () =>
 {
     foreach (var element in elements)
     {
@@ -86,7 +105,7 @@ Transact("Bulk Update", () =>
     }
 });
 
-Println($"Updated {successCount} elements");
+Println($"Successfully updated {successCount} elements");
 ```
 
 ## Step 5: Add User Options
@@ -113,14 +132,20 @@ public class Params
 Then apply based on selection:
 
 ```csharp
-string newValue = p.Operation switch
+string current = "Sample Text";
+string operation = "Add Prefix"; // e.g., comes from p.Operation
+string prefixText = "REV-";      // e.g., comes from p.PrefixText
+
+string newValue = operation switch
 {
     "UPPERCASE" => current.ToUpper(),
     "lowercase" => current.ToLower(),
-    "Add Prefix" => p.PrefixText + current,
-    "Add Suffix" => current + p.PrefixText,
+    "Add Prefix" => prefixText + current,
+    "Add Suffix" => current + prefixText,
     _ => current
 };
+
+Println($"Result: {newValue}");
 ```
 
 ## Try This
