@@ -81,6 +81,11 @@ Transact("Update Wall Comment", () => {
    public Reference WindowRef { get; set; }
    ```
    *The `Reference` type inherently gives you the Pick button, while the Category constraint ensures you can only select Window instances!*
-3. Use `[Select(SelectionType.Point)]` with `public XYZ Point` to pick a location in 3D space.
+3. **Geometry and Points**: Just like `Reference`, geometric types inherently provide a Pick button in the Paracore UI. No `[Select]` attribute is needed! 
+   ```csharp
+   public XYZ? MyPoint { get; set; } // Lets you pick a 3D point in space.
+   public Edge SelectedEdge { get; set; } // Lets you pick a geometric edge.
+   public Face SelectedFace { get; set; } // Lets you pick a geometric face.
+   ```
 
 **Next**: [Tutorial 5: Modular Projects ->](./modular-projects.md)
