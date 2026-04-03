@@ -13,10 +13,14 @@ Your first Paracore script! Learn the basic structure, the `Params` class, and h
 
 ## Step 1: Create a New Script
 
-1. In Paracore, click **New Script** in the toolbar
-2. Name it `HelloRevit`
-3. Click the ellipses (**...**) on the script card -> **Edit Script**
-4. VS Code will open with your new script
+- Make sure you have an active script source selected in the Sidebar's "Local Sources" section.
+- click the "New Script" button in the gallery's header to the right.
+- In the coming "NewScriptModal" activate the "ARCHETEYPE" at the top right end.
+- Enter "HelloRevit" in the Script Name field.
+- click the "GENERATE SCRIPT" button at the bottom right corner.
+- the HelloRevit script will be created and selected in the gallery.
+- in the HelloRevit script card click the ellipses and click the "Edit Script" button
+- Paracore will open the HelloRevit workspace in VSCode. wait until it finishes scaffolding the workspace.
 
 ## Step 2: Write the Code
 
@@ -46,7 +50,9 @@ public class Params {
 ## Step 3: Understand the Structure
 
 ### The Params Class
-Every Paracore script uses a `Params` class to define user inputs. The engine reads this class and generates a UI automatically.
+The `Params` class is not strictly necessary unless we need to create a reusable tool with editable parameters. We can just write plain Revit API code and execute it without the `Params` class! 
+
+However, the `Params` class transcends a script from just a one-off execution into a robust tool with editable parameters that we can use repeatedly to accomplish specific Revit automations—essentially turning them into full-fledged **addins**. Because a Paracore script is essentially a dynamic C# project, you have the full power of object-oriented programming (multiple classes, interfaces, etc.) right at your fingertips, making these "scripts" just as powerful—if not more—than traditional compiled addins. When we use the `Params` class, the engine reads it and generates a custom UI automatically.
 
 ```csharp
 public class Params {
@@ -69,7 +75,9 @@ The `Println()` function outputs text to Paracore's console tab.
 
 ## Step 4: Run and Verify
 
-1. **Save** in VS Code (`Ctrl+S`)
+> 💡 **Tip:** Enable **Auto Save** in VS Code (`File` -> `Auto Save`). Paracore syncs immediately, so you can just edit your script, switch focus back to Paracore, and click the **Run Script** button without manually saving!
+
+1. **Save** in VS Code (`Ctrl+S`) (or use Auto Save!)
 2. Switch to Paracore
 3. Modify the "Message" parameter in the Parameters tab
 4. Click **Run Script**
