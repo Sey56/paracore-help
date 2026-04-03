@@ -28,8 +28,8 @@ public class Params
 }
 ```
 
-Notice `public Wall TargetWall`. Paracore sees this and:
-1. Gives the user a "Pick" button.
+Notice `public Wall TargetWall`. Without any attributes, this would normally render a Wall dropdown. But because of the `[Select(SelectionType.Element)]` attribute, Paracore:
+1. Replaces the dropdown with a "Pick" button.
 2. Filters the selection so they **can only pick a wall**.
 3. Returns the actual `Wall` object to your script.
 
@@ -74,9 +74,13 @@ Transact("Update Wall Comment", () => {
 
 ## Try This
 
-1. Change `public Wall` to `public Window` and see how the selection filter changes.
-2. Use `[Select(SelectionType.Point)]` with `public XYZ Point` to pick a location in 3D space.
-
----
+1. Change `public Wall` to `public Floor` and see how the UI pick filter automatically restricts selection to floors.
+2. **Loadable Families**: Note that there is no `Window` or `Door` class in Revit—they are `FamilyInstance`s! For picking loadable components from the model, you use a `Reference` (which inherently provides a "Pick" button that lets you pick any element). To restrict it specifically to Windows, constrain it using the `[RevitElements]` attribute:
+   ```csharp
+   [RevitElements(Category = "Windows")]
+   public Reference WindowRef { get; set; }
+   ```
+   *The `Reference` type inherently gives you the Pick button, while the Category constraint ensures you can only select Window instances!*
+3. Use `[Select(SelectionType.Point)]` with `public XYZ Point` to pick a location in 3D space.
 
 **Next**: [Tutorial 5: Modular Projects ->](./modular-projects.md)
