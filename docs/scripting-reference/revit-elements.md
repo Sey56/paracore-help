@@ -118,6 +118,6 @@ public class Params
 
 ## Interaction: Selection via Table
 
-Paracore supports a "Sync to Model" workflow for audit results and schedules. If your script outputs a table (via `Table(data)`) that contains an **Id** or **ElementId** property, the **Summary Tab** becomes interactive. 
+Paracore supports a "Sync to Model" workflow for audit results and schedules. If your script outputs a table (via `Table(data)`) that contains an **Id** or **ElementId** property, the **Analytics Tab** becomes interactive. 
 
 Clicking an entry in the table will automatically **Select and Focus** (Zoom) the element within the active Revit session, bridging the gap between data and the 3D model.

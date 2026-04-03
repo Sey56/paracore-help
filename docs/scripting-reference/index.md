@@ -10,7 +10,7 @@ Instant access to the Revit context (`Doc`, `UIDoc`, `UIApp`), logging (`Println
 ### [Paracore Extension Methods](./extension-methods.mdx)
 The definitive, exhaustive reference for every global object (`Doc`, `Selection`, etc.) and "Magic" extension method (`GetNum`, `SetVal`, `Table`) with comprehensive usage examples.
 
-### [The Parameter Engine](./parameters.mdx) (Reference)
+### [The Parameter Engine](./parameters.mdx)
 A detailed breakdown of all supported attributes, naming conventions, and data providers.
 
 ### [Revit Element Selection](./revit-elements.md)
