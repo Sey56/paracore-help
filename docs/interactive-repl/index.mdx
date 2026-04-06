@@ -126,8 +126,8 @@ Pipe your data directly into the **Analytics Tab** for interactive analysis.
 | :--- | :--- | :--- |
 | **`Table(data)`** | Global | Renders a grid. Returns **`void`** (not chainable). |
 | **`.Table()`** | Extension | Renders a grid and returns the collection. **Chainable**. |
-| **`.PieChart()`** / **`PieGraph(data)`** | Both | Renders a high-contrast pie chart (requires `name` and `value`). |
-| **`.BarChart()`** / **`BarGraph(data)`** | Both | Renders a high-contrast bar chart. |
+| **`.PieChart()`** / **`PieGraph(data)`** | Both | Renders a high-contrast pie chart (Auto-maps keys to labels/values). |
+| **`.BarChart()`** / **`BarGraph(data)`** | Both | Renders a high-contrast bar chart (Auto-maps keys to labels/values). |
 | **`.Select()`** / **`.Zoom()`** | Extension | Chain these to any collection to select or focus elements. |
 
 <img src={AnalyticsCharts} alt="Analytics Visualization" />
@@ -136,8 +136,8 @@ Pipe your data directly into the **Analytics Tab** for interactive analysis.
 // Multi-Line Snippet (Workshop)
 // Create the "Walls per Level" bar graph shown above
 var data = GetElements<Wall>()
-    .GroupBy(w => w.GetStr("Base Constraint")) // Use the standard Revit parameter name
-    .Select(g => new { name = g.Key, value = g.Count() });
+    .GroupBy(w => w.GetStr("Base Constraint"))
+    .Select(g => new { Level = g.Key, Count = g.Count() });
 
 BarGraph(data);
 ```
@@ -181,7 +181,7 @@ Visualize the distribution of Room areas by Level.
 // Multi-Line Snippet (Workshop)
 var stats = GetElements<Room>().Where(r => r.Area > 0)
     .GroupBy(r => r.GetStr("Level"))
-    .Select(g => new { name = g.Key, value = g.Sum(r => r.GetNum("Area", "m2")) });
+    .Select(g => new { Level = g.Key, Total_Area = g.Sum(r => r.GetNum("Area", "m2")) });
 
 PieGraph(stats);
 ```
