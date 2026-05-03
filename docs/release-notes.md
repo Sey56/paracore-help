@@ -2,6 +2,149 @@
 
 Version history and changelog for Paracore.
 
+### V4.4.0 (May 2026) — The BIM Intelligence & Coordination Release
+
+V4.4.0 is a landmark release that elevates Paracore into a complete BIM intelligence platform. This release introduces professional-grade clash detection, sustainability analysis, a rebuilt fluent API, data science integration, and a completely overhauled desktop UI.
+
+> 📖 **Full API Reference**: See the [Extension Methods Reference](/docs/scripting-reference/extension-methods) for complete documentation of every method shown below.
+
+#### 🔍 Mesh-Based Clash Detection Engine
+Paracore now includes a production-grade interference detection system built directly into the C# scripting environment.
+*   **Unit-Agnostic Analysis**: Clash detection works seamlessly across all Revit unit systems without manual conversion.
+*   **3D Helper Geometry**: Visual clash auditing with automatically generated helper geometry that zooms precisely to intersection points in the Revit 3D view.
+*   **Fluent Coordination API**: A new `CoordinationExtensions` library enables chaining clash operations with the same fluent syntax used across all Paracore extensions.
+*   **Interactive Reports**: Click any element ID in the structured clash report table to instantly select and highlight it in Revit.
+
+Detect clashes between walls and structural columns:
+```csharp
+GetElements("Walls")
+    .AuditClashes("StructuralColumns", tolerance: 2.0)
+    .Table();
+```
+
+With unit-aware tolerance:
+```csharp
+GetElements("Walls")
+    .AuditClashes("Pipes", "5mm")
+    .Table();
+```
+
+#### 🌱 Sustainability & Material Intelligence (BIM 6.0)
+A new sustainability infrastructure brings environmental analysis into your automation workflows.
+*   **Embodied Carbon**: Calculate and report embodied carbon metrics per element and per material using the new `CarbonProvider`.
+*   **Thermal Solver**: Built-in thermal analysis for envelope performance evaluation.
+*   **`Eco` Globals**: Access sustainability functions directly from scripts with zero setup — just like `Print` and `Transact`.
+
+Sustainability audit of exterior walls:
+```csharp
+var walls = GetElements<Wall>()
+    .WhereParam("Function", "Exterior");
+
+var audit = walls.Select(w => new {
+    Name = w.Name,
+    Area = w.GetNum("Area", "m2").Round(2),
+    Carbon = Eco.GetCarbon(w).Round(2),
+    UValue = Eco.GetUValue(w).Round(3)
+});
+
+Table(audit);
+```
+
+#### 🧬 Generic Fluent API Overhaul
+The extension method library has been significantly expanded and rebuilt with a more powerful, type-safe architecture.
+*   **Advanced Predicates**: Filter elements with strongly-typed lambda expressions and complex boolean logic.
+*   **Smart Sorting**: Multi-key sorting with automatic type detection for natural ordering.
+*   **Strict Type/Instance Scoping**: Clear separation between Type-level and Instance-level accessor methods. For example, a door's Width and Height are **type parameters** — use `GetTypeNum("Width", "mm")` instead of `GetNum`.
+*   **Door Intelligence**: New `RoomTo()`, `RoomFrom()`, `HingeSide()`, and `Handing()` accessors for architectural coordination — phase-aware and orientation-correct.
+
+Door schedule with type dimensions, rooms, and handing:
+```csharp
+var doors = GetElements<FamilyInstance>("Doors")
+    .StandardOnly()
+    .OrderByParam("Mark");
+
+var schedule = doors.Select(d => new {
+    Id = d.Id.Value,
+    Mark = d.GetStr("Mark"),
+    Level = d.GetStr("Level"),
+    Width = d.GetTypeVal("Width"),
+    Height = d.GetTypeVal("Height"),
+    RoomFrom = d.RoomFrom(),
+    RoomTo = d.RoomTo(),
+    Handing = d.Handing()
+});
+
+Table(schedule);
+```
+
+> ⚠️ **Note**: `.StandardOnly()` excludes Curtain Wall doors (glass doors) which don't carry standard door properties like Level, Width, Height, or Room relationships.
+
+Filter rooms larger than 25 m²:
+```csharp
+GetElements<Room>()
+    .WhereParam("Area", ">", 25.0, "m2")
+    .Table();
+```
+
+Filter doors by mark prefix:
+```csharp
+GetElements("Doors")
+    .WhereParam("Mark", "starts", "D-10")
+    .Table();
+```
+
+Filter windows by family name:
+```csharp
+GetElements("Windows")
+    .WhereMatches("Fixed")
+    .Table();
+```
+
+Group walls by level with total length:
+```csharp
+GetElements("Walls")
+    .GroupByParam("Base Constraint", "Length", "m")
+    .Table();
+```
+
+#### 📓 Jupyter Notebook Integration
+Bridge the gap between BIM data and data science.
+*   **`.ToNotebook()`**: Export any Paracore result set directly into a Jupyter Notebook format, ready for Pandas analysis.
+*   **Data Pipelines**: Build reproducible BIM data analysis workflows using Python's scientific computing ecosystem.
+
+Export room data to a Jupyter Notebook:
+```csharp
+var rooms = GetElements<Room>()
+    .Select(r => new {
+        Number = r.GetStr("Number"),
+        Name = r.Name,
+        Level = r.GetStr("Level"),
+        Area = r.Area.OutputUnit("m2", 2)
+    });
+
+rooms.ToNotebook("Room_Analysis");
+```
+
+#### 🎨 Complete Desktop UI Overhaul
+Every surface of the Paracore desktop application has been redesigned for professional ergonomics.
+*   **Three-Pane IDE Layout**: Restructured layout with a dedicated bottom panel for console output, execution history, and REPL interaction — eliminating the previous tab-switching congestion.
+*   **Dedicated REPL Mode**: The REPL now has its own content view with unified syntax theming, separated from the script inspector for a cleaner workflow.
+*   **Execution History**: A new dedicated panel for reviewing past script runs and their results.
+*   **Dynamic Output Viewer**: The StructuredOutputViewer has been rebuilt — now supports sustainability-aware column highlighting and interactive clash report navigation.
+
+#### 🔧 Quality of Life
+*   **Table Export Fidelity**: CSV and clipboard exports now perfectly match the UI's current sorting and filtering state.
+*   **Parameter Space Fix**: Resolved active data grid formatting regression.
+*   **VSCode Extension v4.4.0**: Updated with refined Paracore Server toggle instructions and standalone execution documentation.
+*   **BIM-Smart Delete**: `.Delete()` now automatically skips Pinned elements and Curtain Wall Panels — no more Revit exceptions from bulk deletion.
+
+Safely delete all doors (Curtain Wall doors automatically skipped):
+```csharp
+GetElements("Doors").Delete();
+```
+
+---
+
 ### V4.3.1 (April 2026) - Connection Stability Patch
 
 Version 4.3.1 improves the reliability of the background server connections introduced in 4.3.0.

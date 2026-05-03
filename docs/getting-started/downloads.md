@@ -21,3 +21,20 @@ Get the latest versions of the Paracore ecosystem components.
 
 ### Pro Tip
 Check the **[Release Notes](../release-notes.md)** for detailed information on what's new in the latest version.
+
+---
+
+### 📬 Stay Updated
+
+Never miss a release — get notified about new versions, automation tips, and ready-to-use scripts delivered to your inbox.
+
+**[Subscribe for Updates →](pathname:///paracore-help/#subscribe)**
+
+---
+
+### 🏗️ Need Custom Revit Automation?
+
+We build tailored C# automation solutions for architecture and engineering firms — clash detection, model auditing, bulk operations, and more.
+
+**[codarch46@gmail.com](mailto:codarch46@gmail.com?subject=Custom%20Revit%20Automation%20Inquiry)**
+

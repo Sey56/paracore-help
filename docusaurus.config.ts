@@ -72,6 +72,7 @@ const config: Config = {
         language: ["en"],
         highlightSearchTermsOnTargetPage: true,
         explicitSearchResultPath: true,
+        searchBarShortcut: false,
       },
     ],
   ],
@@ -167,6 +168,23 @@ const config: Config = {
             {
               label: 'Paras Codarch',
               href: 'https://github.com/Sey56',
+            },
+            {
+              label: 'YouTube',
+              href: 'https://www.youtube.com/@Codarch46',
+            },
+          ],
+        },
+        {
+          title: 'Services',
+          items: [
+            {
+              label: '📬 Subscribe for Updates',
+              to: '/#subscribe',
+            },
+            {
+              label: '🏗️ Custom Automation',
+              href: 'mailto:codarch46@gmail.com?subject=Custom%20Revit%20Automation%20Inquiry',
             },
           ],
         },

@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import NewsletterSignup from '@site/src/components/NewsletterSignup';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
@@ -39,13 +41,24 @@ function HomepageHeader() {
 
 export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
+
+  useEffect(() => {
+    if (window.location.hash) {
+      const id = window.location.hash.slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+      }
+    }
+  }, []);
   return (
     <Layout
       title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      description="Paracore brings the full power of the Revit API to a professional, dynamic C# execution environment with instant UI generation, VS Code integration, and an interactive REPL.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+        <NewsletterSignup />
       </main>
     </Layout>
   );
