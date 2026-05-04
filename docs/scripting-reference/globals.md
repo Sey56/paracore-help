@@ -34,6 +34,35 @@ Transact("Update Wall", () => {
 
 ---
 
+## Script Lifecycle
+
+### `SetExecutionTimeout(seconds)`
+Extends the script execution timeout beyond the default of 10 seconds. Call at the start of long-running scripts.
+
+```csharp
+SetExecutionTimeout(120); // Allow up to 2 minutes
+```
+
+### `Watchdog(callback, intervalSeconds)`
+Registers a background sentinel that runs on Revit idle. When run manually (not deployed), it executes the logic once for testing.
+
+```csharp
+Watchdog(doc => {
+    var untagged = GetElements("Doors").Where(d => d.GetStr("Mark") == "");
+    WatchdogReport($"{untagged.Count()} untagged doors", untagged.Any() ? "warning" : "success");
+}, 30);
+```
+
+### `WatchdogReport(summary, status, data?)`
+Sends a status report from within a sentinel callback. Status can be `"success"`, `"warning"`, or `"error"`.
+
+```csharp
+WatchdogReport("All clear", "success");
+WatchdogReport("5 issues found", "warning", issueList);
+```
+
+---
+
 ## Visual Helpers
 These helpers automatically format and send data to the **Analytics Tab** for analysis and visualization.
 

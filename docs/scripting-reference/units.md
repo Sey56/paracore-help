@@ -95,7 +95,17 @@ Quickly convert and format a value for logging or UI display.
 
 ```csharp
 Println(wall.Area.FormatUnit("m2", 2)); // Outputs: "25.42 m2"
-Println(wall.Area.FormatValueOnly("m2", 2)); // Outputs: "25.42"
+Println(wall.Area.FormatValueOnly("m2", 2)); // Outputs: "25.42" (no suffix)
+```
+
+### 3. Dimension String Parsing
+Parse dimension strings with unit suffixes into meters.
+
+```csharp
+"500mm".ToMeters()   // → 0.5
+"2ft".ToMeters()     // → 0.6096
+"0.1m".ToMeters()    // → 0.1
+"10".ToMeters()      // → 10.0 (defaults to meters)
 ```
 
 ### 3. Precision-Aware Math
@@ -105,6 +115,12 @@ Since floating-point math in Revit is notoriously "noisy," use these methods for
 | :--- | :--- |
 | `IsAlmostEqualTo(other)` | Returns true if two values are within Revit tolerance (1e-9). |
 | `AlmostZero()` | Returns true if the value is essentially zero. |
+| `IsLessThan(limit)` | Strictly less than (outside tolerance range). |
+| `IsGreaterThan(limit)` | Strictly greater than (outside tolerance range). |
+| `IsLessThanOrEqual(limit)` | Less than or approximately equal to. |
+| `IsGreaterThanOrEqual(limit)` | Greater than or approximately equal to. |
+| `IsPositive()` | Strictly positive (> 1e-9). |
+| `IsNegative()` | Strictly negative (< -1e-9). |
 | `Round(decimals)` | Standard numeric rounding. |
 | `RoundTo("mm")` | Snaps a raw internal value to a specific human unit's precision. |
 

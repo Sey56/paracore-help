@@ -7,6 +7,10 @@ sidebar_label: Paracore Extension Methods
 
 This guide provides an exhaustive reference for the global objects, session commands, and extension methods available within Paracore. Every method is designed to simplify the Revit API, providing "Magic" resolution for strings, units, and element identities.
 
+:::info REPL & Gallery Parity
+All extension methods work **identically** in the **REPL** (single-line and multi-line) and in **Gallery scripts** (full C# project structure). They were designed as shortcuts to simplify the verbose Revit API, but they are standard C# extension methods available everywhere the engine runs.
+:::
+
 ---
 
 ## Global Context
@@ -61,6 +65,10 @@ Gets elements filtered by C# class (e.g. `Wall`, `Room`).
 - **Example**: `var instances = GetElements<FamilyInstance>("Doors");`
 - **Example**: `var all = GetElements<Element>();` // Gets EVERY element in the model.
 
+### `GetElements(BuiltInCategory)`
+Gets elements by Revit `BuiltInCategory` enum. Useful with hydrated enum parameters.
+- **Example**: `var doors = GetElements(BuiltInCategory.OST_Doors);`
+
 ### `GetElement<T>(name)`
 Finds a single element by its name or identity.
 - **Example**: `var level = GetElement<Level>("Level 1");`
@@ -75,8 +83,8 @@ Lists all Revit categories available in the active document.
 
 ---
 
-## Element Accessors (Instance-Level)
-Paracore extends the Revit `Element` class with smart, unit-aware getters and setters. These read **instance parameters** and fall back to C# properties via Reflection.
+## Parameter & Property Accessors (Instance-Level)
+Paracore extends the Revit `Element` class with smart, unit-aware getters and setters. These read **instance parameters** and fall back to C# properties via Reflection. The element is already accessed — these methods read/write **parameter values** on that element.
 
 ### `GetStr(name)` / `GetStr(name, unit)`
 **Smart String Getter.** Returns name (for IDs) or formatted string. Falls back to C# property via Reflection.
@@ -126,7 +134,7 @@ wall.SetNum("Sill Height", 0.9, "m")
 
 ---
 
-## Element Accessors (Type-Level)
+## Parameter Accessors (Type-Level)
 
 :::tip When to use Type-Level Accessors
 Many critical properties live on the **ElementType**, not the instance. For example, a door's **Width** and **Height** are type parameters — `GetNum("Width")` on the instance returns `0`, but `GetTypeNum("Width", "mm")` returns the correct value (e.g., `900.0`).
@@ -430,12 +438,12 @@ GetElements<Room>()
 // Basic clash audit
 GetElements("Walls").AuditClashes("StructuralColumns").Table();
 
-// With tolerance (filters out contact/flashing)
+// With numeric tolerance (filters out contact/flashing)
 GetElements("Walls")
     .AuditClashes("StructuralColumns", tolerance: 2.0)
     .Table();
 
-// Unit-aware tolerance
+// Unit-aware string tolerance ("5mm", "0.5in", "2cm")
 GetElements("Walls")
     .AuditClashes("Pipes", "5mm")
     .Table();
@@ -476,9 +484,18 @@ Converts internal units *from* feet/sqft to a human unit.
 Returns a formatted string with the unit suffix (e.g. `"1500.0 mm"`).
 - **Example**: `val.FormatUnit("mm");`
 
+### `FormatValueOnly(unit)`
+Returns the numeric value in the target unit as a string, **without** the unit suffix. Ideal for CSV/Excel export.
+- **Example**: `val.FormatValueOnly("mm");` → `"1500"`
+
 ### `RoundTo(unit)`
 Snaps the internal value to the nearest incremental precision of the unit.
 - **Example**: `val.RoundTo("mm");`
+
+### `"dimensionString".ToMeters()`
+Parses a dimension string with a unit suffix and returns the value in meters.
+- **Example**: `"500mm".ToMeters()` → `0.5`
+- **Example**: `"2ft".ToMeters()` → `0.6096`
 
 **Supported Unit Strings:**
 
@@ -499,8 +516,11 @@ Always use these fuzzy comparison methods for Revit geometry.
 | **`.IsAlmostEqualTo(v)`** | Fuzzy equality check (1e-9). | `val.IsAlmostEqualTo(target)` |
 | **`.IsLessThan(limit)`** | Strictly less than (ignores noise). | `val.IsLessThan(limit)` |
 | **`.IsGreaterThan(limit)`** | Strictly greater than (ignores noise). | `val.IsGreaterThan(limit)` |
+| **`.IsLessThanOrEqual(limit)`** | Less than or approx. equal. | `val.IsLessThanOrEqual(limit)` |
+| **`.IsGreaterThanOrEqual(limit)`** | Greater than or approx. equal. | `val.IsGreaterThanOrEqual(0)` |
+| **`.IsPositive()`** | Strictly positive (> 1e-9). | `val.IsPositive()` |
+| **`.IsNegative()`** | Strictly negative (< -1e-9). | `val.IsNegative()` |
 | **`.Round(decimals)`** | Fluent rounding. | `val.Round(2)` |
-| **`.IsPositive()`** / **`.IsNegative()`** | Directional check vs noise. | `val.IsPositive()` |
 
 ---
 
@@ -606,6 +626,177 @@ GetElements<Room>()
 | Is standard door? | `.IsStandardDoor()` |
 | Carbon footprint | `Eco.GetCarbon(wall)` |
 | Thermal U-Value | `Eco.GetUValue(wall)` |
+
+---
+
+## Global Script Functions
+
+These are **static methods** from `ScriptApi` available in every script and REPL session — **not** extension methods.
+
+| Function | Description |
+|---|---|
+| `Transact(name, action)` | Wrap model edits in a single undo-step transaction |
+| `Watchdog(callback, interval)` | Register a background sentinel |
+| `WatchdogReport(summary, status, data?)` | Send status report from a sentinel |
+| `SetExecutionTimeout(seconds)` | Extend script timeout beyond default 10s |
+| `GetElements(BuiltInCategory)` | Query by `BuiltInCategory` enum |
+| `Show(type, data)` | Low-level structured output |
+| `Table(data)` / `BarChart(data)` / `PieChart(data)` / `LineChart(data)` | Global visualization helpers |
+| `Select(elements)` / `Isolate(elements)` / `Zoom(elements)` | Revit UI actions |
+
+---
+
+## REPL Cookbook: Single-Line Quick Recipes
+
+These one-liners demonstrate common tasks you can type directly in the REPL:
+
+```csharp
+// Count all doors
+GetElements("Doors").Count
+
+// List all room names
+GetElements("Rooms").Select(r => r.Name).ToList()
+
+// Total wall length in meters
+GetElements("Walls").SumParam("Length", "m")
+
+// Find a specific element by Mark
+GetElement("D-101")
+
+// Peek at the selected element's full parameter dump
+Selection[0].Peek()
+
+// Quick door count per level
+GetElements("Doors").GroupByParam("Level").Table()
+
+// All room areas as pie chart
+GetElements("Rooms").Select(r => new { name = r.Name, value = r.GetNum("Area", "m2") }).PieChart()
+
+// Isolate walls without a Mark
+GetElements<Wall>().WhereParam("Mark", "").Isolate()
+
+// Get all material names on the selected element
+Selection[0].GetMaterialNames()
+
+// Check if a value is effectively zero
+Selection[0].GetNum("Base Offset").AlmostZero()
+
+// Convert 500mm to Revit internal units
+500.0.InputUnit("mm")
+
+// Parse a dimension string
+"2.5m".ToMeters()
+```
+
+---
+
+## REPL Cookbook: Multi-Line Workflows
+
+These multi-line snippets demonstrate real-world workflows. Paste them into the REPL or use them in Gallery scripts — they work identically in both.
+
+### Door Schedule with Type Dimensions
+```csharp
+GetElements<FamilyInstance>("Doors")
+    .StandardOnly()
+    .OrderByParam("Mark")
+    .Select(d => new {
+        Mark    = d.GetStr("Mark"),
+        Level   = d.GetStr("Level"),
+        Width   = d.GetTypeVal("Width"),
+        Height  = d.GetTypeVal("Height"),
+        From    = d.RoomFrom(),
+        To      = d.RoomTo(),
+        Handing = d.Handing(),
+        Hinge   = d.HingeSide()
+    })
+    .Table();
+```
+
+### Room Area Report by Level
+```csharp
+// Summary: group rooms by level, sum areas
+GetElements("Rooms")
+    .GroupByParam("Level", "Area", "m2")
+    .Table();
+```
+
+### Find and Flag Unreviewed Doors
+```csharp
+// Set "Pending Review" on all doors with empty Comments
+GetElements("Doors")
+    .WhereParam("Comments", "")
+    .SetParam("Comments", "Pending Review");
+
+Println($"Flagged {GetElements("Doors").WhereParam("Comments", "Pending Review").Count()} doors.");
+```
+
+### Structural Wall Audit (Width ≥ 300mm)
+```csharp
+GetElements<Wall>()
+    .Where(w => w.GetNum("Width", "mm") >= 300)
+    .OrderByParamDesc("Width")
+    .Select(w => new {
+        Name   = w.Name,
+        Level  = w.GetStr("Base Constraint"),
+        Width  = w.GetVal("Width"),
+        Length = w.GetVal("Length")
+    })
+    .Table();
+```
+
+### Sustainability Dashboard
+```csharp
+// Carbon + U-Value audit for exterior walls
+GetElements<Wall>()
+    .WhereParam("Function", "Exterior")
+    .Select(w => new {
+        Name   = w.Name,
+        Area   = w.GetNum("Area", "m2"),
+        Carbon = Math.Round(Eco.GetCarbon(w), 2),
+        UValue = Math.Round(Eco.GetUValue(w), 3)
+    })
+    .Table();
+
+// Live project weather
+var weather = Eco.GetWeather();
+Println($"Site: {weather.Temperature}°C, Wind: {weather.WindSpeed} km/h");
+```
+
+### Clash Detection Workflow
+```csharp
+// Basic: walls vs pipes
+GetElements("Walls")
+    .AuditClashes("Pipes")
+    .Table();
+
+// Precision: columns vs walls with 2mm tolerance
+GetElements("StructuralColumns")
+    .AuditClashes("Walls", "2mm")
+    .Table();
+```
+
+### Sequential Renumbering
+```csharp
+// Renumber Level 2 doors sequentially
+int i = 1;
+GetElements("Doors")
+    .WhereParam("Level", "Level 2")
+    .OrderByParam("Mark")
+    .SetParam("Mark", $"D2-{i++:000}");
+```
+
+### Export to Jupyter Notebook
+```csharp
+// Export room data for Pandas analysis
+GetElements<Room>()
+    .Select(r => new {
+        Number = r.GetStr("Number"),
+        Name   = r.Name,
+        Level  = r.GetStr("Level"),
+        Area   = r.Area.OutputUnit("m2", 2)
+    })
+    .ToNotebook("Room_Analysis");
+```
 
 ---
 
