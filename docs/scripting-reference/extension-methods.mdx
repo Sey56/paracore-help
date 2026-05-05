@@ -434,18 +434,24 @@ GetElements<Room>()
 ### `.AuditClashes(targetCategory)` / `.AuditClashes(target, tolerance)`
 **Production-grade interference detection.** Detects geometric intersections between source elements and a target category.
 
+:::caution Tolerance Units (Feet vs Strings)
+There are two ways to specify tolerance (the minimum overlap required to report a clash):
+- **String (`string`)**: Evaluated using Paracore's unit-aware converter. For example, `tolerance: "2mm"` is automatically converted to the correct internal units for you. This is the **recommended** approach.
+- **Raw Number (`double`)**: Evaluated in **Revit internal units (feet)**. For example, `tolerance: 0.05` means a minimum overlap of 0.05 feet. Do **not** use `tolerance: 2.0` expecting 2mm, as that means 2 feet (609.6 mm) and will hide almost all minor clashes!
+:::
+
 ```csharp
-// Basic clash audit
+// Basic clash audit (0 tolerance, reports all intersections)
 GetElements("Walls").AuditClashes("StructuralColumns").Table();
 
-// With numeric tolerance (filters out contact/flashing)
+// Recommended: Unit-aware string tolerance (requires at least 2mm overlap)
 GetElements("Walls")
-    .AuditClashes("StructuralColumns", tolerance: 2.0)
+    .AuditClashes("StructuralColumns", tolerance: "2mm")
     .Table();
 
-// Unit-aware string tolerance ("5mm", "0.5in", "2cm")
+// Advanced: Raw number tolerance (requires at least 0.05 feet overlap)
 GetElements("Walls")
-    .AuditClashes("Pipes", "5mm")
+    .AuditClashes("Pipes", 0.05)
     .Table();
 ```
 
@@ -573,7 +579,7 @@ GetElements<Wall>()
 ### Clash detection between walls and columns
 ```csharp
 GetElements("Walls")
-    .AuditClashes("StructuralColumns", tolerance: 2.0)
+    .AuditClashes("StructuralColumns", tolerance: "2mm")
     .Table()
 ```
 

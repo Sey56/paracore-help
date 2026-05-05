@@ -15,14 +15,14 @@ Paracore now includes a production-grade interference detection system built dir
 *   **Fluent Coordination API**: A new `CoordinationExtensions` library enables chaining clash operations with the same fluent syntax used across all Paracore extensions.
 *   **Interactive Reports**: Click any element ID in the structured clash report table to instantly select and highlight it in Revit.
 
-Detect clashes between walls and structural columns:
+Detect clashes between walls and structural columns (using explicit parameter naming):
 ```csharp
 GetElements("Walls")
-    .AuditClashes("StructuralColumns", tolerance: 2.0)
+    .AuditClashes("StructuralColumns", tolerance: "2mm")
     .Table();
 ```
 
-With unit-aware tolerance:
+With unit-aware tolerance (positional argument):
 ```csharp
 GetElements("Walls")
     .AuditClashes("Pipes", "5mm")
