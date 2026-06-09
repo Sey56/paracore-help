@@ -11,6 +11,7 @@ const sidebars: SidebarsConfig = {
         'getting-started/index',
         'getting-started/installation',
         'getting-started/first-script',
+        'getting-started/mcp-server',
         'getting-started/downloads',
       ],
     },

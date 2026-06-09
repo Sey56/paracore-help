@@ -2,6 +2,62 @@
 
 Version history and changelog for Paracore.
 
+### V4.5.0 (June 2026) — The Agent & Open Tooling Release
+
+V4.5.0 introduces three major new capabilities — the AI Agent, MCP Server, and Playlist Mode — all open and accessible without sign-in. Clash Detection, Eco Analysis, and Sentinels are not available in this release.
+
+#### 🤖 Agent Mode *(New)*
+
+Describe what you want in plain language and the Agent generates C# code using Paracore's fluent DSL, then executes it in Revit — with you in control at every step.
+
+- **Setup**: Go to **TopBar → Settings → LLM Settings**, select a provider (DeepSeek, Google, OpenAI, Anthropic, or OpenRouter), choose a model, enter your API key, and click Save.
+- **No sign-in required** — click **Continue Offline** and the Agent is fully usable.
+- **Sovereign Code Generation**: The Agent writes C# on the fly via the REPL engine rather than relying on a fixed set of hardcoded tools. It uses two tools:
+  - `explore_revit_data` — silently inspects your model's schema to understand available parameters and categories.
+  - `execute_dynamic_query` — generates the final C# script and **pauses for your approval** before running. Nothing mutates your model without you reviewing the code first.
+- **Self-correction**: If execution fails, the Agent reads the error and rewrites the code automatically (up to 3 retries).
+
+#### 🔌 Paracore MCP Server *(New)*
+
+The Paracore REPL engine is now available as an MCP (Model Context Protocol) server, letting AI coding tools interact with Revit directly.
+
+- **Claude Desktop** — connect Paracore via MCP for Revit-aware conversations.
+- **Cline in VS Code** — use Cline with the MCP server for code generation and debugging alongside your Paracore workspace.
+- Exposes `explore_revit_data` and `execute_dynamic_query` as MCP tools, plus Paracore's DSL documentation as MCP resources.
+
+> 📖 See the **[MCP Server Setup Guide](/docs/getting-started/mcp-server)** for configuration steps.
+
+#### 🎬 Playlist Mode *(New)*
+
+Chain gallery scripts into a sequence and run them one after another.
+
+- Pick scripts from your active script gallery and arrange them in order.
+- **No sign-in required** — works fully offline.
+
+#### ⏸️ Not Available in This Release
+
+The following v4.4.0 features are not included in v4.5.0:
+
+- **Clash Detection** (`AuditClashes`)
+- **Eco Analysis** (`GetCarbon`, `GetUValue`, `GetWeather`)
+- **Sentinels** (Watchdogs)
+
+> If you rely on these tools, **v4.4.0 remains fully functional** — you can continue using them there.
+
+#### ✂️ Removed
+
+- **Explain & Fix** — the old AI debugging button is removed. When a script workspace is generated, use Copilot, Cline, or Cursor directly in VS Code — far better for code debugging than an in-app button.
+
+#### 🔧 Quality of Life & Stability
+
+- **Pipeline** — new stage-by-stage diagnostics for REPL execution. Each extension method in the chain reports what it produced, making it easy for both humans and the Agent to see where something went wrong.
+- **REPL Playground** — overhauled file operations: Save, Save As, New/Clear with unsaved-change confirmation.
+- **Analytics Table** — parameter editing now covers whatever Revit allows. Previously limited to text fields (Marks, Comments, Room names); now any parameter editable in the Revit properties palette — including geometric ones like Top Constraint, offsets, and dimensions — can be changed via single-cell edit or CSV mass-edit. If Revit disables a field, Paracore does too.
+- **Extension Methods** — new `ReflectionMethods()` discovery helper, type parameter fallback in `GetStr()`/`GetNum()`, `WhereParam` now compares raw internal values.
+- **Parameter Inputs** — SliderInput fixes: backspace works, no forced decimal formatting, no re-renders during typing.
+
+---
+
 ### V4.4.0 (May 2026) — The BIM Intelligence & Coordination Release
 
 V4.4.0 is a landmark release that elevates Paracore into a complete BIM intelligence platform. This release introduces professional-grade clash detection, sustainability analysis, a rebuilt fluent API, data science integration, and a completely overhauled desktop UI.

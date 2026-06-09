@@ -457,6 +457,18 @@ GetElements("Walls")
 
 **Output:** Renders an interactive **Coordination Grid** with clickable element IDs and 3D helper geometry. Click a row to zoom to the exact clash point in Revit.
 
+### `Doc.ClearClashHelpers()`
+Clears all visual clash helper geometry (red pillars and solids) from the Revit document. 
+
+:::tip Auto-Cleanup
+You usually do not need to call this manually. Every time you run `.AuditClashes()`, Paracore automatically deletes the previous clash helpers before generating new ones, and they are protected with a unique internal `CORE_CLASH` identifier so standard generic models are never accidentally deleted. However, this method is useful if you want to cleanly wipe the view after finishing your coordination review.
+:::
+
+```csharp
+// Clear all clash geometry from the model
+Doc.ClearClashHelpers();
+```
+
 ---
 
 ## Visualization & Actions
@@ -788,7 +800,7 @@ int i = 1;
 GetElements("Doors")
     .WhereParam("Level", "Level 2")
     .OrderByParam("Mark")
-    .SetParam("Mark", $"D2-{i++:000}");
+    .SetParam("Mark", e => $"D2-{i++:000}");
 ```
 
 ### Export to Jupyter Notebook
