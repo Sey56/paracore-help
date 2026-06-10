@@ -124,7 +124,7 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: 'Enterprise (Roadmap)',
+      label: 'Feature Availability',
       items: [
         'enterprise/index',
       ],

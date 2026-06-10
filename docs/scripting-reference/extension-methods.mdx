@@ -272,6 +272,7 @@ GetElements<FamilyInstance>("Doors")
 | **`.BuiltInParams()`** | All BuiltInParameter identifiers: Name, BIP, Value. | `wall.BuiltInParams().Table()` |
 | **`.NativeProperties()`** | Key Revit API props: Name, Id, Category, Level, Workset, etc. | `wall.NativeProperties().Table()` |
 | **`.ReflectionProperties()`** | All C# public properties via Reflection. | `wall.ReflectionProperties().Table()` |
+| **`.ReflectionMethods()`** | All public C# methods via Reflection (name, return type, parameters, declaring type). | `wall.ReflectionMethods().Table()` |
 | **`.GeometrySummary()`** | Geometry objects: Solids, Curves, Arcs with materials. | `wall.GeometrySummary().Table()` |
 | **`.ParamsDict()`** | All params as `Dictionary<string, string>`. | `var d = wall.ParamsDict();` |
 
@@ -295,9 +296,9 @@ Selection[0].GetMaterialNames() // → "Glass, Aluminum, Concrete"
 
 | Method | Description |
 | :--- | :--- |
-| **`Eco.GetCarbon(element)`** | Embodied carbon (kgCO2e) — multi-tier audit (layers → curtain → volume fallback). |
-| **`Eco.GetUValue(element)`** | Thermal transmittance (W/m²K) — multi-layer resistance solving. |
-| **`Eco.GetWeather()`** | Live weather data for the project's coordinates via Open-Meteo API. |
+| **`Eco.GetCarbon(element)`** * | Embodied carbon (kgCO2e) — multi-tier audit (layers → curtain → volume fallback). |
+| **`Eco.GetUValue(element)`** * | Thermal transmittance (W/m²K) — multi-layer resistance solving. |
+| **`Eco.GetWeather()`** * | Live weather data for the project's coordinates via Open-Meteo API. |
 
 ```csharp
 var carbon = Eco.GetCarbon(wall);
@@ -429,7 +430,7 @@ GetElements<Room>()
 
 ---
 
-## Collection: Coordination & Clash Detection
+## Collection: Coordination & Clash Detection *
 
 ### `.AuditClashes(targetCategory)` / `.AuditClashes(target, tolerance)`
 **Production-grade interference detection.** Detects geometric intersections between source elements and a target category.
@@ -457,7 +458,7 @@ GetElements("Walls")
 
 **Output:** Renders an interactive **Coordination Grid** with clickable element IDs and 3D helper geometry. Click a row to zoom to the exact clash point in Revit.
 
-### `Doc.ClearClashHelpers()`
+### `Doc.ClearClashHelpers()` *
 Clears all visual clash helper geometry (red pillars and solids) from the Revit document. 
 
 :::tip Auto-Cleanup
@@ -629,7 +630,7 @@ GetElements<Room>()
 | Group by → Count + Sum | `.GroupByParam("Level", "Length", "m")` |
 | Total a numeric param | `.SumParam("Area", "m2")` |
 | Set same value on all | `.SetParam("Comments", "Done")` |
-| Detect clashes | `.AuditClashes("Pipes").Table()` |
+| Detect clashes * | `.AuditClashes("Pipes").Table()` |
 | Export to Jupyter | `.ToNotebook("Analysis")` |
 | Show table | `.Table()` |
 | Select in Revit | `.Select()` |
@@ -642,8 +643,8 @@ GetElements<Room>()
 | Door room access | `.RoomFrom()` / `.RoomTo()` |
 | Standard doors only | `.StandardOnly()` |
 | Is standard door? | `.IsStandardDoor()` |
-| Carbon footprint | `Eco.GetCarbon(wall)` |
-| Thermal U-Value | `Eco.GetUValue(wall)` |
+| Carbon footprint * | `Eco.GetCarbon(wall)` |
+| Thermal U-Value * | `Eco.GetUValue(wall)` |
 
 ---
 
@@ -654,8 +655,8 @@ These are **static methods** from `ScriptApi` available in every script and REPL
 | Function | Description |
 |---|---|
 | `Transact(name, action)` | Wrap model edits in a single undo-step transaction |
-| `Watchdog(callback, interval)` | Register a background sentinel |
-| `WatchdogReport(summary, status, data?)` | Send status report from a sentinel |
+| `Watchdog(callback, interval)` * | Register a background sentinel |
+| `WatchdogReport(summary, status, data?)` * | Send status report from a sentinel |
 | `SetExecutionTimeout(seconds)` | Extend script timeout beyond default 10s |
 | `GetElements(BuiltInCategory)` | Query by `BuiltInCategory` enum |
 | `Show(type, data)` | Low-level structured output |
@@ -817,6 +818,8 @@ GetElements<Room>()
 ```
 
 ---
+
+*\* ⚠️ This feature is not available in the free build. See [Feature Availability](../enterprise/index.md) for details.*
 
 :::info IntelliSense
 When using **Edit Script**, all of these methods are available in VS Code with full documentation and autocomplete.

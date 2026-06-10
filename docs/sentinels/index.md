@@ -1,5 +1,7 @@
 # Sentinels (BIM Watchdogs)
 
+*\* Not available in the free build. See [Feature Availability](../enterprise/index.md).*
+
 **Sentinels** are a core pillar of the Paracore ecosystem, moving model validation from a "post-process audit" to **BIM Quality at the Source**. 
 
 While Paracore functions as a **BIM Tool Factory** for creating custom automations, Sentinels represent a deviation into persistent, background model monitoring. They ensure that Revit remains a living, reactive environment where compliance breaches are identified and resolved as they happen.
