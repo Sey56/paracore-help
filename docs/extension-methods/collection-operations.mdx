@@ -1,0 +1,128 @@
+---
+id: collection-operations
+sidebar_label: Bulk Write, Viz & Output
+---
+
+# Collection: Bulk Write, Visualization & Output
+
+## Bulk Write
+
+### `.SetParam(name, value, unit)`
+
+Sets a parameter on **every element** in the collection inside a single transaction. Can optionally take a `unit` parameter to convert numeric values from the specified unit before setting. Returns the collection (chainable).
+
+```csharp
+// Mark all unreviewed doors
+GetElements("Doors")
+    .WhereParam("Comments", "")
+    .SetParam("Comments", "Pending Review")
+
+// Set top constraint and offset with unit conversion in a single chain
+GetElements<Wall>()
+    .WhereParam("Base Constraint", "Level 01")
+    .SetParam("Top Constraint", "Level 02")
+    .SetParam("Top Offset", -150, "cm")
+```
+
+### `.SetParam(name, valueFactory)` — Dynamic
+
+Sets a parameter on every element using a function. The function receives the element and returns the value.
+
+```csharp
+// Sequential renumbering
+int i = 1;
+GetElements("Doors")
+    .WhereParam("Level", "Level 2")
+    .OrderByParam("Mark")
+    .SetParam("Mark", e => $"D2-{i++:000}")
+```
+
+:::note How Transactions Work
+Unlike a manual `foreach` loop (where each `SetVal` creates its own transaction), collection methods like `.SetParam`, `.Delete`, `.Hide`, `.Unhide`, and `.Isolate` already wrap all elements in a **single `Tx.Transact` call**. Each individual write inside sees the active transaction (`IsModifiable == true`) and skips creating its own. Result: **one undo step, no `Transact()` wrapper needed** for fluent chains.
+
+For a full breakdown of all four transaction scenarios (including when you DO need `Transact`), see [Transaction Behavior](parameter-accessors#transaction-behavior--how-it-works).
+:::
+
+---
+
+## Data Science & Analytics
+
+### `.ToNotebook(string notebookName)`
+
+The ultimate bridge to Pandas and AI analysis. Takes any collection (elements or anonymous objects), serializes it to a highly compressed JSON file, and **automatically generates and opens a Jupyter Notebook** in VS Code to analyze the data.
+
+```csharp
+// Export complex scheduling data straight to a new Jupyter Notebook
+GetElements<Room>()
+    .Select(r => new {
+        Number = r.GetStr("Number"),
+        Name = r.Name,
+        Level = r.GetStr("Level"),
+        Area = r.Area.OutputUnit("m2", 2)
+    })
+    .ToNotebook("Room_Analysis");
+```
+
+**How it works (Scratch & Save):**
+1. Generates `data.json` and `<notebookName>.ipynb` in a temporary scratch folder.
+2. The notebook is pre-populated with Python code specifically mapped to load your `data.json` straight into a `pandas.DataFrame`.
+3. Auto-launches VS Code. Click "Save As" in VS Code to keep the analysis permanently.
+
+---
+
+## Visualization
+
+These work on **any** `IEnumerable<T>`.
+
+| Method | Description |
+|---|---|
+| `.Table()` | Renders as an interactive data grid. Automatically extracts **both** Instance and Type parameters into columns. |
+| `.BarChart()` / `.BarGraph()` | Bar chart (needs `name` + `value` properties) |
+| `.PieChart()` / `.PieGraph()` | Pie chart |
+| `.LineChart()` / `.LineGraph()` | Line chart |
+| `.Show()` | **Pro Output**: Smart data grid + automated 3D geometric focus |
+
+```csharp
+// Count doors per level as pie chart
+GetElements("Doors")
+    .GroupByParam("Level")
+    .Select(g => new { name = ((dynamic)g).Group, value = ((dynamic)g).Count })
+    .PieChart()
+
+// Any projection works directly
+GetElements("Walls")
+    .GroupByParam("Base Constraint", "Length", "m")
+    .Table()
+```
+
+---
+
+## Collection: Revit UI Actions
+
+All return `IEnumerable<T>` (chainable). All batch into a single transaction automatically.
+
+| Method | Description |
+|---|---|
+| `.Select()` | Selects all elements in the Revit UI |
+| `.Zoom()` | Zooms the active view to fit the elements |
+| `.Isolate()` | Temporarily isolates in the active view |
+| `.Hide()` | Hides all elements in the active view |
+| `.Unhide()` | Unhides all elements in the active view |
+| `.Delete()` | **BIM-Smart Delete** (skips Pinned, Curtain Panels, Curtain-hosted doors) |
+| `.Peek()` | Forensic audit of every element in the collection |
+
+```csharp
+// Find and isolate all walls without a Mark
+GetElements<Wall>()
+    .WhereParam("Mark", "")
+    .Isolate()
+
+// Find and delete temporary elements
+GetElements("Generic Models")
+    .WhereMatches("TEMP")
+    .Delete()
+```
+
+:::note BIM-Smart Delete
+The `.Delete()` extension method automatically skips Pinned elements, Curtain Wall Panels, and hosted Curtain Doors to prevent Revit exceptions and model corruption.
+:::

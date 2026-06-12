@@ -109,10 +109,25 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
+      label: 'Extension Methods',
+      link: { type: 'doc', id: 'extension-methods/index' },
+      items: [
+        'extension-methods/index',
+        'extension-methods/parameter-accessors',
+        'extension-methods/element-utilities',
+        'extension-methods/door-window',
+        'extension-methods/collection-queries',
+        'extension-methods/collection-operations',
+        'extension-methods/unit-helpers',
+        'extension-methods/advanced',
+      ],
+    },
+
+    {
+      type: 'category',
       label: 'Scripting Reference',
       items: [
         'scripting-reference/index',
-        'scripting-reference/extension-methods',
         'scripting-reference/globals',
         'scripting-reference/parameters',
         'scripting-reference/units',

@@ -1,0 +1,110 @@
+---
+id: door-window
+sidebar_label: Door & Window Orientation
+---
+
+# Door & Window Orientation
+
+Revit's native `ToRoom`/`FromRoom` properties swap when a door is flipped. These helpers are **stable regardless of flip state** — using geometric swing arc analysis to determine room relationships.
+
+:::warning Swing-Based Detection
+`RoomTo()` and `RoomFrom()` determine room relationships based on the **physical swing arc geometry** — the room the arc swings into is the "To" room. This is the most reliable geometric approach, but it may not always match the **architectural intent**. For example, in egress situations where code requires the door to swing toward the exit, the swing direction is opposite to the logical "entry" direction. In such cases, consider adding a shared parameter to explicitly tag the intended direction.
+:::
+
+## Room Access
+
+### `fi.RoomAccess()` / `fi.RoomFrom()`
+
+Returns the room on the **non-swing side** — the side the door swings away from. Stable regardless of flips.
+
+```csharp
+door.RoomAccess()   // → "Corridor"
+```
+
+### `fi.RoomDestination()` / `fi.RoomTo()`
+
+Returns the room the door **swings into** (based on swing arc geometry). Stable regardless of flips.
+
+```csharp
+door.RoomDestination()  // → "Office 101"
+```
+
+---
+
+## Handing & Hinge
+
+### `fi.Handing()`
+
+Returns the handing code as seen from `RoomFrom()` — the non-swing side.
+
+Since `RoomFrom()` is always the side the door swings **away from**, the observer always sees a **Push** door. This means `Handing()` will always return `LH` or `RH`:
+
+| Code | Meaning |
+|---|---|
+| `LH` | Left Hand — hinges on the left as seen from `RoomFrom()` |
+| `RH` | Right Hand — hinges on the right as seen from `RoomFrom()` |
+
+```csharp
+door.Handing()    // → "LH" or "RH"
+```
+
+### `fi.HingeSide()`
+
+Returns `"Left"` or `"Right"` as seen from the Access Room.
+
+```csharp
+door.HingeSide()  // → "Right"
+```
+
+---
+
+## Flip State
+
+### `fi.IsHandFlipped()` / `fi.IsFacingFlipped()`
+
+Direct wrappers for Revit's `FamilyInstance.HandFlipped` and `FamilyInstance.FacingFlipped`.
+
+```csharp
+door.IsHandFlipped()    // → true / false
+door.IsFacingFlipped()  // → true / false
+```
+
+:::tip
+In string mode, use `WhereParam("HandFlipped", "True")` instead. This uses reflection and works even on `List<Element>`.
+:::
+
+---
+
+## Swing Arc
+
+### `fi.FindSwingArc()`
+
+Returns the largest `Arc` found in the door's geometry — the physical swing arc in World Space.
+
+```csharp
+var arc = door.FindSwingArc();
+// arc.Radius, arc.Center, arc.GetEndPoint(0)
+```
+
+---
+
+## Curtain Wall Detection
+
+### `fi.IsStandardDoor()`
+
+Returns `true` if the door is hosted in a standard wall (Basic/Stacked), `false` if it's a Curtain Wall panel (glass door).
+
+```csharp
+door.IsStandardDoor()  // → true for standard doors
+// false for curtain wall glass doors
+```
+
+### `.StandardOnly()` — Collection Filter
+
+Filters a `FamilyInstance` collection to exclude Curtain Wall hosted panels. Curtain wall doors don't carry standard properties like Level, Width, Height, Room, or swing geometry.
+
+```csharp
+GetElements<FamilyInstance>("Doors")
+    .StandardOnly()
+    .Table();
+```

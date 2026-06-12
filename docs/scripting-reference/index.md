@@ -4,11 +4,11 @@ The **Scripting Reference** provides a technical deep dive into the Paracore exe
 
 ## Essential API Reference
 
+### [Extension Methods](../extension-methods/index.mdx)
+The definitive, exhaustive reference for every Paracore extension method has been moved to its own dedicated **[Extension Methods](../extension-methods/index.mdx)** section.
+
 ### [Global Helpers](./globals.md)
 Instant access to the Revit context (`Doc`, `UIDoc`, `UIApp`), logging (`Println`), and transaction management (`Transact`).
-
-### [Paracore Extension Methods](./extension-methods.mdx)
-The definitive, exhaustive reference for every global object (`Doc`, `Selection`, etc.) and "Magic" extension method (`GetNum`, `SetVal`, `Table`) with comprehensive usage examples.
 
 ### [The Parameter Engine](./parameters.mdx)
 A detailed breakdown of all supported attributes, naming conventions, and data providers.

@@ -1,0 +1,126 @@
+---
+id: collection-queries
+sidebar_label: Filtering, Sorting & Grouping
+---
+
+# Collection: Filtering, Sorting & Grouping
+
+All methods are **generic** (`where T : Element`) and preserve the input type throughout the chain.
+
+## Filtering
+
+### `.WhereParam(name, value)` — String filter
+
+Filters elements where the named parameter/property equals the value (case-insensitive). Works via `GetStr()`, which covers Revit parameters AND native C# properties via Reflection.
+
+```csharp
+GetElements("Doors").WhereParam("Level", "Level 1")
+```
+
+### `.WhereParam(name, op, value)` — String predicate filter
+
+Filters using string operations: `"contains"`, `"starts"`, `"ends"`.
+
+```csharp
+GetElements("Doors").WhereParam("Mark", "starts", "D-10")
+GetElements("Rooms").WhereParam("Name", "contains", "Laundry")
+```
+
+### `.WhereParam(name, value, unit)` — Numeric filter
+
+Filters elements where the named numeric parameter equals the value (tolerance: 0.001 in the specified unit).
+
+```csharp
+GetElements<Wall>().WhereParam("Width", 200, "mm")        // exactly 200mm
+```
+
+### `.WhereParam(name, op, value, unit)` — Numeric comparison filter
+
+Filters using comparison operators: `">"`, `"<"`, `">="`, `"<="`.
+
+```csharp
+GetElements<Room>().WhereParam("Area", ">", 25.0, "m2")   // larger than 25sqm
+GetElements<Wall>().WhereParam("Length", "<", 10.0, "m")   // shorter than 10m
+```
+
+### `.WhereMatches(pattern)` — Fuzzy name filter
+
+Filters to elements whose Type Name OR Family Name contains the substring (case-insensitive).
+
+```csharp
+GetElements("Doors").WhereMatches("Single-Flush")
+GetElements("Windows").WhereMatches("Fixed")
+```
+
+---
+
+## Sorting
+
+### `.OrderByParam(name)` — Ascending
+
+Sorts the collection ascending by any parameter or C# property.
+**Automatically uses numeric sort** for `Double`/`Integer` parameters, string sort for text.
+
+```csharp
+GetElements("Rooms").OrderByParam("Area").Table()       // smallest first
+GetElements("Doors").OrderByParam("Mark").Table()       // alphabetical A→Z
+GetElements("Walls").OrderByParam("Width").Table()      // thinnest first
+```
+
+### `.OrderByParamDesc(name)` — Descending
+
+Sorts the collection descending. Same auto-numeric detection.
+
+```csharp
+GetElements("Rooms").OrderByParamDesc("Area").Table()   // largest first
+GetElements("Walls").OrderByParamDesc("Length").Table() // longest first
+```
+
+---
+
+## Grouping & Aggregation
+
+### `.GroupByParam(groupBy)` → `Group | Count`
+
+Groups the collection by a parameter value and returns a summary table.
+
+```csharp
+GetElements("Doors").GroupByParam("Level").Table()
+// Group        | Count
+// Level 1      | 14
+// Level 2      | 9
+
+GetElements("Doors").GroupByParam("HandFlipped").Table()
+// Group        | Count
+// True         | 6
+// False        | 17
+```
+
+### `.GroupByParam(groupByParam, sumParam, unit)` → `Group | Count | Total`
+
+**groupByParam**: parameter to group by (e.g. "Level"). Elements with the same value become one group.
+**sumParam**: numeric parameter to SUM per group (e.g. "Area", "Length").
+**unit**: unit to display the summed total in (e.g. "m2", "m"). Optional.
+
+```csharp
+// Group rooms by Level, sum their Area in m² per level
+GetElements("Rooms").GroupByParam("Level", "Area", "m2").Table()
+// Group   | Count | Total
+// Level 1 | 12    | 892.3
+
+// Group walls by Base Constraint, sum their Length in meters
+GetElements("Walls").GroupByParam("Base Constraint", "Length", "m").Table()
+// Group   | Count | Total
+// Level 1 | 23    | 284.5
+// Level 2 | 18    | 201.3
+```
+
+### `.SumParam(name, unit)`
+
+Returns the sum of a numeric parameter across the collection.
+
+```csharp
+double totalLength = GetElements("Walls").SumParam("Length", "m");
+double totalArea   = GetElements("Rooms").SumParam("Area", "m2");
+Println($"Total wall length: {totalLength:F2} m");
+```

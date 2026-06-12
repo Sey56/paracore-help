@@ -62,7 +62,7 @@ The following v4.4.0 features are not included in v4.5.0:
 
 V4.4.0 is a landmark release that elevates Paracore into a complete BIM intelligence platform. This release introduces professional-grade clash detection, sustainability analysis, a rebuilt fluent API, data science integration, and a completely overhauled desktop UI.
 
-> 📖 **Full API Reference**: See the [Extension Methods Reference](/docs/scripting-reference/extension-methods) for complete documentation of every method shown below.
+> 📖 **Full API Reference**: See the [Extension Methods Reference](/docs/extension-methods/) for complete documentation of every method shown below.
 
 #### 🔍 Mesh-Based Clash Detection Engine
 Paracore now includes a production-grade interference detection system built directly into the C# scripting environment.

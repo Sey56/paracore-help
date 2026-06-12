@@ -1,0 +1,161 @@
+---
+id: element-utilities
+sidebar_label: Identity, Diagnostics & UI
+---
+
+# Element: Identity, Diagnostics & UI Actions
+
+## Identity & Discovery
+
+### `id.ToElement(doc)`
+
+**Identity Resolver.** Converts an `ElementId`, `int`, or `long` directly to a Revit `Element`.
+Available on `ElementId`, `int`, and `long`.
+
+```csharp
+var el = 123456L.ToElement(Doc);
+var wall = someId.ToElement(Doc) as Wall;
+```
+
+### `element.FamilyName()`
+
+Returns the true Family Name for both Loadable and System families.
+
+```csharp
+door.FamilyName()   // → "M_Single-Flush"
+wall.FamilyName()   // → "Basic Wall" (via ELEM_FAMILY_PARAM fallback)
+```
+
+### `element.Matches(pattern)`
+
+**Fuzzy Name Matcher.** Returns `true` if the pattern is found in the element's Type Name OR Family Name (case-insensitive).
+
+```csharp
+door.Matches("Single")        // → true (Family Name contains "Single")
+door.Matches("Flush")         // → true (Type Name contains "Flush")
+door.Matches("NonExistent")   // → false
+```
+
+### `element.ReflectionProperties()`
+
+Returns a list of all native C# properties on the element's runtime type (via Reflection).
+
+```csharp
+GetElements<Wall>().First().ReflectionProperties().Table()
+// Columns: Name | Type
+```
+
+### `element.ReflectionMethods()`
+
+Returns a list of all public C# methods available on the element's runtime type (via Reflection), excluding standard System.Object methods. Details the method name, return type, parameters, and declaring type.
+
+```csharp
+GetElements<FamilyInstance>("Doors").First().ReflectionMethods().Table()
+// Columns: Method | ReturnType | Parameters | DeclaringType
+```
+
+---
+
+## Diagnostics & Inspection
+
+### `element.Peek()`
+
+**Forensic Parameter Audit.** Side-by-side comparison: `Parameter | Storage | GetStr | GetNum | UI Value`. Returns the element (chainable).
+
+```csharp
+Selection[0].Peek()
+```
+
+### `elements.Peek()`
+
+Executes `.Peek()` on every element in a collection.
+
+```csharp
+GetElements("Walls").Peek();
+```
+
+### `element.InstanceParams()`
+
+Returns all instance parameters as `Name | Storage | Value`.
+
+```csharp
+wall.InstanceParams().Table()
+```
+
+### `element.TypeParams()`
+
+Returns all type parameters as `Name | Storage | Value`.
+
+```csharp
+wall.TypeParams().Table()
+```
+
+### `element.CombinedParams()`
+
+Returns instance + type parameters together with a `Scope` column (`"Instance"`, `"Type"`, or `"Native"`).
+
+:::tip Pro Tip
+Use `element.CombinedParams().Table()` to see both Instance and Type parameters in one view — with a Scope column showing which is which. This is the fastest way to discover whether a property like "Width" lives at the Instance or Type level.
+:::
+
+```csharp
+wall.CombinedParams().Table()
+```
+
+### `element.BuiltInParams()`
+
+Returns all `BuiltInParameter` identifiers for the element: `Name | BIP | Value`. Use to find the BIP string for language-independent code.
+
+```csharp
+wall.BuiltInParams().Table()
+```
+
+### `element.NativeProperties()`
+
+Returns key Revit API properties not in the parameter dict: Name, Id, Category, Level, Workset, Design Option, Owner, Location, Pinned.
+
+```csharp
+wall.NativeProperties().Table()
+```
+
+### `element.ParamsDict()`
+
+Returns all parameter values as a `Dictionary<string, string>`.
+
+```csharp
+var dict = wall.ParamsDict();
+Println(dict["Mark"]);
+```
+
+---
+
+## Geometry
+
+### `element.GeometrySummary()`
+
+Returns a table of all geometry objects in the element: Solids (Volume, Area, Faces), Curves (Arc, Line), PolyLines. Automatically accumulates transformations to provide World-Space results.
+
+```csharp
+wall.GeometrySummary().Table()
+// Columns: Type | Source | Material | Volume | Area | Faces | Edges
+```
+
+---
+
+## Element: Revit UI Actions
+
+These return the element (chainable). All share the same `IsModifiable` transaction pattern — auto-transact when no active transaction, run directly when inside a `Transact()` block.
+
+| Method | Single | Collection | Description |
+|---|---|---|---|
+| `.Select()` | ✅ | ✅ | Selects in Revit UI |
+| `.Zoom()` | ✅ | ✅ | Zooms/shows in active view |
+| `.Isolate()` | ✅ | ✅ | Temporarily isolates in active view |
+| `.Hide()` | ✅ | ✅ | Hides from active view |
+| `.Unhide()` | ✅ | ✅ | Unhides in active view |
+| `.Delete()` | ✅ | ✅ | BIM-Smart Delete (auto-transaction, skips Pinned/Curtain) |
+
+```csharp
+Selection[0].Select().Zoom()
+GetElements("Walls").Isolate()
+```

@@ -1,0 +1,219 @@
+---
+id: parameter-accessors
+sidebar_label: Parameter Accessors
+---
+
+# Parameter & Property Accessors
+
+All methods on `Element`. Automatically handle:
+- `BuiltInParameter` name lookups
+- `ElementId` → Element Name resolution
+- C# native property fallback via Reflection
+- **Type parameter fallback** — automatically checks the element's Type if the instance parameter is missing
+- Unit conversion (where applicable)
+
+## Instance-Level Read Accessors
+
+### `element.GetStr(name)`
+
+**Smart String Getter.** Returns a human-readable string value.
+
+- If parameter is an `ElementId` (Level, Type, Room), returns the **element name** (e.g., `"Level 1"`).
+- Falls back to Revit's formatted value string for numbers.
+- Falls back to C# property via Reflection (e.g., `"HandFlipped"` → `"True"`).
+- Falls back to Type parameter if not found on the instance (e.g., standard door `"Width"`).
+- Returns `""` if not found.
+
+```csharp
+wall.GetStr("Level")       // → "Level 1"
+door.GetStr("Mark")        // → "D-101"
+door.GetStr("HandFlipped") // → "True" (via reflection)
+```
+
+### `element.GetStr(name, unit, decimals)`
+
+**Unit-Converted String Getter.** Returns the value converted to the given unit as a plain number string (no suffix). Supports an optional `decimals` parameter (default: 2).
+
+```csharp
+wall.GetStr("Length", "mm")      // → "3600"
+room.GetStr("Area", "m2", 4)     // → "25.4578" (specified decimals)
+```
+
+### `element.GetNum(name)`
+
+**Raw Numeric Getter.** Returns the raw `double` value in Revit internal units (feet / sq.ft / cu.ft).
+
+- Returns `0.0` if not found.
+- Falls back to C# property via Reflection for native doubles (`Width`, `Volume`, etc.).
+- Falls back to Type parameter if not found on the instance.
+
+```csharp
+wall.GetNum("Length")    // → 11.811 (feet)
+room.GetNum("Area")      // → 18.4 (sq.ft)
+```
+
+### `element.GetNum(name, unit, decimals)`
+
+**Unit-Converted Numeric Getter.** Returns the value converted to the specified unit. Supports an optional `decimals` parameter (default: 2).
+
+| Unit String | Meaning |
+|---|---|
+| `mm`, `cm`, `m`, `ft`, `in` | Length |
+| `m2`, `sqm`, `ft2`, `sqft` | Area |
+| `m3`, `cum`, `ft3`, `cuft` | Volume |
+
+```csharp
+wall.GetNum("Length", "m")       // → 3.6
+room.GetNum("Area", "m2", 4)     // → 25.4578 (specified decimals)
+floor.GetNum("Volume", "m3")     // → 0.72
+```
+
+### `element.GetVal(name)`
+
+**WYSIWYG Getter.** Returns the formatted string exactly as seen in Revit's Properties palette.
+
+- Returns values like `"3600.0 mm"`, `"1.25 m³"`, `"Level 1"`.
+- Falls back to `GetStr` if Revit doesn't provide a formatted string.
+- Automatically falls back to Type parameters if an instance parameter is not found.
+- Returns `"-"` if not found.
+
+```csharp
+room.GetVal("Area")   // → "25.46 m²"
+wall.GetVal("Level")  // → "Level 1"
+```
+
+### `element.GetVal(name, unit, decimals)`
+
+**Unit-Formatted WYSIWYG Getter.** Returns a value string with the specified unit suffix. Supports an optional `decimals` parameter (default: 2).
+
+```csharp
+wall.GetVal("Length", "mm")      // → "3600.0 mm"
+room.GetVal("Area", "m2", 3)     // → "25.458 m²"
+```
+
+### `element.GetInt(name)`
+
+**Integer Getter.** Returns the integer value — also works for yes/no (boolean) parameters.
+
+- Returns `0` (false) if not found.
+- Falls back to Type parameter if not found on the instance.
+
+```csharp
+wall.GetInt("Is External")   // → 1 (true) or 0 (false)
+element.GetInt("Count")      // → 4
+```
+
+## Type-Level Accessors
+
+Same signatures as the instance accessors, but they target the element's **ElementType** (e.g., Wall Type, Door Type).
+
+:::tip When to use Type-Level Accessors
+The instance-level accessors (`GetNum`, `GetStr`, `GetVal`) **automatically resolve to type parameters** when the name isn't found on the instance. You only need the explicit `GetTypeNum` / `GetTypeStr` / `GetTypeVal` variants when you want to **force** a type-level lookup or disambiguate when both instance and type share the same parameter name.
+:::
+
+| Method | Description |
+|---|---|
+| `element.GetElementType()` | Returns the ElementType element |
+| `element.GetTypeStr(name)` | Type-level `GetStr` |
+| `element.GetTypeStr(name, unit, decimals)` | Type-level `GetStr` with unit & optional decimals |
+| `element.GetTypeNum(name)` | Type-level `GetNum` |
+| `element.GetTypeNum(name, unit, decimals)` | Type-level `GetNum` with unit & optional decimals |
+| `element.GetTypeInt(name)` | Type-level `GetInt` |
+| `element.GetTypeVal(name)` | Type-level `GetVal` |
+| `element.GetTypeVal(name, unit, decimals)` | Type-level `GetVal` with unit & optional decimals |
+
+```csharp
+wall.GetTypeStr("Wrapping at Inserts")  // → "Do not wrap"
+door.GetTypeNum("Width", "mm")          // → 900.0 (type width)
+```
+
+## Smart Write Methods
+
+### Transaction Behavior — How It Works
+
+All write and UI-action methods (`SetVal`, `SetNum`, `Delete`, `Hide`, `Unhide`, `Isolate`) share the same mechanism: they check `e.Document.IsModifiable` before acting.
+
+| `IsModifiable` | What happens | When |
+|---|---|---|
+| **`false`** | Method creates its **own** `Transaction`, runs the change, commits | No outer transaction is active |
+| **`true`** | Method runs the change **directly** — no sub-transaction | Already inside a `Transact()` block, or inside a collection method that started one |
+
+This means there are **four distinct scenarios** you need to know:
+
+#### 1. Single element, REPL one-liner ✅
+```csharp
+wall.SetVal("Comments", "Done");  // auto-creates one transaction. One undo step.
+```
+No outer transaction → `SetVal` creates one. Clean.
+
+#### 2. `foreach` WITHOUT `Transact()` 🔴 — DO NOT DO THIS
+```csharp
+// BAD: each iteration creates its own transaction
+foreach (var wall in walls)
+    wall.SetVal("Comments", "Done");
+// Result: N transactions, N undo steps, poor performance
+```
+Each `SetVal` sees `IsModifiable == false`, creates its own mini-transaction, and commits. For 50 walls, you get 50 undo steps and 50× the overhead.
+
+#### 3. `foreach` WITH `Transact()` ✅
+```csharp
+Transact("Update Comments", () =>
+{
+    foreach (var wall in walls)
+        wall.SetVal("Comments", "Done");
+});
+// Result: 1 transaction, 1 undo step
+```
+`Transact` starts a transaction → `IsModifiable` becomes `true`. Every `SetVal` inside sees `true` and runs directly. The outer `Transact` commits once. Clean and fast.
+
+#### 4. Collection method (`.SetParam`, `.Delete`, `.Hide`, etc.) ✅
+```csharp
+GetElements("Walls")
+    .SetParam("Comments", "Done");
+// Result: 1 transaction, 1 undo step. Already handled for you.
+```
+Collection methods wrap the entire loop in a single `Tx.Transact` call. Each individual `SetVal` inside sees `IsModifiable == true` from that outer transaction and skips creating its own. **No `Transact()` wrapper needed** for fluent chains.
+
+:::important Rule of Thumb
+- **Fluent chain with a collection method?** → No `Transact()` needed. It's automatic.
+- **Manual `foreach` loop?** → **Always wrap in `Transact()`.** Without it, every iteration is a separate undo step.
+:::
+
+### `element.SetVal(name, value, unit)`
+
+**The Smart Setter.** Automatically determines how to write the value based on parameter type. Uses Reflection to locate Native C# properties if no parameter matches. Can optionally take a `unit` parameter to convert numeric values/strings from the specified unit before setting.
+
+**Overloads:**
+- `public static void SetVal(this Element e, string name, object value)`
+- `public static void SetVal(this Element e, string name, object value, string unit)`
+
+| Input type | Behavior |
+|---|---|
+| `string "500 mm"` | Calls `SetValueString` — parses value + unit |
+| `string "Level 1"` | Resolves name to `ElementId` automatically |
+| `string "Updated"` | Standard string set |
+| `double 3.5` | Direct numeric set (internal units) |
+| `bool true` | Native C# Property set via Reflection (e.g. "Pinned") |
+| `double 200, string "mm"` | Converts from the unit to internal units, then sets |
+
+```csharp
+wall.SetVal("Comments", "Reviewed")          // string
+wall.SetVal("Base Offset", "500 mm")         // value string — unit parsed
+wall.SetVal("Base Offset", -150, "cm")       // converts -150cm to internal feet
+wall.SetVal("Level", "Level 2")              // ElementId resolved by name
+wall.SetVal("Pinned", true)                  // Native C# property
+```
+
+### `element.SetNum(name, value, unit)`
+
+**The Decimal-Safe Setter.** Specifically designed to take raw mathematical doubles and convert them FROM the specified unit INTO Revit's internal decimal feet before setting.
+
+```csharp
+double calculatedHeight = 3.0; // Assume we calculated this in Meters
+
+// CORRECT: Converts 3.0 from Meters into Internal Feet, then sets it.
+wall.SetNum("Unconnected Height", calculatedHeight, "m");
+
+// DANGEROUS: Revit will assume 3.0 means 3 Feet!
+wall.SetVal("Unconnected Height", calculatedHeight);
+```

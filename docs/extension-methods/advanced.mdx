@@ -1,0 +1,216 @@
+---
+id: advanced
+sidebar_label: Materials, Eco & Coordination
+---
+
+# Materials, Sustainability & Advanced Features
+
+## Materials
+
+### `element.Materials()`
+
+Returns a list of all `Material` objects assigned to the element. Works on both Instances and Types.
+
+### `element.MaterialNames()`
+
+Returns a list of strings containing material names.
+
+### `element.GetMaterialNames()`
+
+Returns a comma-separated string of material names (ideal for `Table()` output).
+
+```csharp
+Selection[0].GetMaterialNames() // → "Glass, Aluminum, Concrete"
+```
+
+---
+
+## BIM 6.0 Sustainability
+
+### `Eco.GetCarbon(element)`
+
+**BIM 6.0 Carbon Engine.** Calculates embodied carbon (kgCO2e) using a resilient multi-tier audit:
+1. Layer-by-layer material audit (Compound Structure).
+2. Curtain system traversal (Panels + Mullions).
+3. Volume-based fallback with industry-standard intensity defaults.
+
+### `Eco.GetUValue(element)`
+
+**BIM 6.0 Thermal Engine.** Calculates thermal transmittance (W/m²K):
+- Solves multi-layer resistance for host objects.
+- Performs area-weighted averaging for Curtain Walls.
+- Falls back to Type-level thermal assets if instance data is missing.
+
+```csharp
+var carbon = Eco.GetCarbon(wall);
+var uValue = Eco.GetUValue(wall);
+```
+
+### `Eco.GetWeather()`
+
+**Live Project Weather.** Fetches current meteorological data for the project's exact Latitude/Longitude using the Open-Meteo API.
+
+```csharp
+var weather = Eco.GetWeather();
+Println($"Current Temp: {weather.Temperature}°C");
+Println($"Wind Speed: {weather.WindSpeed} km/h");
+```
+
+---
+
+## Coordination & Clash Detection
+
+High-performance interference detection and unit-aware coordination reporting.
+
+### `.AuditClashes(targetCategory)`
+
+**Surgical Interference Check.** Detects every intersection between elements in the source collection and the target category.
+
+### `.AuditClashes(target, tolerance)` — Numeric Tolerance
+
+| Parameter | Type | Description |
+|---|---|---|
+| `target` | `string` | The interference category (e.g. "StructuralColumns") |
+| `tolerance` | `double` | Geometric tolerance in Revit internal units (feet) |
+
+### `.AuditClashes(target, tolerance)` — String Tolerance
+
+Accepts a unit-aware string tolerance like `"5mm"`, `"0.5in"`, `"2cm"`. Internally parses and converts to Revit internal units.
+
+```csharp
+// Numeric tolerance (internal units)
+GetElements("Walls")
+    .AuditClashes("StructuralColumns", tolerance: 2.0)
+    .Table();
+
+// Unit-aware string tolerance — recommended approach
+GetElements("Walls")
+    .AuditClashes("Pipes", "5mm")
+    .Table();
+```
+
+### `.Table()` — Coordination Output
+
+**Professional Output.** Renders an interactive **Coordination Grid** in the Summary tab with clickable element IDs and 3D helper geometry. Click a row to zoom to the exact clash point in Revit.
+
+### `doc.ClearClashHelpers()`
+
+**Cleanup Utility.** Clears all visual clash helper geometry (DirectShapes named `"CORE_CLASH"`) from the document.
+
+```csharp
+Doc.ClearClashHelpers();
+```
+
+:::tip Auto-Cleanup
+You usually do not need to call this manually. Every time you run `.AuditClashes()`, Paracore automatically deletes the previous clash helpers before generating new ones.
+:::
+
+---
+
+## Unit Conversion & Precision Math
+
+All unit conversion and precision comparison extension methods are documented on their own page: **[Unit Conversion & Precision Math](unit-helpers)**.
+
+---
+
+## Complete Fluent Chain Examples
+
+### Door Schedule with Type Dimensions and Handing
+
+```csharp
+GetElements<FamilyInstance>("Doors")
+    .StandardOnly()
+    .OrderByParam("Mark")
+    .Select(d => new {
+        Mark    = d.GetStr("Mark"),
+        Level   = d.GetStr("Level"),
+        Width   = d.GetTypeVal("Width"),
+        Height  = d.GetTypeVal("Height"),
+        From    = d.RoomAccess(),
+        To      = d.RoomDestination(),
+        Handing = d.Handing(),
+        Hinge   = d.HingeSide()
+    })
+    .Table()
+```
+
+### Room Area Report by Level
+
+```csharp
+GetElements("Rooms")
+    .GroupByParam("Level", "Area", "m2")
+    .Table()
+```
+
+### Find and Flag Unreviewed Doors
+
+```csharp
+GetElements("Doors")
+    .WhereParam("Comments", "")
+    .SetParam("Comments", "Pending Review");
+
+Println($"Flagged {GetElements("Doors").WhereParam("Comments", "Pending Review").Count()} doors.");
+```
+
+### Structural Wall Audit (Width ≥ 300mm)
+
+```csharp
+GetElements<Wall>()
+    .Where(w => w.GetNum("Width", "mm") >= 300)
+    .OrderByParamDesc("Width")
+    .Select(w => new {
+        Name   = w.Name,
+        Level  = w.GetStr("Base Constraint"),
+        Width  = w.GetVal("Width"),
+        Length = w.GetVal("Length")
+    })
+    .Table()
+```
+
+### Sustainability Dashboard
+
+```csharp
+GetElements<Wall>()
+    .WhereParam("Function", "Exterior")
+    .Select(w => new {
+        Name   = w.Name,
+        Area   = w.GetNum("Area", "m2"),
+        Carbon = Math.Round(Eco.GetCarbon(w), 2),
+        UValue = Math.Round(Eco.GetUValue(w), 3)
+    })
+    .Table()
+
+var weather = Eco.GetWeather();
+Println($"Site: {weather.Temperature}°C, Wind: {weather.WindSpeed} km/h");
+```
+
+### Sequential Renumbering
+
+```csharp
+int i = 1;
+GetElements("Doors")
+    .WhereParam("Level", "Level 2")
+    .OrderByParam("Mark")
+    .SetParam("Mark", e => $"D2-{i++:000}");
+```
+
+### Export Room Data to Jupyter
+
+```csharp
+GetElements<Room>()
+    .Select(r => new {
+        Number = r.GetStr("Number"),
+        Name   = r.Name,
+        Level  = r.GetStr("Level"),
+        Area   = r.Area.OutputUnit("m2", 2)
+    })
+    .ToNotebook("Room_Analysis");
+```
+
+### One-Click Coordination Sweep
+
+```csharp
+GetElements("Walls")
+    .AuditClashes("StructuralColumns", "2mm")
+    .Table()
+```

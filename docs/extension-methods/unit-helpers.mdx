@@ -1,0 +1,216 @@
+---
+id: unit-helpers
+sidebar_label: Unit Conversion & Precision Math
+---
+
+# Unit Conversion & Precision Math
+
+Paracore extends `double`, `int`, `decimal`, and `string` with fluent unit helpers. These are defined in `UnitExtensions.cs` and are globally available in all scripts and the REPL.
+
+## How Units Flow Through Paracore
+
+Every numeric getter (`GetNum`, `GetNum(name, unit)`, etc.) returns values that can be piped through unit helpers:
+
+```csharp
+// GetNum returns raw internal feet (11.811)
+wall.GetNum("Length")               // → 11.811
+
+// GetNum(name, unit) converts FOR you
+wall.GetNum("Length", "m")          // → 3.6
+
+// Or convert yourself with OutputUnit
+wall.GetNum("Length").OutputUnit("m")   // → 3.6
+wall.GetNum("Length").FormatUnit("mm")  // → "3600.0 mm"
+```
+
+The engine's internal resolution chain (instance → reflection → type parameters) means you can get **type** parameters with units too:
+
+```csharp
+door.GetNum("Width", "mm")              // → 900.0  (Width is a type param)
+door.GetNum("Height", "m")              // → 2.1   (Height is a type param)
+```
+
+:::caution
+**Never hardcode conversions.** Use `.InputUnit("mm")` instead of `* 304.8`. Use `.IsAlmostEqualTo()` instead of `==` for doubles.
+:::
+
+---
+
+## Supported Unit Strings
+
+These strings work everywhere: `InputUnit`, `OutputUnit`, `FormatUnit`, `FormatValueOnly`, `RoundTo`, `GetNum(name, unit)`, `GetStr(name, unit)`, etc.
+
+| Unit String | Aliases | Type |
+|---|---|---|
+| `mm` | `millimeter`, `millimeters` | Length |
+| `cm` | `centimeter`, `centimeters` | Length |
+| `m` | `meter`, `meters` | Length |
+| `ft` | `foot`, `feet` | Length |
+| `in` | `inch`, `inches` | Length |
+| `m2`, `sqm` | `square meter`, `square meters`, `m²`, `sq.m` | Area |
+| `ft2`, `sqft` | `square foot`, `square feet`, `ft²`, `sq.ft` | Area |
+| `m3`, `cum` | `cubic meter`, `cubic meters`, `m³`, `cu.m` | Volume |
+| `ft3`, `cuft` | `cubic foot`, `cubic feet`, `ft³`, `cu.ft` | Volume |
+
+---
+
+## Input: User Values → Revit Internal
+
+### `.InputUnit(unit)`
+
+Converts a human-scale number **into** Revit's internal units (feet / sq.ft / cu.ft). Available on `double`, `int`, and `decimal`.
+
+```csharp
+200.0.InputUnit("mm")       // → 0.656... (200mm in feet)
+3.6.InputUnit("m")          // → 11.811 (3.6m in feet)
+25.0.InputUnit("m2")        // → 269.098 (25m² in sq.ft)
+```
+
+**Use case:** preparing a threshold value for comparison against `GetNum()` results:
+
+```csharp
+var minArea = 25.0.InputUnit("m2");
+var largeRooms = GetElements<Room>()
+    .Where(r => r.GetNum("Area") > minArea);
+```
+
+---
+
+## Output: Revit Internal → Human Units
+
+### `.OutputUnit(unit, decimals)`
+
+Converts a Revit internal value **from** feet into the target unit. Returns a `double`. Available on `double`, `int`, and `decimal`. Defaults to 2 decimals.
+
+```csharp
+wall.GetNum("Length").OutputUnit("mm")      // → 3600.0
+wall.GetNum("Length").OutputUnit("m", 3)    // → 3.600 (3 decimals)
+room.GetNum("Area").OutputUnit("m2")        // → 25.46
+```
+
+### `.FormatUnit(unit, decimals)`
+
+Same as `OutputUnit` but returns a **string with the unit suffix** appended. Ideal for display and logging.
+
+```csharp
+wall.GetNum("Length").FormatUnit("mm")      // → "3600.0 mm"
+room.GetNum("Area").FormatUnit("m2")        // → "25.46 m2"
+wall.GetNum("Volume").FormatUnit("m3", 3)   // → "0.720 m3"
+```
+
+### `.FormatValueOnly(unit, decimals)`
+
+Returns the numeric value converted to the target unit as a **plain string without suffix**. Ideal for CSV/Excel export.
+
+```csharp
+wall.GetNum("Length").FormatValueOnly("mm")     // → "3600"
+room.GetNum("Area").FormatValueOnly("m2", 4)    // → "25.4578"
+```
+
+---
+
+## Precision Snapping
+
+### `.RoundTo(unit, decimals)`
+
+Snaps a raw internal value to the nearest incremental precision of a target unit, then converts it back to internal units. This prevents floating-point drift when setting parameters.
+
+```csharp
+// Without RoundTo: you might set 1999.999997mm instead of 2000mm
+wall.SetNum("Base Offset", 2000.0.InputUnit("mm"), "mm");
+
+// With RoundTo: the internal value is exactly 2000mm worth of feet
+double cleanValue = wall.GetNum("Length").RoundTo("mm", 0);
+```
+
+This is most useful when you have calculated values and need to snap them to clean construction dimensions (nearest mm, nearest cm, etc.) before writing back to the model.
+
+---
+
+## Dimension String Parsing
+
+### `"string".ToMeters()`
+
+Parses a dimension string with a unit suffix and returns the value in **meters**. Defaults to meters if no unit suffix is found.
+
+```csharp
+"500mm".ToMeters()     // → 0.5
+"2ft".ToMeters()       // → 0.6096
+"0.1m".ToMeters()      // → 0.1
+"10".ToMeters()        // → 10.0 (defaults to meters)
+"3in".ToMeters()       // → 0.0762
+```
+
+Supports the same unit strings as the other methods: `mm`, `cm`, `m`, `ft`, `in`, `m2`/`sqm`, `ft2`/`sqft`, `m3`/`cum`, `ft3`/`cuft`.
+
+---
+
+## Precision-Aware Comparisons
+
+Available on `double`. All use a default tolerance of **1e-9 feet** (~0.0003mm) to handle Revit's floating-point noise. All accept an optional `tolerance` override.
+
+:::caution Floating-Point Warning
+**Never use `==` or `!=` for doubles.** Revit geometry produces floating-point noise. Always use these precision-aware methods for comparisons.
+:::
+
+### Equality & Zero
+
+| Method | Returns `true` when |
+|---|---|
+| `.IsAlmostEqualTo(val, tolerance?)` | `abs(value - val) < tolerance` |
+| `.AlmostZero(tolerance?)` | `abs(value) < tolerance` |
+| `.IsPositive(tolerance?)` | `value > tolerance` |
+| `.IsNegative(tolerance?)` | `value < -tolerance` |
+
+```csharp
+if (wall.GetNum("Length").AlmostZero()) { /* skip zero-length walls */ }
+if (room.Area.IsPositive()) { /* skip rooms with zero/negative area */ }
+```
+
+### Relational Comparisons
+
+| Method | Returns `true` when |
+|---|---|
+| `.IsLessThan(limit, tolerance?)` | `value < limit` AND not approximately equal |
+| `.IsGreaterThan(limit, tolerance?)` | `value > limit` AND not approximately equal |
+| `.IsLessThanOrEqual(limit, tolerance?)` | `value < limit` OR approximately equal |
+| `.IsGreaterThanOrEqual(limit, tolerance?)` | `value > limit` OR approximately equal |
+
+```csharp
+if (wall.GetNum("Width", "mm").IsGreaterThanOrEqual(300)) { /* structural walls */ }
+if (room.GetNum("Area", "m2").IsLessThan(10)) { /* small rooms */ }
+```
+
+### Comparison with Unit Conversion
+
+Chain `InputUnit` to create thresholds in human units:
+
+```csharp
+var isLargeRoom = room.GetNum("Area")
+    .IsGreaterThan(25.0.InputUnit("m2"));
+
+var isShortWall = wall.GetNum("Length")
+    .IsLessThan(1.0.InputUnit("m"));
+```
+
+---
+
+## Quick Reference
+
+| I want to... | Method |
+|---|---|
+| Convert value → internal feet | `200.0.InputUnit("mm")` |
+| Convert internal → human unit | `value.OutputUnit("m2", 2)` |
+| Display with unit suffix | `value.FormatUnit("mm")` |
+| Display without suffix (CSV) | `value.FormatValueOnly("mm", 2)` |
+| Snap to clean construction dim | `value.RoundTo("mm", 0)` |
+| Parse dimension string → meters | `"500mm".ToMeters()` |
+| Check if ~zero | `value.AlmostZero()` |
+| Check if ~equal | `value.IsAlmostEqualTo(target)` |
+| Check if bigger | `value.IsGreaterThan(limit)` |
+| Check if smaller | `value.IsLessThan(limit)` |
+| Check if ≥ | `value.IsGreaterThanOrEqual(limit)` |
+| Check if ≤ | `value.IsLessThanOrEqual(limit)` |
+| Check if positive | `value.IsPositive()` |
+| Check if negative | `value.IsNegative()` |
+| Get param in specific unit | `el.GetNum("Height", "m")` |

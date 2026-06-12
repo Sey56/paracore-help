@@ -1,0 +1,124 @@
+---
+id: index
+sidebar_label: Overview
+---
+
+# 🧩 Paracore Extension Methods
+
+A comprehensive guide to every extension method available on Revit elements and collections in Paracore scripts. All methods are defined in `ElementExtensions.cs`, `UnitExtensions.cs`, `CoordinationExtensions.cs`, and `NotebookExtensions.cs` and are globally available in the REPL and in all scripts.
+
+:::note REPL & Gallery Parity
+All extension methods work **identically** in the **REPL** (single-line and multi-line) and in **Gallery scripts** (full C# project structure). They were designed as shortcuts to simplify the verbose Revit API, but they are standard C# extension methods available everywhere the engine runs.
+:::
+
+:::tip Generic Collections
+All collection extension methods are **fully generic** — they preserve the specific element type (`Wall`, `FamilyInstance`, etc.) throughout the entire fluent chain. You never lose type information.
+:::
+
+## 🔀 Two Query Modes
+
+Paracore's collection extensions support two styles, each with trade-offs:
+
+### Mode 1: String / Parameter Mode (Generic Elements)
+
+```csharp
+GetElements("Doors")
+    .WhereParam("Level", "Level 1")
+    .WhereParam("HandFlipped", "True")   // Uses reflection for C# properties
+    .OrderByParam("Mark")
+    .Table()
+```
+
+- Works on `List<Element>` — the most permissive mode.
+- `.WhereParam` uses `GetStr()` internally, which falls back to **Reflection** for C# native properties (`HandFlipped`, `Area`, `Volume`, etc.).
+- No type casting needed. Works for any param name or native C# property name.
+
+### Mode 2: Typed / Lambda Mode (Specific Types)
+
+```csharp
+GetElements<FamilyInstance>("Doors")
+    .WhereParam("Level", "Level 1")
+    .Where(dr => !dr.HandFlipped && dr.Symbol.FamilyName.Contains("Single"))
+    .OrderByParam("Mark")
+    .Table()
+```
+
+- Works on `List<T>` — preserves the specific type throughout the chain.
+- Enables strongly-typed lambda expressions with IntelliSense.
+- Use when you need direct access to type-specific C# properties or methods.
+
+:::important
+`WhereParam("HandFlipped", "True")` ← string mode — works via reflection.
+`.Where(dr => dr.HandFlipped)` ← typed mode — requires `GetElements<FamilyInstance>`.
+Both are valid. Use whichever is cleaner for your task.
+:::
+
+## 📚 Quick Reference Card
+
+| What I want | Method |
+|---|---|
+| Get instance/type param string | `.GetStr("Level")` |
+| Get param string (unit-converted) | `.GetStr("Length", "mm")` |
+| Get param number (raw feet) | `.GetNum("Area")` |
+| Get param number (unit) | `.GetNum("Area", "m2")` |
+| Get WYSIWYG value | `.GetVal("Width")` |
+| Get type parameter | `.GetTypeStr("Width")` or `.GetStr("Width")` |
+| Set parameter value | `.SetVal("Comments", "Done")` |
+| Set numeric with unit | `.SetNum("Base Offset", 500, "mm")` |
+| Filter by param string | `.WhereParam("Level", "Level 1")` |
+| Filter by string op | `.WhereParam("Mark", "starts", "A")` |
+| Filter by C# property | `.WhereParam("HandFlipped", "True")` |
+| Filter by numeric value | `.WhereParam("Width", 200, "mm")` |
+| Filter by numeric op | `.WhereParam("Area", ">", 25, "m2")` |
+| Filter by name/family | `.WhereMatches("Single-Flush")` |
+| Sort ascending (auto) | `.OrderByParam("Area")` |
+| Sort descending (auto) | `.OrderByParamDesc("Area")` |
+| Group by → Count | `.GroupByParam("Level")` |
+| Group by → Count + Sum | `.GroupByParam("Level", "Length", "m")` |
+| Total a numeric param | `.SumParam("Area", "m2")` |
+| Set same value on all | `.SetParam("Comments", "Done")` |
+| Delete all (BIM-Safe) | `.Delete()` |
+| Detect clashes | `.AuditClashes("Pipes").Table()` |
+| Export to Jupyter | `.ToNotebook("Analysis")` |
+| Door handing | `.Handing()` |
+| Door room access | `.RoomFrom()` / `.RoomTo()` |
+| Standard doors only | `.StandardOnly()` |
+| Carbon footprint | `Eco.GetCarbon(wall)` |
+| Thermal U-Value | `Eco.GetUValue(wall)` |
+| Show table | `.Table()` |
+| Select in Revit | `.Select()` |
+| Zoom to elements | `.Zoom()` |
+| Isolate in view | `.Isolate()` |
+| Hide/Unhide in view | `.Hide()` / `.Unhide()` |
+| Forensic parameter dump | `.Peek()` |
+| Discover all parameters | `.CombinedParams().Table()` |
+
+## 🔧 Global Script Functions
+
+These are **static methods** from `ScriptApi` that are globally available in every script and REPL session — **not** extension methods.
+
+| Function | Description |
+|---|---|
+| `Transact(name, action)` | Wrap model edits in a single undo-step transaction |
+| `Transact(name, Action<Document>)` | Transaction with `Document` parameter |
+| `Watchdog(callback, interval)` | Register a background sentinel validation *(Sentinel Scripts Only)* |
+| `Watchdog(Action, interval)` | Simplified watchdog *(Sentinel Scripts Only)* |
+| `WatchdogReport(summary, status, data?)` | Send status report from a sentinel *(Sentinel Scripts Only)* |
+| `SetExecutionTimeout(seconds)` | Extend script timeout beyond default 10s |
+| `GetElements(BuiltInCategory)` | Query by `BuiltInCategory` enum |
+| `Show(type, data)` | Low-level structured output |
+| `Table(data)` / `BarChart(data)` / `PieChart(data)` / `LineChart(data)` | Global visualization helpers |
+| `Select(elements)` / `Isolate(elements)` / `Zoom(elements)` | Revit UI actions |
+| `GetMagicNames()` | All targetable category/family/class names |
+| `GetCategories()` | All project categories in the document |
+| `GetElement("name")` | Find one element by name |
+| `GetElement<T>("name")` | Find one typed element by name |
+| `id.ToElement(doc)` | Convert ElementId/int/long to Element |
+
+```csharp
+// Extend timeout for heavy scripts
+SetExecutionTimeout(120);
+
+// Query by BuiltInCategory (useful with hydrated enum parameters)
+var doors = GetElements(BuiltInCategory.OST_Doors);
+```
