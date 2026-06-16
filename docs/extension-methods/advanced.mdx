@@ -119,7 +119,7 @@ All unit conversion and precision comparison extension methods are documented on
 
 ```csharp
 GetElements<FamilyInstance>("Doors")
-    .StandardOnly()
+    .StandardDoor()
     .OrderByParam("Mark")
     .Select(d => new {
         Mark    = d.GetStr("Mark"),

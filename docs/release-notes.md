@@ -116,7 +116,7 @@ The extension method library has been significantly expanded and rebuilt with a 
 Door schedule with type dimensions, rooms, and handing:
 ```csharp
 var doors = GetElements<FamilyInstance>("Doors")
-    .StandardOnly()
+    .StandardDoor()
     .OrderByParam("Mark");
 
 var schedule = doors.Select(d => new {
@@ -133,7 +133,7 @@ var schedule = doors.Select(d => new {
 Table(schedule);
 ```
 
-> ⚠️ **Note**: `.StandardOnly()` excludes Curtain Wall doors (glass doors) which don't carry standard door properties like Level, Width, Height, or Room relationships.
+> ⚠️ **Note**: `.StandardDoor()` excludes Curtain Wall doors (glass doors) which don't carry standard door properties like Level, Width, Height, or Room relationships.
 
 Filter rooms larger than 25 m²:
 ```csharp
