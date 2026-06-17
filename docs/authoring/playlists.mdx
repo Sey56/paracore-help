@@ -1,0 +1,46 @@
+# Playlists
+
+**Playlists** let you chain multiple gallery scripts into a sequence and run them one after another. This is useful for multi-step automation workflows — run a model audit, then apply fixes, then generate a report — all without manually clicking through each script.
+
+Playlists are available with **Continue Offline** — no sign-in required.
+
+## How Playlists Work
+
+1. **Pick scripts** from your active script source and arrange them in order.
+2. **Configure each step** — set parameters for each script in the sequence inline.
+3. **Run the playlist** — scripts execute in order. Each script's output appears in the Output Panel.
+4. If a script fails, the playlist stops and shows the error. Fix the issue and resume from the failed step.
+
+## Creating a Playlist
+
+1. In the Gallery toolbar, switch to **Playlists** mode.
+2. Click **New Playlist** to create an empty sequence.
+3. Drag scripts from the gallery into the playlist, or use the **Add Script** button to select from your library.
+4. Arrange the order by dragging steps up or down.
+5. Click a step to configure its parameters inline — the same Parameters UI as individual script runs.
+6. Save the playlist. It appears alongside your scripts in the gallery.
+
+## Running a Playlist
+
+Click **Run All** to execute every step in sequence. The Output Panel shows results for each step as it completes. Click **Run Step** to execute just the selected step.
+
+## When to Use Playlists
+
+| Use Case | Example |
+|:---|:---|
+| **Multi-step workflows** | Audit walls → fix missing marks → generate compliance report |
+| **Batch operations** | Process Level 1 → Level 2 → Level 3 with the same script but different parameters |
+| **Quality checks** | Run three different audit scripts and review results together |
+| **Demo sequences** | Walk through a series of automation steps in a presentation |
+
+## Playlists vs Sentinels
+
+| | Playlists | Sentinels |
+|:---|:---|:---|
+| **Trigger** | Manual (you click Run) | Automatic (runs on Revit idle) |
+| **Scope** | One-time sequence | Continuous background monitoring |
+| **Best for** | Multi-step workflows, batch operations | Compliance enforcement, model health |
+
+---
+
+*Next: Learn about [Script Execution](./execution.mdx) and the Output Panel.*

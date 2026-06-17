@@ -107,7 +107,8 @@ element.GetInt("Count")      // → 4
 
 Same signatures as the instance accessors, but they target the element's **ElementType** (e.g., Wall Type, Door Type).
 
-:::tip When to use Type-Level Accessors
+:::tip[When to use Type-Level Accessors]
+
 The instance-level accessors (`GetNum`, `GetStr`, `GetVal`) **automatically resolve to type parameters** when the name isn't found on the instance. You only need the explicit `GetTypeNum` / `GetTypeStr` / `GetTypeVal` variants when you want to **force** a type-level lookup or disambiguate when both instance and type share the same parameter name.
 :::
 
@@ -174,7 +175,8 @@ GetElements("Walls")
 ```
 Collection methods wrap the entire loop in a single `Tx.Transact` call. Each individual `SetVal` inside sees `IsModifiable == true` from that outer transaction and skips creating its own. **No `Transact()` wrapper needed** for fluent chains.
 
-:::important Rule of Thumb
+:::important[Rule of Thumb]
+
 - **Fluent chain with a collection method?** → No `Transact()` needed. It's automatic.
 - **Manual `foreach` loop?** → **Always wrap in `Transact()`.** Without it, every iteration is a separate undo step.
 :::

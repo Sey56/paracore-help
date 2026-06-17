@@ -7,11 +7,13 @@ sidebar_label: Overview
 
 A comprehensive guide to every extension method available on Revit elements and collections in Paracore scripts. All methods are defined in `ElementExtensions.cs`, `UnitExtensions.cs`, `CoordinationExtensions.cs`, and `NotebookExtensions.cs` and are globally available in the REPL and in all scripts.
 
-:::note REPL & Gallery Parity
+:::note[REPL & Gallery Parity]
+
 All extension methods work **identically** in the **REPL** (single-line and multi-line) and in **Gallery scripts** (full C# project structure). They were designed as shortcuts to simplify the verbose Revit API, but they are standard C# extension methods available everywhere the engine runs.
 :::
 
-:::tip Generic Collections
+:::tip[Generic Collections]
+
 All collection extension methods are **fully generic** — they preserve the specific element type (`Wall`, `FamilyInstance`, etc.) throughout the entire fluent chain. You never lose type information.
 :::
 
@@ -48,6 +50,7 @@ GetElements<FamilyInstance>("Doors")
 - Use when you need direct access to type-specific C# properties or methods.
 
 :::important
+
 `WhereParam("HandFlipped", "True")` ← string mode — works via reflection.
 `.Where(dr => dr.HandFlipped)` ← typed mode — requires `GetElements<FamilyInstance>`.
 Both are valid. Use whichever is cleaner for your task.

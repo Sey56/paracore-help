@@ -19,7 +19,7 @@ MyScriptSource/
 ### Entry Script Conventions
 The **Entry Point** must be a C# file that matches the parent project name. It is processed as a **Top-Level Statement** script and must follow this structure:
 
-1.  **The Header**: `using` statements and multi-line script metadata (at the top; order between them does not matter).
+1.  **The Header**: Multi-line script metadata (comments at the top; order does not matter). `using` statements are not needed — all namespaces are `global using` in the workspace's `Globals.cs`.
 2.  **The Logic**: Top-level statements, execution logic, and top-level method definitions.
 3.  **The Types**: User-defined types (classes, structs, or interfaces).
 
@@ -38,6 +38,7 @@ If you wish to modularize your logic into multiple files, you can add additional
 -   **[Script Gallery](./gallery.mdx)**: Browse and manage your modular projects.
 -   **[Script Inspector](./inspector.mdx)**: Configure parameters and view results.
 -   **[AI Script Generation](./ai-generation.mdx)**: Generate Revit tools using AI coding assistants in VS Code.
+-   **[Playlists](./playlists.mdx)**: Chain multiple scripts into a sequence and run them in order.
 -   **[Script Execution](./execution.mdx)**: Understand the lifecycle of an automation run.
 -   **[Visual Query Builder](./query-builder.md)**: Generate complex filtering logic visually.
 -   **[VS Code Integration](./vscode.mdx)**: Set up your IDE for full authoring and direct-run support.

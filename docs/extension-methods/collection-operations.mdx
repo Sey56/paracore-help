@@ -37,10 +37,12 @@ GetElements("Doors")
     .SetParam("Mark", e => $"D2-{i++:000}")
 ```
 
-:::note How Transactions Work
+:::note[How Transactions Work]
+
 Unlike a manual `foreach` loop (where each `SetVal` creates its own transaction), collection methods like `.SetParam`, `.Delete`, `.Hide`, `.Unhide`, and `.Isolate` already wrap all elements in a **single `Tx.Transact` call**. Each individual write inside sees the active transaction (`IsModifiable == true`) and skips creating its own. Result: **one undo step, no `Transact()` wrapper needed** for fluent chains.
 
 For a full breakdown of all four transaction scenarios (including when you DO need `Transact`), see [Transaction Behavior](parameter-accessors#transaction-behavior--how-it-works).
+
 :::
 
 ---
@@ -123,6 +125,7 @@ GetElements("Generic Models")
     .Delete()
 ```
 
-:::note BIM-Smart Delete
+:::note[BIM-Smart Delete]
+
 The `.Delete()` extension method automatically skips Pinned elements, Curtain Wall Panels, and hosted Curtain Doors to prevent Revit exceptions and model corruption.
 :::

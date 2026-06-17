@@ -80,6 +80,7 @@ const sidebars: SidebarsConfig = {
         'authoring/gallery',
         'authoring/inspector',
         'authoring/ai-generation',
+        'authoring/playlists',
         'authoring/execution',
         'authoring/presets',
         'authoring/query-builder',
@@ -145,14 +146,6 @@ const sidebars: SidebarsConfig = {
         'scripting-reference/options',
         'scripting-reference/revit-elements',
         'scripting-reference/libraries',
-      ],
-    },
-
-    {
-      type: 'category',
-      label: 'Feature Availability',
-      items: [
-        'enterprise/index',
       ],
     },
 

@@ -7,7 +7,8 @@ sidebar_label: Door & Window Orientation
 
 Revit's native `ToRoom`/`FromRoom` properties swap when a door is flipped. These helpers are **stable regardless of flip state** — using geometric swing arc analysis to determine room relationships.
 
-:::warning Swing-Based Detection
+:::warning[Swing-Based Detection]
+
 `RoomTo()` and `RoomFrom()` determine room relationships based on the **physical swing arc geometry** — the room the arc swings into is the "To" room. This is the most reliable geometric approach, but it may not always match the **architectural intent**. For example, in egress situations where code requires the door to swing toward the exit, the swing direction is opposite to the logical "entry" direction. In such cases, consider adding a shared parameter to explicitly tag the intended direction.
 :::
 
@@ -70,6 +71,7 @@ door.IsFacingFlipped()  // → true / false
 ```
 
 :::tip
+
 In string mode, use `WhereParam("HandFlipped", "True")` instead. This uses reflection and works even on `List<Element>`.
 :::
 

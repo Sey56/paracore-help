@@ -31,6 +31,7 @@ door.GetNum("Height", "m")              // → 2.1   (Height is a type param)
 ```
 
 :::caution
+
 **Never hardcode conversions.** Use `.InputUnit("mm")` instead of `* 304.8`. Use `.IsAlmostEqualTo()` instead of `==` for doubles.
 :::
 
@@ -149,7 +150,8 @@ Supports the same unit strings as the other methods: `mm`, `cm`, `m`, `ft`, `in`
 
 Available on `double`. All use a default tolerance of **1e-9 feet** (~0.0003mm) to handle Revit's floating-point noise. All accept an optional `tolerance` override.
 
-:::caution Floating-Point Warning
+:::caution[Floating-Point Warning]
+
 **Never use `==` or `!=` for doubles.** Revit geometry produces floating-point noise. Always use these precision-aware methods for comparisons.
 :::
 

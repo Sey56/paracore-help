@@ -27,7 +27,8 @@ Paracore uses a smart scanning loop to load your tools efficiently:
     - **If NOT found**: It treats the folder as a **Container**. It scans the immediate children. If any child folder is a Script Source (has a `.paracore` file), it loads it into the sidebar. Use this to load many sources at once (e.g., loading an `ExampleProject` folder that contains both `Structural` and `Architectural` script sources).
     - **If FOUND**: It loads the folder as a **Script Source** and **stops**. It will not scan deeper for other sources.
 
-:::danger No Nesting
+:::danger[No Nesting]
+
 Never put a script source inside another script source. The outer source will mask the inner ones, making them invisible to Paracore.
 :::
 

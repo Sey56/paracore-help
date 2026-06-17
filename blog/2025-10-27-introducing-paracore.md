@@ -6,7 +6,7 @@ tags: [announcement, paracore, revit, automation]
 
 Today, we at Paras Codarch are thrilled to announce the official launch of Paracore, a desktop application poised to revolutionize the way you approach Revit automation.
 
-<!-- truncate -->
+{/* truncate */}
 
 For years, I've looked for ways to incorporate a more iterative, **Dynamic Execution** approach into the automation process. While traditional development is ideal for enterprise-scale tools, I wanted to provide an additional, "design-centered" choice for practitioners.
 

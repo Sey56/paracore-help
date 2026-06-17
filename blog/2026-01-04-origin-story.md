@@ -20,7 +20,7 @@ I built **SH_Tools** (SynCad) to automate this conversion layer-by-layer.
 ## Refining the Automation Journey (2024)
 Building SH_Tools opened my eyes to the potential of **Dynamic Execution**. I realized that having an additional approach—one that allowed me to interact with the API through expressive, on-the-fly C# scripts—would be a powerful addition to my toolkit, satisfying my evolving architectural needs.
 
-<!-- truncate -->
+{/* truncate */}
 
 ## The Experiments: Deliberate Engineering for AI (Early 2025)
 I originally set out to build an **AI Agent for Revit**. I knew that for an agent to be useful, it couldn't just "hallucinate" code; it needed a robust, safe environment to select scripts, parameterize them, and execute them deterministically.
