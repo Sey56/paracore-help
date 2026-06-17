@@ -2,7 +2,49 @@
 
 Version history and changelog for Paracore.
 
-### V4.5.0 (June 2026) — The Agent & Open Tooling Release
+### V4.6.0 (June 2026) — The Agent Intelligence & UX Release
+
+V4.6.0 makes the Agent smarter, safer, and more transparent, while delivering a major UX overhaul across the entire application.
+
+#### 🤖 Agent — Sessions, Thinking Steps & Visibility
+
+The Agent now supports **multiple named chat sessions** persisted across app restarts. Create a new session, switch between them, or delete old ones — each remembers its full conversation history independently.
+
+Most importantly, the Agent now **shows what it's doing** before producing code. When it explores the Revit model, searches the parameter schema, or reads extension method docs, each step appears in the chat as it happens. Previously the Agent went silent and presented code with no visibility into its reasoning. Now you see every explore, search, and read step.
+
+- **Token Usage**: Per-session token tracking is now persisted so you can see how much each conversation has consumed.
+- **Mid-stream Abort**: Interrupting a running generation properly aborts the stream and preserves your interrupting message.
+
+#### 🔒 Security — Agent Execution Gate & Code Scanner
+
+The first time an AI agent (Paracore Agent, MCP server, Claude Desktop, Cursor, etc.) tries to execute code in a new Revit session, a **TaskDialog appears in Revit** asking you to allow it. Approve once and all agent sources are cleared for the rest of that session. Manual execution (REPL, Gallery, Playlists) is not gated — your own code runs immediately.
+
+All AI-generated code is now scanned before execution. System-level operations (`Process.Start`, `Environment.Exit`, registry access, assembly loading, file deletion) are blocked unconditionally. Network access is blocked for AI-generated code but remains available in user-written scripts. 22 additional anti-patterns are detected.
+
+#### 🎨 UX — Persistent Output Panel, Gallery Toolbar & Playlists
+
+Execution output now lives in a **fixed side panel** with History and Analytics tabs — visible across REPL, Gallery, Agent, and Playlists. No more dragging to see results.
+
+The **Gallery** now has a unified toolbar. Selecting a script doesn't auto-open parameters — click **Configure** to edit inputs in-place. Script cards are streamlined with toolbar buttons grouped logically: Execute & Inspect, Modify, Dev Tools, and Delete.
+
+**Playlists** use the same card-based gallery layout as scripts with inline step configuration.
+
+#### 🔧 Core Engine — LINQ Pipeline Diagnostics
+
+`GetElements<T>()` now reports element counts at every stage of a LINQ chain:
+
+```csharp
+GetElements("Walls")
+    .WhereParam("Function", "Exterior")   // 45 walls matched
+    .GroupByParam("Base Constraint", "Length", "m")  // grouped into 3 levels
+    .Table();
+```
+
+Each `.Where()`, `.GroupBy()`, or `.Select()` shows how many elements survived — no more guessing why a pipeline returned fewer results than expected.
+
+#### 🛡️ Stability
+
+Crash paths fixed across query, runs, and tool builder routers. Parameter sync now detects IDE edits within 500ms so the Parameters tab updates as you edit in VS Code.
 
 V4.5.0 introduces three major new capabilities — the AI Agent, MCP Server, and Playlist Mode — all open and accessible without sign-in. Clash Detection, Eco Analysis, and Sentinels are not available in this release.
 
