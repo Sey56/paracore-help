@@ -11,7 +11,6 @@ const sidebars: SidebarsConfig = {
         'getting-started/index',
         'getting-started/installation',
         'getting-started/first-script',
-        'getting-started/mcp-server',
         'getting-started/downloads',
       ],
     },
@@ -64,13 +63,23 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
+      label: 'AI & Agent',
+      link: { type: 'doc', id: 'ai-agent/index' },
+      items: [
+        'ai-agent/in-app-agent',
+        'ai-agent/mcp-server',
+        'ai-agent/security',
+      ],
+    },
+
+    {
+      type: 'category',
       label: 'Script Authoring',
       items: [
         'authoring/index',
         'authoring/gallery',
         'authoring/inspector',
         'authoring/ai-generation',
-        'authoring/ai-debugging',
         'authoring/execution',
         'authoring/presets',
         'authoring/query-builder',
@@ -78,6 +87,7 @@ const sidebars: SidebarsConfig = {
         'authoring/vscode',
       ],
     },
+
     {
       type: 'category',
       label: 'Interactive REPL',
@@ -85,6 +95,7 @@ const sidebars: SidebarsConfig = {
         'interactive-repl/index',
       ],
     },
+
     {
       type: 'category',
       label: 'Sentinels (Watchdogs)',
@@ -150,7 +161,6 @@ const sidebars: SidebarsConfig = {
     'privacy',
   ],
 
-  // NEW: Dedicated Tutorials Sidebar
   tutorialsSidebar: [
     'tutorials/index',
     {

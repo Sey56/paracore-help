@@ -6,43 +6,51 @@ import ParacoreUI from '@site/static/img/paracore-ui.png';
 
 # Introduction to Paracore
 
-**Paracore** is a professional-grade C# automation platform for Autodesk Revit. Born from an architect's passion for the Revit ecosystem, it serves as a high-performance **BIM Logic Engine** designed to transform complex design automation into high-speed, repeatable workflows.
+**Paracore** is a local-first C# automation platform for Autodesk Revit. It compiles and executes standard C# scripts live inside Revit — no boilerplate, no compilation step, no restart required. Built for BIM managers, architects, and developers who need the full power of the Revit API without the traditional barriers.
 
 <img src={ParacoreUI} alt="Paracore Desktop Interface" />
 
-## A New Paradigm in BIM Management
+## Why Paracore?
 
-Paracore V4.1.0 represents a major evolution in Revit automation. It moves beyond simple scripting by providing a **Visual Low-Code Environment** that generates Revit-native C# logic automatically. It is designed for BIM Managers and Developers who need the power of the Revit API without the traditional barriers of manual code management.
+Paracore is not a new language or visual programming environment. You write **plain C#** using top-level statements. The engine compiles your code on-the-fly with Roslyn and executes it in-process within Revit — giving you instant feedback and direct access to every corner of the Revit API.
 
-### Key Strengths:
-- **Visual Logic Generation**: Build complex model filters and data extractions visually. Paracore generates optimized, Revit-native C# code (`ElementParameterFilter`) that targets elements with near-zero overhead.
-- **Active Data Workflows**: Manage your model through an interactive Results Table. Edit parameters directly in the grid or use the CSV engine for mass-updates in external tools like Excel.
-- **Persistent Template Gallery**: Save your best logic as templates. Reuse proven filter graphs across projects to deploy new tools in seconds.
-- **Always-On IDE Synchronization**: Leverage the full power of VS Code with a real-time (500ms) sync engine. Every save in your IDE is instantly reflected in Revit.
-- **Zero-Boilerplate Parameter Engine**: Turn C# properties into rich UI controls instantly. Paracore automatically generates dropdowns, sliders, and validation logic without any UI coding.
-- **Professional Stability**: Engineered for the Windows filesystem, featuring a robust "Safe-Swap" engine that eliminates file locks and ensures reliable script management.
+### Key Strengths
 
-## The Three Pillars of Productivity
+- **Zero-Boilerplate Parameter Engine**: Turn C# properties into rich UI controls instantly — dropdowns, sliders, toggles, element pickers — without writing a single line of UI code.
+- **Fluent DSL for Revit**: `GetElements<Wall>()`, `.WhereParam("Function", "Exterior")`, `.GroupByParam("Level", "Length", "m")`, `.Table()` — chainable, unit-aware, transaction-safe extension methods that replace pages of raw Revit API boilerplate.
+- **AI Agent with Sovereign Code Generation**: Describe what you want in plain language. The Agent explores your model, generates C# using Paracore's fluent DSL, and shows you the code before execution. One C# compiler tool replaces thousands of hardcoded AI tools.
+- **Interactive REPL**: A persistent C# scratchpad with session-scoped variables. Explore model data, prototype logic, and execute one-off commands with instant feedback.
+- **Always-On IDE Sync**: Every save in VS Code is reflected in Revit within 500ms. Paracore scaffolds a full IntelliSense workspace around your scripts — `.csproj`, `.sln`, and `global using` directives for every namespace you need.
+- **MCP Server**: Expose the REPL engine to any MCP-compatible AI tool (Claude Desktop, Cursor, Cline). External AI assistants can explore your Revit model and execute scripts with your approval.
 
-Paracore provides three distinct environments tailored to different stages of the BIM automation lifecycle:
+## The Five Pillars
 
-### 1. Script Authoring (Modular Projects)
-Standardize your most complex, repeatable Revit automations. Use **Modular Projects** to organize C# logic into structured, reusable tools with rich UI metadata and cross-team distribution support.
+Paracore provides five distinct environments tailored to different stages of the BIM automation lifecycle:
 
-### 2. Interactive REPL (BIM Laboratory)
-The **REPL** is your persistent C# scratchpad for real-time API discovery. Use it to prototype logic, explore model data, and execute one-off commands using Paracore's simplified **Extension Methods**.
+### 1. Script Authoring (Reusable Tools)
+Build **Modular Projects** with editable parameters, rich UI metadata, and cross-team distribution. Scaffold a full VS Code workspace from any gallery script and use AI coding assistants to generate production-ready automation tools.
+
+### 2. AI Agent (Conversational Automation)
+The in-app **Agent** uses sovereign code generation — it writes and executes C# on the fly using Paracore's fluent DSL. Every code change is shown for your approval before it touches the model. Supports multiple named chat sessions with persistent history and thinking-step transparency.
+
+### 3. Interactive REPL (BIM Laboratory)
+A persistent C# scratchpad with direct Revit API access. Define variables in one turn and reference them in the next. Explore model data, prototype logic, and visualize results with tables and charts — all without leaving Revit.
 
 <img src={ConsoleFull} alt="Paracore REPL Laboratory" />
 
-### 3. Sentinels (BIM Watchdogs)
-Achieve **BIM Quality at the Source** with background monitoring. Sentinels run continuously, "watching" for compliance breaches and reporting them directly to your secondary monitors for instant resolution.
+### 4. MCP Server (AI Tool Integration)
+The REPL engine exposed as an MCP (Model Context Protocol) server. Connect Paracore to Claude Desktop, Cursor, Cline, or any MCP-compatible client. External AI tools can explore your model schema and execute scripts in Revit — with you in control at every step.
+
+### 5. Sentinels (BIM Watchdogs)
+Background model monitoring that runs on Revit idle. Sentinels watch for compliance breaches and report them in real-time, moving model validation from "post-process audit" to **quality at the source**.
 
 <img src={SentinelMonitor} alt="Sentinels Watchdog Window" />
 
 ---
 
 ## Active Data Workflow
-Paracore transforms script results into an interactive results table. Edit parameters directly in the grid or use the CSV engine for mass-updates in external tools like Excel.
+
+Paracore transforms script results into an interactive results table. Edit parameters directly in the grid, export to CSV for bulk edits in Excel, or pipe data into Jupyter Notebooks for Pandas analysis.
 
 <img src={AnalyticsGrid} alt="Active Data Workflows" />
 
@@ -50,31 +58,31 @@ Paracore transforms script results into an interactive results table. Edit param
 
 ## Architecture at a Glance
 
-Paracore consists of three primary layers working in harmony:
+Paracore consists of four primary layers working in harmony:
 
 <img src={SystemArchitecture} alt="System Architecture" />
 
-*<small>© 2026 Paracore. All rights reserved.<br/>Autodesk® Revit® is a registered trademark of Autodesk, Inc. Paracore is an independent software and is not affiliated with, endorsed by, or sponsored by Autodesk, Inc.</small>*
+*<small>&copy; 2026 Paracore. All rights reserved.<br/>Autodesk&reg; Revit&reg; is a registered trademark of Autodesk, Inc. Paracore is an independent software and is not affiliated with, endorsed by, or sponsored by Autodesk, Inc.</small>*
 
-1.  **Paracore Revit Addin**: The execution host that lives inside Revit, providing the direct API context and execution engine.
-2.  **Paracore Desktop App**: The modern user interface for script management, parameter configuration, and workflow orchestration.
-3.  **Backend Sidecar**: The local backend service (FastAPI) that manages script discovery, agent logic, and handles communication between the desktop app and the Revit add-in.
-
----
-
-*Paracore is built for speed, simplicity, and the power of C#. Welcome to a new way of automating Revit.*
+1. **Paracore Revit Add-in**: The execution host inside Revit, providing direct API context. Uses `Paracore.Shim` for absolute DLL isolation — zero conflicts with pyRevit or any other add-in.
+2. **Paracore Desktop App**: A React + Tauri application for script management, parameter configuration, Agent chat, and workflow orchestration.
+3. **Backend Sidecar (rap-server)**: A local FastAPI service managing script discovery, AI agent logic, MCP server, and communication between the desktop app and the Revit add-in.
+4. **CoreScript Engine**: The Roslyn-powered C# compilation and execution engine at the heart of everything — REPL, Agent, MCP, and Gallery all run through it.
 
 ---
 
-### 📬 Stay Updated
+*Paracore is built for speed, simplicity, and the full power of C#. Welcome to a new way of automating Revit.*
+
+---
+
+### &#x1F4EC; Stay Updated
 
 Get notified about new releases, automation tips, and production-ready scripts.
 
-**[Subscribe for Updates →](pathname:///paracore-help/#subscribe)**
+**[Subscribe for Updates &rarr;](pathname:///paracore-help/#subscribe)**
 
-### 🏗️ Need Custom Revit Automation?
+### &#x1F3D7;&#xFE0F; Need Custom Revit Automation?
 
 We build tailored C# automation solutions for architecture and engineering firms.
 
-**[Get in Touch →](mailto:codarch46@gmail.com?subject=Custom%20Revit%20Automation%20Inquiry)**
-
+**[Get in Touch &rarr;](mailto:codarch46@gmail.com?subject=Custom%20Revit%20Automation%20Inquiry)**

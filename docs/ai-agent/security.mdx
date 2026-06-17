@@ -1,0 +1,61 @@
+# Agent Security
+
+Paracore protects your Revit model with a **defense-in-depth** security model. AI agents — whether the in-app Agent, MCP server, or external tools like Claude Desktop — cannot execute code without your consent and cannot perform dangerous operations even with consent.
+
+## SessionGate: One-Time Agent Approval
+
+The first time an AI agent tries to execute code in a new Revit session, a **TaskDialog appears in Revit**:
+
+> *"Paracore Agent (or an MCP client like Claude Desktop / Cursor) is requesting to execute code in this Revit session. Before approving, ensure you trust the AI tool and are aware that it will be able to execute C# scripts. Do you want to allow this?"*
+
+- **Approve once**: All agent sources (in-app Agent, MCP, Claude Desktop, Cursor, etc.) are cleared for the rest of that Revit session.
+- **Manual execution is never gated**: Running your own code from the REPL, Gallery, or Playlists always passes without prompts. The gate only applies to AI-generated code.
+- **Per-session**: The approval resets when you restart Revit.
+
+## Two-Tier Code Scanner
+
+All AI-generated code is scanned before execution. The scanner uses pattern-based detection with two severity levels:
+
+### Tier 1: Always Blocked (System-Level)
+
+These operations are blocked for **all** code — AI-generated and user-written:
+
+| Blocked Pattern | Reason |
+|:---|:---|
+| `Process.Start` | Launching external processes |
+| `Environment.Exit` / `Environment.FailFast` | Terminating the Revit process |
+| `Registry` / `RegistryKey` | Windows registry access |
+| `Assembly.Load` / `LoadFrom` / `LoadFile` | Loading arbitrary assemblies |
+| `File.Delete` / `Directory.Delete` | Destructive file operations |
+
+### Tier 2: Blocked for Agent/MCP Only (Network)
+
+These operations are blocked for AI-generated code but **allowed in user-written scripts**:
+
+| Blocked Pattern | Reason |
+|:---|:---|
+| `HttpClient` | HTTP requests |
+| `WebClient` | Web requests |
+| `HttpWebRequest` | HTTP requests |
+| `Socket` / `TcpClient` / `UdpClient` | Raw network access |
+
+User-written scripts retain network access so you can call REST APIs, fetch weather data, or integrate with external services. AI-generated code cannot access the network — if you need network access, copy the code to a gallery script and run it manually.
+
+## Human-in-the-Loop
+
+Even after SessionGate approval and code scanning, every AI-generated code that mutates the Revit model is **presented for your review** before execution:
+
+- You see the full C# code before it runs.
+- You can **approve**, **reject**, or **copy** the code.
+- Stale approvals from earlier conversation turns are automatically marked **SKIPPED** — you cannot accidentally execute code from an outdated tool call.
+
+## Summary
+
+| Layer | What It Does | Applies To |
+|:---|:---|:---|
+| **SessionGate** | One-time TaskDialog approval per Revit session | AI agents only |
+| **Tier 1 Scanner** | Blocks system-level operations unconditionally | All code |
+| **Tier 2 Scanner** | Blocks network access | AI-generated code only |
+| **HITL Approval** | Shows code for review before execution | AI agents only |
+
+This means: your own scripts run freely with network access. AI agents must pass SessionGate, the code scanner, and your explicit approval before any code touches the model.

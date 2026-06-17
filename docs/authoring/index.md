@@ -37,8 +37,7 @@ If you wish to modularize your logic into multiple files, you can add additional
 
 -   **[Script Gallery](./gallery.mdx)**: Browse and manage your modular projects.
 -   **[Script Inspector](./inspector.mdx)**: Configure parameters and view results.
--   **[AI Script Generation](./ai-generation.mdx)**: Generate Revit tools using VS Code AI extensions.
--   **[AI-Powered Debugging](./ai-debugging.mdx)**: Resolve code errors automatically with **Explain & Fix**.
+-   **[AI Script Generation](./ai-generation.mdx)**: Generate Revit tools using AI coding assistants in VS Code.
 -   **[Script Execution](./execution.mdx)**: Understand the lifecycle of an automation run.
 -   **[Visual Query Builder](./query-builder.md)**: Generate complex filtering logic visually.
 -   **[VS Code Integration](./vscode.mdx)**: Set up your IDE for full authoring and direct-run support.

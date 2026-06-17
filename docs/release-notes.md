@@ -67,7 +67,7 @@ The Paracore REPL engine is now available as an MCP (Model Context Protocol) ser
 - **Cline in VS Code** — use Cline with the MCP server for code generation and debugging alongside your Paracore workspace.
 - Exposes `explore_revit_data` and `execute_dynamic_query` as MCP tools, plus Paracore's DSL documentation as MCP resources.
 
-> 📖 See the **[MCP Server Setup Guide](/docs/getting-started/mcp-server)** for configuration steps.
+> 📖 See the **[MCP Server Guide](/docs/ai-agent/mcp-server)** for configuration steps.
 
 #### 🎬 Playlist Mode *(New)*
 

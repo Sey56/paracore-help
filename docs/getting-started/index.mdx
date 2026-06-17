@@ -4,29 +4,28 @@ Welcome to **Paracore**! This guide will help you get up and running in minutes,
 
 ## The Path to Success
 
-1.  **[Installation & Setup](./installation.mdx)**: Set up the Addin, activate the server, and connect the Desktop app.
-2.  **[Your First Script](./first-script.mdx)**: Execute a sample automation to verify your setup.
-3.  **[Downloads](./downloads.md)**: Get the latest installers.
+1. **[Installation & Setup](./installation.mdx)**: Set up the Add-in, activate the server, and connect the Desktop app.
+2. **[Your First Script](./first-script.mdx)**: Execute a sample automation to verify your setup.
+3. **[Downloads](./downloads.md)**: Get the latest installers.
 
 ## Prerequisites
 
 Before you begin, ensure you have a compatible environment:
 
--   **Autodesk Revit**: Version 2025 or later.
--   **Windows 10/11**: 64-bit version.
--   **Visual Studio Code**: Required for Authoring. Paracore integrates directly with VS Code to provide a professional editing environment (the standalone extension is optional).
+- **Autodesk Revit**: Version 2025 or later.
+- **Windows 10/11**: 64-bit version.
+- **Visual Studio Code**: Required for Authoring. Paracore integrates directly with VS Code to provide a professional editing environment.
 
-## What's New in v4.2 (BIM Laboratory)
+## What's New in v4.6 (June 2026)
 
-Paracore v4.2 transforms the platform into a deep exploration tool for BIM managers and developers:
+Paracore v4.6 delivers **Agent intelligence, security, and a major UX overhaul**:
 
--   **Paracore REPL (BIM Laboratory)**: Live, instant C# execution for rapid API discovery and data exploration.
--   **Interactive Data Grid**: Double-click cells to modify Revit parameters directly from the results table.
--   **Mass-Edit & CSV Sync**: Perform bulk updates on Revit elements using selection-based editing or external CSV synchronization.
--   **Magic Hydration Predicates**: Clean meta-filtering logic using simple boolean predicates (`_Filter`).
--   **Zero-Manual-Management**: In-place scaffolding directly inside script source folders for a "Single Source of Truth."
-
-
+- **AI Agent Sessions**: Create, switch, and delete named chat sessions — each with persistent history and per-session token tracking. The Agent now shows **thinking steps** as it explores your model, searches parameters, and reads documentation before producing code.
+- **Agent Security**: A **TaskDialog gate** appears the first time an AI agent tries to execute code in a new Revit session. All AI-generated code is scanned before execution — system-level operations are blocked unconditionally, network access is blocked for AI code.
+- **Persistent Output Panel**: Execution output lives in a fixed side panel with History and Analytics tabs — visible across REPL, Gallery, Agent, and Playlists.
+- **Gallery UX Overhaul**: Unified toolbar with logical button groups (Execute & Inspect, Modify, Dev Tools, Delete). **Open Project Folder** opens the script workspace directly in Explorer. Selecting a script no longer auto-opens parameters — click **Configure** to edit inputs in-place.
+- **Pipeline Diagnostics**: `GetElements<T>()` now reports element counts at every stage of a LINQ chain — see exactly how many elements survive each `.Where()`, `.GroupBy()`, or `.Select()`.
+- **MCP Server**: The REPL engine is now available as an MCP server, letting Claude Desktop, Cursor, Cline, and other AI tools interact with Revit directly.
 
 > Full Details: Read the [Release Notes](../release-notes.md) for a comprehensive list of changes.
 

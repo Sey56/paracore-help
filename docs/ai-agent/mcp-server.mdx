@@ -1,26 +1,24 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 ---
 
-# MCP Server Setup
+# MCP Server
 
-The Paracore MCP (Model Context Protocol) server lets AI coding tools — Claude Desktop, Cline in VS Code, and other MCP-compatible clients — interact with Revit directly. It exposes the same REPL engine that powers the Paracore Agent, giving external AI tools the ability to explore your model's schema and execute C# scripts in Revit.
+The Paracore MCP (Model Context Protocol) server lets AI coding tools — Claude Desktop, Cline in VS Code, Cursor, and other MCP-compatible clients — interact with Revit directly. It exposes the same REPL engine that powers the Paracore Agent, giving external AI tools the ability to explore your model's schema and execute C# scripts in Revit.
 
-The MCP server is installed alongside the Paracore Revit Addin at:
+The MCP server is installed alongside the Paracore Revit Add-in at:
 
 ```
 C:\ProgramData\Paracore\MCP\paracore-mcp.exe
 ```
 
----
-
 ## Prerequisites
 
-- The **Paracore Revit Addin** must be installed (v4.5.0+).
+- The **Paracore Revit Add-in** must be installed (v4.5.0+).
 - The **Paracore Server** toggle in the Revit ribbon must be **On**.
 - Revit must be running with a document open.
 
-> The Paracore Desktop App is **not required** for MCP usage — the MCP server talks directly to the Revit addin. Having the Desktop App is still useful for experimenting with agent-generated REPL snippets, viewing charts, and managing your script library.
+> The Paracore Desktop App is **not required** for MCP usage — the MCP server talks directly to the Revit Add-in. However, having the Desktop App is useful for experimenting with agent-generated REPL snippets, viewing charts, and managing your script library.
 
 ---
 
@@ -87,25 +85,47 @@ In Claude Desktop, ask: *"List the wall types in my Revit model."* If Claude can
 
 ---
 
+## Cursor
+
+1. Open Cursor.
+2. Go to **Settings &rarr; MCP** and add a new MCP server.
+3. Set the command to `C:\ProgramData\Paracore\MCP\paracore-mcp.exe`.
+4. Paracore tools will appear in Cursor's agent panel.
+
+---
+
 ## Available Tools
 
 Once connected, the MCP server provides these tools to the AI client:
 
 | Tool | Description |
-| :--- | :--- |
+|:---|:---|
 | `explore_revit_data` | Runs read-only C# snippets to inspect your Revit model — parameters, categories, element properties. Results are summarized to avoid token flooding. |
 | `execute_dynamic_query` | Generates and executes C# code in Revit. **Requires your approval** before running — the AI cannot mutate your model without confirmation. |
 | `search_schema` | Fast parameter lookup from an in-memory cache. Returns parameter names, storage types, and type vs instance classification. |
-| `read_extension_methods` | Returns Paracore's fluent DSL reference so the AI knows which extension methods are available. |
+| `read_extension_methods` | Returns Paracore's fluent DSL reference so the AI knows which extension methods are available (with fuzzy keyword search). |
 
 The MCP server also exposes Paracore's DSL documentation as **MCP Resources** — the AI client can read `paracore://extension-methods` and `paracore://repl-guide` to learn the correct syntax before generating code.
+
+---
+
+## MCP Server vs In-App Agent
+
+| | MCP Server | In-App Agent |
+|---|---|---|
+| **Interface** | Your AI tool's native chat | Paracore Desktop App |
+| **Setup** | JSON config file | Settings &rarr; LLM Settings |
+| **Capabilities** | Same tools, same engine | Same tools, same engine |
+| **Thinking steps** | Depends on host AI tool | Built-in step visibility |
+| **Sessions** | Managed by host AI tool | Named, persistent sessions |
+| **Best for** | Users who already use Claude/Cursor/Cline | All-in-one Paracore workflow |
 
 ---
 
 ## Troubleshooting
 
 | Problem | Solution |
-| :--- | :--- |
+|:---|:---|
 | Tools don't appear in Claude Desktop | Check the JSON path in `claude_desktop_config.json` — use double backslashes (`\\`). Make sure the file is valid JSON (trailing commas will break it). |
 | MCP server starts but can't reach Revit | Ensure Revit is running with a document open and the **Paracore Server** toggle is **On**. |
 | `explore_revit_data` returns empty results | The document must have elements loaded. Open a view with model elements visible. |
