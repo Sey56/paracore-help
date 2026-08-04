@@ -18,14 +18,17 @@ All methods on `Element`. Automatically handle:
 
 **Smart String Getter.** Returns a human-readable string value.
 
+- **"Level" works on every category** — Walls → Base Constraint, Columns → Base Level, Beams → Reference Level, Rooms/Doors/Windows → built-in Level. No more guessing.
 - If parameter is an `ElementId` (Level, Type, Room), returns the **element name** (e.g., `"Level 1"`).
 - Falls back to Revit's formatted value string for numbers.
 - Falls back to C# property via Reflection (e.g., `"HandFlipped"` → `"True"`).
+- Falls back to `NativeProperties` (Level, Name, Category, etc.).
 - Falls back to Type parameter if not found on the instance (e.g., standard door `"Width"`).
-- Returns `""` if not found.
+- Unknown parameters return `""` and log a one-time warning with a hint to use `.CombinedParams().Table()`.
 
 ```csharp
-wall.GetStr("Level")       // → "Level 1"
+wall.GetStr("Level")       // → "02 - Ground Floor Plan" (via Base Constraint)
+beam.GetStr("Level")       // → "05 - Roof Plan" (via Reference Level)
 door.GetStr("Mark")        // → "D-101"
 door.GetStr("HandFlipped") // → "True" (via reflection)
 ```

@@ -2,6 +2,26 @@
 
 Version history and changelog for Paracore.
 
+### V4.7.0 (August 2026) — Performance, Polish & the MCP Era
+
+#### 🚀 Performance & UI
+
+REPL and Gallery are now **independent top-level modes** — no more nested Scripts toggle. Three clean modes: Gallery, REPL, Playlist.
+
+The entire UI has been redesigned on **shadcn/ui** — consistent components, Cmd+K command palette, design tokens, and skeleton loading. **React.lazy code-splitting** defers REPL, CodeViewer, Playlists, and Settings until you use them. UI state has been extracted to **Zustand** — flatter, fewer re-renders. The Gallery now has **fuzzy search** with history.
+
+#### 🏗️ Addin
+
+The server toggle is now a **simple green/red indicator** — no more TaskDialog popups. The Dashboard has been removed. **Double-click** any script card in the Gallery to jump directly to Configure.
+
+#### ⚙️ Engine
+
+**`GetStr("Level")` now works on every category.** Walls resolve via Base Constraint, Columns via Base Level, Beams via Reference Level — no more guessing parameter names. An **unknown parameter diagnostic warning** fires when a parameter name isn't found, with a hint to use `.CombinedParams().Table()`. Pipeline tracking now covers all LINQ methods.
+
+#### 🔌 Paracore MCP
+
+The generalist MCP server is now a **[separate installer](https://github.com/Sey56/paracore-mcp)** — previously bundled inside the addin, now independently installable and updatable. The in-app AI agent has been retired — MCP clients (Claude Desktop, Cursor, VS Code) provide a far better harness with parallel tool calls, structured output, and skill-based resource loading.
+
 ### V4.6.0 (June 2026) — The Agent Intelligence & UX Release
 
 V4.6.0 makes the Agent smarter, safer, and more transparent, while delivering a major UX overhaul across the entire application.

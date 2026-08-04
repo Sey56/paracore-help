@@ -63,10 +63,9 @@ const sidebars: SidebarsConfig = {
 
     {
       type: 'category',
-      label: 'AI & Agent',
+      label: 'AI & MCP',
       link: { type: 'doc', id: 'ai-agent/index' },
       items: [
-        'ai-agent/in-app-agent',
         'ai-agent/mcp-server',
         'ai-agent/security',
       ],

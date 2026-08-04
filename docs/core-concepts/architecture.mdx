@@ -17,13 +17,11 @@ From the user's perspective, this is a single, lightweight plugin installed into
 - **`Paracore.Shim` (Absolute Isolation)**: A specialized entry point inside Revit that dynamically bootstraps the core engine into a dedicated **AssemblyLoadContext (ALC)**. This strict memory boundary encapsulates internal dependencies (such as Roslyn and Protobuf) preventing them from leaking into Revit's default AppDomain. This guarantees Paracore will never conflict with complex third-party extensions like pyRevit.
 - **`Paracore.Server` (The .NET Sidecar)**: A dedicated `.NET 8` process that runs as a sidecar to the Revit Add-in. This out-of-process sidecar hosts the gRPC communication layer, receiving tasks from the Desktop App's Python middleman. By bundling its own ASP.NET Core framework, it permanently eliminates "missing DLL" failures and deployment headaches.
 
-### 3. AI Agent & MCP Server (The Intelligence Layer)
-Paracore includes two AI surfaces powered by the same CoreScript engine:
-- **In-App Agent**: A conversational interface built with PydanticAI. Uses **sovereign code generation** — the LLM writes C# using Paracore's fluent DSL as its primary tool. Every code change is presented for human approval before execution. Supports multiple named chat sessions with persistent history.
-- **MCP Server**: A standalone FastMCP server that exposes the same REPL engine via Anthropic's Model Context Protocol. Connect Claude Desktop, Cursor, Cline, or any MCP-compatible client to explore your Revit model and execute scripts — with the same human-in-the-loop approval guard.
+### 3. Paracore MCP (The Intelligence Layer)
+A standalone FastMCP server that exposes the REPL engine via Anthropic's Model Context Protocol. Connect Claude Desktop, Cursor, Cline, or any MCP-compatible client to explore your Revit model and execute scripts — with human-in-the-loop approval for all model changes. Uses **sovereign code generation** — the LLM writes C# using Paracore's fluent DSL as its primary tool.
 
 ### 4. SessionGate (Security)
-The first time an AI agent (Paracore Agent, MCP server, Claude Desktop, Cursor, etc.) tries to execute code in a new Revit session, a **TaskDialog appears in Revit** asking you to approve that source. Approve once and all agent sources are cleared for the rest of that session. Manual execution (REPL, Gallery, Playlists) is never gated — your own code runs immediately. All AI-generated code is scanned before execution with a two-tier blocking system.
+The first time an MCP client tries to execute code in a new Revit session, a **TaskDialog appears in Revit** asking you to approve that source. Approve once and all MCP sources are cleared for the rest of that session. Manual execution (REPL, Gallery, Playlists) is never gated — your own code runs immediately. All AI-generated code is scanned before execution.
 
 ---
 

@@ -18,7 +18,7 @@ Paracore is not a new language or visual programming environment. You write **pl
 
 - **Zero-Boilerplate Parameter Engine**: Turn C# properties into rich UI controls instantly — dropdowns, sliders, toggles, element pickers — without writing a single line of UI code.
 - **Fluent DSL for Revit**: `GetElements<Wall>()`, `.WhereParam("Function", "Exterior")`, `.GroupByParam("Level", "Length", "m")`, `.Table()` — chainable, unit-aware, transaction-safe extension methods that replace pages of raw Revit API boilerplate.
-- **AI Agent with Sovereign Code Generation**: Describe what you want in plain language. The Agent explores your model, generates C# using Paracore's fluent DSL, and shows you the code before execution. One C# compiler tool replaces thousands of hardcoded AI tools.
+- **Paracore MCP**: Connect Claude Desktop, Cursor, or any MCP client to Revit. The LLM writes C# using Paracore's fluent DSL, explores your model, and shows you the code before execution. One C# compiler replaces thousands of hardcoded AI tools.
 - **Interactive REPL**: A persistent C# scratchpad with session-scoped variables. Explore model data, prototype logic, and execute one-off commands with instant feedback.
 - **Always-On IDE Sync**: Every save in VS Code is reflected in Revit within 500ms. Paracore scaffolds a full IntelliSense workspace around your scripts — `.csproj`, `.sln`, and `global using` directives for every namespace you need.
 - **MCP Server**: Expose the REPL engine to any MCP-compatible AI tool (Claude Desktop, Cursor, Cline). External AI assistants can explore your Revit model and execute scripts with your approval.
@@ -30,8 +30,8 @@ Paracore provides five distinct environments tailored to different stages of the
 ### 1. Script Authoring (Reusable Tools)
 Build **Modular Projects** with editable parameters, rich UI metadata, and cross-team distribution. Scaffold a full VS Code workspace from any gallery script and use AI coding assistants to generate production-ready automation tools.
 
-### 2. AI Agent (Conversational Automation)
-The in-app **Agent** uses sovereign code generation — it writes and executes C# on the fly using Paracore's fluent DSL. Every code change is shown for your approval before it touches the model. Supports multiple named chat sessions with persistent history and thinking-step transparency.
+### 2. Paracore MCP (AI-Powered Automation)
+The **MCP server** lets any MCP-compatible AI client control Revit through natural language. It writes and executes C# on the fly using Paracore's fluent DSL. Every code change is shown for your approval before it touches the model.
 
 ### 3. Interactive REPL (BIM Laboratory)
 A persistent C# scratchpad with direct Revit API access. Define variables in one turn and reference them in the next. Explore model data, prototype logic, and visualize results with tables and charts — all without leaving Revit.
