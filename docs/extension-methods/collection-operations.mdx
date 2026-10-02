@@ -79,17 +79,17 @@ These work on **any** `IEnumerable<T>`.
 | Method | Description |
 |---|---|
 | `.Table()` | Renders as an interactive data grid. Automatically extracts **both** Instance and Type parameters into columns. |
-| `.BarChart()` / `.BarGraph()` | Bar chart (needs `name` + `value` properties) |
-| `.PieChart()` / `.PieGraph()` | Pie chart |
-| `.LineChart()` / `.LineGraph()` | Line chart |
-| `.Show()` | **Pro Output**: Smart data grid + automated 3D geometric focus |
+| `.BarGraph()` | Bar chart (needs `name` + `value` properties) |
+| `.PieGraph()` | Pie chart |
+| `.LineGraph()` | Line chart |
+| `.Show()` | Renders data as a table — identical to `.Table()`. It does **not** zoom or focus the Revit view; use `.Zoom()` for that. |
 
 ```csharp
 // Count doors per level as pie chart
 GetElements("Doors")
     .GroupByParam("Level")
     .Select(g => new { name = ((dynamic)g).Group, value = ((dynamic)g).Count })
-    .PieChart()
+    .PieGraph()
 
 // Any projection works directly
 GetElements("Walls")

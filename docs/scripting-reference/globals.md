@@ -69,9 +69,9 @@ These helpers automatically format and send data to the **Analytics Tab** for an
 | Method | Type | Description |
 | :--- | :--- | :--- |
 | **`Table(data)`** | Global / Extension | Sends element data to the **Analytics Tab**. |
-| **`BarChart()`** | Global / Extension | Renders data as a Bar Chart. Alias: `BarGraph()` |
-| **`PieChart()`** | Global / Extension | Renders data as a Pie Chart. Alias: `PieGraph()` |
-| **`LineChart()`** | Global / Extension | Renders data as a Line Chart. Alias: `LineGraph()` |
+| **`BarGraph()`** | Global / Extension | Renders data as a Bar Chart. |
+| **`PieGraph()`** | Global / Extension | Renders data as a Pie Chart. |
+| **`LineGraph()`** | Global / Extension | Renders data as a Line Chart. |
 
 ### Example: Quick Table
 ```csharp
@@ -83,6 +83,10 @@ Table(walls.Select(w => new { w.Name, w.Id }));
 
 ## Advanced: Show(type, data)
 The underlying engine uses the `Show` method. While you can use it directly, the specialized helpers above (which call `Show` internally) are recommended.
+
+:::note
+`Show(type, data)` selects the rendering by a **type key** — `"table"`, `"chart-bar"`, `"chart-pie"`, `"chart-line"`. These strings are a routing contract between the engine and the desktop app, so use the helper methods rather than passing a key by hand: a mistyped key does not raise an error, it silently renders nothing.
+:::
 
 ```csharp
 Show("table", myData);
