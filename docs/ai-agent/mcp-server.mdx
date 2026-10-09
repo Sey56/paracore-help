@@ -9,7 +9,7 @@ The Paracore MCP (Model Context Protocol) server lets AI coding tools — Claude
 The MCP server is installed alongside the Paracore Revit Add-in at:
 
 ```
-C:\ProgramData\Paracore\MCP\paracore-mcp.exe
+C:\ProgramData\Paracore\MCP\paracore-gen.exe
 ```
 
 ## Prerequisites
@@ -38,7 +38,7 @@ C:\ProgramData\Paracore\MCP\paracore-mcp.exe
 {
   "mcpServers": {
     "paracore": {
-      "command": "C:\\ProgramData\\Paracore\\MCP\\paracore-mcp.exe"
+      "command": "C:\\ProgramData\\Paracore\\MCP\\paracore-gen.exe"
     }
   }
 }
@@ -73,7 +73,7 @@ In Claude Desktop, ask: *"List the wall types in my Revit model."* If Claude can
       "disabled": false,
       "timeout": 60,
       "type": "stdio",
-      "command": "C:\\ProgramData\\Paracore\\MCP\\paracore-mcp.exe",
+      "command": "C:\\ProgramData\\Paracore\\MCP\\paracore-gen.exe",
       "args": [],
       "env": {}
     }
@@ -89,7 +89,7 @@ In Claude Desktop, ask: *"List the wall types in my Revit model."* If Claude can
 
 1. Open Cursor.
 2. Go to **Settings &rarr; MCP** and add a new MCP server.
-3. Set the command to `C:\ProgramData\Paracore\MCP\paracore-mcp.exe`.
+3. Set the command to `C:\ProgramData\Paracore\MCP\paracore-gen.exe`.
 4. Paracore tools will appear in Cursor's agent panel.
 
 ---

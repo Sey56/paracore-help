@@ -26,7 +26,7 @@ The **public documentation site** for Paracore — a Docusaurus 3 static site, d
 Pages.
 
 ⚠ **It is a CONSUMER of the engine API, not a source of it.** The API's authority is
-`paracore-mcp/EXTENSION_METHODS.md` and `REPL_GUIDE.md` (see the master spec's authority table).
+`paracore-gen/EXTENSION_METHODS.md` and `REPL_GUIDE.md` (see the master spec's authority table).
 **When the docs disagree with the API, the docs are wrong** — fix the docs, never the API.
 
 ## 2. Where things live

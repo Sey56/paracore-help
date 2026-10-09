@@ -20,7 +20,7 @@ The server toggle is now a **simple green/red indicator** — no more TaskDialog
 
 #### 🔌 Paracore MCP
 
-The generalist MCP server is now a **[separate installer](https://github.com/Sey56/paracore-mcp)** — previously bundled inside the addin, now independently installable and updatable. The in-app AI agent has been retired — MCP clients (Claude Desktop, Cursor, VS Code) provide a far better harness with parallel tool calls, structured output, and skill-based resource loading.
+The generalist MCP server is now a **[separate installer](https://github.com/Sey56/paracore-gen)** — previously bundled inside the addin, now independently installable and updatable. The in-app AI agent has been retired — MCP clients (Claude Desktop, Cursor, VS Code) provide a far better harness with parallel tool calls, structured output, and skill-based resource loading.
 
 ### V4.6.0 (June 2026) — The Agent Intelligence & UX Release
 
