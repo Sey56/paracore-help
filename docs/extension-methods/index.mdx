@@ -5,7 +5,7 @@ sidebar_label: Overview
 
 # 🧩 Paracore Extension Methods
 
-A comprehensive guide to every extension method available on Revit elements and collections in Paracore scripts. All methods are defined in `ElementExtensions.cs`, `UnitExtensions.cs`, `CoordinationExtensions.cs`, and `NotebookExtensions.cs` and are globally available in the REPL and in all scripts.
+A comprehensive guide to the extension methods available on Revit elements and collections in Paracore scripts. They live in the engine's `Globals/` extension classes — element, collection, unit, door, geometry and visualization extensions — and are globally available in the REPL and in all scripts.
 
 :::note[REPL & Gallery Parity]
 
@@ -74,17 +74,24 @@ Both are valid. Use whichever is cleaner for your task.
 | Filter by numeric value | `.WhereParam("Width", 200, "mm")` |
 | Filter by numeric op | `.WhereParam("Area", ">", 25, "m2")` |
 | Filter by name/family | `.WhereMatches("Single-Flush")` |
+| Filter by category | `.WhereCategory("Walls", "Floors")` |
+| Filter by any of several params | `.WhereAnyParam(new[]{"Mark","Comments"}, "A")` |
+| Filter by a TYPE parameter | `.WhereTypeParam("Width", ">", "200")` |
+| Filter by material | `.WhereMaterial("Concrete")` |
+| Filter by NOT material | `.WhereMaterialNot("Concrete")` |
 | Sort ascending (auto) | `.OrderByParam("Area")` |
 | Sort descending (auto) | `.OrderByParamDesc("Area")` |
 | Group by → Count | `.GroupByParam("Level")` |
 | Group by → Count + Sum | `.GroupByParam("Level", "Length", "m")` |
 | Total a numeric param | `.SumParam("Area", "m2")` |
 | Set same value on all | `.SetParam("Comments", "Done")` |
+| Set same value on all (TYPE) | `.SetTypeParam("Comments", "Done")` |
 | Delete all (BIM-Safe) | `.Delete()` |
 | Detect clashes | `.AuditClashes("Pipes").Table()` |
 | Export to Jupyter | `.ToNotebook("Analysis")` |
 | Door handing | `.Handing()` |
 | Door room access | `.RoomFrom()` / `.RoomTo()` |
+| Room vertical span | `room.GetZSpan()` |
 | Standard doors only | `.StandardDoor()` |
 | Carbon footprint | `Eco.GetCarbon(wall)` |
 | Thermal U-Value | `Eco.GetUValue(wall)` |
@@ -116,6 +123,7 @@ These are **static methods** from `ScriptApi` that are globally available in eve
 | `GetCategories()` | All project categories in the document |
 | `GetElement("name")` | Find one element by name |
 | `GetElement<T>("name")` | Find one typed element by name |
+| `ExportImage(path, view?, px?, hideAnnotation?)` | Render a Revit view to an image file |
 | `id.ToElement(doc)` | Convert ElementId/int/long to Element |
 
 ```csharp

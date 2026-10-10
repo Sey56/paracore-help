@@ -9,8 +9,9 @@ Get the latest versions of the Paracore ecosystem components.
 | **Paracore Revit Addin** | **Mandatory.** The execution engine for Revit 2025+. Required for both the Desktop App and VS Code workflows. |
 | **Paracore Desktop App** | The main application for script management, parameter configuration, and execution. |
 | **CoreScript VSCode Extension** | **Optional.** Enables direct script execution from VS Code to Revit, bypassing the Desktop App. |
+| **Paracore-Gen (MCP Server)** | **Optional.** The generalist MCP server for Claude Desktop, Cursor, Cline and any MCP client. Ships as its **own installer**, separate from the add-in. |
 
-[**Download Latest Release**](https://github.com/Sey56/Paracore/releases)
+[**Download Latest Release**](https://github.com/Sey56/Paracore/releases) · [**Download Paracore-Gen**](https://github.com/Sey56/paracore-gen/releases)
 
 ## Resources & Samples
 

@@ -2,6 +2,42 @@
 
 Version history and changelog for Paracore.
 
+### V4.8.0 (October 2026) — One Engine, Free Sentinels & Packs
+
+V4.8.0 collapses the old free/Pro split into a **single, always-free engine** — and opens the background-monitoring stack to everyone.
+
+#### 🧩 One Generic Engine
+
+`paracore-pro` is gone. There is no free/Pro build split any more: the engine, the Revit add-in, the desktop app and the VS Code extension are **one product, always free**, and they version together. What stays commercial are the specialist MCP servers.
+
+#### 🛡️ Sentinels Are Free
+
+The watchdog process now lives in the **free engine**, and the desktop app no longer hides it behind an enterprise check. Sentinels — background gallery scripts that report compliance breaches as you model — are available to every install.
+
+#### 📦 Packs
+
+A specialist feature now installs as a **pack**: an assembly kept outside the add-in folder (which the installer wipes on upgrade), discovered at startup, one ribbon button each. A plain install finds none, and its ribbon is unchanged.
+
+#### ⚙️ Engine & REPL
+
+- **REPL errors point at your code** — a syntax error now reports the line and column you actually typed, not the coordinates of the rewritten script.
+- **The semantic guard fails open** — a guard that wrapped calls it must not wrap is fixed and self-tested; `TransactionLoopGuard` is new.
+
+#### 🖥️ Desktop App
+
+- **REPL font scaling** — `Ctrl` + `+` / `-` / `0`, or the toolbar stepper (11–32 px, remembered).
+- **Panel orientation** — stacked or side-by-side, from the top bar or `Ctrl+Shift+O`.
+- **Honest run duration** — a run's "took Ns" stays attached to the run it describes.
+- **Per-script Save-dialog filters** — a script declaring `[OutputFile("pdf")]` gets a PDF filter.
+
+#### 🔌 Paracore-Gen v2.0.0
+
+The generalist MCP server — previously **Paracore MCP** — is now **Paracore-Gen**, and ships as its **own installer**. v2.0.0 adds three tools (`get_context`, `pick_object`, `export_view`), a resident dialog watcher that answers Revit's modal dialogs from outside, a three-state `ping`, and generated skills. Requires the add-in **v4.8.0**.
+
+> 📖 Full details: **[Paracore v4.8.0](https://github.com/Sey56/Paracore/releases)** · **[Paracore-Gen v2.0.0](https://github.com/Sey56/paracore-gen/releases)**
+
+---
+
 ### V4.7.0 (August 2026) — Performance, Polish & the MCP Era
 
 #### 🚀 Performance & UI

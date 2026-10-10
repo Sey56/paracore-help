@@ -9,8 +9,8 @@ Paracore is designed as a decoupled, high-performance ecosystem. This architectu
 ## The Pillars of Paracore
 
 ### 1. Paracore Desktop App (The Control Center)
-Built using **React**, **TypeScript**, and **Tauri**, this is the main standalone application installed on the user's computer. It handles script discovery, parameter configuration, Agent chat, results visualization, and workflow orchestration.
-- **The Python Sidecar (`rap-server`)**: Bound entirely to the lifecycle of the desktop app, this lightweight Python/FastAPI environment acts as the central middleman. It translates the frontend's HTTP requests into gRPC calls for Revit. It also manages the **AI Agent** (PydanticAI-powered conversational automation), the **MCP Server** (Model Context Protocol for external AI tools), local data persistence via SQLite, and workspace scaffolding for VS Code.
+Built using **React**, **TypeScript**, and **Tauri**, this is the main standalone application installed on the user's computer. It handles script discovery, parameter configuration, results visualization, and workflow orchestration.
+- **The Python Sidecar (`rap-server`)**: Bound entirely to the lifecycle of the desktop app, this lightweight Python/FastAPI environment acts as the central middleman. It translates the frontend's HTTP requests into gRPC calls for Revit. It also manages the **MCP Server** (Model Context Protocol for external AI tools), local data persistence via SQLite, and workspace scaffolding for VS Code.
 
 ### 2. Paracore Revit Add-in (The Execution Engine)
 From the user's perspective, this is a single, lightweight plugin installed into Revit. It acts as the execution bridge, enabling your C# logic to interact with the live model. Internally, the Add-in achieves this through two highly resilient components:

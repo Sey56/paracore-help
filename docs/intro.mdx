@@ -65,9 +65,9 @@ Paracore consists of four primary layers working in harmony:
 *<small>&copy; 2026 Paracore. All rights reserved.<br/>Autodesk&reg; Revit&reg; is a registered trademark of Autodesk, Inc. Paracore is an independent software and is not affiliated with, endorsed by, or sponsored by Autodesk, Inc.</small>*
 
 1. **Paracore Revit Add-in**: The execution host inside Revit, providing direct API context. Uses `Paracore.Shim` for absolute DLL isolation — zero conflicts with pyRevit or any other add-in.
-2. **Paracore Desktop App**: A React + Tauri application for script management, parameter configuration, Agent chat, and workflow orchestration.
-3. **Backend Sidecar (rap-server)**: A local FastAPI service managing script discovery, AI agent logic, MCP server, and communication between the desktop app and the Revit add-in.
-4. **CoreScript Engine**: The Roslyn-powered C# compilation and execution engine at the heart of everything — REPL, Agent, MCP, and Gallery all run through it.
+2. **Paracore Desktop App**: A React + Tauri application for script management, parameter configuration, and workflow orchestration.
+3. **Backend Sidecar (rap-server)**: A local FastAPI service managing script discovery, MCP server, and communication between the desktop app and the Revit add-in.
+4. **CoreScript Engine**: The Roslyn-powered C# compilation and execution engine at the heart of everything — REPL, MCP, and Gallery all run through it.
 
 ---
 

@@ -16,14 +16,13 @@ Before you begin, ensure you have a compatible environment:
 - **Windows 10/11**: 64-bit version.
 - **Visual Studio Code**: Required for Authoring. Paracore integrates directly with VS Code to provide a professional editing environment.
 
-## What's New in v4.7 (August 2026)
+## What's New in v4.8 (October 2026)
 
-- **Paracore MCP standalone**: The MCP server is now a separate installer — no longer bundled in the addin. Works with Claude Desktop, Cursor, and any MCP client.
-- **UI modernization**: shadcn/ui redesign, Cmd+K command palette, code-splitting for performance, Zustand state management.
-- **Navigation simplified**: REPL and Gallery are now independent top-level modes. Three clean modes: Gallery, REPL, Playlist.
-- **Addin simplified**: Server toggle is now a green/red indicator — no popup dialogs. Dashboard removed.
-- **`GetStr("Level")` works everywhere**: Walls, Beams, Columns, Doors — no more guessing parameter names per category.
-- **Pipeline tracking for all LINQ methods**: See element counts at every step of any chain.
+- **One generic engine**: `paracore-pro` is gone — one engine, one add-in, always free. Only the specialist MCP servers stay commercial.
+- **Sentinels are free**: the background watchdog now ships in the free engine — no enterprise gate.
+- **Packs**: a specialist feature installs as a pack — an assembly kept outside the add-in folder, one ribbon button each.
+- **REPL errors point at your code**: a syntax error reports the line and column you actually typed.
+- **Paracore-Gen v2.0.0**: the generalist MCP server (previously Paracore MCP) now ships as its own installer, with new `get_context`, `pick_object` and `export_view` tools.
 
 > Full Details: Read the [Release Notes](../release-notes.md) for a comprehensive list of changes.
 

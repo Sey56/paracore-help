@@ -4,17 +4,25 @@ sidebar_position: 3
 
 # MCP Server
 
-The Paracore MCP (Model Context Protocol) server lets AI coding tools — Claude Desktop, Cline in VS Code, Cursor, and other MCP-compatible clients — interact with Revit directly. It exposes the same REPL engine that powers the Paracore Agent, giving external AI tools the ability to explore your model's schema and execute C# scripts in Revit.
+**Paracore-Gen** is the generalist Model Context Protocol (MCP) server for Paracore. It lets AI coding tools — Claude Desktop, Cline in VS Code, Cursor, and any other MCP-compatible client — interact with Revit directly: explore your model's schema and execute C# scripts, with you in control at every step.
 
-The MCP server is installed alongside the Paracore Revit Add-in at:
+## Install Paracore-Gen
+
+Paracore-Gen ships as its **own installer**, separate from the Revit add-in.
+
+> 📦 **[Download the latest Paracore-Gen release →](https://github.com/Sey56/paracore-gen/releases)**
+
+Run `Paracore-Gen-v2.0.0.exe`. It installs the server to:
 
 ```
-C:\ProgramData\Paracore\MCP\paracore-gen.exe
+%APPDATA%\paracore-data\mcp-servers\paracore-gen.exe
 ```
+
+which is `C:\Users\<YourName>\AppData\Roaming\paracore-data\mcp-servers\paracore-gen.exe`. Use that full path in the client configs below.
 
 ## Prerequisites
 
-- The **Paracore Revit Add-in** must be installed (v4.5.0+).
+- The **Paracore Revit Add-in** must be installed (**v4.8.0**).
 - The **Paracore Server** toggle in the Revit ribbon must be **On**.
 - Revit must be running with a document open.
 
@@ -38,7 +46,7 @@ C:\ProgramData\Paracore\MCP\paracore-gen.exe
 {
   "mcpServers": {
     "paracore": {
-      "command": "C:\\ProgramData\\Paracore\\MCP\\paracore-gen.exe"
+      "command": "C:\\Users\\<YourName>\\AppData\\Roaming\\paracore-data\\mcp-servers\\paracore-gen.exe"
     }
   }
 }
@@ -73,7 +81,7 @@ In Claude Desktop, ask: *"List the wall types in my Revit model."* If Claude can
       "disabled": false,
       "timeout": 60,
       "type": "stdio",
-      "command": "C:\\ProgramData\\Paracore\\MCP\\paracore-gen.exe",
+      "command": "C:\\Users\\<YourName>\\AppData\\Roaming\\paracore-data\\mcp-servers\\paracore-gen.exe",
       "args": [],
       "env": {}
     }
@@ -89,7 +97,7 @@ In Claude Desktop, ask: *"List the wall types in my Revit model."* If Claude can
 
 1. Open Cursor.
 2. Go to **Settings &rarr; MCP** and add a new MCP server.
-3. Set the command to `C:\ProgramData\Paracore\MCP\paracore-gen.exe`.
+3. Set the command to `C:\Users\<YourName>\AppData\Roaming\paracore-data\mcp-servers\paracore-gen.exe`.
 4. Paracore tools will appear in Cursor's agent panel.
 
 ---
@@ -100,6 +108,10 @@ Once connected, the MCP server provides these tools to the AI client:
 
 | Tool | Description |
 |:---|:---|
+| `ping` | Verify the connection to Revit — it distinguishes "Revit is closed" from "the server is toggled off". |
+| `get_context` | The current project, active view, selection and levels — so "the walls" or "this level" is not a guess. Read-only. |
+| `pick_object` | Ask you to click an element in Revit and get it back. ⚠ Blocks until you pick or press Escape. |
+| `export_view` | Render a Revit view to an image so the agent can *see* the model. |
 | `explore_revit_data` | Runs read-only C# snippets to inspect your Revit model — parameters, categories, element properties. Results are summarized to avoid token flooding. |
 | `execute_dynamic_query` | Generates and executes C# code in Revit. **Requires your approval** before running — the AI cannot mutate your model without confirmation. |
 | `search_schema` | Fast parameter lookup from an in-memory cache. Returns parameter names, storage types, and type vs instance classification. |
@@ -109,16 +121,9 @@ The MCP server also exposes Paracore's DSL documentation as **MCP Resources** �
 
 ---
 
-## MCP Server vs In-App Agent
+## A Note on the In-App Agent
 
-| | MCP Server | In-App Agent |
-|---|---|---|
-| **Interface** | Your AI tool's native chat | Paracore Desktop App |
-| **Setup** | JSON config file | Settings &rarr; LLM Settings |
-| **Capabilities** | Same tools, same engine | Same tools, same engine |
-| **Thinking steps** | Depends on host AI tool | Built-in step visibility |
-| **Sessions** | Managed by host AI tool | Named, persistent sessions |
-| **Best for** | Users who already use Claude/Cursor/Cline | All-in-one Paracore workflow |
+Paracore's **in-app AI agent was retired in v4.7.0**. MCP clients (Claude Desktop, Cursor, Cline) provide a far better harness — parallel tool calls, structured output, and skill-based resource loading. For an editor-side workflow, use the **[AI Script Generation](../authoring/ai-generation.mdx)** path in VS Code instead.
 
 ---
 

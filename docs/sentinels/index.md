@@ -1,6 +1,8 @@
 # Sentinels (BIM Watchdogs)
 
-*\* Not available in v4.6.0. See [Release Notes](../release-notes.md#v450-may-2026--the-agent-intelligence--mcp-release) for details.*
+:::info[Free in the engine]
+Sentinels ship with the **free Paracore engine** — as of **v4.8.0** the watchdog runs in the always-free engine and is no longer gated. Every install can deploy them.
+:::
 
 **Sentinels** are a core pillar of the Paracore ecosystem, moving model validation from a "post-process audit" to **BIM Quality at the Source**. 
 

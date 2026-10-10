@@ -4,7 +4,7 @@ Paracore provides **two AI surfaces** for Revit automation, both powered by the 
 
 ## The Two AI Surfaces
 
-| | Paracore MCP | AI Script Generation |
+| | Paracore-Gen | AI Script Generation |
 |---|---|---|
 | **Where** | Claude Desktop, Cursor, VS Code | VS Code |
 | **What it does** | Explores + executes code live in Revit | Generates gallery scripts with editable parameters |
@@ -13,11 +13,13 @@ Paracore provides **two AI surfaces** for Revit automation, both powered by the 
 | **Best for** | Quick data exploration, one-off mods, takeoff | Building reusable tools and add-ins |
 | **API key** | In host app config | In VS Code AI extension |
 
-### Paracore MCP
+### Paracore-Gen (MCP Server)
 
-The **generalist MCP server** lets Claude Desktop, Cursor, and other MCP-compatible clients explore and control Revit through natural language. It runs C# code dynamically via gRPC — no project files, no compilation. Five tools: `ping`, `explore_revit_data`, `execute_dynamic_query`, `search_schema`, `read_extension_methods`.
+**Paracore-Gen** is the generalist MCP server: it lets Claude Desktop, Cursor, Cline and other MCP-compatible clients explore and control Revit through natural language. It runs C# code dynamically via gRPC — no project files, no compilation. Eight tools: `ping`, `get_context`, `pick_object`, `export_view`, `explore_revit_data`, `execute_dynamic_query`, `search_schema`, `read_extension_methods`.
 
 All model modifications require human approval. System-level operations are blocked. Nine skill resources provide focused guidance per operation (query-filter, parameter-access, write-modify, etc.).
+
+> 📦 **Paracore-Gen ships as its own installer** — **[download the latest release](https://github.com/Sey56/paracore-gen/releases)**, then point your MCP client at it. See the [MCP Server guide](./mcp-server.mdx) for the exact config.
 
 ### AI Script Generation
 
