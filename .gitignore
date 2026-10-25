@@ -18,6 +18,10 @@ node_modules/
 .pnp.cjs
 # Build output
 /build
+
+# Docusaurus build logs — captured stdout of a `npm run build`, not source.
+# Untracked 2026-10-25: four files that had been committed and were never read.
+build_log*.txt
 /.docusaurus
 .cache-loader
 # IDEs and editors
