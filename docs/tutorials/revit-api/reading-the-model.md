@@ -50,9 +50,9 @@ Pass the view ID as the second argument:
 var viewWalls = new FilteredElementCollector(Doc, Doc.ActiveView.Id)
     .OfCategory(BuiltInCategory.OST_Walls)
     .WhereElementIsNotElementType()
-    .GetElementCount();
+    .ToElements();
 
-Println($"Walls in active view: {viewWalls}");
+Println($"Walls in active view: {viewWalls.Count}");
 ```
 
 ## Step 3: Loop Through Elements with foreach

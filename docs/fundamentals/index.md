@@ -61,7 +61,7 @@ Proactive BIM management with background watchdogs.
 
 Every topic includes a corresponding **Step-by-Step Exercise**. Follow these interactive guides in your own Revit environment to solidify your understanding.
 
-[Start with the REPL exercise](./step-by-step/exercise-10.mdx)
+[Start with the REPL exercise](./step-by-step/10-step-by-step.mdx)
 
 ---
 

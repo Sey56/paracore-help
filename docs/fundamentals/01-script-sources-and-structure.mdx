@@ -11,7 +11,7 @@ Understanding how Paracore finds and organizes your automation tools is the firs
 ## 1. What is a Script Source?
 A **Script Source** is the primary organizational system for your Paracore tools. It is a mandatory container folder that groups related automation projects into a structure the engine can efficiently scan and manage. 
 
-Unlike the **REPL**, which allows you to run independent code snippets on the fly, the **Script Gallery** relies on these sources to provide features like [Magic Hydration](../authoring/magic-hydration), [Visual Query Building](../tool-generator/query-builder), and professional IDE scaffolding. **You cannot load a standalone script into the gallery; it must be part of a valid Script Source.**
+Unlike the **REPL**, which allows you to run independent code snippets on the fly, the **Script Gallery** relies on these sources to provide features like Magic Hydration, [Visual Query Building](../authoring/query-builder), and professional IDE scaffolding. **You cannot load a standalone script into the gallery; it must be part of a valid Script Source.**
 
 The engine identifies a source by looking for a hidden `.paracore` marker file, which acts as a "Signpost" telling Paracore: "Start scanning for scripts from this point."
 
