@@ -2,6 +2,63 @@
 
 Version history and changelog for Paracore.
 
+### V4.8.1 (October 2026) — IntelliSense, Safer Edits & Undo
+
+V4.8.1 helps you while you type, tells you when a small-looking change is actually a big one, and lets you undo a whole step of work instead of one click at a time.
+
+#### ⌨️ The editor helps while you type
+
+The code editor now **completes what you are typing**, underlines mistakes **before** you run the script, and explains what a method does when you hover over it. You no longer have to run a script to discover a typo — a wrong name is marked in the editor, while you are still writing the line.
+
+#### ⚠️ When one change touches more than one thing
+
+Revit has a trap that catches almost everyone: asking a window for its **Width** finds the parameter, and *setting* it writes to the **window type** — so every window of that type changes, and every wall opening around them is re-cut. A call that looks like it touches one element can modify eight.
+
+The engine now tells you when a parameter belongs to the **type** rather than the element, so you find out before you change a whole family by accident.
+
+Swapping a window's type had the same problem in reverse: four windows were swapped to a fixed type and all four silently went from 1400 mm to 1050 mm — a 25 % resize that nothing reported. A swap now tells you what changed.
+
+#### ↩️ Undo a whole step
+
+Two new ways to take work back:
+
+- **Roll back to a mark.** Put a mark in your script before a risky stage, and if the result is wrong, return the model to exactly that state.
+- **Remove what one run created.** A run records the elements it added, so you can delete that batch as a unit instead of hunting them down one by one.
+
+The second one covers creating; the first covers the harder case — a stage that *moved or retyped* things that already existed.
+
+#### 📐 Dimension between faces
+
+Running a dimension chain across a series of faces used to mean finding each face's reference by hand, and it was slow enough that people avoided it. You can now dimension across faces directly, which makes it practical to dimension a whole elevation from a script.
+
+#### 🧰 Specialist tools open their own window
+
+A specialist tool installed as a **pack** can now bring its own setup form, its own results window and its own ribbon tab. Instead of a bare list of inputs, you get a proper window asking for what the tool needs — and the results come back in a window built for them, not as text.
+
+#### 🔒 The agent prompt waits for you
+
+When an AI agent asks to run code in Revit, a dialog asks you to allow it for the session. That dialog was being dismissed automatically — the very thing that was supposed to ask you was answering itself. It now **waits for you**, and declining is the default.
+
+Your answer is now **reported back to the agent**, so it knows what happened instead of guessing. It is told when you allowed it, when the session was already allowed, and — if you block it — that you blocked it and that nothing was run. A block lasts until you restart Revit.
+
+Because only you can close that dialog, an agent that asked before you had answered would otherwise sit there silently. It now stops after **about a minute** and tells you there is a prompt waiting on your screen, instead of hanging. If you answer later, its next request picks up your answer straight away.
+
+One allowance covers **every** AI tool for that Revit session, so a different agent will not ask you again in the same session.
+
+#### ⚠️ One thing that behaves differently
+
+Asking for a category that has **nothing in it** used to hand back the category's *types* — so asking for doors in a model with no doors gave you door types, which counted, deleted and edited as if they were real doors. It now returns nothing, and says the count is zero.
+
+If a script of yours relied on getting types back that way, it will now find an empty list. Asking for types directly still works.
+
+#### 🔌 Paracore-Gen v2.1.0
+
+The MCP server is **8,393 lines lighter** — the tools, prompts and skills it shares with the other MCP servers now live in one place instead of a copy per server, so a fix reaches all of them at once. Its `export_view` can also declare that it is running read-only, instead of claiming more access than it uses. **No tool was added or removed.** It needs this add-in version; install them together.
+
+> 📖 Full details: **[Paracore v4.8.1](https://github.com/Sey56/Paracore/releases)** · **[Paracore-Gen v2.1.0](https://github.com/Sey56/paracore-gen/releases)**
+
+---
+
 ### V4.8.0 (October 2026) — One Engine, Free Sentinels & Packs
 
 V4.8.0 collapses the old free/Pro split into a **single, always-free engine** — and opens the background-monitoring stack to everyone.
