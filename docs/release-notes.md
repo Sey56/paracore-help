@@ -2,6 +2,66 @@
 
 Version history and changelog for Paracore.
 
+### V4.8.2 (October 2026) — It Tells You Instead of Guessing
+
+Every problem fixed in this release has the same shape: **something went wrong and said nothing**, or **something worked and did more than it looked like**. A mistyped parameter name quietly returned zero. A write that could not happen reported success. A script that wrote and then failed kept half its work. This release makes the engine speak up.
+
+> This also includes everything from **V4.8.1**, which was held back — IntelliSense in the editor, the Pack SDK, type-write warnings, `Batch` / `Checkpoints`, and the consent dialog that waits for you.
+
+#### ↩️ A failed script no longer leaves half its work behind
+
+Until now, each write saved itself the moment it happened. So a script that changed twenty walls and then hit an error on the twenty-first reported **"failed"** — while the first twenty changes stayed in your model. You were told it did not run, and the model disagreed with you.
+
+Now the whole script is treated as one step: if it finishes, everything is kept; if it fails, everything it did is undone. It either happened or it did not.
+
+There is one case where that promise cannot be kept, and the message says so instead of pretending. If a script uses the raw Revit API to start its own transaction, Revit can apply part of that call and still throw — and nothing can take back a write that was never inside a transaction. In that case you get **"THE MODEL MAY HAVE CHANGED"** and a line telling you what to check. The previous wording, "the model is unchanged", was simply wrong there.
+
+#### 🚫 A wrong name is an error now, not a zero
+
+`SetVal("Fire Ratng", "60 min")` used to do nothing at all and report success. It now stops, names the element, and tells you the parameter you probably meant: *"no parameter of that name on Walls 372789 or its type. Did you mean Fire Rating?"*
+
+The same applies to searching: `WhereParam("Comments", "contains", "x")` with a name no element has now stops and lists the closest real name, instead of handing back an empty list. **An empty list and a typo used to look identical** — that is the single most common way a script gives you a confident wrong answer.
+
+Reading is deliberately softer: `GetStr("BadParam")` still returns an empty string, but it now warns you once, in the output, that the parameter does not exist.
+
+#### 🧱 A runaway script can no longer crash Revit
+
+A script that called itself without a stopping point overflowed the stack and took the whole process down — Revit disappeared, with no error and no chance to save. That crash cannot be caught by any error handler, so it is now prevented before it happens: the script is stopped and told it recursed, and Revit keeps running.
+
+#### ⚠️ A big change is announced before it happens
+
+Three warnings, all delivered **before** the change lands:
+
+- **Bulk writes.** Changing a parameter across every element your filter matched now tells you how many that is, so "all the walls" stops being a surprise.
+- **Type parameters.** Asking a window for its **Width** finds the parameter; *setting* it writes to the window **type**, so every window of that type changes and every wall opening around them is re-cut. It now tells you it is a type parameter, and how many instances it will affect.
+- **Loops without a transaction.** Writes inside a loop with no enclosing `Transact()` now warn that they will cost one undo entry per element — so an 800-wall edit is 800 undos, not one.
+
+#### 🔢 Numbers are exact where they are used
+
+`GetNum("Area", "m2")` used to round the converted number before returning it, and then the total was built from rounded parts. It now returns the exact conversion and rounds only when it is displayed. If you take quantities off, expect the last decimals to shift — in the accurate direction.
+
+#### 🎯 Errors point at the line you wrote
+
+A compile error used to be reported in coordinates that counted the engine's own hidden preamble, so the line number was off by a constant — consistently wrong, and confidently presented. It now maps back to your source, and only claims a line number when it can.
+
+#### 🔒 What an agent may not do
+
+The security scan that guards AI-generated code had a hole worth knowing about: it recognised `new Thread(`, but not `new System.Threading.Thread(` — the same thing written the long way. Written that way, it ran. The same hole existed in the rule that stops an agent writing files, which is the one that matters most.
+
+It is closed at the root rather than case by case, and in all four places the rule lives. The scan also no longer reads **comments**: a note in your code saying "never do this" used to be treated as if it were doing it, and could refuse a perfectly good query.
+
+#### 🔌 Paracore-Gen v2.1.1
+
+The MCP server no longer teaches modelling. It generates REPL code against the raw Revit API and the Paracore methods — `paracore-model` is the server that models — but a modelling skill had been left in its catalogue, so an agent could be walked into a workflow that server cannot support. It is gone from **this** server only; the other servers still have it.
+
+Its build also now proves it shipped its skills. A filter change had left the installer carrying **no skills at all**, with no check looking — a gate now fails the build if the bundle is empty or missing anything expected.
+
+**On picking:** `pick_object` remains unavailable to an agent, and the server now says so outright. It holds Revit until you click, and nothing it prints reaches the chat before then — so from the chat it looks like a freeze. Select what you mean in Revit first, then ask; the agent reads your selection.
+
+> 📖 Full details: **[Paracore v4.8.2](https://github.com/Sey56/Paracore/releases)** · **[Paracore-Gen v2.1.1](https://github.com/Sey56/paracore-gen/releases)**
+
+---
+
 ### V4.8.1 (October 2026) — IntelliSense, Safer Edits & Undo
 
 V4.8.1 helps you while you type, tells you when a small-looking change is actually a big one, and lets you undo a whole step of work instead of one click at a time.
@@ -53,7 +113,7 @@ If a script of yours relied on getting types back that way, it will now find an 
 
 #### 🔌 Paracore-Gen v2.1.0
 
-The MCP server is **8,393 lines lighter** — the tools, prompts and skills it shares with the other MCP servers now live in one place instead of a copy per server, so a fix reaches all of them at once. Its `export_view` can also declare that it is running read-only, instead of claiming more access than it uses. **No tool was added or removed.** It needs this add-in version; install them together.
+The MCP server is **8,393 lines lighter** — the tools, prompts and skills it shares with the other MCP servers now live in one place instead of a copy per server, so a fix reaches all of them at once. Its `export_view` can also declare that it is running read-only, instead of claiming more access than it uses. **One tool was removed:** `pick_object`, which asked you to click an element in Revit. It had no way to tell you it was waiting — its only cue was Revit's status bar, and that shows only once your pointer is already over Revit — so from the chat it looked like a freeze. Nothing is lost: **select what you mean in Revit, then ask about it** — the agent reads your selection. It needs this add-in version; install them together.
 
 > 📖 Full details: **[Paracore v4.8.1](https://github.com/Sey56/Paracore/releases)** · **[Paracore-Gen v2.1.0](https://github.com/Sey56/paracore-gen/releases)**
 
