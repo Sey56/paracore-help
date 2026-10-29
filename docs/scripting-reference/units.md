@@ -94,8 +94,11 @@ double areaSqm = room.Area.OutputUnit("m2"); // Converts internal sqft to square
 Quickly convert and format a value for logging or UI display.
 
 ```csharp
-Println(wall.Area.FormatUnit("m2", 2)); // Outputs: "25.42 m2"
-Println(wall.Area.FormatValueOnly("m2", 2)); // Outputs: "25.42" (no suffix)
+// ⚠ `wall.Area` does not compile (CS1061). A wall does HAVE an area — it is a
+//   PARAMETER, not a .NET property, so read it with GetNum first. Only Room, Space
+//   and other SpatialElements expose Area as a property (see the example above).
+Println(wall.GetNum("Area").FormatUnit("m2", 2)); // Outputs: "25.42 m²"
+Println(wall.GetNum("Area").FormatValueOnly("m2", 2)); // Outputs: "25.42" (no suffix)
 ```
 
 ### 3. Dimension String Parsing
