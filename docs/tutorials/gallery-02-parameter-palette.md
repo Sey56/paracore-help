@@ -1,0 +1,167 @@
+# Gallery Tutorial 2: The Parameter Palette
+
+The first gallery script used two property types: `Level` and `WallType` (dropdowns) and `double` (number boxes). This lesson adds the rest of the basic palette — toggles, sliders, choice buttons, and conditional visibility — and does it with a read-only room inspector that is genuinely useful.
+
+## The script
+
+Create a new script called **RoomInspector** in your script source. Replace the template with:
+
+```csharp
+/*
+DocumentType: Project
+Categories: Tutorial, Data
+Author: Paracore Team
+Dependencies: RevitAPI 2025+, Paracore.Addin
+
+Description:
+Inspects rooms — shows a table of all rooms or details one room,
+with optional area filtering and boundary information.
+*/
+
+Params p = new();
+
+List<Room> rooms;
+
+if (p.Scope == "All Rooms")
+{
+    rooms = GetElements<Room>().Where(r => r.Area > 0).ToList();
+}
+else if (p.SelectedRoom != null)
+{
+    rooms = [p.SelectedRoom];
+}
+else
+{
+    Println("Select a room, or set Scope to All Rooms.");
+    return;
+}
+
+if (p.FilterByArea)
+{
+    rooms = rooms.Where(r => r.Area < p.MaxArea).ToList();
+    Println($"Filtered to rooms under {OutputUnit(p.MaxArea, "m2"):F1} m²");
+}
+
+Println($"Showing {rooms.Count} room(s).");
+
+var report = rooms.Select(r => new
+{
+    r.Id,
+    r.Number,
+    r.Name,
+    Area_m2 = OutputUnit(r.Area, "m2").ToString("F2"),
+    Level = Doc.GetElement(r.LevelId)?.Name ?? "—"
+}).OrderBy(r => r.Number).ToList();
+
+Table(report);
+
+public class Params
+{
+    #region Scope
+
+    /// <summary>Choose what to inspect</summary>
+    [Segmented]
+    public string Scope { get; set; } = "All Rooms";
+    public List<string> Scope_Options => ["All Rooms", "One Room"];
+
+    /// <summary>Pick a specific room (only when Scope is One Room)</summary>
+    public Room? SelectedRoom { get; set; }
+    public bool SelectedRoom_Visible => Scope == "One Room";
+
+    #endregion
+
+    #region Filter
+
+    /// <summary>Only show rooms below a certain area</summary>
+    public bool FilterByArea { get; set; } = false;
+
+    /// <summary>Maximum area in square metres</summary>
+    [Unit("m2")]
+    [Range(1, 500, 1)]
+    public double MaxArea { get; set; } = 20.0;
+
+    public bool MaxArea_Visible => FilterByArea;
+
+    #endregion
+}
+```
+
+## What is new
+
+### `[Segmented]` — choice buttons
+
+```csharp
+[Segmented]
+public string Scope { get; set; } = "All Rooms";
+public List<string> Scope_Options => ["All Rooms", "One Room"];
+```
+
+`[Segmented]` renders a horizontal row of buttons instead of a dropdown. The `_Options` suffix property provides the choices. The property holds the selected string value.
+
+### `[Range]` — a slider
+
+```csharp
+[Range(1, 500, 1)]
+[Unit("m2")]
+public double MaxArea { get; set; } = 20.0;
+```
+
+`[Range(min, max, step)]` turns the number box into a slider with a step size. Combined with `[Unit("m2")]`, the user slides in square metres and the engine converts to internal square feet before the script runs.
+
+### `bool` — a toggle
+
+```csharp
+public bool FilterByArea { get; set; } = false;
+```
+
+A simple checkbox. Its value is `true` or `false` in the body.
+
+### `_Visible` — conditional visibility
+
+```csharp
+public bool SelectedRoom_Visible => Scope == "One Room";
+public bool MaxArea_Visible => FilterByArea;
+```
+
+A property named `<Param>_Visible` controls whether `<Param>` is shown. When `Scope` is "All Rooms", the `SelectedRoom` picker disappears. When `FilterByArea` is unchecked, the `MaxArea` slider hides. The form adapts.
+
+> **The `_Visible` property is not a control itself.** The engine recognises the `_Visible` suffix and uses it as a visibility rule — it never renders a checkbox for it.
+
+### `#region` — grouping
+
+```csharp
+#region Scope
+...
+#endregion
+
+#region Filter
+...
+#endregion
+```
+
+Parameters are grouped in the UI by their `#region` name. The panel shows collapsible sections — "Scope" and "Filter" — so a form with twelve parameters is not a flat wall of inputs.
+
+## Run it
+
+1. Set **Scope** to **All Rooms**. Click **Run**. Every placed room appears in the table.
+2. Turn on **Filter By Area**. The slider appears. Drag it down to `10` and run again. Only small rooms show up.
+3. Switch **Scope** to **One Room**. The room picker appears. Pick a room and run. Just that one in the table.
+
+## The `OutputUnit` helper
+
+```csharp
+Area_m2 = OutputUnit(r.Area, "m2").ToString("F2")
+```
+
+`r.Area` is in Revit's internal square feet. `OutputUnit(value, "m2")` converts it back to square metres for display. This is the counterpart to `[Unit("m2")]` on inputs: the attribute converts on the way **in**, `OutputUnit` converts on the way **out**.
+
+## Try This
+
+1. **Add a `[Segmented]` for sort order.** Create `public string SortBy { get; set; } = "Number";` with `public List<string> SortBy_Options => ["Number", "Name", "Area"];` and change the `.OrderBy(...)` to use it.
+2. **Add a `bool ShowLevel` toggle** and include the `Level` column in the table only when it is on.
+3. **Change `[Range(1, 500, 1)]` to `[Range(1, 500, 5)]`** — the slider now snaps in steps of 5.
+4. **Remove the `#region` blocks** and see the parameters panel flatten out — still functional, but harder to scan.
+
+---
+
+**Next**: [Gallery Tutorial 3: Pick and Place →](./gallery-03-pick-and-place.md)

@@ -6,63 +6,85 @@ id: 10-paracore-repl
 
 # Paracore REPL
 
-The **REPL** (Read-Eval-Print Loop) is your interactive BIM laboratory for real-time Revit API exploration and prototyping.
+The **REPL** (Read-Eval-Print Loop) is your interactive BIM laboratory: a persistent C# session with live access to the Revit model. It is where you should explore anything you are not sure about before you commit it to a script.
 
-## 1. Dual-Mode Architecture
-Paracore provide two distinct ways to interact with the engine:
+## 1. One editor, one Run
 
-- **Single-line REPL**: Ideal for quick "fire and forget" commands. Use the Up/Down arrows to access your **Command History**.
-- **Multi-line Workshop**: A dedicated scratchpad for complex logic. Supports **Load** and **Save** for your .cs snippets without requiring any metadata blocks.
-- **Shared State**: Variables defined in the multi-line editor (e.g., `var walls = GetElements<Wall>();`) remain alive and accessible in the single-line REPL.
+The REPL lives in the **Console** tab, under the execution history. There is a single editor and no modes:
 
-Both are found under the **Console Tab** within the execution history. 
-- **To Switch to Multi-line**: Click the **Expand** button to the right of the single-line REPL input.
-- **To Switch to Single-line**: Click the **Collapse** button at the right end of the multi-line header.
+- **Type anything.** One expression, one statement, or a whole script with a `Params` class at the end.
+- **<kbd>Ctrl</kbd>+<kbd>Enter</kbd> (or the Run button) executes the whole buffer.** <kbd>Enter</kbd> only adds a line.
+- **Load / Save / Save As** read and write plain `.cs` files, so a draft can outlive the session. **New** clears the editor and unloads the file, so experimenting never overwrites a snippet you kept.
 
-## 2. REPL Syntax Rules
-To ensure successful execution, follow these specific syntax rules:
+The size of what you type changes nothing about how it runs. There is no separate place for a "quick command" and no separate place for "real code".
 
-### Semicolons
-- **Mandatory for Assignment**: Always end variable declarations with a semicolon.
-  *   `var rooms = GetElements<Room>();`
-- **Optional for Queries**: Semicolons are optional for one-line queries or chains.
-  *   `Selection.Count`
-  *   `GetElements<Wall>().Table()`
+## 2. The echo — why this feels like a conversation
 
-### Count (Property) vs Count() (Extension)
-- **`.Count` (Property)**: Use this for immediate element lists (e.g., `Selection.Count`, `GetMagicNames().Count`). In the REPL, properties provide instant numeric output.
-- **`.Count()` (Method)**: Use this for dynamic LINQ queries that haven't been materialized yet (e.g., `GetElements<Wall>().Where(w => ...).Count()`).
-
-## 3. Magic Discovery
-Use these helpers to find elements by name, category, or class without writing complex collectors.
+**The last expression in the buffer is printed back to you.**
 
 ```csharp
-// Single-Line REPL examples
-var doors = GetElements("Doors");   // 1. All door instances
-var types = GetElements<FamilySymbol>("Doors"); // 2. All door types
-GetElement("Level 1").Select()      // 3. Chain with Select()
-GetMagicNames().Count                // 4. Get the total number of magic names
+"Paracore"                       // → Paracore
+GetElements<Wall>().Count()      // → 42
+GetElements<Wall>()              // → 01 - Basic Wall (359588), 02 - … (first 50)
 ```
 
-## 4. Using the REPL
+`Println` is unnecessary for inspection — but a **semicolon** turns an expression into a statement, and a statement has no value to print:
 
-### Quick Queries (Single-Line)
-Use the footer input for rapid one-liners:
-- `Selection[0].Peek()` — Instant property palette replacement.
-- `GetElements<Room>().Table()` — Audit all rooms in a grid.
-- `Selection.Count` — Get the total number of selected elements.
-
-### Complex Logic (Multi-Line Workshop)
-Use the expanded editor for multi-step operations:
 ```csharp
-// Multi-Line Snippet (Workshop)
-var limit = 7.InputUnit("m");
-var highWalls = GetElements<Wall>().Where(w => w.GetNum("Unconnected Height") > limit);
-highWalls.Table().Select().Zoom();
+Doc.Title                        // echoes the project name
+Doc.Title;                       // does nothing visible
 ```
+
+Collections echo as a numbered list, capped at 50 with a hint that `.Table()` will show all of it. That is the division of labour: **echo to peek, `.Table()` to read.**
+
+## 3. Rules worth knowing
+
+**Semicolons.** Required to end a declaration (`var rooms = GetElements<Room>();`); optional for a final expression you want to see.
+
+**`.Count` vs `.Count()`.** Both are legal on the lists the engine returns. Inside a LINQ chain (`Where`, `Select`) use `.Count()`; on a list you already have, `.Count`. If in doubt, `.Count()` always compiles.
+
+**Variables persist.** Turn 2 can use what turn 1 declared:
+
+```csharp
+var rooms = GetElements<Room>();          // turn 1
+rooms.WhereParam("Level", "Level 1").Table()   // turn 2 — `rooms` is still alive
+```
+
+**Session commands** (typed as-is, no semicolons): `vars` / `list`, `reset` / `clear vars`, `inspect rooms`.
+
+**`using` statements are allowed** and usually unnecessary — the common namespaces are already imported. Classes go at the **end** of the buffer, exactly as in a script.
+
+## 4. Discovery
+
+```csharp
+var doors = GetElements("Doors");                  // door instances
+var types = GetElements<FamilySymbol>("Doors");    // door types
+GetElement("Level 1").Select()                     // chain straight into the UI
+GetMagicNames().Count                              // how many targetable names exist
+```
+
+No `FilteredElementCollector`, no `BuiltInCategory`, no `.Cast<T>()`.
+
+## 5. Using it well
+
+**Inspect before you assume.** `Selection[0].Peek()` is a Properties palette you can read from code — the fastest way to learn what a category's parameters are actually called. `Selection[0].CombinedParams().Table()` shows instance and type parameters side by side.
+
+**Work in steps.** A query, then a filter, then a table, then a selection — four turns, each one verifiable. The session holds the intermediate result, so you never rewrite the query to add the next step.
+
+```csharp
+// turn 1: narrow
+var limit = 2.5.InputUnit("m");
+var tall = GetElements<Wall>().Where(w => w.GetNum("Unconnected Height") > limit);
+
+// turn 2: look
+tall.Table();
+
+// turn 3: act
+tall.Select().Zoom();
+```
+
+**Then keep it.** When the turns have converged on what you wanted, save the buffer as a script in the Gallery and give it a `Params` class — that is the path from question to tool.
 
 ---
 
----
-
-*Next Step: Experiment with the Revit API in [10 - Step-by-Step Exercise](./step-by-step/10-step-by-step.mdx).*
+*Next: [10 - Step-by-Step Exercise](./step-by-step/10-step-by-step.mdx), or straight to [Tutorial 1: Sixty Seconds in the Editor](../tutorials/the-repl.md).*

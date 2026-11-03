@@ -59,6 +59,9 @@ const config: Config = {
     locales: ['en'],
   },
 
+  // Runs in the browser after the head scripts — see the file for why this is needed.
+  clientModules: [require.resolve('./src/clientModules/gtagFallback.ts')],
+
   markdown: {
     mermaid: true,
   },

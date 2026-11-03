@@ -12,22 +12,22 @@ Practice interactive C# exploration and action chains in the Revit environment.
 ## 1. Preparation
 1. In Revit, **Select at least one element** (e.g., a Wall or Room) in the active view.
 
-## 2. Using the Single-Line REPL
-1. In Paracore, navigate to the **Console** tab.
-2. If the workshop is open, click the **Collapse** button.
-3. Click the **REPL** input bar.
-4. Type `Selection[0].Id` and press **Enter** to execute.
-5. Use the **Up/Down arrow keys** to cycle through your command history.
+## 2. The echo
+1. In Paracore, navigate to the **Console** tab and click the editor at the bottom.
+2. Type `Selection[0].Id` — **no semicolon** — and press **CTRL + ENTER**.
+3. The id comes back in the execution history. That is the echo: the last expression is printed for you.
+4. Now type `Selection[0].Id;` **with** the semicolon and run it again. Nothing is printed — it is a statement now, and statements have no value to show.
+5. Scroll back through the **History** tab and re-run any earlier turn by clicking it.
 
-## 3. Using the Multi-Line Workshop
-1. Click the **Expand** button on the right to open the multi-line **Workshop**.
-2. Type:
+## 3. Persistent state
+1. In the same editor, type:
    ```csharp
    var walls = GetElements<Wall>();
    Println($"Found {walls.Count} walls");
    ```
-3. Press **CTRL + ENTER** to execute.
-4. Click **Collapse** and type `walls.Count` in the single-line REPL to verify persistent state.
+2. Press **CTRL + ENTER** to execute.
+3. Clear the editor, then type `walls.Count()` on its own and run it — the variable from the previous turn is still alive.
+4. Type `vars` (no semicolon) to list everything the session is holding, and `reset` when you want a clean slate.
 
 ## 4. Extension Method Power
 1. **Action Chains**: In the REPL, type:
@@ -35,8 +35,8 @@ Practice interactive C# exploration and action chains in the Revit environment.
 2. **Batch Actions**: Type `GetElements<Wall>().Hide();` and observe Revit.
 
 ## 5. Saving Snippets
-1. Click the **Save** or **Save As** icons in the Workshop header.
-2. Name your snippet and save it as a `.cs` file.
+1. Click the **Save** or **Save As** icons in the editor header.
+2. Name your snippet and save it as a `.cs` file — the same file can be pasted into a Gallery script later.
 
 ---
 

@@ -1,194 +1,214 @@
 import ConsoleFull from '@site/static/img/console-full.png';
 import ConsoleEditor from '@site/static/img/console-editor.png';
-import ConsoleRepl from '@site/static/img/console-repl.png';
 import ConsoleHistory from '@site/static/img/console-history.png';
 import AnalyticsCharts from '@site/static/img/analytics-charts.png';
 
 # Interactive REPL (BIM Laboratory)
 
-The **Paracore REPL** (Read-Eval-Print Loop) is a persistent C# scratchpad with direct, real-time access to the Revit API and Paracore's high-level automation helpers. It is designed for iterative API discovery and rapid data exploration.
+The **Paracore REPL** (Read-Eval-Print Loop) is a persistent C# playground with direct, real-time access to the Revit API and Paracore's high-level helpers. It is one editor — not a "quick command box" plus a "proper script box". You type C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and the session answers.
 
-## Interactive Modes
+## One editor
 
-The REPL is located in the **Console Tab** and provides two **mutually exclusive** entry modes designed to toggle based on your active task:
+There is a single input, in the **Console** tab, below the execution history. It runs **whatever is in it**:
 
-1.  **Single-Line REPL**: A fast command-line at the footer for quick one-off commands and API queries. Entries here are saved in a **Command Cache**; use the **Up** and **Down** arrows to cycle through your history.
-2.  **Multi-Line Workspace**: A dedicated scratchpad for longer snippets and logic prototyping. It features a standalone **Run** button and supports **`Ctrl + Enter`** for execution.
+- one expression — `Doc.Title`
+- one statement — `var walls = GetElements<Wall>();`
+- a twenty-line snippet with a `foreach` and a local function
+- a whole script, including its `Params` class
+
+Nothing is classified as "single-line" or "multi-line" work, because there is no separate mode to be in. Press <kbd>Enter</kbd> for a new line; press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> — or click **Run** — to execute the whole buffer. A one-line command and a two-hundred-line draft follow exactly the same rules, and the difference between them is only how much you typed.
+
+<img src={ConsoleFull} alt="Console with editor and execution history" />
+
+### Saving and loading
+
+The editor reads and writes plain `.cs` files: **Load**, **Save**, **Save As**, and **New**. There is no required folder structure and no metadata block — a REPL snippet is a file you can keep, mail, or paste into a Gallery script later. When you are done experimenting, **New** clears the editor and unloads the file, so a draft never overwrites something you meant to keep.
+
+## The echo
+
+The single most useful behaviour in the whole tool: **the last expression in the editor is printed back to you.**
+
+```csharp
+"Paracore"
+```
+
+→ `Paracore`
+
+```csharp
+GetElements<Wall>().Count()
+```
+
+→ `42`
+
+```csharp
+GetElements<Wall>()
+```
+
+→ a numbered list, `01 - Basic Wall (359588)`, `02 - …`, capped at 50 with a note telling you to use `.Table()` for the full set.
+
+```csharp
+GetElements<Wall>().Table()
+```
+
+→ an interactive table in the **Summary** tab, and the raw list is suppressed underneath it.
+
+That is the whole read-eval-*print*: you do not need `Println` to see an answer, and you do not need to save a file to ask a question. **Echo to peek; `.Table()` to read.**
 
 > [!NOTE]
-> While the Multi-Line Workspace supports the same "magic" syntax as the single-line input, entries written here are **not** saved in the arrow-key Command Cache. This is because the workspace provides full **Load**, **Save**, and **Save As** file operations, allowing you to persist your logic as pure `.cs` files instead of relying on a volatile command history.
+> The semicolon decides. `Doc.Title` is an expression, so its value is yours to see. `Doc.Title;` is a statement, and statements have no value to print. This is ordinary C# — the REPL does not invent behaviour, it just shows you the result of what you typed.
 
-<img src={ConsoleFull} alt="Console Full View" />
+## Shared context between turns
 
-### File Management
-Unlike Modular Projects, scripts for the multi-line REPL do not require a specific folder structure. You can **Save** and **Load** pure `.cs` files from any folder on your machine, making the REPL the ideal environment for rough drafts and scratchpad logic.
+The session is persistent. A variable defined in one turn is alive in the next, which is how you build something up over several turns instead of writing one enormous script and hoping:
 
-<img src={ConsoleEditor} alt="Multi-Line Editor Controls" />
-
-### Mode Switching
-- **Expanding**: Clicking the expand icon transitions the UI to the **Multi-Line Workspace**, removing the single-line input to maximize the editor area.
-- **Collapsing**: Collapsing the workspace removes the larger editor and restores the **Single-Line REPL** at the footer, providing a streamlined view with maximum [Console History](#3-multi-turn-interaction) visibility.
-
-<img src={ConsoleRepl} alt="Single-Line REPL" />
-
-## The Interactive Workflow
-
-The REPL operates on a "Read-Eval-Print" cycle. You write pure C# code (no classes or namespaces required) and execute it instantly in the active Revit session.
-
-### 1. Instant Execution
-- **Single-Line**: Type your command and press **Enter**.
-- **Multi-Line**: Click the **Run** button or press **`Ctrl + Enter`** to execute the entire workspace.
-
-### 2. Syntax & Discovery
-Both modes are designed for speed, but follow specific rules to ensure successful execution:
-- **Semicolons**: Mandatory for variable assignments (`var x = 10;`), but optional for one-liners and queries (`Selection.Count`).
-- **Count vs Count()**: Use the `.Count` property for immediate lists (e.g., `Selection.Count`, `GetMagicNames().Count`) and the `.Count()` method for dynamic enumerable queries (e.g., `GetElements<Wall>().Where(w => ...).Count()`).
-- **Magic Discovery**: Use the [Magic Accessors](#element-accessors-extension-methods) for direct and simplified property access.
-
-### 3. Shared Context & Multi-Turn Interaction
-Both modes share the same persistent execution environment. This means you can initialize complex data in the Multi-Line Workspace and surgically query it later from the Single-Line REPL.
-
-Because the environment is persistent, you can define a variable in one turn and reference it in the next:
 ```csharp
-// Multi-Line Workspace (Turn 1)
+// turn 1
 var rooms = GetElements<Room>();
 Println($"Found {rooms.Count} rooms");
 ```
+
 ```csharp
-// Single-Line REPL (Turn 2)
-rooms.Table().Select(r => new { r.Name, r.Area })
+// turn 2 — `rooms` is still here
+rooms.WhereParam("Level", "Level 1").Table()
 ```
 
-<img src={ConsoleHistory} alt="REPL Session History" />
+| Command | Effect |
+| :--- | :--- |
+| `vars` (or `list`) | list every variable alive in the session |
+| `reset` (or `clear vars`) | wipe the session state without restarting Revit |
+| `inspect rooms` | formatted tree of one variable, safe for Revit elements |
 
----
+<img src={ConsoleHistory} alt="REPL session history: each turn with the result it produced" />
 
-## Global Reference
+The **History** tab keeps every turn — the code and the result — so a session is a readable transcript you can scroll back through and re-run.
 
-These objects and helpers are globally injected into every REPL turn.
+## Scripting rules
+
+A REPL turn is a top-level script. That means:
+
+- **No `class Program`, no `Main()`, no namespace** — write statements.
+- **`using` statements are allowed** and rarely needed; the common Revit and LINQ namespaces are already imported.
+- **Classes go at the end.** If you paste a script with a `Params` class, it belongs after the top-level statements — which is also where the engine reads your form from.
+- **Variables persist; types do not.** A class defined in a turn is available to later turns, but redefining it is easier than fighting it. (`reset` clears everything.)
+
+```csharp
+var limit = 2.5.InputUnit("m");
+
+var tall = GetElements<Wall>()
+    .Where(w => w.GetNum("Unconnected Height") > limit);
+
+tall.Table();
+tall.Select().Zoom();
+```
+
+## Global reference
+
+These are injected into every turn, script, and Gallery script.
 
 | Object | Type | Description |
 | :--- | :--- | :--- |
 | **`Doc`** | `Document` | The active Revit database Document. |
 | **`UIDoc`** | `UIDocument` | The Revit UI Document (active window). |
-| **`Selection`** | `List<Element>` | Elements currently selected in the Revit viewport. |
-| **`Println(msg)`** | `void` | Formatted console output with string interpolation support. |
+| **`UIApp`** | `UIApplication` | The Revit application. |
+| **`ActiveView`** | `View` | The active view. |
+| **`Selection`** | `List<Element>` | Elements currently selected in Revit. |
+| **`Parameters`** | `Dictionary<string, object>` | Parameters passed from the UI or an agent. |
+| **`Println(msg)`** | `void` | Console output, with `$"…"` interpolation. |
 
----
+## Reading and writing, without the boilerplate
 
-## Parameter & Property Accessors (Extension Methods)
-
-Paracore extends standard Revit elements with "Magic" accessors that handle unit conversion and identity resolution automatically.
-
-### Reading Data
 | Method | Returns | Notes |
 | :--- | :--- | :--- |
-| **`GetStr(name)`** | `string` | Smart resolution: returns the **Name** if the parameter is an ID (e.g., Level). |
-| **`GetNum(name)`** | `double` | Returns raw internal units (feet/sqft). |
-| **`GetNum(name, unit)`** | `double` | Converts internal units to requested unit (e.g., `"mm"`, `"m2"`). |
-| **`GetVal(name)`** | `string` | Returns the formatted string exactly as seen in the Revit Properties palette. |
+| **`GetStr(name)`** | `string` | Resolves an ElementId to its **name** (so `GetStr("Level")` is `"Level 1"`, not `255432`). |
+| **`GetNum(name)`** | `double` | Internal units (feet / sq ft) — for arithmetic. |
+| **`GetNum(name, unit)`** | `double` | Converted, **exact** (`"mm"`, `"m2"`, …). |
+| **`GetVal(name)`** | `string` | Formatted exactly as Revit's Properties palette shows it. |
+| **`GetInt(name)`** | `int` | Yes/no checkboxes → 1 / 0. |
+| **`SetVal(name, value)`** | — | The smart setter: parses units, ids and strings. Opens its own transaction. |
+| **`SetNum(name, num, unit)`** | — | Explicit unit-aware numeric setter. |
 
-### Writing Data
-| Method | Description |
-| :--- | :--- |
-| **`SetVal(name, value)`** | **The Smart Setter**. Automatically parses units, IDs, and strings. |
-| **`SetNum(name, num, unit)`** | Explicit unit-aware numeric setter. |
-
----
-
-## Magic Discovery
-
-Use these high-level accessors to instantly find elements by name, category, or class.
+## Discovery
 
 ```csharp
-// Single-Line REPL examples
-var doors = GetElements("Doors");            // All door instances
-var types = GetElements<FamilySymbol>("Doors"); // All door types
-GetElement("Level 1").Select()              // Chain with Select()
-GetMagicNames().Count                        // Total number of magic names
-GetElements<Element>()                       // Universal Accessor: Target everything
-
-// Use the new Fluent extension
-Println(Selection[0].FamilyName())
+var doors = GetElements("Doors");                 // door instances
+var types = GetElements<FamilySymbol>("Doors");   // door types
+GetElement("Level 1").Select()                    // one element, chained into the UI
+GetMagicNames().Count                             // how many targetable names exist
+GetElements<Element>()                            // everything — bulk audits
 ```
 
-:::tip[Master Tip: Target Everything]
+:::tip[Target everything]
 
-Since `Element` is the base class for all Revit objects, calling `GetElements<Element>()` is the most powerful way to perform bulk audits or search for data across the entire model.
+`Element` is the base class of every Revit object, so `GetElements<Element>()` is the widest net there is. Combine it with `WhereCategory` or `WhereMaterial` instead of enumerating categories by hand.
 :::
 
----
-
-## Visualization API
-
-Pipe your data directly into the **Analytics Tab** for interactive analysis.
+## Visualization
 
 | Command / Method | Type | Description |
 | :--- | :--- | :--- |
-| **`Table(data)`** | Global | Renders a grid. Returns **`void`** (not chainable). |
-| **`.Table()`** | Extension | Renders a grid and returns the collection. **Chainable**. |
-| **`.PieGraph()`** | Extension | Renders a high-contrast pie chart (Auto-maps keys to labels/values). |
-| **`.BarGraph()`** | Extension | Renders a high-contrast bar chart (Auto-maps keys to labels/values). |
-| **`.Select()`** / **`.Zoom()`** | Extension | Chain these to any collection to select or focus elements. |
+| **`Table(data)`** | Global | Renders a grid. Returns `void` (not chainable). |
+| **`.Table()`** | Extension | Renders a grid and returns the collection — chainable. |
+| **`.BarGraph()`** / **`.PieGraph()`** / **`.LineGraph()`** | Extension | Charts the collection; supply items with `name` and `value`. |
+| **`.Select()`** / **`.Zoom()`** / **`.Isolate()`** | Extension | Drive the Revit UI from any collection. |
 
-<img src={AnalyticsCharts} alt="Analytics Visualization" />
+<img src={AnalyticsCharts} alt="Charts rendered from a REPL query" />
 
 ```csharp
-// Multi-Line Snippet (Workshop)
-// Create the "Walls per Level" bar graph shown above
+// walls per level, as a bar chart
 var data = GetElements<Wall>()
-    .GroupBy(w => w.GetStr("Base Constraint"))
-    .Select(g => new { Level = g.Key, Count = g.Count() });
+    .GroupBy(w => w.GetStr("Level"))
+    .Select(g => new { name = g.Key, value = g.Count() })
+    .ToList();
 
 BarGraph(data);
 ```
 
----
+## Recipes
 
-## Example Recipes
+### An element audit
 
-### 1. Element Audit
-Find elements more than 1000m from the origin (likely misplaced or CAD import artifacts).
+Elements further than a kilometre from the origin are almost always CAD-import debris:
+
 ```csharp
 var limit = 1000.InputUnit("m");
-var lost = GetElements<Element>().Where(e => {
+
+var lost = GetElements<Element>().Where(e =>
+{
     var bb = e.get_BoundingBox(null);
     if (bb == null) return false;
-    var center = (bb.Min + bb.Max) / 2.0;
-    // Semantically clear: Distance from one point to another
-    return center.DistanceTo(XYZ.Zero) > limit;
-});
-if (lost.Any()) {
-    lost.Select().Zoom()
-    Selection[0].Peek()
-}
+    var centre = (bb.Min + bb.Max) / 2.0;
+    return centre.DistanceTo(XYZ.Zero) > limit;
+}).ToList();
+
+Println($"{lost.Count} element(s) far from the origin");
+lost.Select();      // and Revit jumps to them
 ```
 
-### 2. Room Data Sync
-Copy the Room Name to the "Comments" of every door hosted within that room.
+### Door → room, in one pass
+
 ```csharp
-// Multi-Line Snippet (Workshop)
-Transact("Sync Room Data", () => {
-    foreach (var door in GetElements<FamilyInstance>("Doors")) {
-        var room = door.Room ?? door.FromRoom ?? door.ToRoom;
-        if (room != null) door.SetVal("Comments", $"In: {room.Name}");
-    }
-});
+GetElements<FamilyInstance>("Doors")
+    .StandardDoor()
+    .Select(d => new
+    {
+        Mark    = d.GetStr("Mark"),
+        From    = d.RoomFrom(),
+        To      = d.RoomTo(),
+        Handing = d.Handing()
+    })
+    .Table();
 ```
 
-### 3. Quick Area Chart
-Visualize the distribution of Room areas by Level.
+### Room areas by level
+
 ```csharp
-// Multi-Line Snippet (Workshop)
-var stats = GetElements<Room>().Where(r => r.Area > 0)
+PieGraph(GetElements<Room>()
+    .Where(r => r.GetNum("Area") > 0)
     .GroupBy(r => r.GetStr("Level"))
-    .Select(g => new { Level = g.Key, Total_Area = g.Sum(r => r.GetNum("Area", "m2")) });
-
-PieGraph(stats);
+    .Select(g => new { name = g.Key, value = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1) })
+    .ToList());
 ```
 
 ---
 
-> 📖 **Full API Reference**: For an exhaustive list of every available helper, parameter accessor, and unit conversion method, see the **[Paracore Extension Methods](../extension-methods/)**.
-
----
+> 📖 **Full API Reference**: every helper, accessor and unit method — **[Extension Methods](../extension-methods/index.mdx)**. New to all this? Start with **[Tutorial 1: Sixty Seconds in the Editor](../tutorials/the-repl.md)**.
