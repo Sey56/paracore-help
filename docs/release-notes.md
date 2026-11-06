@@ -2,35 +2,35 @@
 
 Version history and changelog for Paracore.
 
-### V4.8.3 (November 2026) — Revit 2027, and No Quiet Holes
+### V4.8.3 (November 2026) — Revit 2027, and Everything in One Download
 
-**Paracore now runs in Revit 2025, 2026 and 2027.** One installer, one .NET 8 payload, one version number across the engine, the add-in, the desktop app and the VS Code extension. Revit 2027 runs on **.NET 10** and loads that payload directly — no migration, no retarget and no separate download.
+**Paracore now works in Revit 2025, 2026 and 2027.** One installer, one payload, no separate
+2027 download. Revit 2027 runs on .NET 10 and loads the same Paracore build directly.
 
-> This also includes everything from **V4.8.2** and **V4.8.1**. V4.8.2 was published in October 2026; the 2027 work landed after that release, which is why it ships as 4.8.3.
+> This also includes everything from **V4.8.2** and **V4.8.1**. V4.8.2 was published in October
+> 2026; the 2027 work landed after that release, which is why it ships as 4.8.3.
 
-#### 🏗️ What 2027 actually needed
+#### What's new
 
-- **A new home for the manifest.** Revit 2027 reads all-users add-ins from `C:\Program Files\Autodesk\Revit\Addins\2027`, not from ProgramData. The installer now targets that path for 2027 only; 2025 and 2026 are unchanged. This was checked against Autodesk's own 2027 developer guide and confirmed by Revit 2027's own journal.
-- **One engine, not two.** On .NET 10 a second copy of the engine could be loaded, so a script lost its context and failed with *"Script context is not available"*. The shim now makes sure the script binds to the engine that owns the context, without turning off the isolation that keeps other add-ins from colliding.
-- **`.IntegerValue` is gone.** Revit 2027 removed `ElementId.IntegerValue`. Every live engine helper and runtime script now uses `.Value`, so gallery scripts such as **MassEdit** run in 2027 too — the failing reference was in the compiled engine, not in the gallery script.
+- **Revit 2027 support.** The add-in loads in 2027 and scripts run there. `GetElements("Rooms")`
+  and the **MassEdit** gallery script were both tested in a live 2027 session.
+- **Safer scripts.** A script can no longer ask the machine for capabilities it was never given,
+  and file access is kept to one workspace.
+- **One place to download.** The desktop app, the Revit add-in, the VS Code extension and
+  Paracore-Gen are all attached to the same release page — take what you need.
+- **Paracore-Gen v2.1.2**, the optional AI script-generation server, is included in the same
+  download.
 
-Verified in a live Revit 2027 session: `GetElements("Rooms")` returned a six-room pipeline, and a gallery script renumbered those rooms in a Revit 2027 sample file.
+#### Install
 
-#### 🔒 Refusing capabilities at compile time
+1. Download **`Paracore_4.8.3_x64.msi`** (desktop app) and **`Paracore_Addin_v4.8.3.exe`**
+   (Revit add-in).
+2. Run the add-in installer as administrator and tick the Revit versions you have.
+3. Optional: install **`corescript-4.8.3.vsix`** in VS Code, or
+   **`Paracore-Gen-v2.1.2.exe`** for AI-assisted script generation.
 
-A script can no longer ask the machine for capabilities it was never given: dangerous constructs are refused before the script runs, and file access is confined to one workspace. The add-in's scan bypasses are closed, and a refused script no longer hands out the recipe it was refused for.
-
-Each frozen MCP exe also now carries the identity of the shared core and a hash of its own source, so "which build is this?" can be answered from the artifact instead of guessed from a file date.
-
-#### 🔐 Sign-in moved to the Cloudflare Worker
-
-Desktop sign-in no longer depends on Railway. The JWT public key has a tracked home and is asserted at build time.
-
-#### 🔌 Paracore-Gen v2.1.2
-
-Released together. Its frozen exe now proves which shared core it contains and which source tree it was built from, and it inherits all of the above through that shared core. The other MCPs — model, family, forge and takeoff — stay at 2.0.0.
-
-> 📖 Full details: **[Paracore v4.8.3](https://github.com/Sey56/Paracore/releases)** · **[Paracore-Gen v2.1.2](https://github.com/Sey56/paracore-gen/releases)**
+> 📖 **[Download v4.8.3](https://github.com/Sey56/Paracore/releases/tag/v4.8.3)** — the full
+> technical notes are on that release page.
 
 ---
 
@@ -86,7 +86,7 @@ It is closed at the root rather than case by case, and in all four places the ru
 
 #### 🔌 Paracore-Gen v2.1.1
 
-The MCP server no longer teaches modelling. It generates REPL code against the raw Revit API and the Paracore methods — `paracore-model` is the server that models — but a modelling skill had been left in its catalogue, so an agent could be walked into a workflow that server cannot support. It is gone from **this** server only; the other servers still have it.
+The MCP server no longer teaches modelling. It generates REPL code against the raw Revit API and the Paracore methods, but a modelling skill had been left in its catalogue, so an agent could be walked into a workflow that server cannot support. It is gone from **this** server only.
 
 Its build also now proves it shipped its skills. A filter change had left the installer carrying **no skills at all**, with no check looking — a gate now fails the build if the bundle is empty or missing anything expected.
 
@@ -253,14 +253,14 @@ Each `.Where()`, `.GroupBy()`, or `.Select()` shows how many elements survived �
 
 Crash paths fixed across query, runs, and tool builder routers. Parameter sync now detects IDE edits within 500ms so the Parameters tab updates as you edit in VS Code.
 
-V4.5.0 introduces three major new capabilities — the AI Agent, MCP Server, and Playlist Mode — all open and accessible without sign-in. Clash Detection, Eco Analysis, and Sentinels are not available in this release.
+V4.5.0 introduces three major new capabilities — the AI Agent, MCP Server, and Playlist Mode — all open and accessible without an account. Clash Detection, Eco Analysis, and Sentinels are not available in this release.
 
 #### 🤖 Agent Mode *(New)*
 
 Describe what you want in plain language and the Agent generates C# code using Paracore's fluent DSL, then executes it in Revit — with you in control at every step.
 
 - **Setup**: Go to **TopBar → Settings → LLM Settings**, select a provider (DeepSeek, Google, OpenAI, Anthropic, or OpenRouter), choose a model, enter your API key, and click Save.
-- **No sign-in required** — click **Continue Offline** and the Agent is fully usable.
+- **No account required** — click **Continue Offline** and the Agent is fully usable.
 - **Sovereign Code Generation**: The Agent writes C# on the fly via the REPL engine rather than relying on a fixed set of hardcoded tools. It uses two tools:
   - `explore_revit_data` — silently inspects your model's schema to understand available parameters and categories.
   - `execute_dynamic_query` — generates the final C# script and **pauses for your approval** before running. Nothing mutates your model without you reviewing the code first.
@@ -281,7 +281,7 @@ The Paracore REPL engine is now available as an MCP (Model Context Protocol) ser
 Chain gallery scripts into a sequence and run them one after another.
 
 - Pick scripts from your active script gallery and arrange them in order.
-- **No sign-in required** — works fully offline.
+- **No account required** — works fully offline.
 
 #### ⏸️ Not Available in This Release
 
