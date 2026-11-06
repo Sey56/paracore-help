@@ -8,6 +8,8 @@ Every problem fixed in this release has the same shape: **something went wrong a
 
 > This also includes everything from **V4.8.1**, which was held back — IntelliSense in the editor, the Pack SDK, type-write warnings, `Batch` / `Checkpoints`, and the consent dialog that waits for you.
 
+> **Revit 2027 (added 2026-11-06):** the v4.8.2 installer now offers a third version task, and one .NET 8 payload supports **Revit 2025, 2026 and 2027**. Revit 2027 runs on .NET 10 and loads that payload directly — no migration and no separate download.
+
 #### ↩️ A failed script no longer leaves half its work behind
 
 Until now, each write saved itself the moment it happened. So a script that changed twenty walls and then hit an error on the twenty-first reported **"failed"** — while the first twenty changes stayed in your model. You were told it did not run, and the model disagreed with you.

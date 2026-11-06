@@ -14,7 +14,7 @@ Everything runs in the **REPL**: paste, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, 
 
 Four things must be true, in this order:
 
-1. **Revit 2025 or 2026** is open. The add-in runs on **.NET 8**; Revit 2027 runs on **.NET 10**, where Paracore does not load.
+1. **Revit 2025, 2026 or 2027** is open. Paracore ships one **.NET 8** payload; Revit 2027 runs on **.NET 10** and loads that payload directly — no separate build or setting.
 2. The **Paracore server** is switched **ON** in the Paracore ribbon tab — a red circle reading **OFF** until you click it, then a green circle reading **ON**.
 3. **Paracore Desktop** shows a green **Connected** in the TopBar. The app starts its connector (`rap-server`) as a sidecar, so give it a second or two; a red **Disconnected** means the server above is off or Revit is still loading.
 4. The **REPL** tab is active in the TopBar — the three views are **REPL**, **Gallery** and **Playlists**. Results land in **History**; tables and charts land in **Analytics**.

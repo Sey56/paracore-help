@@ -4,7 +4,7 @@ No file, no project, no `Params` class. Open the REPL editor, type one line, pre
 
 **You need**, in this order:
 
-1. **Revit 2025 or 2026**, with any project open. The add-in runs on **.NET 8**; Revit 2027 runs on **.NET 10**, where Paracore does not load.
+1. **Revit 2025, 2026 or 2027**, with any project open. Paracore ships one **.NET 8** payload, which Revit 2027's **.NET 10** host loads directly — no separate build or setting.
 2. The **Paracore server** switched **ON** in the Paracore ribbon tab — the button is a red circle reading **OFF** until you click it, then a green circle reading **ON**.
 3. **Paracore Desktop** started, showing a green **Connected** in the TopBar. The app launches its connector (`rap-server`) as a sidecar, so give it a second or two; a red **Disconnected** means the server in step 2 is off, or Revit is still loading.
 4. The **REPL** tab active in the TopBar. The editor is the **REPL Playground** panel.

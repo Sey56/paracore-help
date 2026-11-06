@@ -12,7 +12,7 @@ All eight run in the **REPL** — the editor in the **REPL** tab, not a file on 
 
 The lessons run inside Revit, through the desktop app. Four things must be true before the first line of C# does anything:
 
-1. **Revit 2025 or 2026 is open.** The add-in runs on **.NET 8**. Revit 2027 moved to **.NET 10** and Paracore does not load there — that is a version boundary, not a setting.
+1. **Revit 2025, 2026 or 2027 is open.** Paracore ships a single **.NET 8** payload. Revit 2027 moved to **.NET 10** and loads that same payload directly — there is no version boundary and no separate build to pick.
 2. **The Paracore server is on.** In the **Paracore** ribbon tab, the **Paracore Server** button shows a red circle and **OFF**. Click it: the circle turns green and the label reads **ON**.
 3. **The desktop app says Connected.** Start **Paracore Desktop**. It launches its connector (`rap-server`) as a sidecar, so give it a second or two: the **TopBar** status changes from a red **Disconnected** to a green **Connected**. If it stays red, the server in step 2 is off, or Revit is still starting.
 4. **The REPL tab is active.** Pick **REPL** in the TopBar — the three views are **REPL**, **Gallery** and **Playlists**. The editor is the **REPL Playground** panel; results land in **History**, and tables and charts in **Analytics**.

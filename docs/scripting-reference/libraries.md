@@ -50,4 +50,4 @@ Paracore is designed to be a self-contained ecosystem. While you can technically
 
 ---
 
-*Note: The built-in libraries are chosen for their performance and stability within the Revit .NET 8 environment.*
+*Note: The built-in libraries are chosen for their performance and stability within the Revit .NET 8 environment, and within Revit 2027's .NET 10 host, which loads the same .NET 8 payload.*
