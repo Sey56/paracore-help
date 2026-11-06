@@ -2,13 +2,45 @@
 
 Version history and changelog for Paracore.
 
+### V4.8.3 (November 2026) — Revit 2027, and No Quiet Holes
+
+**Paracore now runs in Revit 2025, 2026 and 2027.** One installer, one .NET 8 payload, one version number across the engine, the add-in, the desktop app and the VS Code extension. Revit 2027 runs on **.NET 10** and loads that payload directly — no migration, no retarget and no separate download.
+
+> This also includes everything from **V4.8.2** and **V4.8.1**. V4.8.2 was published in October 2026; the 2027 work landed after that release, which is why it ships as 4.8.3.
+
+#### 🏗️ What 2027 actually needed
+
+- **A new home for the manifest.** Revit 2027 reads all-users add-ins from `C:\Program Files\Autodesk\Revit\Addins\2027`, not from ProgramData. The installer now targets that path for 2027 only; 2025 and 2026 are unchanged. This was checked against Autodesk's own 2027 developer guide and confirmed by Revit 2027's own journal.
+- **One engine, not two.** On .NET 10 a second copy of the engine could be loaded, so a script lost its context and failed with *"Script context is not available"*. The shim now makes sure the script binds to the engine that owns the context, without turning off the isolation that keeps other add-ins from colliding.
+- **`.IntegerValue` is gone.** Revit 2027 removed `ElementId.IntegerValue`. Every live engine helper and runtime script now uses `.Value`, so gallery scripts such as **MassEdit** run in 2027 too — the failing reference was in the compiled engine, not in the gallery script.
+
+Verified in a live Revit 2027 session: `GetElements("Rooms")` returned a six-room pipeline, and a gallery script renumbered those rooms in a Revit 2027 sample file.
+
+#### 🔒 Refusing capabilities at compile time
+
+A script can no longer ask the machine for capabilities it was never given: dangerous constructs are refused before the script runs, and file access is confined to one workspace. The add-in's scan bypasses are closed, and a refused script no longer hands out the recipe it was refused for.
+
+Each frozen MCP exe also now carries the identity of the shared core and a hash of its own source, so "which build is this?" can be answered from the artifact instead of guessed from a file date.
+
+#### 🔐 Sign-in moved to the Cloudflare Worker
+
+Desktop sign-in no longer depends on Railway. The JWT public key has a tracked home and is asserted at build time.
+
+#### 🔌 Paracore-Gen v2.1.2
+
+Released together. Its frozen exe now proves which shared core it contains and which source tree it was built from, and it inherits all of the above through that shared core. The other MCPs — model, family, forge and takeoff — stay at 2.0.0.
+
+> 📖 Full details: **[Paracore v4.8.3](https://github.com/Sey56/Paracore/releases)** · **[Paracore-Gen v2.1.2](https://github.com/Sey56/paracore-gen/releases)**
+
+---
+
 ### V4.8.2 (October 2026) — It Tells You Instead of Guessing
 
 Every problem fixed in this release has the same shape: **something went wrong and said nothing**, or **something worked and did more than it looked like**. A mistyped parameter name quietly returned zero. A write that could not happen reported success. A script that wrote and then failed kept half its work. This release makes the engine speak up.
 
 > This also includes everything from **V4.8.1**, which was held back — IntelliSense in the editor, the Pack SDK, type-write warnings, `Batch` / `Checkpoints`, and the consent dialog that waits for you.
 
-> **Revit 2027 (added 2026-11-06):** the v4.8.2 installer now offers a third version task, and one .NET 8 payload supports **Revit 2025, 2026 and 2027**. Revit 2027 runs on .NET 10 and loads that payload directly — no migration and no separate download.
+> **Revit 2027 support is in V4.8.3, not this release.** V4.8.2 was published in October 2026; a later build carrying the 4.8.2 number is not this release.
 
 #### ↩️ A failed script no longer leaves half its work behind
 
