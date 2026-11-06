@@ -168,6 +168,7 @@ const sidebars: SidebarsConfig = {
       label: 'Gallery Scripts',
       link: { type: 'doc', id: 'tutorials/more-automation' },
       items: [
+        'tutorials/gallery-00-start-here',
         'tutorials/gallery-01-hello-wall',
         'tutorials/gallery-02-parameter-palette',
         'tutorials/gallery-03-pick-and-place',

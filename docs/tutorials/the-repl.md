@@ -114,7 +114,7 @@ MyScriptSource/HelloWall/Scripts/HelloWall.cs
 
 **There is no path from a saved file to the Gallery.** The Gallery lists script sources and the projects inside them, so a `.cs` file dropped into a folder — however good it is — is not a gallery script and never appears as a card. That boundary is real, and getting it wrong early is why people think saving a REPL snippet "publishes" it.
 
-What *does* carry across is the **code**: everything you write here is the same C# against the same engine, so a snippet that works in the editor works unchanged as a Gallery entry script. The saved, parameterised kind is [Gallery Scripts](./more-automation.md) — its tutorials are still being written.
+What *does* carry across is the **code**: everything you write here is the same C# against the same engine, so a snippet that works in the editor works unchanged as a Gallery entry script. The saved, parameterised kind is [Gallery Scripts](./more-automation.md). Before the first of those lessons, do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) — Gallery scripts are files on disk, so you need a script source and VS Code to create and edit them.
 
 That is the next lesson: [Find Anything →](./reading-the-model.md)
 
