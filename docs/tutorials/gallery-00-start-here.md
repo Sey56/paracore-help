@@ -179,7 +179,7 @@ That is the loop for every Gallery lesson: **edit in VS Code → save → run in
 
 **Edit Script** in Part 3 already generated the workspace and opened it in VS Code. You are editing the same `Scripts\` folder that Paracore executes, so with the **corescript-vscode** extension installed you can also run from here.
 
-Press **`Ctrl+Shift+R`**, or use **Manage → Command Palette… → `CoreScript: Run in Revit`** (`Cmd+Shift+R` on macOS). Revit must be open and the **Paracore Server** toggled ON. The extension sends the `.cs` files in `Scripts\` straight to the Revit add-in; `Println` output and errors appear in the **CoreScript** Output channel in VS Code. It is the same engine running the same code — the only difference is **where the inputs come from**.
+Press **`Ctrl+Shift+R`**, or use **Manage → Command Palette… → `CoreScript: Run in Revit`**. Revit must be open and the **Paracore Server** toggled ON. The extension sends the `.cs` files in `Scripts\` straight to the Revit add-in; `Println` output and errors appear in the **CoreScript** Output channel in VS Code. It is the same engine running the same code — the only difference is **where the inputs come from**.
 
 | Your script | Where to set inputs | Where to run |
 |---|---|---|
