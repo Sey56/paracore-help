@@ -62,19 +62,29 @@ Table(exterior.Select(d => new { Mark = d.GetStr("Mark"), From = d.RoomFrom(), T
 Everything so far has been a table. Here is the move that changes how you debug: **export the view and look at the picture.**
 
 ```csharp
-var shot = ExportImage(@"C:\tmp\room-check");
+var shot = ExportImage("room-check");
 Println(shot);
 ```
 
+`ExportImage` is a global method of the Paracore engine — it is available in the REPL, in Gallery scripts and in VS Code, with no `using` and no extra setup. Run the two lines on a plan view and the last one prints the file that was actually written.
+
+**One thing to know about paths in the REPL Playground.** It is a sandbox: scripts may read and write only inside one workspace folder, and `System.IO` — `File`, `Directory`, `Path`, `FileStream` — is not available on this channel at all. `ExportImage` writes a file too, so its target goes through the same check. A **relative** name such as `"room-check"` resolves inside that folder and works. An absolute path such as `C:\tmp\room-check` is outside it and is refused with `REFUSED BY THE SCRIPT SANDBOX`. To see where your files land:
+
+```csharp
+Println(Files.Root);   // %LOCALAPPDATA%\Paracore\AgentWorkspace by default
+```
+
+Use `Files.Root + "/room-check"` if you want the folder spelled out, but do not reach for `Path.Combine` — `Path` is not available here. Gallery scripts run outside this sandbox and *can* use absolute paths; [File I/O in Gallery scripts](./gallery-07-file-io.md) explains the difference. If you need the workspace on another drive, set the `PARACORE_AGENT_WORKSPACE` environment variable before starting Paracore.
+
 Three details matter, and all three surprise people:
 
-- **Use the return value.** It is the file that actually exists — Revit appends the view name to your base name and may change the extension: asking for `C:\tmp\shot` on the default 3D view writes `C:\tmp\shot - 3D View - {3D}.jpg`. A 3D or shaded view is written as `.jpg` even when you wanted PNG.
+- **Use the return value.** It is the file that actually exists — Revit appends the view name to your base name and may change the extension: asking for `room-check` on the default 3D view writes `room-check - 3D View - {3D}.jpg` inside the workspace. A 3D or shaded view is written as `.jpg` even when you wanted PNG.
 - **Annotation is hidden by default.** Revit does not clip level heads, grid bubbles and elevation markers to the view, and because it fits the whole extent to the page, a plan with elevation markers beside it renders the building into a fraction of the frame. `hideAnnotation: false` keeps them when you want them.
 - **No `Transact`.** The suppression is opened and rolled back internally — the model and the view are unchanged afterwards.
 
 ```csharp
 // a named view, 2000 px wide, keeping the tags
-ExportImage(@"C:\tmp\north-elev", "North Elevation", 2000, hideAnnotation: false);
+ExportImage("north-elev", "North Elevation", 2000, hideAnnotation: false);
 ```
 
 ## The script
@@ -112,16 +122,16 @@ Println($"{exterior.Count()} exterior door(s)");
 exterior.Select();          // highlight them in Revit
 
 // 4. and look at the view
-Println(ExportImage(@"C:\tmp\door-audit"));
+Println(ExportImage("door-audit"));
 ```
 
-Run it on a plan view, then open the file the last line printed. That is the loop this platform is built for: **ask, look, adjust** — without leaving Revit and without writing a command.
+Run it on a plan view, then open the file the last line printed — it is in `Files.Root`. That is the loop this platform is built for: **ask, look, adjust** — without leaving Revit and without writing a command.
 
 ## Try This
 
 1. Select the doors whose handing disagrees with their name: `.Where(d => d.GetStr("Mark").EndsWith("L") && d.Handing() == "RH").Select()`.
 2. Chart the doors per level: `GetElements<FamilyInstance>("Doors").GroupByParam("Level")`.
-3. `ExportImage(@"C:\tmp\iso")` while a 3D view is active — and note the `.jpg` even though you asked for nothing.
+3. `ExportImage("iso")` while a 3D view is active — and note the `.jpg` even though you asked for nothing.
 4. Take the wall-outline from [Tutorial 5](./creating-geometry.md) and add doors to it: `FamilyInstance` creation is the one thing that still needs the raw API, and [Gallery Scripts](./more-automation.md) is where that road leads (tutorials in progress).
 
 ---
