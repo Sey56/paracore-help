@@ -6,9 +6,11 @@ A REPL snippet is one file. A gallery script can be **many files** — and that 
 
 When a script grows past 80 lines, the `Params` class and the logic start competing for space. Splitting lets you keep the entry script readable while the helper methods and the parameter definitions live in their own files. The engine merges them at compile time — you are not writing a library, you are organising one tool.
 
+> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+
 ## Create the script
 
-Create a new script called **LevelAuditor**. This time you will add files manually after the scaffold.
+Create a new script called **LevelAuditor** and open it with **Edit Script**. This time you will add files to its `Scripts` folder manually after the scaffold.
 
 ### File 1: `LevelAuditor.cs` (the entry script)
 

@@ -8,37 +8,45 @@ This lesson takes the wall from [REPL Tutorial 5](./creating-geometry.md) and tu
 
 In the REPL, you type code and press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>. In the Gallery, you create a **script** inside a **script source**, and the script has a `Params` class at the bottom whose properties become editable controls. The code is the same C# against the same engine — what changes is the *container* and the *input surface*.
 
-## Step 1: Create a script source
+## Step 1: Set up your script source (once)
 
-A **script source** is a folder that holds your tools. It needs a `.paracore` marker file in it.
+A **script source** is a folder that holds your tools. It needs a `.paracore` marker file in it, and **VS Code** must be installed — you cannot edit scripts inside the desktop app.
 
-1. In the sidebar, under **Local Sources**, click the **Load or Initialize Source** button (folder icon).
-2. Pick an **empty folder** on your machine — something like `Documents\MyScripts`.
-3. Paracore creates a `.paracore` file inside it and loads it as the active source.
+1. Create an **empty folder**, e.g. `Documents\MyScripts`. If you already have a source, skip to Step 2.
+2. Click the **hamburger menu** (☰) in the top-left corner to show the **Sidebar**.
+3. Under **Local Sources**, click the small **folder button** on the right — tooltip **Load or Initialize Source**. A native folder dialog opens.
+4. Select the empty folder and click **Select Folder** (or double-click it).
+5. In the **Initialize Script Source** dialog, click **Initialize**. The description is optional.
 
-The folder is now a script source. Its name appears in the dropdown, and the Gallery shows it has no scripts yet.
+Paracore creates the `.paracore` file and makes this the **active** source — its name is selected in the dropdown under **Local Sources**. New scripts always go into the active source.
+
+> New to the Gallery? **[Before You Start: Script Sources and VS Code](./gallery-00-start-here.md)** walks through all of this step by step, plus your first script, the Configurator and your first VS Code edit.
 
 ## Step 2: Create the script
 
 1. Switch to the **Gallery** tab in the TopBar.
-2. Click the **NEW** button.
-3. In the modal, type the name **HelloWall** and click **Create**.
+2. Click **NEW**. The **New Script** modal opens.
+3. Type the name **HelloWall** — no spaces.
+4. Click **Archetype** on the right of the modal.
+5. Click **Generate Script** at the bottom right (it becomes active once you pick Archetype).
 
-Paracore scaffolds the project:
+Paracore creates the project on disk:
 
 ```text
 MyScripts/
     .paracore
     HelloWall/
         Scripts/
-            HelloWall.cs       ← your entry script
+            HelloWall.cs       ← your entry script (a template with a metadata header)
 ```
 
-The entry script is a template with a metadata header. Open it by selecting the card and clicking **Edit Script** — that generates the `.csproj`, `.sln` and `Globals.cs` and opens VS Code with full IntelliSense.
+## Step 3: Open it in VS Code and write the script
 
-## Step 3: Write the script
+Select the **HelloWall** card and click **Edit Script** (the pencil button) in the Gallery toolbar. That one click opens **VS Code** with the `HelloWall` folder as your workspace and adds helper files — `HelloWall.csproj`, `HelloWall.sln`, `Globals.cs`, `bin`, `obj` and others — if they are not there yet.
 
-Replace the template contents with this:
+**Those helper files are only there for autocomplete.** They give VS Code knowledge of `Doc`, `Println`, `Transact`, the Revit API and ordinary C# namespaces. Paracore does not use them to run your script — the files in `Scripts\` are what execute in Revit, and that folder is left untouched. VS Code's own Run button will not run a Paracore script; use **Run** in the desktop app.
+
+In VS Code, open `Scripts\HelloWall.cs` and replace the template contents with this:
 
 ```csharp
 /*
@@ -90,11 +98,11 @@ public class Params
 }
 ```
 
-Save the file. Paracore picks up the change within half a second.
+Save the file. Paracore picks up the change within half a second — the code viewer and the parameter form both follow what you just saved in VS Code.
 
 ## Step 4: Look at the parameter form
 
-Back in the Gallery, select the **HelloWall** card. The **Parameters** tab on the right now shows four controls:
+Back in the desktop app, **double-click the HelloWall card** (or select it and click **Configure** in the Gallery toolbar). The **Configurator** opens and shows four controls:
 
 - **Target Level** — a dropdown listing every level in the project
 - **Wall Type** — a dropdown listing every wall type
@@ -105,7 +113,7 @@ That is what the `Params` class did. Each public property became a control. The 
 
 ## Step 5: Run it
 
-Pick a level, pick a wall type, leave the dimensions at their defaults, and click **Run**. A wall appears in the model.
+Pick a level, pick a wall type, leave the dimensions at their defaults, and click **RUN** in the Configurator (or **Run** in the Gallery toolbar). A wall appears in the model.
 
 Now change the length to `10` and run again. A longer wall. Change the wall type and run again. A different wall. **You did not edit the code** — that is the difference between a tool and a snippet.
 

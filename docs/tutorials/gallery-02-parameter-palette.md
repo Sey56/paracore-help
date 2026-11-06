@@ -2,9 +2,11 @@
 
 The first gallery script used two property types: `Level` and `WallType` (dropdowns) and `double` (number boxes). This lesson adds the rest of the basic palette — toggles, sliders, choice buttons, and conditional visibility — and does it with a read-only room inspector that is genuinely useful.
 
+> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+
 ## The script
 
-Create a new script called **RoomInspector** in your script source. Replace the template with:
+Create a new script called **RoomInspector**. Open it with **Edit Script** and replace the template in `Scripts/RoomInspector.cs` with:
 
 ```csharp
 /*

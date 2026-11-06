@@ -4,9 +4,11 @@ The last lesson in the gallery track, and the one that puts everything together:
 
 This is the kind of tool the Gallery exists for. It is too large for one file, it has too many parameters for the REPL, and it does work that no snippet should do without a parameter form.
 
+> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+
 ## Create the script
 
-Create a new script called **StructuralFrame**. You will write four files.
+Create a new script called **StructuralFrame** and open it with **Edit Script**. You will write four files in its `Scripts` folder.
 
 ### File 1: `StructuralFrame.cs` (the entry script)
 

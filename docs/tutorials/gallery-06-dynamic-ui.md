@@ -2,9 +2,11 @@
 
 The parameters panel does not have to be a static form. It can adapt — show controls, hide them, enable them, fill dropdowns from the model at runtime, and gate destructive operations behind a confirmation. This lesson builds a room finish updater that uses every one of those tricks.
 
+> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+
 ## The script
 
-Create a script called **RoomFinishUpdater**:
+Create a script called **RoomFinishUpdater** and open it with **Edit Script**:
 
 ```csharp
 /*

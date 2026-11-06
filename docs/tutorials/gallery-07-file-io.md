@@ -2,9 +2,11 @@
 
 Real tools read from and write to files — CSV imports, Excel exports, folder batches. The Gallery gives you three attributes for this: `[InputFile]`, `[OutputFile]`, and `[FolderPath]`. This lesson builds a CSV-driven room finish tool that uses all three.
 
+> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+
 ## The script
 
-Create a script called **CsvRoomSync**:
+Create a script called **CsvRoomSync** and open it with **Edit Script**:
 
 ```csharp
 /*
