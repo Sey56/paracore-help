@@ -2,24 +2,21 @@
 
 Version history and changelog for Paracore.
 
-### V4.8.3 (November 2026) — Revit 2027, and Everything in One Download
+### V4.8.3 (November 2026) — Revit 2027, and Everything in One Place
 
-**Paracore now works in Revit 2025, 2026 and 2027.** One installer, one payload, no separate
-2027 download. Revit 2027 runs on .NET 10 and loads the same Paracore build directly.
+**Paracore now works in Revit 2025, 2026 and 2027.** One add-in installer covers all three —
+tick the versions you have. There is no separate 2027 download.
 
-> This also includes everything from **V4.8.2** and **V4.8.1**. V4.8.2 was published in October
-> 2026; the 2027 work landed after that release, which is why it ships as 4.8.3.
+> This release also includes everything from **V4.8.2** and **V4.8.1**.
 
 #### What's new
 
-- **Revit 2027 support.** The add-in loads in 2027 and scripts run there. `GetElements("Rooms")`
-  and the **MassEdit** gallery script were both tested in a live 2027 session.
-- **Safer scripts.** A script can no longer ask the machine for capabilities it was never given,
-  and file access is kept to one workspace.
-- **One place to download.** The desktop app, the Revit add-in, the VS Code extension and
-  Paracore-Gen are all attached to the same release page — take what you need.
-- **Paracore-Gen v2.1.2**, the optional AI script-generation server, is included in the same
-  download.
+- **Revit 2027 support.** Open 2027 and run your scripts as usual.
+- **Fewer surprises.** Scripts are clearer when something goes wrong, and file access stays in
+  one safe place.
+- **One download page.** The desktop app, the Revit add-in, the VS Code extension and
+  Paracore-Gen are all together — take what you need.
+- **Paracore-Gen v2.1.2**, the optional AI script helper, is updated and included there too.
 
 #### Install
 
@@ -29,8 +26,7 @@ Version history and changelog for Paracore.
 3. Optional: install **`corescript-4.8.3.vsix`** in VS Code, or
    **`Paracore-Gen-v2.1.2.exe`** for AI-assisted script generation.
 
-> 📖 **[Download v4.8.3](https://github.com/Sey56/Paracore/releases/tag/v4.8.3)** — the full
-> technical notes are on that release page.
+> 📖 **[Download v4.8.3](https://github.com/Sey56/Paracore/releases/tag/v4.8.3)**
 
 ---
 
@@ -40,7 +36,7 @@ Every problem fixed in this release has the same shape: **something went wrong a
 
 > This also includes everything from **V4.8.1**, which was held back — IntelliSense in the editor, the Pack SDK, type-write warnings, `Batch` / `Checkpoints`, and the consent dialog that waits for you.
 
-> **Revit 2027 support is in V4.8.3, not this release.** V4.8.2 was published in October 2026; a later build carrying the 4.8.2 number is not this release.
+> **Revit 2027 support arrived in V4.8.3**, not in this release.
 
 #### ↩️ A failed script no longer leaves half its work behind
 
@@ -253,14 +249,13 @@ Each `.Where()`, `.GroupBy()`, or `.Select()` shows how many elements survived �
 
 Crash paths fixed across query, runs, and tool builder routers. Parameter sync now detects IDE edits within 500ms so the Parameters tab updates as you edit in VS Code.
 
-V4.5.0 introduces three major new capabilities — the AI Agent, MCP Server, and Playlist Mode — all open and accessible without an account. Clash Detection, Eco Analysis, and Sentinels are not available in this release.
+V4.5.0 introduces three major new capabilities — the AI Agent, MCP Server, and Playlist Mode. Clash Detection, Eco Analysis, and Sentinels are not available in this release.
 
 #### 🤖 Agent Mode *(New)*
 
 Describe what you want in plain language and the Agent generates C# code using Paracore's fluent DSL, then executes it in Revit — with you in control at every step.
 
 - **Setup**: Go to **TopBar → Settings → LLM Settings**, select a provider (DeepSeek, Google, OpenAI, Anthropic, or OpenRouter), choose a model, enter your API key, and click Save.
-- **No account required** — click **Continue Offline** and the Agent is fully usable.
 - **Sovereign Code Generation**: The Agent writes C# on the fly via the REPL engine rather than relying on a fixed set of hardcoded tools. It uses two tools:
   - `explore_revit_data` — silently inspects your model's schema to understand available parameters and categories.
   - `execute_dynamic_query` — generates the final C# script and **pauses for your approval** before running. Nothing mutates your model without you reviewing the code first.
@@ -281,7 +276,7 @@ The Paracore REPL engine is now available as an MCP (Model Context Protocol) ser
 Chain gallery scripts into a sequence and run them one after another.
 
 - Pick scripts from your active script gallery and arrange them in order.
-- **No account required** — works fully offline.
+- Works fully offline.
 
 #### ⏸️ Not Available in This Release
 
