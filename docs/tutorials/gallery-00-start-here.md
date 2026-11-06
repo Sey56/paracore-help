@@ -10,7 +10,7 @@ The REPL lessons need nothing but an open Revit document. **Gallery scripts are 
 1. A **script source** — the folder where Paracore keeps your scripts.
 2. **Visual Studio Code** — that is where you write and edit the code.
 
-The desktop app shows your scripts, lets you fill in their inputs and runs them. **It is not a code editor.** You cannot type C# into it. All editing happens in VS Code.
+In the desktop app you initialise script sources, create scripts, fill in their inputs and run them. **It is not a code editor.** You cannot type C# into it. All editing happens in VS Code.
 
 > Do this once. After that, every Gallery lesson follows the same loop: create a script, open it with **Edit Script**, change it in VS Code, run it in the desktop app.
 
@@ -19,6 +19,7 @@ The desktop app shows your scripts, lets you fill in their inputs and runs them.
 - Revit 2025, 2026 or 2027 open, with the **Paracore Server** switched on and the desktop app showing **Connected** — the same setup as the [REPL lessons](./index.md).
 - **VS Code** installed on this machine. Get it from [code.visualstudio.com](https://code.visualstudio.com/) if you don't have it.
 - One empty folder.
+- *Optional:* the **corescript-vscode** extension installed in VS Code. It adds a **Run in Revit** command for scripts with no parameters — see Part 4 below.
 
 ---
 
@@ -129,7 +130,7 @@ Change the greeting, use the compute button to pick a wall type, then click **RU
 
 ### Step 8: One click does everything
 
-Select the script card and click **Edit Script** (the pencil button) in the Gallery toolbar.
+Select the script card and click **Edit Script** (the pencil button) in the Gallery toolbar. **This is the step that generates and scaffolds the VS Code workspace for that Gallery script** — it also opens VS Code on it.
 
 That single click:
 
@@ -153,7 +154,9 @@ SampleSource/
 
 :::info The helper files are for autocomplete, not for running.
 
-They only give VS Code autocomplete and help for `Doc`, `Println`, `Transact`, the Revit API and ordinary C# namespaces. **Paracore never reads them to execute your script.** The files inside `Scripts\` are the ones that run. VS Code's own Run button will not run a Paracore script — use **Run** in the desktop app.
+They only give VS Code autocomplete and help for `Doc`, `Println`, `Transact`, the Revit API and ordinary C# namespaces. **Paracore never reads them to execute your script.** The files inside `Scripts\` are the ones that run.
+
+VS Code's built-in **Run / Debug (F5)** will not run a Paracore script. Use **Run** in the desktop app — or, for a script with no parameters, the **CoreScript: Run in Revit** command described in Part 4.
 
 You can remove the helper files later with **Remove Scaffolding** on the card menu. Your `Scripts` folder and your code are never touched.
 :::
@@ -169,6 +172,33 @@ When you save:
 - click **Run** in the desktop app to execute the new version.
 
 That is the loop for every Gallery lesson: **edit in VS Code → save → run in Paracore**.
+
+---
+
+## Part 4 — When to run from VS Code, and when to run from the desktop app
+
+**Edit Script** in Part 3 already generated the workspace and opened it in VS Code. You are editing the same `Scripts\` folder that Paracore executes, so with the **corescript-vscode** extension installed you can also run from here.
+
+Press **`Ctrl+Shift+R`**, or use **Manage → Command Palette… → `CoreScript: Run in Revit`** (`Cmd+Shift+R` on macOS). Revit must be open and the **Paracore Server** toggled ON. The extension sends the `.cs` files in `Scripts\` straight to the Revit add-in; `Println` output and errors appear in the **CoreScript** Output channel in VS Code. It is the same engine running the same code — the only difference is **where the inputs come from**.
+
+| Your script | Where to set inputs | Where to run |
+|---|---|---|
+| Gallery script **with** a `Params` class | **Configurator** in the desktop app | **Run** in the desktop app, or **RUN** at the bottom of the Configurator — **recommended** |
+| Gallery script **with no** `Params` class, or a REPL-style script you wrote in VS Code | none needed | `Ctrl+Shift+R` / **CoreScript: Run in Revit** — or the desktop app's **Run**, either works |
+
+:::warning Why we recommend the desktop app for parameterised scripts
+
+`CoreScript: Run in Revit` does **not** read the values you filled in in the desktop app. It sends an empty parameter list, so a script with a `Params` class executes with the **default values declared in the code**. For the `MyScript` archetype from Part 2, `Greeting` stays `"Welcome to Paracore!"` and `CurrentWallType` stays `null` no matter what you picked in the Configurator:
+
+```text
+Welcome to Paracore! yourname
+Selected WallType name is:          ← always blank when run from VS Code
+```
+
+The script still runs — it just cannot see your inputs. Change the parameters in the Configurator and click **RUN** there, or use the desktop app's **Run** button. That is the only path that carries your parameter values into Revit.
+:::
+
+**Rule of thumb:** no parameters → `Ctrl+Shift+R` from VS Code is fine; parameters → use the desktop app's **Run** button.
 
 ---
 
