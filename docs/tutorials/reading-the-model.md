@@ -71,7 +71,7 @@ Two things worth knowing before you trip over them:
 
 **Chained filters AND together.** So `WhereParam("Fire Rating","2 hr").WhereParam("Level","Level 3")` is *both*. To OR two categories you need `WhereCategory`, which takes as many names as you like.
 
-**A wrong parameter name raises.** It does not return an empty result:
+**A misspelled name in a filter raises.** `WhereParam` and the other collection filters check the name against every element in the set before they run, so a typo cannot come back as an empty result:
 
 ```
 WhereParam: no parameter named "Fire Ratng" on any of the 9 element(s) (Walls).
@@ -79,6 +79,8 @@ Did you mean "Fire Rating"? …
 ```
 
 That is on purpose. `0 results` is a *legitimate answer*, so if a typo could also produce it, you would have no way to tell "nothing matched" from "you misspelled it" — and a report that is silently empty is worse than one that fails.
+
+**Reading a value is different.** `GetStr` and `GetNum` work on one element, and a name that is spelled correctly but belongs to another category is not a typo. [Check the parameter name first](../interactive-repl/index.mdx#check-the-parameter-name-first) before you use them.
 
 ## Finish with something you can see
 

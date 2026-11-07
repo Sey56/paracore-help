@@ -62,10 +62,10 @@ The number is seconds. Use it as a safety net when you are unsure whether a comp
 ## Check the parameter name first
 
 A parameter name can be spelled perfectly and still be the wrong name for the element you are
-reading. `Top Offset` belongs to Walls. Doors do not have it. That is not a spelling mistake,
+reading. `Top Offset` belongs to Walls — Doors do not have it. That is not a spelling mistake,
 so a spelling check will not catch it.
 
-Before you read a value, look at the parameters that category actually has:
+**Check the names before you read:**
 
 ```csharp
 GetElements("Doors").First().CombinedParams().Table();
@@ -77,11 +77,13 @@ in that list, do not use it.
 {/* TEMPORARY: remove this admonition when the release after 4.8.3 is published. */}
 :::caution[If you downloaded v4.8.3]
 
-In this release a **correctly spelled name from a different category is not flagged**. The table
-shows `0` or an empty cell, and that looks like a measurement. Spelling mistakes are reported;
-this case is not. Check the list above first so you know the value is real.
+**This is already fixed and will ship in the next release.** Until then, `GetStr` and `GetNum`
+do not flag a name that belongs to another category. `GetStr` gives an empty cell and `GetNum`
+gives `0`, so the table shows a value that is not real. Spelling mistakes are reported; this
+case is not. Use the check above so you know the value is real.
 
-The next release stops the read with an error and suggests the closest real name instead.
+In the next release the read stops with an error and suggests the closest real name instead, so
+this extra check will no longer be needed.
 
 :::
 

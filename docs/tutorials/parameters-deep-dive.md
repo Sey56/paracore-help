@@ -68,7 +68,7 @@ If a name is **declared by the category** but this particular element has no val
 
 :::caution[If you downloaded v4.8.3]
 
-The error below arrives in the next release. Until then this read gives `0` or `""` — check the name against the category first: [Check the parameter name first](../interactive-repl/index.mdx#check-the-parameter-name-first).
+This is already fixed and ships in the next release. Until then `GetStr` gives `""` and `GetNum` gives `0` — [check the name against the category first](../interactive-repl/index.mdx#check-the-parameter-name-first).
 
 :::
 
