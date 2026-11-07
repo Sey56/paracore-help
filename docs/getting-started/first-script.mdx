@@ -3,8 +3,10 @@ import TwistingTowerImg from '@site/static/img/twisting-tower.png';
 
 # Your First Script
 
-In this guide, you will load the **Paracore Examples** library, configure dynamic parameters, and execute your first automation.
-**Note**: The "TwistingTower" script used here is just to demonstrate Paracore's capabilities. Don't worry about understanding its code yet! We will start from scratch in the [Tutorials](/tutorials).
+In this guide, you will load a **script source**, configure dynamic parameters, and execute your first automation.
+**Note**: The "TwistingTower" script used here is just to demonstrate what Paracore can do — don't worry about understanding its code yet.
+
+> **New to the Gallery?** [Before You Start: Script Sources and VS Code](../tutorials/gallery-00-start-here.md) walks through setting up a source and creating a script step by step. The [`00_Tutorials` source](https://github.com/Sey56/Paracore-Examples/tree/main/00_Tutorials) in the examples repository contains the finished script for every Gallery lesson, so you can compare your work as you go.
 
 > **Understanding Units**: If you use the `[Unit]` attribute for a parameter, the engine automatically converts the user's input to Revit internal units (Feet). You **don't** need to manually convert these values in your logic. However, for **output/display** (like printing a wall's length in meters), you must convert *from* internal units to your target unit.
 
@@ -14,7 +16,7 @@ Experience **Dynamic Execution** in action. Run a pre-made script to see how Par
 ## Steps
 
 ### 1. Connect to Revit
-1.  Open **Autodesk Revit 2025+**.
+1.  Open **Autodesk Revit 2025, 2026 or 2027**.
 2.  Go to the **Paracore** tab in the ribbon.
 3.  Locate the **Paracore Server** button (it will initially show **Off**).
 4.  Click the icon. The label will change to **On** and a Revit TaskDialog will appear confirming the connection.     
@@ -27,16 +29,19 @@ Experience **Dynamic Execution** in action. Run a pre-made script to see how Par
 2.  Ensure the top bar shows a green **Connected** status.
 
 ### 3. Add the Script Source
-1.  **Download Examples**: Download or clone the [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) repository to your computer.
-2.  **Add Local Folder**: In the Paracore **Sidebar**, click the **"+"** button under **Local Folders**.
-3.  **Select the Folder**: Navigate **inside** the repository folder and select the **`01_Getting_Started`** directory.
-    *   *Important: Do not select the root 'Paracore-Examples' folder. You must select a specific sub-folder (Script Source).*
-4.  Click **Select Folder**. The "TwistingTower" script will appear in the Gallery.
 
-**v3.0.3+**: You can select the root `Paracore-Examples` folder directly. Paracore will automatically discover all script sources inside it (folders containing a `.paracore` marker file). Switch between sources using the **Script Sources** dropdown in the Sidebar.
+A **script source** is a folder with a `.paracore` file in it, plus one sub-folder per script. The desktop app loads these folders from disk — it is not a code editor.
 
- ### 4. Configure Parameters
- 1.  Click on the **TwistingTower** card.
+1.  **Get the examples**: Download or clone the [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) repository to your computer.
+2.  **Show the Sidebar**: click the **hamburger menu** (☰) in the top-left corner of the desktop app.
+3.  **Load the source**: in the Sidebar's **Local Sources** section, click the small **folder button** on the right — its tooltip reads **Load or Initialize Source**. A native folder dialog opens.
+4.  **Select the folder**: navigate inside the repository and select **`01_Getting_Started`** — the folder that contains the `.paracore` file. Do not select the repository root.
+5.  Open **Gallery**. The **TwistingTower** card appears and the source is active under **Local Sources**.
+
+To load a different category later, load its numbered folder the same way, or pick another one already loaded from the **Local Sources** dropdown. The [`00_Tutorials`](https://github.com/Sey56/Paracore-Examples/tree/main/00_Tutorials) folder is the one that matches the current [Gallery tutorials](../tutorials/gallery-00-start-here.md).
+
+### 4. Configure Parameters
+1.  Click on the **TwistingTower** card.
 2.  In the **Script Inspector**, ensure the **Parameters** tab is active.
 3.  Click the **Compute (🔄)** button next to the **BaseLevel** and **WallType** fields to fetch live data from your Revit project.
 4.  Select a level and a wall type from the resulting dropdowns.
@@ -58,4 +63,4 @@ Experience **Dynamic Execution** in action. Run a pre-made script to see how Par
 
 ---
 
-*Next: Explore the [Script Gallery](../authoring/gallery.mdx) features in depth.*
+*Next: [Before You Start — Script Sources and VS Code](../tutorials/gallery-00-start-here.md), then the [Gallery tutorials](../tutorials/gallery-01-hello-wall.md). For the full feature tour, see [Script Gallery](../authoring/gallery.mdx).*

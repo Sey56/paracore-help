@@ -15,7 +15,7 @@ Get the latest versions of the Paracore ecosystem components.
 
 ## Resources & Samples
 
-- **[Paracore Examples Library](https://github.com/Sey56/Paracore-Examples)**: A collection of production-ready scripts and tutorial files.
+- **[Paracore Examples Library](https://github.com/Sey56/Paracore-Examples)**: Script sources to load into the desktop app. The `00_Tutorials` source contains the finished script for every [Gallery tutorial](../tutorials/gallery-00-start-here.md); the other folders are older examples.
 - **[Revit API Docs](https://www.revitapidocs.com/)**: Essential technical reference dictionary for every Paracore developer.
 
 ---
