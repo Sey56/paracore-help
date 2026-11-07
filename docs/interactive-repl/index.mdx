@@ -148,20 +148,26 @@ GetElements<Element>()                            // everything — bulk audits
 | :--- | :--- | :--- |
 | **`Table(data)`** | Global | Renders a grid. Returns `void` (not chainable). |
 | **`.Table()`** | Extension | Renders a grid and returns the collection — chainable. |
-| **`.BarGraph()`** / **`.PieGraph()`** / **`.LineGraph()`** | Extension | Charts the collection; supply items with `name` and `value`. |
+| **`.BarGraph()`** / **`.PieGraph()`** / **`.LineGraph()`** | Extension | Charts the collection; each item's property names become the axis labels. |
 | **`.Select()`** / **`.Zoom()`** / **`.Isolate()`** | Extension | Drive the Revit UI from any collection. |
 
 <img src={AnalyticsCharts} alt="Charts rendered from a REPL query" />
 
 ```csharp
-// walls per level, as a bar chart
-var data = GetElements<Wall>()
-    .GroupBy(w => w.GetStr("Level"))
-    .Select(g => new { name = g.Key, value = g.Count() })
+// total room area per level — the property names label the axes
+var data = GetElements<Room>()
+    .GroupBy(r => r.GetStr("Level"))
+    .Select(g => new
+    {
+        Level     = g.Key,
+        TotalArea = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1)
+    })
     .ToList();
 
-BarGraph(data);
+BarGraph(data);             // X = Level, Y = TotalArea
 ```
+
+Any projection works: `name` / `value` is only shorthand. The chart takes a numeric property for the vertical axis and the first other property for the horizontal one, then prints those property names as the labels. On a pie chart the horizontal one names the slices in the legend.
 
 ## Recipes
 
@@ -205,9 +211,11 @@ GetElements<FamilyInstance>("Doors")
 PieGraph(GetElements<Room>()
     .Where(r => r.GetNum("Area") > 0)
     .GroupBy(r => r.GetStr("Level"))
-    .Select(g => new { name = g.Key, value = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1) })
+    .Select(g => new { Level = g.Key, TotalArea = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1) })
     .ToList());
 ```
+
+`Level` names the slices in the legend; `TotalArea` supplies the values.
 
 ---
 

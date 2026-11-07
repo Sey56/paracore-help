@@ -79,16 +79,16 @@ These work on **any** `IEnumerable<T>`.
 | Method | Description |
 |---|---|
 | `.Table()` | Renders as an interactive data grid. Automatically extracts **both** Instance and Type parameters into columns. |
-| `.BarGraph()` | Bar chart (needs `name` + `value` properties) |
+| `.BarGraph()` | Bar chart. Any projection works; the property names become the axis labels. |
 | `.PieGraph()` | Pie chart |
 | `.LineGraph()` | Line chart |
 | `.Show()` | Renders data as a table — identical to `.Table()`. It does **not** zoom or focus the Revit view; use `.Zoom()` for that. |
 
 ```csharp
-// Count doors per level as pie chart
+// Count doors per level as pie chart — name the axes by naming the properties
 GetElements("Doors")
     .GroupByParam("Level")
-    .Select(g => new { name = ((dynamic)g).Group, value = ((dynamic)g).Count })
+    .Select(g => new { Level = ((dynamic)g).Group, Doors = ((dynamic)g).Count })
     .PieGraph()
 
 // Any projection works directly

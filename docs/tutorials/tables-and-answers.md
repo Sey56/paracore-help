@@ -68,15 +68,29 @@ concrete.GroupByParam("Level", "Volume", "m3").Table();
 A table is for reading. A **chart** is for seeing a shape — and the shape is usually the insight (one level that eats 40 % of the budget; a long tail of types).
 
 ```csharp
+// walls per level — the property names become the axis labels
 var byLevel = GetElements<Wall>()
     .GroupBy(w => w.GetStr("Level"))
-    .Select(g => new { name = g.Key, value = g.Count() })
+    .Select(g => new { Level = g.Key, Walls = g.Count() })
     .ToList();
 
 BarGraph(byLevel);      // also PieGraph(byLevel), LineGraph(byLevel)
 ```
 
-The chart functions want objects with **`name`** and **`value`** properties — lowercase, exactly as written. The `.Select(g => new { name = …, value = … })` above is the whole contract; swap `g.Count()` for `g.Sum(w => w.GetNum("Length", "m"))` and the same chart becomes metres of wall per level.
+Each chart takes a list of objects, and **the property names become the axis labels**. Here `Level` labels the horizontal axis and `Walls` the vertical one; on a pie chart, `Level` names the slices in the legend. A numeric property supplies the values and the first other property supplies the names — so `new { name = …, value = … }` is just the shortest way to write it, not a required shape. When a grouped result offers both `Count` and `Total`, the one named `Total` is preferred for the values.
+
+For a plot such as *total area per level*, name the two columns to say what they mean. C# property names cannot contain spaces, so use dictionary keys to get `Total Area` exactly:
+
+```csharp
+BarGraph(GetElements<Room>()
+    .GroupBy(r => r.GetStr("Level"))
+    .Select(g => new Dictionary<string, object>
+    {
+        ["Level"]      = g.Key,
+        ["Total Area"] = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1)
+    })
+    .ToList());
+```
 
 ## The one thing to take away
 
@@ -120,7 +134,7 @@ GetElements<Room>()
 Section("Wall length per level (chart)");
 BarGraph(GetElements<Wall>()
     .GroupBy(w => w.GetStr("Level"))
-    .Select(g => new { name = g.Key, value = Math.Round(g.Sum(w => w.GetNum("Length", "m")), 1) })
+    .Select(g => new { Level = g.Key, TotalLength = Math.Round(g.Sum(w => w.GetNum("Length", "m")), 1) })
     .ToList());
 ```
 
@@ -129,7 +143,7 @@ A local function (`void Section(...)`) at the top level is worth learning now �
 ## Try This
 
 1. Change `GroupByParam("Level")` to `GroupByParam("Type")` in the walls section. Same script, different question — that is the whole design.
-2. Chart room areas instead of wall lengths: `value = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1)`.
+2. Chart room areas instead of wall lengths: in the final chart, change `GetElements<Wall>()` to `GetElements<Room>()` and the projection to `new { Level = g.Key, TotalArea = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1) }`. The new property name becomes the vertical-axis label.
 3. Export the door schedule for pandas: append `.ToNotebook("Door_Analysis")` instead of `.Table()`. You get a Jupyter notebook in VS Code with the data already loaded.
 4. Try `GetElements("Walls").GroupByParam("Fire Ratng")` and read the error. Then fix the spelling — this is the failure mode this platform refuses to give you silently.
 

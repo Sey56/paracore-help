@@ -111,10 +111,10 @@ doors
 // 2. which room pairs are busiest
 var pairs = doors
     .GroupBy(d => $"{d.RoomFrom()} → {d.RoomTo()}")
-    .Select(g => new { name = g.Key, value = g.Count() })
+    .Select(g => new { RoomPair = g.Key, Doors = g.Count() })
     .ToList();
 
-BarGraph(pairs);
+BarGraph(pairs);            // X = RoomPair, Y = Doors
 
 // 3. the doors that open to the outside
 var exterior = doors.Where(d => d.RoomTo() == "" || d.RoomFrom() == "").ToList();
@@ -130,7 +130,7 @@ Run it on a plan view, then open the file the last line printed — it is in `Fi
 ## Try This
 
 1. Select the doors whose handing disagrees with their name: `.Where(d => d.GetStr("Mark").EndsWith("L") && d.Handing() == "RH").Select()`.
-2. Chart the doors per level: `GetElements<FamilyInstance>("Doors").GroupByParam("Level")`.
+2. Chart the doors per level: `GetElements<FamilyInstance>("Doors").GroupByParam("Level").BarGraph()`. `GroupByParam` projects `Group` and `Count`, so those are the names the axes pick up on their own. Add a sum parameter and `Total` appears too.
 3. `ExportImage("iso")` while a 3D view is active — and note the `.jpg` even though you asked for nothing.
 4. Take the wall-outline from [Tutorial 5](./creating-geometry.md) and add doors to it: `FamilyInstance` creation is the one thing that still needs the raw API, and [Gallery Scripts](./more-automation.md) is where that road leads (tutorials in progress).
 
