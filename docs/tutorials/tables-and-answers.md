@@ -46,11 +46,14 @@ Numeric parameters sort numerically, text sorts as text, and you do not write a 
 
 ## Ask a real question
 
-A quantity-surveyor question, then, in four statements: *what does each level weigh in concrete?*
+A quantity-surveyor question, then, in three steps: *what does each level weigh in concrete?*
 
 ```csharp
-// 1. the concrete, whatever its category
-var concrete = GetElements<Element>()
+// 1. the concrete — named categories, not the whole model
+var concrete = GetElements("Walls")
+    .Concat(GetElements("Floors"))
+    .Concat(GetElements("Structural Columns"))
+    .Concat(GetElements("Structural Framing"))
     .WhereMaterial("Concrete");
 
 // 2. one number for the whole building
@@ -61,7 +64,11 @@ Println($"Total concrete: {total.FormatUnit("m3")}");
 concrete.GroupByParam("Level", "Volume", "m3").Table();
 ```
 
-`WhereMaterial("Concrete")` walks each element's material takeoff — walls, floors, columns, footings — so you never enumerate categories and hope you got them all.
+> ⚠ **Name the categories. Do not start from `GetElements<Element>()`.** That spelling collects *every* element in the document — hundreds of thousands on a real project — and only then lets a filter throw them away, because `WhereMaterial` filters the list it is **handed**; it has no idea what a category is. Naming the four categories lets Revit's own collector do the narrowing, and keeps you on elements that actually carry the parameter you are about to sum.
+
+`WhereMaterial("Concrete")` keeps an element when **any** of its materials has a name *containing* that text, case-insensitively. On a model that mixes strengths, `"Concrete - C-25"` is the tighter spelling; `"Concrete"` catches all of them.
+
+> ⚠ **`Volume` is not a universal parameter.** Walls, floors, columns and framing have it; a stair run does not. Add `GetElements("Stairs")` to that chain and `SumParam("Volume", "m3")` stops with `there is no "Volume" parameter in Category Runs` — it names the category that cannot answer, rather than quietly totalling 0 over the elements it did find.
 
 ## When a table is not enough
 
@@ -109,7 +116,10 @@ Section("Walls per level");
 GetElements<Wall>().GroupByParam("Level").Table();
 
 Section("Concrete by level");
-GetElements<Element>()
+GetElements("Walls")
+    .Concat(GetElements("Floors"))
+    .Concat(GetElements("Structural Columns"))
+    .Concat(GetElements("Structural Framing"))
     .WhereMaterial("Concrete")
     .GroupByParam("Level", "Volume", "m3")
     .Table();
