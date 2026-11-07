@@ -2,66 +2,43 @@
 sidebar_position: 1
 ---
 
-import ConnectionStatus from '@site/static/img/connection-status.png';
+# Install and Connect
 
-# Installation & Setup
+About five minutes. Do these in order.
 
-Paracore is a professional C# automation ecosystem for Revit. This guide covers the complete setup process, from installing the execution host to verifying your first connection.
+## Requirements
 
-## System Requirements
+- **Windows 10 or 11 (64-bit)**
+- **Autodesk Revit 2025, 2026 or 2027**
+- **Visual Studio Code** plus the **C# Dev Kit** extension — needed only if you write Gallery scripts
 
-- **Operating System**: Windows 10 or 11 (64-bit).
-- **Autodesk Revit**: Version 2025 or later.
+You do not need to install .NET separately. Everything needed to run a script comes with the add-in.
 
-**For Script Authoring & Editing:**
-- **[Visual Studio Code](https://code.visualstudio.com/)**: Required code editor.
-- **[C# Dev Kit Extension](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)**: Required for C# Intellisense in VS Code.
-- **[.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)**: Required if you plan to author scripts (The SDK already includes all necessary runtimes). Standard execution does not require any additional .NET installations.
+## 1. Install the Revit add-in
 
-## 1. Download the Components
+**Close Revit first.** Run `Paracore_Addin_v4.8.3.exe` as administrator. The installer shows a checkbox for each Revit version it finds on your machine — tick the ones you use. One installer covers 2025, 2026 and 2027.
 
-Visit the **[Downloads](./downloads.md)** page to get the latest versions:
-1. **Paracore Revit Addin** - **Required**.
-2. **Paracore Desktop App** - **Required**.
-3. **CoreScript VSCode Extension** - **Optional**.
+## 2. Switch the server on
 
----
+1. Open Revit and open a project.
+2. Go to the **Paracore** ribbon tab.
+3. Click **Paracore Server**. The button starts with a red circle and **OFF**; after the click it shows a green circle and **ON**. A Revit dialog confirms the connection — close it.
 
-## 2. Installation Steps
+Nothing else runs until this button is **ON**.
 
-### Step 1: Install the Paracore Revit Addin
-> **IMPORTANT**: Ensure **Autodesk Revit is closed** before running this installer.
+## 3. Install the desktop app
 
-Run the `Paracore_Addin` installer. This installs the high-performance execution host and the **Paracore** ribbon tab inside Revit.
+Run `Paracore_4.8.3_x64.msi`. Open **Paracore Desktop** and wait a few seconds while its local connector starts.
 
-### Step 2: Activate the Paracore Server
-1. Launch **Autodesk Revit**.
-2. Navigate to the **Paracore** tab in the ribbon.
-3. Locate the **Paracore Server** toggle button. It will initially show the Paracore icon with the text **"Off"**.
-4. Click the button. A Task Dialog will appear confirming the connection.
-5. Close the confirmation task dialog. The button text will now display **"On"**. You are now ready to communicate with the desktop application.
+The status in the top bar turns from red **Disconnected** to green **Connected**. If it stays red, check that the server in step 2 is **ON** and that Revit has finished loading.
 
-### Step 3: Install the Paracore Desktop App
-Now that the Revit host is ready, run the `.msi` installer for the **Paracore Desktop App**. This is your primary interface for managing and running your script library.
+## 4. Optional extras
 
----
+- **CoreScript VS Code extension** — install the `.vsix` in VS Code. Useful if you prefer editing there.
+- **Paracore-Gen** — install it only if you want to use an AI assistant such as Claude Desktop with Revit.
 
-## 3. Verification & Connection
+Both are on the [downloads page](./downloads.md).
 
-1.  Launch the **Paracore Desktop App**.
-2.  **Wait a few seconds**: The app automatically manages the lifecycle of the mediator server that connects itself with Revit.
-3.  **Check Connection**: Look at the TopBar. Once the mediator starts and hooks into Revit, the status will change to **Connected** with green text.
+## Next
 
-<img src={ConnectionStatus} alt="Connection Status" />
-
-4.  **Sign In**: Click the **"Continue Offline"** button in the TopBar to the right. Now you can work with Paracore.
-
----
-
-## Next Steps
-
-Now that you are connected, proceed to **[Your First Script](./first-script.mdx)** to learn how to load a script source from the examples and execute your first automation.
-
----
-
-*Note: While end-users running protected `.ptool` files do not strictly need VS Code, it is essential for anyone authoring, editing, or utilizing the AI script generation features within Paracore.*
+[Run your first line of C#](./first-script.mdx).

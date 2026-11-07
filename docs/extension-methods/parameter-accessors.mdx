@@ -24,7 +24,7 @@ All methods on `Element`. Automatically handle:
 - Falls back to C# property via Reflection (e.g., `"HandFlipped"` → `"True"`).
 - Falls back to `NativeProperties` (Level, Name, Category, etc.).
 - Falls back to Type parameter if not found on the instance (e.g., standard door `"Width"`).
-- Unknown parameters return `""` and log a one-time warning with a hint to use `.CombinedParams().Table()`.
+- A name that does not exist on the element's category **stops with an error** and suggests the closest real name. Use `.CombinedParams().Table()` to list the real names before you write a query.
 
 ```csharp
 wall.GetStr("Level")       // → "02 - Ground Floor Plan" (via Base Constraint)
@@ -46,7 +46,7 @@ room.GetStr("Area", "m2", 4)     // → "25.4578" (specified decimals)
 
 **Raw Numeric Getter.** Returns the raw `double` value in Revit internal units (feet / sq.ft / cu.ft).
 
-- Returns `0.0` if not found.
+- A name that does not exist on the element's category **stops with an error** instead of returning a silent `0`.
 - Falls back to C# property via Reflection for native doubles (`Width`, `Volume`, etc.).
 - Falls back to Type parameter if not found on the instance.
 
@@ -98,7 +98,7 @@ room.GetVal("Area", "m2", 3)     // → "25.458 m²"
 
 **Integer Getter.** Returns the integer value — also works for yes/no (boolean) parameters.
 
-- Returns `0` (false) if not found.
+- A name that does not exist on the element's category **stops with an error**.
 - Falls back to Type parameter if not found on the instance.
 
 ```csharp

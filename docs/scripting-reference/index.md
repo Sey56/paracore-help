@@ -1,27 +1,15 @@
 # Scripting Reference
 
-The **Scripting Reference** provides a technical deep dive into the Paracore execution environment. This is the definitive guide for developers looking to leverage the full power of the Revit API and Paracore's global helpers.
+Reference pages for the C# you write in Paracore. If you are new, start with the [REPL lessons](../tutorials/index.md) instead — they teach the same calls one at a time.
 
-## Essential API Reference
+| Page | What it covers |
+|---|---|
+| [Parameters and the Configurator](./parameters.mdx) | The `Params` class, attributes and the input form |
+| [Global Helpers](./globals.md) | Helpers available in every script |
+| [Units & Conversion](./units.md) | Reading and writing values in the unit you want |
+| [Options Providers](./options.md) | Filling dropdowns from the model |
+| [Revit Element Selection](./revit-elements.md) | Getting the elements you mean |
+| [Libraries & Dependencies](./libraries.md) | What is available to your code |
+| [Extension Methods](../extension-methods/index.mdx) | Every method, every overload, with examples |
 
-### [Extension Methods](../extension-methods/index.mdx)
-The definitive, exhaustive reference for every Paracore extension method has been moved to its own dedicated **[Extension Methods](../extension-methods/index.mdx)** section.
-
-### [Global Helpers](./globals.md)
-Instant access to the Revit context (`Doc`, `UIDoc`, `UIApp`), logging (`Println`), and transaction management (`Transact`).
-
-### [The Parameter Engine](./parameters.mdx)
-A detailed breakdown of all supported attributes, naming conventions, and data providers.
-
-### [Revit Element Selection](./revit-elements.md)
-How to use specialized Revit pickers (Point, Element) and filter model data efficiently.
-
-### [Units & Conversion](./units.md)
-The technical details of how Paracore handles unit transformations from the UI to Revit's internal database.
-
-### [Libraries & Dependencies](./libraries.md)
-A list of pre-installed industry libraries (`RestSharp`, `MiniExcel`, etc.) and how to reference external DLLs.
-
----
-
-*Paracore's reference is designed to get you from "idea" to "automated" as quickly as possible.*
+> A parameter name that does not exist on an element's category is reported as an error. Use `element.CombinedParams().Table()` to list the real names before you write a query.

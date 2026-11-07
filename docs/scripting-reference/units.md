@@ -75,7 +75,7 @@ For quick calculations or when you want to avoid Revit API overhead for simple l
 double lengthMeters = lengthFeet * 0.3048;
 ```
 
-## Paracore Extension Methods (v4.2.0+)
+## Unit helper methods
 
 For even easier unit handling without direct `UnitUtils` calls, Paracore provides a set of fluent extension methods for `double`, `int`, and `decimal`.
 

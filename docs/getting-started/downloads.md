@@ -1,41 +1,20 @@
 # Downloads
 
-Get the latest versions of the Paracore ecosystem components.
+Everything is on **one release page**: [Paracore v4.8.3](https://github.com/Sey56/Paracore/releases/tag/v4.8.3).
 
-## Latest Release
+| File | What it is | Needed? |
+|---|---|---|
+| `Paracore_4.8.3_x64.msi` | The desktop app | **Yes** |
+| `Paracore_Addin_v4.8.3.exe` | The Revit add-in, for 2025 / 2026 / 2027 | **Yes** |
+| `corescript-4.8.3.vsix` | The VS Code extension | Optional |
+| `Paracore-Gen-v2.1.2.exe` | The AI assistant connector | Optional |
 
-| Component | Description |
-| :--- | :--- |
-| **Paracore Revit Addin** | **Mandatory.** The execution engine for Revit 2025+ (including 2027). One installer detects each installed Revit version and offers a checkbox for it. Required for both the Desktop App and VS Code workflows. |
-| **Paracore Desktop App** | The main application for script management, parameter configuration, and execution. |
-| **CoreScript VSCode Extension** | **Optional.** Enables direct script execution from VS Code to Revit, bypassing the Desktop App. |
-| **Paracore-Gen (MCP Server)** | **Optional.** The generalist MCP server for Claude Desktop, Cursor, Cline and any MCP client. Ships as its **own installer**, separate from the add-in. |
+Install the first two. The other two are extras — the platform works without them.
 
-[**Download Latest Release**](https://github.com/Sey56/Paracore/releases) · [**Download Paracore-Gen**](https://github.com/Sey56/paracore-gen/releases)
+## Example scripts
 
-## Resources & Samples
-
-- **[Paracore Examples Library](https://github.com/Sey56/Paracore-Examples)**: Script sources to load into the desktop app. The `00_Tutorials` source contains the finished script for every [Gallery tutorial](../tutorials/gallery-00-start-here.md); the other folders are older examples.
-- **[Revit API Docs](https://www.revitapidocs.com/)**: Essential technical reference dictionary for every Paracore developer.
+The [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) repository contains script sources you can load into the Gallery. The `00_Tutorials` folder holds the finished script for every [Gallery lesson](../tutorials/more-automation.md), so you can compare your work as you go. The other folders are older examples.
 
 ---
 
-### Pro Tip
-Check the **[Release Notes](../release-notes.md)** for detailed information on what's new in the latest version.
-
----
-
-### 📬 Stay Updated
-
-Never miss a release — get notified about new versions, automation tips, and ready-to-use scripts delivered to your inbox.
-
-**[Subscribe for Updates →](pathname:///paracore-help/#subscribe)**
-
----
-
-### 🏗️ Need Custom Revit Automation?
-
-We build tailored C# automation solutions for architecture and engineering firms — clash detection, model auditing, bulk operations, and more.
-
-**[codarch46@gmail.com](mailto:codarch46@gmail.com?subject=Custom%20Revit%20Automation%20Inquiry)**
-
+Want to know what changed? See the [release notes](../release-notes.md).

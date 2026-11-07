@@ -1,34 +1,12 @@
-# Tool Generator
+# Forge Tools
 
-The **Tool Generator** is not a separate application or complex interface. It is a powerful, integrated feature of Paracore that allows you to transform your open-source scripts into professional, distributable, and protected products with a single click.
+**Forging** turns a working Gallery script into a sealed package you can share without handing over its source code.
 
-## One-Click Protection
+Open a script's code view in the desktop app. Next to **Edit Script** you will see:
 
-There is no dedicated "Generator UI" to learn. The entire process is handled by the **Build Protected Tool** button found in the footer of the [Floating Code Viewer](../authoring/inspector.mdx). 
+- **Forge Tool** — for a normal script. Produces a `.ptool` file.
+- **Forge Sentinel** — for a [Sentinel](../sentinels/index.md) script. Produces a `.wtool` file.
 
-When you click this button, Paracore automatically handles the compilation, metadata packaging, and file generation in the background.
+The button is only available when the app is connected to Revit. Once a script has been forged, the button disappears from that script's code view.
 
-## What is a Tool?
-
-A "Tool" in Paracore (extension `.ptool`) is a binary package that contains:
-1. **Compiled Code**: Your C# logic compiled into a .NET Assembly.
-2. **Metadata**: Name, version, author, and description.
-3. **UI Definitions**: The serialized parameter definitions required to render the UI.
-
-## Why Generate Tools?
-
-- **IP Protection**: Your source code is removed. End-users receive only the compiled binary.
-- **Stability**: The code is pre-compiled, eliminating runtime compilation errors.
-- **Performance**: Faster startup time since the Roslyn compilation step is skipped at runtime.
-- **Professionalism**: Distribute a single file that looks and feels like a native Revit add-in command.
-
-## In This Section
-
-- **[Overview](./overview.md)**: The tool generation workflow.
-- **[Creating Tools](./creating-tools.mdx)**: Step-by-step guide to compiling your first `.ptool`.
-- **[Distributing Tools](./distributing-tools.md)**: How to share tools with your team or clients.
-- **[Security](./security.md)**: Understanding the protection model and limitations.
-
----
-
-*Next: Explore the [Scripting Reference](../scripting-reference/index.md) for a deep dive into the API.*
+Forging does not change how the script behaves — it changes how it is delivered. The engine, the C# calls and the parameter form all stay the same. If you need to change the logic, edit the original Gallery script and forge it again.

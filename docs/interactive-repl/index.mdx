@@ -1,231 +1,70 @@
-import AnalyticsCharts from '@site/static/img/analytics-charts.png';
+# The REPL Playground
 
-# Interactive REPL (BIM Laboratory)
+The **REPL** tab is a scratchpad. You write C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and the answer appears. Nothing is saved unless you choose to save it.
 
-The **Paracore REPL** (Read-Eval-Print Loop) is a persistent C# playground with direct, real-time access to the Revit API and Paracore's high-level helpers. It is one editor — not a "quick command box" plus a "proper script box". You type C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and the session answers.
+## The editor
 
-## One editor
+The panel is called **REPL Playground**. Its toolbar gives you **New**, **Clear**, **Open**, **Save**, **Save As** and **Recent Files**. Saved snippets open in the same editor; their name appears in History instead of `REPL Playground`.
 
-There is a single input, in the **REPL** tab — the **REPL Playground** below the execution history. It runs **whatever is in it**:
-
-- one expression — `Doc.Title`
-- one statement — `var walls = GetElements<Wall>();`
-- a twenty-line snippet with a `foreach` and a local function
-- a whole script, including its `Params` class
-
-Nothing is classified as "single-line" or "multi-line" work, because there is no separate mode to be in. Press <kbd>Enter</kbd> for a new line; press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> — or click **Run** — to execute the whole buffer. A one-line command and a two-hundred-line draft follow exactly the same rules, and the difference between them is only how much you typed.
+A bare expression prints its own result:
 
 ```csharp
-// one buffer — Ctrl+Enter runs all of it
-var walls = GetElements<Wall>();
-walls.WhereParam("Function", "Exterior").Table();
+GetElements<Wall>().Count();
 ```
 
-### Saving and loading
-
-The editor reads and writes plain `.cs` files: **New / Clear**, **Open**, **Save** and **Save As**. There is no required folder structure and no metadata block — a REPL snippet is a file you can keep, mail, or paste into a Gallery script later. When you are done experimenting, **New** clears the editor and unloads the file, so a draft never overwrites something you meant to keep.
-
-## The echo
-
-The single most useful behaviour in the whole tool: **the last expression in the editor is printed back to you.**
+Use `Println(...)` when you want to label something:
 
 ```csharp
-"Paracore"
+Println($"Walls: {GetElements<Wall>().Count()}");
 ```
 
-→ `Paracore`
+## The two results tabs
+
+- **History** — one entry per run. Each entry starts with `> REPL Playground` (or the name of a saved snippet), followed by the output and how long it took. **History keeps results, not the code you typed.** It is read-only: you can **Copy** the transcript or **Clear** it. Clicking an entry does **not** re-run anything. To run something again, type it again, or use **Open** to bring back a saved snippet, then press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>.
+- **Analytics** — tables and charts produced by `.Table()`, `.BarGraph()`, `.PieGraph()` and `.LineGraph()`.
+
+## Tables and charts
 
 ```csharp
-GetElements<Wall>().Count()
+GetElements("Rooms")
+    .GroupByParam("Level", "Area", "m2")
+    .BarGraph();
 ```
 
-→ `42`
+The name you give each value becomes the axis label. If you want a label with a space in it, use a dictionary key instead of a C# property name — for example `"Total Area"`.
+
+## Files
+
+REPL code can only write inside the agent workspace folder. Use short, relative names and the `Files` helpers:
 
 ```csharp
-GetElements<Wall>()
-```
-
-→ a numbered list, `01 - Basic Wall (359588)`, `02 - …`, capped at 50 with a note telling you to use `.Table()` for the full set.
-
-```csharp
-GetElements<Wall>().Table()
-```
-
-→ an interactive table in the **Summary** tab, and the raw list is suppressed underneath it.
-
-That is the whole read-eval-*print*: you do not need `Println` to see an answer, and you do not need to save a file to ask a question. **Echo to peek; `.Table()` to read.**
-
-> [!NOTE]
-> The semicolon decides. `Doc.Title` is an expression, so its value is yours to see. `Doc.Title;` is a statement, and statements have no value to print. This is ordinary C# — the REPL does not invent behaviour, it just shows you the result of what you typed.
-
-## Shared context between turns
-
-The session is persistent. A variable defined in one turn is alive in the next, which is how you build something up over several turns instead of writing one enormous script and hoping:
-
-```csharp
-// turn 1
-var rooms = GetElements<Room>();
-Println($"Found {rooms.Count} rooms");
+Files.WriteText("out.csv", csv);
 ```
 
 ```csharp
-// turn 2 — `rooms` is still here
-rooms.WhereParam("Level", "Level 1").Table()
+ExportImage("room-check");
 ```
 
-| Command | Effect |
-| :--- | :--- |
-| `vars` (or `list`) | list every variable alive in the session |
-| `reset` (or `clear vars`) | wipe the session state without restarting Revit |
-| `inspect rooms` | formatted tree of one variable, safe for Revit elements |
+Absolute paths such as `C:\tmp\room-check` are refused. This is deliberate: a script run from the REPL cannot read or write anywhere else on your machine.
 
-Each run adds one block to the **History** tab: a `>` marker that names the run, followed by its output and how long it took. If the editor holds a saved snippet, the marker is that file's name without `.cs`; if the code is unsaved, it is `REPL Playground`:
+## If a script runs too long
 
-```text
-> REPL Playground
-Hello
-
-> HelloParacore
-Hello
-```
-
-**The code you typed is not copied into History** — only the run marker and its result are kept. The tab is **read-only**: clicking an entry does nothing, there is no re-run from History, **Copy** takes the whole transcript to the clipboard and **Clear** empties the tab. To run something again, type it into the **REPL Playground** again and press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, or **Open** a snippet you saved with **Save**.
-
-## Scripting rules
-
-A REPL turn is a top-level script. That means:
-
-- **No `class Program`, no `Main()`, no namespace** — write statements.
-- **`using` statements are allowed** and rarely needed; the common Revit and LINQ namespaces are already imported.
-- **Classes go at the end.** If you paste a script with a `Params` class, it belongs after the top-level statements — which is also where the engine reads your form from.
-- **Variables persist; types do not.** A class defined in a turn is available to later turns, but redefining it is easier than fighting it. (`reset` clears everything.)
+A runaway script is stopped automatically and Revit becomes responsive again. If a long script needs more time, put this on its **first line**:
 
 ```csharp
-var limit = 2.5.InputUnit("m");
-
-var tall = GetElements<Wall>()
-    .Where(w => w.GetNum("Unconnected Height") > limit);
-
-tall.Table();
-tall.Select().Zoom();
+SetExecutionTimeout(120);
 ```
 
-## Global reference
+The number is seconds. Use it as a safety net when you are unsure whether a complex script might hang.
 
-These are injected into every turn, script, and Gallery script.
+## A wrong parameter name is an error
 
-| Object | Type | Description |
-| :--- | :--- | :--- |
-| **`Doc`** | `Document` | The active Revit database Document. |
-| **`UIDoc`** | `UIDocument` | The Revit UI Document (active window). |
-| **`UIApp`** | `UIApplication` | The Revit application. |
-| **`ActiveView`** | `View` | The active view. |
-| **`Selection`** | `List<Element>` | Elements currently selected in Revit. |
-| **`Parameters`** | `Dictionary<string, object>` | Parameters passed from the UI or an agent. |
-| **`Println(msg)`** | `void` | Console output, with `$"…"` interpolation. |
-
-## Reading and writing, without the boilerplate
-
-| Method | Returns | Notes |
-| :--- | :--- | :--- |
-| **`GetStr(name)`** | `string` | Resolves an ElementId to its **name** (so `GetStr("Level")` is `"Level 1"`, not `255432`). |
-| **`GetNum(name)`** | `double` | Internal units (feet / sq ft) — for arithmetic. |
-| **`GetNum(name, unit)`** | `double` | Converted, **exact** (`"mm"`, `"m2"`, …). |
-| **`GetVal(name)`** | `string` | Formatted exactly as Revit's Properties palette shows it. |
-| **`GetInt(name)`** | `int` | Yes/no checkboxes → 1 / 0. |
-| **`SetVal(name, value)`** | — | The smart setter: parses units, ids and strings. Opens its own transaction. |
-| **`SetNum(name, num, unit)`** | — | Explicit unit-aware numeric setter. |
-
-## Discovery
+Reading a value with `GetStr(...)` or `GetNum(...)` using a name that does not exist on that category **stops with an error** and suggests the closest real name. It does not silently give you `0` or an empty string. To see the real names on an element:
 
 ```csharp
-var doors = GetElements("Doors");                 // door instances
-var types = GetElements<FamilySymbol>("Doors");   // door types
-GetElement("Level 1").Select()                    // one element, chained into the UI
-GetMagicNames().Count                             // how many targetable names exist
-GetElements<Element>()                            // everything — bulk audits
+GetElements("Doors").First().CombinedParams().Table();
 ```
 
-:::tip[Target everything]
+## Where to learn
 
-`Element` is the base class of every Revit object, so `GetElements<Element>()` is the widest net there is. Combine it with `WhereCategory` or `WhereMaterial` instead of enumerating categories by hand.
-:::
-
-## Visualization
-
-| Command / Method | Type | Description |
-| :--- | :--- | :--- |
-| **`Table(data)`** | Global | Renders a grid. Returns `void` (not chainable). |
-| **`.Table()`** | Extension | Renders a grid and returns the collection — chainable. |
-| **`.BarGraph()`** / **`.PieGraph()`** / **`.LineGraph()`** | Extension | Charts the collection; each item's property names become the axis labels. |
-| **`.Select()`** / **`.Zoom()`** / **`.Isolate()`** | Extension | Drive the Revit UI from any collection. |
-
-<img src={AnalyticsCharts} alt="Charts rendered from a REPL query" />
-
-```csharp
-// total room area per level — the property names label the axes
-var data = GetElements<Room>()
-    .GroupBy(r => r.GetStr("Level"))
-    .Select(g => new
-    {
-        Level     = g.Key,
-        TotalArea = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1)
-    })
-    .ToList();
-
-BarGraph(data);             // X = Level, Y = TotalArea
-```
-
-Any projection works: `name` / `value` is only shorthand. The chart takes a numeric property for the vertical axis and the first other property for the horizontal one, then prints those property names as the labels. On a pie chart the horizontal one names the slices in the legend.
-
-## Recipes
-
-### An element audit
-
-Elements further than a kilometre from the origin are almost always CAD-import debris:
-
-```csharp
-var limit = 1000.InputUnit("m");
-
-var lost = GetElements<Element>().Where(e =>
-{
-    var bb = e.get_BoundingBox(null);
-    if (bb == null) return false;
-    var centre = (bb.Min + bb.Max) / 2.0;
-    return centre.DistanceTo(XYZ.Zero) > limit;
-}).ToList();
-
-Println($"{lost.Count} element(s) far from the origin");
-lost.Select();      // and Revit jumps to them
-```
-
-### Door → room, in one pass
-
-```csharp
-GetElements<FamilyInstance>("Doors")
-    .StandardDoor()
-    .Select(d => new
-    {
-        Mark    = d.GetStr("Mark"),
-        From    = d.RoomFrom(),
-        To      = d.RoomTo(),
-        Handing = d.Handing()
-    })
-    .Table();
-```
-
-### Room areas by level
-
-```csharp
-PieGraph(GetElements<Room>()
-    .Where(r => r.GetNum("Area") > 0)
-    .GroupBy(r => r.GetStr("Level"))
-    .Select(g => new { Level = g.Key, TotalArea = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1) })
-    .ToList());
-```
-
-`Level` names the slices in the legend; `TotalArea` supplies the values.
-
----
-
-> 📖 **Full API Reference**: every helper, accessor and unit method — **[Extension Methods](../extension-methods/index.mdx)**. New to all this? Start with **[Tutorial 1: Sixty Seconds in the Editor](../tutorials/the-repl.md)**.
+[REPL Tutorial 1](../tutorials/the-repl.md) starts from the very first line and works up to reports, geometry and bulk edits.

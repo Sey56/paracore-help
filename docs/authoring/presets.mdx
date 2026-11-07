@@ -1,49 +1,9 @@
-import PresetsUI from '@site/static/img/presets-ui.png';
+# Presets
 
-# Parameter Presets
+A **preset** is a named set of parameter values for one Gallery script. Instead of filling the form the same way every time, you save it once and pick it again later.
 
-Presets allow you to save specific configurations of parameter values, making it easy to switch between different scenarios without re-typing values every time.
+On a script's **Parameters** tab, the **Presets** control shows `<Default Parameters>` when nothing is saved. Use it to create a preset from the values currently in the form, switch between presets, rename one, or delete one.
 
-<img src={PresetsUI} alt="Presets UI" />
+Presets belong to that script — they do not affect other scripts, and they do not change the script's code. If you edit the `Params` class later, the saved values still apply to the properties that remain.
 
-## The Preset Lifecycle
-
-Presets are linked to the specific script's file path. When you select a script in the Gallery, Paracore automatically retrieves its associated presets from your **local Paracore database**. 
-
-> [!NOTE]
-> **Privacy & Storage**: Your named presets are stored locally on your machine in the SQLite database located at:  
-> `%AppData%/Roaming/paracore-data/data/rap_local.db`  
-> These values are private to your computer and are never transmitted to any cloud server.
-
-### 1. Default Parameters
-By default, every script starts in the **`<Default Parameters>`** state. This state uses the values defined in the script's source code. 
-
-Paracore keeps a **Draft Cache** of your edits in this state using your browser's local storage (`localStorage`). This ensures your temporary edits are preserved privately on your machine as you navigate between scripts, even without saving a formal preset.
-
-### 2. Creating a Preset
-1.  Configure your parameters in the **Parameters Tab**.
-2.  Click the **Plus (+)** icon next to the preset dropdown.
-3.  Enter a descriptive name and click **Save**.
-
-### 3. Updating & Managing
--   **Update (🔄)**: Saves current UI values into the active custom preset.
--   **Rename (✏️)**: Changes the title of the active custom preset.
--   **Delete (🗑️)**: Removes the active custom preset from your library.
-
-## Intelligent Features
-
-### Scene State & Persistence
-Presets save your selected values exactly as they are at the moment of saving, even for dynamic "Computable" parameters (like a specific Wall Type or Level name).
-
-- **Scene Changes**: If the Revit model changes (e.g., an element you saved in a preset is deleted), the preset will still display the old value in the UI. 
-- **Execution Safety**: Running a script with a missing element will result in an execution error. 
-- **Recovery**: If a saved value is no longer valid, simply click the **Compute (🔄)** button to refresh the available options, select a new valid item, and click **Update** to save the new state to your preset.
-
-### Safe Hard Reset
-In the `<Default Parameters>` state, a **Reset (↺)** button appears. 
-- **What it does**: Clears your local draft cache for that script and reloads values directly from the C# source code defaults.
-- **Safety**: This operation **does not touch** your saved custom presets. It only resets the "Default" draft state.
-
----
-
-*Next: Learn how to add rich [Script Metadata](./metadata.md) to your tools.*
+See [Parameters and the Configurator](../scripting-reference/parameters.mdx) for how the form itself is built.

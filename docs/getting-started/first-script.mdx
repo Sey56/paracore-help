@@ -1,66 +1,40 @@
-import RevitRibbonTab from '@site/static/img/revit-ribbon-tab.png';
-import TwistingTowerImg from '@site/static/img/twisting-tower.png';
-
 # Your First Script
 
-In this guide, you will load a **script source**, configure dynamic parameters, and execute your first automation.
-**Note**: The "TwistingTower" script used here is just to demonstrate what Paracore can do — don't worry about understanding its code yet.
+This takes one minute and proves the whole chain works: desktop app → local connector → Revit.
 
-> **New to the Gallery?** [Before You Start: Script Sources and VS Code](../tutorials/gallery-00-start-here.md) walks through setting up a source and creating a script step by step. The [`00_Tutorials` source](https://github.com/Sey56/Paracore-Examples/tree/main/00_Tutorials) in the examples repository contains the finished script for every Gallery lesson, so you can compare your work as you go.
+## Before you start
 
-> **Understanding Units**: If you use the `[Unit]` attribute for a parameter, the engine automatically converts the user's input to Revit internal units (Feet). You **don't** need to manually convert these values in your logic. However, for **output/display** (like printing a wall's length in meters), you must convert *from* internal units to your target unit.
+1. Revit is open with a project, and **Paracore Server** on the **Paracore** ribbon tab is **ON**.
+2. The desktop app shows a green **Connected** in the top bar.
+3. The **REPL** button at the top is selected.
 
-## Goal
-Experience **Dynamic Execution** in action. Run a pre-made script to see how Paracore provides a streamlined environment for parameter orchestration, logic compilation, and instant code execution.
+If any of these is missing, go back to [Install and Connect](./installation.mdx).
 
-## Steps
+## Run one line
 
-### 1. Connect to Revit
-1.  Open **Autodesk Revit 2025, 2026 or 2027**.
-2.  Go to the **Paracore** tab in the ribbon.
-3.  Locate the **Paracore Server** button (it will initially show **Off**).
-4.  Click the icon. The label will change to **On** and a Revit TaskDialog will appear confirming the connection.     
-5.  Close the TaskDialog.
+Type this into the **REPL Playground** editor:
 
-<img src={RevitRibbonTab} alt="Revit Ribbon Tab" />
+```csharp
+Println("Hello");
+```
 
-### 2. Launch Paracore Desktop App
-1.  Open the **Paracore Desktop App**.
-2.  Ensure the top bar shows a green **Connected** status.
+Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>. **History** shows a marker `> REPL Playground` and, under it, `Hello`.
 
-### 3. Add the Script Source
+Now try something from the model:
 
-A **script source** is a folder with a `.paracore` file in it, plus one sub-folder per script. The desktop app loads these folders from disk — it is not a code editor.
+```csharp
+GetElements("Rooms").Count();
+```
 
-1.  **Get the examples**: Download or clone the [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) repository to your computer.
-2.  **Show the Sidebar**: click the **hamburger menu** (☰) in the top-left corner of the desktop app.
-3.  **Load the source**: in the Sidebar's **Local Sources** section, click the small **folder button** on the right — its tooltip reads **Load or Initialize Source**. A native folder dialog opens.
-4.  **Select the folder**: navigate inside the repository and select **`01_Getting_Started`** — the folder that contains the `.paracore` file. Do not select the repository root.
-5.  Open **Gallery**. The **TwistingTower** card appears and the source is active under **Local Sources**.
+A number appears. A bare expression prints its result on its own — you do not need `Println` for that.
 
-To load a different category later, load its numbered folder the same way, or pick another one already loaded from the **Local Sources** dropdown. The [`00_Tutorials`](https://github.com/Sey56/Paracore-Examples/tree/main/00_Tutorials) folder is the one that matches the current [Gallery tutorials](../tutorials/gallery-00-start-here.md).
+## What just happened
 
-### 4. Configure Parameters
-1.  Click on the **TwistingTower** card.
-2.  In the **Script Inspector**, ensure the **Parameters** tab is active.
-3.  Click the **Compute (🔄)** button next to the **BaseLevel** and **WallType** fields to fetch live data from your Revit project.
-4.  Select a level and a wall type from the resulting dropdowns.
+Your C# was compiled and run inside the open Revit document. No file was saved, no project was created, and Revit never restarted. That is the whole idea behind the REPL.
 
-### 5. Execute the Script
-1.  **Idle State**: Ensure Revit is not currently running another command (press `Esc` a few times).
-2.  Click the **Run Script** button at the bottom of the Parameters tab.
+If you save the snippet as `HelloParacore.cs`, the History marker changes from `> REPL Playground` to `> HelloParacore`. **History keeps results, not the code you typed** — it is read-only, with only **Copy** and **Clear**. To run something again, paste the code back into the editor.
 
-### 6. Monitor Status
-1.  Look at the **Execution Status** button. It will turn **Green** on success.
+## Next
 
-## Expected Result
-
-<img src={TwistingTowerImg} alt="Twisting Tower Result" />
-
-1. **In Revit**: Look at the origin point. A twisting tower structure will be created on all levels above your base level.
-2. **In Paracore Desktop**: The **Console Tab** will show:
-   `Created twisting house on X levels starting from: Level 1`
-
----
-
-*Next: [Before You Start — Script Sources and VS Code](../tutorials/gallery-00-start-here.md), then the [Gallery tutorials](../tutorials/gallery-01-hello-wall.md). For the full feature tour, see [Script Gallery](../authoring/gallery.mdx).*
+- **[REPL Tutorial 1](../tutorials/the-repl.md)** — the editor, results, and what to do when something goes wrong.
+- **[Before You Start: Script Sources and VS Code](../tutorials/gallery-00-start-here.md)** — when you are ready to build a saved Gallery script.

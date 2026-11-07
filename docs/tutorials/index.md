@@ -58,7 +58,7 @@ Every code block is complete and runnable — paste it and press <kbd>Ctrl</kbd>
 ## After the lessons
 
 - **[Extension Methods](../extension-methods/index.mdx)** — the full API: every method, every overload, every trap.
-- **[Paracore Fundamentals](../fundamentals/index.md)** — how the platform works: script sources, the parameter engine, sentinels.
+- **[Where to Find Things](../fundamentals/index.md)** — a map of every topic in the help.
 - **[Gallery Scripts](./more-automation.md)** — eight hands-on lessons that take you from your first Gallery tool to a multi-file structural frame generator. You will learn the `Params` class, the Configurator form, script sources, and every parameter attribute. Start with **[Before You Start: Script Sources and VS Code](./gallery-00-start-here.md)** — Gallery scripts are files on disk, so you need a script source and VS Code before the first lesson.
 
 > **Scripts are the same engine.** A Gallery script runs the same top-level C# as the editor — same compiler, same API, same globals. You are not learning a sandbox that behaves differently from the real thing. What a Gallery script adds is the *container* (a project folder in a script source) and, optionally, a `Params` form; neither is something the REPL makes for you. The [Gallery Script tutorials](./more-automation.md) cover all of it.

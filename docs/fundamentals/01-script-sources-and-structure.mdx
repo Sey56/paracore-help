@@ -1,55 +1,48 @@
 ---
-title: 01 - Script Sources and Structure
-sidebar_label: 01 - Script Sources and Structure
+title: Script Sources and the Gallery
+sidebar_label: Script Sources and the Gallery
 id: 01-script-sources-and-structure
 ---
 
-# Script Sources and Script Structure
+# Script Sources and the Gallery
 
-Understanding how Paracore finds and organizes your automation tools is the first step to a clean workflow.
+A REPL snippet lives in the editor. A **Gallery script** lives in a folder on your disk. The desktop app finds, configures and runs those folders — it is not a code editor.
 
-## 1. What is a Script Source?
-A **Script Source** is the primary organizational system for your Paracore tools. It is a mandatory container folder that groups related automation projects into a structure the engine can efficiently scan and manage. 
+## The shape of a script source
 
-Unlike the **REPL**, which allows you to run independent code snippets on the fly, the **Script Gallery** relies on these sources to provide features like Magic Hydration, [Visual Query Building](../authoring/query-builder), and professional IDE scaffolding. **You cannot load a standalone script into the gallery; it must be part of a valid Script Source.**
+A **script source** is any folder containing a small marker file named `.paracore`. Inside it, each script is its own folder:
 
-The engine identifies a source by looking for a hidden `.paracore` marker file, which acts as a "Signpost" telling Paracore: "Start scanning for scripts from this point."
+```text
+MyScriptSource/
+    .paracore
+    HelloWall/
+        Scripts/
+            HelloWall.cs      ← the entry script (top-level C# + optional Params class)
+            Helper.cs         ← optional
+            Params.cs         ← optional
+    RoomAudit/
+        Scripts/
+            RoomAudit.cs
+```
 
-### Rules for Initialization
-- **Empty Folders Only**: You can only initialize an **empty folder** as a new script source.
-- **The Signpost**: Initializing creates the `.paracore` file and prepares the folder for your projects.
+The engine reads the `.cs` files inside `Scripts/` together, so one script can be split across several files. The `.csproj`, `.sln`, `Globals.cs`, `bin` and `obj` items that appear later are **only there for VS Code autocomplete** — they are not part of the script.
 
-## 2. Containers vs. Sources (The Scanning Logic)
-Paracore uses a smart scanning loop to load your tools efficiently:
+## Adding a source
 
-- **The Container**: A standard folder (like a project folder or a discipline root) that *is not* a source itself (it has no `.paracore` file). 
-- **Loading a Folder**: When you load a folder into Paracore, it checks for a `.paracore` file:
-    - **If NOT found**: It treats the folder as a **Container**. It scans the immediate children. If any child folder is a Script Source (has a `.paracore` file), it loads it into the sidebar. Use this to load many sources at once (e.g., loading an `ExampleProject` folder that contains both `Structural` and `Architectural` script sources).
-    - **If FOUND**: It loads the folder as a **Script Source** and **stops**. It will not scan deeper for other sources.
+Open the **hamburger menu** in the top-left of the desktop app. In the Sidebar, under **Local Sources**, click **Load or Initialize Source**. Pick an empty folder and choose **Initialize Script Source**, then **Initialize**. Paracore writes the `.paracore` marker and makes that source active.
 
-:::danger[No Nesting]
+To load an existing source, pick the folder that already contains `.paracore` — not its parent.
 
-Never put a script source inside another script source. The outer source will mask the inner ones, making them invisible to Paracore.
-:::
+## Creating a script
 
-## 3. The "C# Project" Hierarchy
-When you create a new script or sentinel, Paracore scaffolds a professional directory structure:
+In the **Gallery** view, with the right source selected under **Local Sources**:
 
-`ScriptSource / ProjectName / Scripts / ProjectName.cs`
+1. Click **NEW**, give the script a name **with no spaces**.
+2. Pick **Archetype** for a blank script, or **Builder** to build a filter visually.
+3. Click **Generate Script**. A card appears in the Gallery.
+4. Click **Edit Script**. This opens the script in VS Code **and creates the IntelliSense workspace files** the first time.
+5. Back in the desktop app, set the parameters and click **Run**.
 
-### Why this structure?
-1.  **Encapsulation**: Your executable code lives exclusively in the `Scripts/` subfolder.
-2.  **In-Place Scaffolding**: Clicking "Edit Script" generates IDE files (`.csproj`, `.sln`, etc.) in the `ProjectName/` root. 
-3.  **No Contamination**: By keeping your code in the `Scripts/` folder, the helper files created by VS Code never interfere with your pure execution scripts.
+For the full click-by-click walkthrough, see [Before You Start: Script Sources and VS Code](../tutorials/gallery-00-start-here.md). The [Gallery lessons](../tutorials/more-automation.md) then build on it.
 
-## 4. Multi-File Support (Selective Compilation)
-Paracore supports complex tools spread across multiple files without slowing down execution:
-
-- **Entry Script Discovery**: The engine identifies your "Entry Script" (the top-level logic).
-- **Smart Combination**: The engine **does not** combine every `.cs` file in the folder automatically.
-- **Reference Scanning**: It scans your entry script to see which other files in the `Scripts/` folder are actually **referenced** (classes, methods, or helpers).
-- **Selective Compilation**: Only the referenced files are combined. This keeps your execution context efficient and focused.
-
----
-
-*Next Step: Explore the [01 - Step-by-Step Exercise](./step-by-step/01-step-by-step.mdx) to practice managing your script sources.*
+> The finished script for every Gallery lesson is in the [`00_Tutorials` source](https://github.com/Sey56/Paracore-Examples/tree/main/00_Tutorials).

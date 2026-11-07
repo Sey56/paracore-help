@@ -1,53 +1,31 @@
 # Libraries & Dependencies
 
-Paracore includes a suite of industry-standard libraries ("batteries included") so you can perform complex tasks without managing DLLs manually.
+Your script can use the full **Revit API**, the standard .NET collections and LINQ, and a small set of bundled libraries. Nothing needs to be installed or referenced by hand.
 
-## Built-In Libraries
+## Available
 
-These namespaces are automatically imported into every script. You do not need `using` statements for them.
-
-| Library | Version | Purpose |
-| :--- | :--- | :--- |
-| **RestSharp** | 113.1.0 | High-performance HTTP/REST API client. |
-| **MiniExcel** | 1.42.0 | Fast reading/writing of Excel (`.xlsx`) files. |
-| **MathNet.Numerics** | 5.0.0 | Advanced linear algebra, statistics, and numerical methods. |
-| **ImageSharp** | 3.1.12 | Modern, cross-platform image processing library. |
-| **System.Text.Json** | 8.0.5 | Native, high-performance JSON serialization. |
-
-## Usage Examples
-
-### 1. Parsing JSON (System.Text.Json)
+| What | Typical use |
+|---|---|
+| `System`, `System.Linq`, `System.Collections.Generic` | everyday C# |
+| `System.Text`, `System.Text.Json`, `System.Globalization` | strings, JSON, formatting |
+| `MiniExcel` | reading and writing `.xlsx` files |
+| `MathNet.Numerics` | statistics and numerical work |
+| `SixLabors.ImageSharp` | image processing |
+| `RestSharp` | included for compatibility, but **network calls are blocked** — see below |
 
 ```csharp
-// Example: Serializing a simple object
 var data = new { Name = "Wall", Height = 3.0 };
-string json = JsonSerializer.Serialize(data);
-Println($"Serialized: {json}");
+Println(JsonSerializer.Serialize(data));
 ```
 
-### 2. Reading Excel Data (MiniExcel)
+## What a script may not do
 
-```csharp
-// Example: Querying a sheet
-var rows = MiniExcel.Query(path).ToList();
-foreach (var row in rows) {
-    Println($"Row Data: {row.Name}");
-}
-```
+Scripts run in a sandbox. These are refused, not just discouraged:
 
-### 3. Calling an API (RestSharp)
+- **Network access** — `System.Net`, HTTP calls, sockets.
+- **Arbitrary file access** — in the REPL, `System.IO` is unavailable. Use `Files.WriteText("out.csv", csv)` or `ExportImage("room-check")`; files stay inside the agent workspace folder.
+- **Reflection, process launching, diagnostics, native interop** and loading external DLLs.
 
-```csharp
-var client = new RestClient("https://api.example.com");
-var request = new RestRequest("data", Method.Get);
-var response = client.Execute(request);
-Println($"Response: {response.Content}");
-```
+That is why a script cannot call a web API, read `C:\temp`, or load a DLL from disk. If you need to work with a file, copy it into the workspace first.
 
-## Referencing External DLLs
-
-Paracore is designed to be a self-contained ecosystem. While you can technically use `System.Reflection.Assembly.LoadFrom()` to load external DLLs, we recommend sticking to the built-in libraries to ensure your scripts are portable and compatible across different machines.
-
----
-
-*Note: The built-in libraries are chosen for their performance and stability within the Revit .NET 8 environment, and within Revit 2027's .NET 10 host, which loads the same .NET 8 payload.*
+> A script that is refused tells you why. The restriction is about *where* code can reach, not about what you can compute.

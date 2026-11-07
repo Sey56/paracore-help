@@ -1,48 +1,8 @@
-# Script Authoring (Modular Projects)
-
-Paracore uses a **Modular Project** structure to organize your Revit automations. This ensures that your logic remains clean, reusable, and easy to maintain.
-
-## The Project Structure
-
-Scripts in Paracore are self-contained project folders known as **Modular Projects**. When you load a "Script Source" folder, Paracore automatically discovers these projects based on a specific convention:
-
-```text
-MyScriptSource/
-├── HelloSentinel/
-│   └── Scripts/
-│       └── HelloSentinel.cs  <-- Entry Point (Top-Level Statement)
-├── HelloRevit/
-│   └── Scripts/
-│       └── HelloRevit.cs     <-- Entry Point (Top-Level Statement)
-```
-
-### Entry Script Conventions
-The **Entry Point** must be a C# file that matches the parent project name. It is processed as a **Top-Level Statement** script and must follow this structure:
-
-1.  **The Header**: Multi-line script metadata (comments at the top; order does not matter). `using` statements are not needed — all namespaces are `global using` in the workspace's `Globals.cs`.
-2.  **The Logic**: Top-level statements, execution logic, and top-level method definitions.
-3.  **The Types**: User-defined types (classes, structs, or interfaces).
-
+---
+title: "Script Authoring"
+hide_table_of_contents: true
 ---
 
-### Handling Multiple Files
-If you wish to modularize your logic into multiple files, you can add additional `.cs` files inside the `Scripts/` folder.
+# Script Authoring
 
--   **Explicit Reference**: Other files are **not automatically included**. The engine only combines files that are explicitly referenced in your entry script. Non-referenced files are ignored.
--   **Non-Entry Files**: Secondary files must not contain top-level statements. They should be reserved for user-defined types (classes, interfaces, etc.) that support your main logic.
-
----
-
-## In This Section
-
--   **[Script Gallery](./gallery.mdx)**: Browse and manage your modular projects.
--   **[Script Inspector](./inspector.mdx)**: Configure parameters and view results.
--   **[AI Script Generation](./ai-generation.mdx)**: Generate Revit tools using AI coding assistants in VS Code.
--   **[Playlists](./playlists.mdx)**: Chain multiple scripts into a sequence and run them in order.
--   **[Script Execution](./execution.mdx)**: Understand the lifecycle of an automation run.
--   **[Visual Query Builder](./query-builder.md)**: Generate complex filtering logic visually.
--   **[VS Code Integration](./vscode.mdx)**: Set up your IDE for full authoring and direct-run support.
-
----
-
-*New to authoring? We recommend starting with the [Script Gallery](./gallery.mdx) overview.*
+This page has moved. **Building and running Gallery scripts** is now covered in one place: [Script Sources and the Gallery](../fundamentals/01-script-sources-and-structure.mdx).

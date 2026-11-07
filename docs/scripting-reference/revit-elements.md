@@ -116,8 +116,8 @@ public class Params
 
 ---
 
-## Interaction: Selection via Table
+## From a table back to the model
 
-Paracore supports a "Sync to Model" workflow for audit results and schedules. If your script outputs a table (via `Table(data)`) that contains an **Id** or **ElementId** property, the **Analytics Tab** becomes interactive. 
+If a table produced with `.Table()` has an **Id** column, the numbers in that column are clickable. Click one and the element is selected in Revit and brought into view. It is a quick way to jump from an audit result or schedule row to the element that produced it.
 
-Clicking an entry in the table will automatically **Select and Focus** (Zoom) the element within the active Revit session, bridging the gap between data and the 3D model.
+Only the **Id** column works this way; clicking other cells does nothing. See [Answers, Not Code](../tutorials/tables-and-answers.md) for how tables and charts are built.

@@ -57,14 +57,24 @@ There is no `GetElementType()` dance, no `Doc.GetElement(inst.GetTypeId()) as Fa
 
 ## "Is it empty, or does it not exist?"
 
-That is the question that produces broken reports, and there is one method for it:
+Those are two different cases, and Paracore treats them differently.
 
 ```csharp
 wall.HasParam("Fire Rating")          // true  — exists
 wall.HasParam("Fire Ratng")           // false — a typo, not an empty value
 ```
 
-Note the asymmetry, because it is deliberate: **single-element reads tolerate absence** (`GetStr` on a parameter that some elements have returns `""`), while **collection filters raise** on a name nothing can answer. A mixed set legitimately has and has not, so reads cannot throw; an aggregate over a misspelled name would silently be zero, so it must.
+If a name is **declared by the category** but this particular element has no value for it, `GetStr` gives `""` and `GetNum` gives `0`. That is a legitimate empty cell.
+
+If **no element of the category declares that name at all**, the read stops with an error instead of quietly giving you `""` or `0`:
+
+```csharp
+door.GetNum("Base Offset")
+// ❌ GetNum("Base Offset"): there is no "Base Offset" parameter in Category Doors.
+//    Use .CombinedParams().Table() to list the real names.
+```
+
+A zero that comes from a typo looks like a measurement, so it is refused. Close spellings get a suggestion — `Did you mean ...?`. Collection filters such as `SumParam` raise for the same reason: a misspelled aggregate would otherwise be a silently empty report.
 
 ## When you do not know the name
 

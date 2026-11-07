@@ -1,93 +1,57 @@
 # Global Helpers
 
-Paracore injects several global variables and functions into your script's execution context. These helpers eliminate the need for common Revit API setup code.
+Every script starts with these already available. You do not import or set them up.
 
-## Revit Context
-- **`Doc`**: The active Revit Document (`Autodesk.Revit.DB.Document`).
-- **`UIDoc`**: The active UI Document (`Autodesk.Revit.UI.UIDocument`).
-- **`UIApp`**: The Revit Application instance (`Autodesk.Revit.UI.UIApplication`).
+## The open Revit document
 
-## Logging & Console
-- **`Println(string message)`**: Prints a message followed by a newline to the Paracore Console.
-- **`Print(string message)`**: Prints a message without a newline.
+- **`Doc`** — the active `Autodesk.Revit.DB.Document`.
+- **`UIDoc`** — the active `UIDocument`.
+- **`UIApp`** — the Revit `UIApplication`.
 
-> **Why use Println?**
-> We strongly recommend using `Println()` instead of the standard `TaskDialog.Show()`.
-> - **Non-Blocking**: `Println()` streams messages to the Paracore Dashboard instantly without pausing your script.
-> - **Clean Workflow**: Avoid distracting popups that interrupt your focus.
+## Printing
 
-## Transactions (Transact)
-The `Transact` helper automatically handles the Revit Transaction lifecycle (Start, Commit, and Rollback on error). 
+- **`Println(value)`** — writes a line to **History**.
+- **`Print(value)`** — writes without a newline.
 
-**Document modifications MUST be wrapped in a Transact block.**
+Use `Println` instead of `TaskDialog.Show()`: it does not pause your script or cover the model with popups. A bare expression also prints its own result, so `GetElements<Wall>().Count()` needs no `Println`.
+
+## Changing the model
+
+Document changes must be inside a **Transact** block:
 
 ```csharp
-Transact("Update Wall", () => {
-    wall.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("Updated");
+Transact("Update comments", () => {
+    foreach (var wall in GetElements<Wall>())
+        wall.SetVal("Comments", "Checked");
 });
 ```
 
-### 🛑 Best Practices for Transactions
-1. **Avoid Transactions inside Loops**: Never put a `Transact` call inside a `foreach` or `for` loop. Opening and closing hundreds of transactions is slow and clutters the Revit Undo stack.
-2. **Put Loops inside Transactions**: Instead, wrap your entire loop inside a single `Transact` block. This ensures all changes are processed as one "undoable" operation.
-3. **Undo Support**: Every script execution that uses `Transact` can be completely reversed using the standard Revit **Undo** (Ctrl+Z) command.
+Two rules:
 
----
+- Put the **loop inside** one `Transact`, not a `Transact` inside each iteration.
+- If a script fails, everything it changed in that run is undone. Either the whole run happened, or none of it did.
 
-## Script Lifecycle
+## Long scripts
 
-### `SetExecutionTimeout(seconds)`
-Extends the script execution timeout beyond the default of 10 seconds. Call at the start of long-running scripts.
+A runaway script is stopped automatically and Revit stays responsive. If a long script needs more time, put this on its **first line**:
 
 ```csharp
-SetExecutionTimeout(120); // Allow up to 2 minutes
+SetExecutionTimeout(120); // seconds
 ```
 
-### `Watchdog(callback, intervalSeconds)`
-Registers a background sentinel that runs on Revit idle. When run manually (not deployed), it executes the logic once for testing.
+## Tables and charts
 
-```csharp
-Watchdog(doc => {
-    var untagged = GetElements("Doors").Where(d => d.GetStr("Mark") == "");
-    WatchdogReport($"{untagged.Count()} untagged doors", untagged.Any() ? "warning" : "success");
-}, 30);
-```
+These send structured results to the **Analytics** tab:
 
-### `WatchdogReport(summary, status, data?)`
-Sends a status report from within a sentinel callback. Status can be `"success"`, `"warning"`, or `"error"`.
+| Helper | Result |
+|---|---|
+| `Table(data)` | A table |
+| `BarGraph(data)` | A bar chart |
+| `PieGraph(data)` | A pie chart |
+| `LineGraph(data)` | A line chart |
 
-```csharp
-WatchdogReport("All clear", "success");
-WatchdogReport("5 issues found", "warning", issueList);
-```
+The property names you project become the axis labels. For a label with a space in it, use a dictionary key such as `"Total Area"`. See [Answers, Not Code](../tutorials/tables-and-answers.md).
 
----
+## Background checks
 
-## Visual Helpers
-These helpers automatically format and send data to the **Analytics Tab** for analysis and visualization.
-
-| Method | Type | Description |
-| :--- | :--- | :--- |
-| **`Table(data)`** | Global / Extension | Sends element data to the **Analytics Tab**. |
-| **`BarGraph()`** | Global / Extension | Renders data as a Bar Chart. |
-| **`PieGraph()`** | Global / Extension | Renders data as a Pie Chart. |
-| **`LineGraph()`** | Global / Extension | Renders data as a Line Chart. |
-
-### Example: Quick Table
-```csharp
-var walls = new FilteredElementCollector(Doc).OfCategory(BuiltInCategory.OST_Walls).ToElements();
-Table(walls.Select(w => new { w.Name, w.Id }));
-```
-
----
-
-## Advanced: Show(type, data)
-The underlying engine uses the `Show` method. While you can use it directly, the specialized helpers above (which call `Show` internally) are recommended.
-
-:::note
-`Show(type, data)` selects the rendering by a **type key** — `"table"`, `"chart-bar"`, `"chart-pie"`, `"chart-line"`. These strings are a routing contract between the engine and the desktop app, so use the helper methods rather than passing a key by hand: a mistyped key does not raise an error, it silently renders nothing.
-:::
-
-```csharp
-Show("table", myData);
-```
+`Watchdog(...)` and `WatchdogReport(...)` are used by [Sentinels](../sentinels/index.md) — checks that run while Revit is idle. Run a Watchdog script once by hand to test its logic before setting it up as a Sentinel.

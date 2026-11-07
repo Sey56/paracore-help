@@ -1,120 +1,39 @@
 import type { SidebarsConfig } from '@docusaurus/plugin-content-docs';
 
+/**
+ * One topic lives on exactly one page. Old URLs are kept as short redirect stubs,
+ * but they are deliberately NOT listed here — the sidebar is the map of current docs.
+ */
 const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     'intro',
 
     {
       type: 'category',
-      label: 'Getting Started',
+      label: 'Start here',
       items: [
         'getting-started/index',
         'getting-started/installation',
-        'getting-started/first-script',
         'getting-started/downloads',
+        'getting-started/first-script',
       ],
     },
 
     {
       type: 'category',
-      label: 'Core Concepts',
-      items: [
-        'core-concepts/index',
-        'core-concepts/architecture',
-        'core-concepts/script-types',
-        'core-concepts/active-data-workflows',
-      ],
-    },
-
-    {
-      type: 'category',
-      label: 'Fundamentals',
-      link: { type: 'doc', id: 'fundamentals/index' },
-      items: [
-        'fundamentals/01-script-sources-and-structure',
-        'fundamentals/02-creating-and-managing-scripts',
-        'fundamentals/03-editing-scripts-in-vscode',
-        'fundamentals/04-parameter-engine-params-class',
-        'fundamentals/05-parameter-defaults-and-cache',
-        'fundamentals/06-revit-vs-paracore-selection',
-        'fundamentals/07-visual-query-builder',
-        'fundamentals/08-structured-output-table',
-        'fundamentals/09-paracore-sentinels',
-        'fundamentals/10-paracore-repl',
-        {
-          type: 'category',
-          label: 'Step-by-Step Exercises',
-          collapsed: true,
-          items: [
-            'fundamentals/step-by-step/exercise-01',
-            'fundamentals/step-by-step/exercise-02',
-            'fundamentals/step-by-step/exercise-03',
-            'fundamentals/step-by-step/exercise-04',
-            'fundamentals/step-by-step/exercise-05',
-            'fundamentals/step-by-step/exercise-06',
-            'fundamentals/step-by-step/exercise-07',
-            'fundamentals/step-by-step/exercise-08',
-            'fundamentals/step-by-step/exercise-09',
-            'fundamentals/step-by-step/exercise-10',
-          ],
-        },
-      ],
-    },
-
-    {
-      type: 'category',
-      label: 'AI & MCP',
-      link: { type: 'doc', id: 'ai-agent/index' },
-      items: [
-        'ai-agent/mcp-server',
-        'ai-agent/security',
-      ],
-    },
-
-    {
-      type: 'category',
-      label: 'Script Authoring',
-      items: [
-        'authoring/index',
-        'authoring/gallery',
-        'authoring/inspector',
-        'authoring/ai-generation',
-        'authoring/playlists',
-        'authoring/execution',
-        'authoring/presets',
-        'authoring/query-builder',
-        'authoring/metadata',
-        'authoring/vscode',
-      ],
-    },
-
-    {
-      type: 'category',
-      label: 'Interactive REPL',
+      label: 'Using the app',
       items: [
         'interactive-repl/index',
-      ],
-    },
-
-    {
-      type: 'category',
-      label: 'Sentinels (Watchdogs)',
-      items: [
+        'fundamentals/01-script-sources-and-structure',
+        'fundamentals/03-editing-scripts-in-vscode',
+        'scripting-reference/parameters',
+        'fundamentals/07-visual-query-builder',
+        'authoring/presets',
+        'authoring/playlists',
         'sentinels/index',
-        'sentinels/deployment',
-        'sentinels/control-window',
-      ],
-    },
-
-    {
-      type: 'category',
-      label: 'Tool Generator',
-      items: [
         'tool-generator/index',
-        'tool-generator/overview',
-        'tool-generator/creating-tools',
-        'tool-generator/distributing-tools',
-        'tool-generator/security',
+        'ai-agent/index',
+        'core-concepts/architecture',
       ],
     },
 
@@ -140,7 +59,6 @@ const sidebars: SidebarsConfig = {
       items: [
         'scripting-reference/index',
         'scripting-reference/globals',
-        'scripting-reference/parameters',
         'scripting-reference/units',
         'scripting-reference/options',
         'scripting-reference/revit-elements',

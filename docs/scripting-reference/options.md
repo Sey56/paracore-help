@@ -1,67 +1,30 @@
 # Options Providers
 
-Paracore allows you to create dynamic, data-driven selection lists using **Options Providers**. This is the primary way to provide selection data to your parameters.
+A dropdown can be filled automatically from the open model, or from a property you write yourself. To supply your own choices, add a companion property named **`X_Options`** for a parameter **`X`**.
 
----
-
-## The Provider Convention
-
-To create an Options Provider for a parameter named **`X`**, you define a companion property named **`X_Options`**.
-
-### Type Matching Rule
-The return type of your **Options Provider** must match the type of your main parameter (e.g., `List<string>`, `List<double>`, or `List<WallType>`).
-
----
-
-## The Compute Workflow
-
-For providers that require processing, the UI follows a dynamic lifecycle triggered by the **Compute (🔄)** button.
-
-### Logic-Based Discovery
-The engine detects "Computable" providers by analyzing the complexity of the expression:
-
-| Provider Type | Logic | UI Behavior |
-| :--- | :--- | :--- |
-| **Static Provider** | `=> ["A", "B"];` | **Auto-Populated**. No button; selection is ready instantly. |
-| **Dynamic Provider** | `=> new FilteredElementCollector...` | **Computable**. Shows button; transforms on click. |
-| **Transformed Provider** | `=> myStaticList.OrderBy(x=>x).ToList();`| **Computable**. Shows button; transforms on click. |
-
----
-
-## Dynamic Providers (Revit API)
-
-Use dynamic providers for fine-grained filtering that goes beyond standard magic extraction.
+Its type must match the parameter's type.
 
 ```csharp
-// In V3, we return the actual elements!
-public class Params {
+public class Params
+{
     public WallType MyWallType { get; set; }
 
-    // Custom dynamic provider
-    public List<WallType> MyWallType_Options => new FilteredElementCollector(Doc)
-                .OfClass(typeof(WallType))
-                .Cast<WallType>()
-                .Where(wt => wt.Kind == WallKind.Basic)
-                .ToList();
+    public List<WallType> MyWallType_Options =>
+        GetElements<WallType>().Where(w => w.Kind == WallKind.Basic).ToList();
 }
 ```
 
-## Static Providers
+## Static and dynamic choices
 
-Use static providers for fixed choices.
+| Provider | Example | What you see |
+|---|---|---|
+| Static | `Grade_Options => [94.0, 69.7, 79.5]` | The list is ready immediately |
+| Dynamic | `MyWallType_Options => new FilteredElementCollector(Doc)…` | A **Compute** button fills it from the current model |
 
-```csharp
-public class Params {
-    public double Grade { get; set; } = 94.0; 
-    
-    // Static literal provider (Auto-populated)
-    public List<double> Grade_Options => [94.0, 69.7, 79.5];
-}
-```
+Click **Compute** for a dynamic provider so the list reflects the model as it is right now. A value you set on the property itself is used as the default before the list is computed.
 
----
+## Without a provider
 
-## Best Practices
+If you declare a Revit type such as `Level` or `WallType` and do **not** add an `_Options` property, Paracore fills the dropdown from the model for you. Only add a provider when you want to narrow or reshape that list.
 
--   **Safety**: Always prefer clicking **Compute** for dynamic providers to ensure the value matches Revit's data exactly.
--   **Default Values**: If the main property has an initializer, the UI will be pre-filled with that value before the provider is triggered.
+The [Gallery lessons](../tutorials/more-automation.md) use `_Options` in a working script.

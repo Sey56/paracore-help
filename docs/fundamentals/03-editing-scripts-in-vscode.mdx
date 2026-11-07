@@ -1,58 +1,37 @@
 ---
-title: 03 - Editing Scripts in VS Code
-sidebar_label: 03 - Editing Scripts in VS Code
+title: Editing Scripts in VS Code
+sidebar_label: Editing Scripts in VS Code
 id: 03-editing-scripts-in-vscode
 ---
 
-# Editing Scripts in VSCode
+# Editing Scripts in VS Code
 
-Paracore bridges the gap between the Revit UI and a high-performance development environment using VS Code.
+You write C# in **VS Code**, not in the desktop app. The desktop app opens the editor for you and picks up your changes.
 
-## 1. The "In-Place" Workspace
-When you click **Edit Script** on a script card, Paracore turns that project folder into a local VS Code Workspace.
+## Opening a script
 
-### What happens behind the scenes?
-Paracore generates essential IDE files directly in the project root:
-- `.csproj` and `.sln` files.
-- `bin` and `obj` folders.
-- `Globals.cs` (providing Revit API intellisense).
+Click **Edit Script** on a Gallery card. The first time, Paracore builds a small VS Code workspace around the script's folder:
 
-**Single Source of Truth**: You are editing the exact files Paracore uses for execution. Note that these files are purely for the IDE; you cannot run the script using VS Code's built-in "Run" button.
-
-## 2. Top-Level Script Structure
-Paracore utilizes a top-level statement environment (Roslyn Scripting), meaning you can start writing logic immediately.
-
-### The Metadata Block
-Every script must begin with a multi-line comment containing its metadata:
-```csharp
-/*
-DocumentType: Project
-Categories: Architectural, MEP
-Author: Paracore Team
-Dependencies: RevitAPI 2025+, Paracore.Addin
-
-Description:
-This is a top level statement script. Doc, UIDoc, Transact, Println,...
-are accessible everywhere in this script or other scripts in the Scripts folder
-
-*/
+```text
+HelloWall/
+    HelloWall.csproj
+    HelloWall.sln
+    global.json
+    Globals.cs
+    .editorconfig
+    bin/  obj/
+    Scripts/
+        HelloWall.cs   ← your code
 ```
-Paracore reads this block to render the script card and determine if the "Run" button should be enabled based on the current active document.
 
-### No Manual Usings
-You rarely need `using` statements at the top of your scripts. Global usings are automatically provided via the generated `Globals.cs`.
+Those extra files exist **only to give VS Code IntelliSense** for the Revit API and the Paracore helpers. They do not change how the script runs, and `Scripts/` is left untouched. Install the **C# Dev Kit** extension in VS Code to get completion and error squiggles.
 
-### Code Hierarchy
-1.  **Metadata Block** (at the absolute top).
-2.  **Logic**: Your main top-level statements, methods, and API calls.
-3.  **Types**: Custom classes, structs, or interfaces (typically placed at the bottom).
+Save in VS Code; the desktop app sees the change and uses the new code on the next **Run**.
 
-## 3. The Execution Loop
-- **Real-time Sync**: As soon as you save in VS Code, Paracore updates the execution context (typically within 500ms).
-- **Running the Script**:
-    - **Method A**: Click the **Run** button in the Paracore UI.
-    - **Method B**: Use the `CoreScript: Run in Revit` command within VS Code.
+## Running
 
----
+Use the desktop app's **Run** button. That is the only path that reads the values you set in the parameter form, so for any script with a `Params` class it is the one to use.
 
-*Next Step: Try the [03 - Step-by-Step Exercise](./step-by-step/03-step-by-step.mdx) to practice the VS Code round-trip.*
+The **CoreScript VS Code extension** also has a **CoreScript: Run in Revit** command (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>). It sends the script straight to Revit with **no parameter values**. Use it for a script with **no `Params` class**, or for plain Revit API automation where you don't need a form — for example a quick REPL-style snippet you are editing in VS Code. For Gallery scripts with parameters, stay in the desktop app.
+
+> Revit runs on Windows only. The extension's shortcuts are Windows shortcuts.

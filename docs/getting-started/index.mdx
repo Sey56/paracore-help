@@ -1,31 +1,19 @@
 # Getting Started
 
-Welcome to **Paracore**! This guide will help you get up and running in minutes, from initial installation to running your first high-performance Revit automation.
+Three steps and you are running code in Revit.
 
-## The Path to Success
+1. **[Install and connect](./installation.mdx)** — install the add-in and the desktop app, then switch the server on in Revit.
+2. **[Downloads](./downloads.md)** — where to get all four installers.
+3. **[Your first script](./first-script.mdx)** — one line of C# to prove everything works.
 
-1. **[Installation & Setup](./installation.mdx)**: Set up the Add-in, activate the server, and connect the Desktop app.
-2. **[Your First Script](./first-script.mdx)**: Execute a sample automation to verify your setup.
-3. **[Downloads](./downloads.md)**: Get the latest installers.
+Then pick a learning path:
 
-## Prerequisites
+- **[REPL lessons](../tutorials/index.md)** — eight short lessons. Nothing to install or save.
+- **[Gallery lessons](../tutorials/more-automation.md)** — build scripts with input forms that you keep and reuse.
 
-Before you begin, ensure you have a compatible environment:
+## What you need
 
-- **Autodesk Revit**: Version 2025 or later.
-- **Windows 10/11**: 64-bit version.
-- **Visual Studio Code**: Required for Authoring. Paracore integrates directly with VS Code to provide a professional editing environment.
+- **Windows 10 or 11 (64-bit)** and **Autodesk Revit 2025, 2026 or 2027**.
+- **Visual Studio Code** — only if you want to write Gallery scripts. The desktop app opens them for you.
 
-## What's New in v4.8 (October 2026)
-
-- **One generic engine**: `paracore-pro` is gone — one engine, one add-in, always free. Only the specialist MCP servers stay commercial.
-- **Sentinels are free**: the background watchdog now ships in the free engine — no enterprise gate.
-- **Packs**: a specialist feature installs as a pack — an assembly kept outside the add-in folder, one ribbon button each.
-- **REPL errors point at your code**: a syntax error reports the line and column you actually typed.
-- **Paracore-Gen v2.0.0**: the generalist MCP server (previously Paracore MCP) now ships as its own installer, with new `get_context`, `pick_object` and `export_view` tools.
-
-> Full Details: Read the [Release Notes](../release-notes.md) for a comprehensive list of changes.
-
----
-
-*New to Revit API? Don't worry. Paracore streamlines the complexity of the API, allowing you to focus strictly on your automation logic.*
+You do **not** need to install .NET separately to run scripts.
