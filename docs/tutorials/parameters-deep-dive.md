@@ -66,6 +66,12 @@ wall.HasParam("Fire Ratng")           // false — a typo, not an empty value
 
 If a name is **declared by the category** but this particular element has no value for it, `GetStr` gives `""` and `GetNum` gives `0`. That is a legitimate empty cell.
 
+:::caution[If you downloaded v4.8.3]
+
+The error below arrives in the next release. Until then this read gives `0` or `""` — check the name against the category first: [Check the parameter name first](../interactive-repl/index.mdx#check-the-parameter-name-first).
+
+:::
+
 If **no element of the category declares that name at all**, the read stops with an error instead of quietly giving you `""` or `0`:
 
 ```csharp

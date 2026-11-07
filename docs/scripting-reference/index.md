@@ -12,4 +12,4 @@ Reference pages for the C# you write in Paracore. If you are new, start with the
 | [Libraries & Dependencies](./libraries.md) | What is available to your code |
 | [Extension Methods](../extension-methods/index.mdx) | Every method, every overload, with examples |
 
-> A parameter name that does not exist on an element's category is reported as an error. Use `element.CombinedParams().Table()` to list the real names before you write a query.
+> Before you read a parameter value, [check the name against the category](../interactive-repl/index.mdx#check-the-parameter-name-first). Use `element.CombinedParams().Table()` to list the real names.
