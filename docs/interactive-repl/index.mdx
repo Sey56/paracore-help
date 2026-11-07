@@ -1,6 +1,3 @@
-import ConsoleFull from '@site/static/img/console-full.png';
-import ConsoleEditor from '@site/static/img/console-editor.png';
-import ConsoleHistory from '@site/static/img/console-history.png';
 import AnalyticsCharts from '@site/static/img/analytics-charts.png';
 
 # Interactive REPL (BIM Laboratory)
@@ -9,7 +6,7 @@ The **Paracore REPL** (Read-Eval-Print Loop) is a persistent C# playground with 
 
 ## One editor
 
-There is a single input, in the **Console** tab, below the execution history. It runs **whatever is in it**:
+There is a single input, in the **REPL** tab — the **REPL Playground** below the execution history. It runs **whatever is in it**:
 
 - one expression — `Doc.Title`
 - one statement — `var walls = GetElements<Wall>();`
@@ -18,11 +15,15 @@ There is a single input, in the **Console** tab, below the execution history. It
 
 Nothing is classified as "single-line" or "multi-line" work, because there is no separate mode to be in. Press <kbd>Enter</kbd> for a new line; press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> — or click **Run** — to execute the whole buffer. A one-line command and a two-hundred-line draft follow exactly the same rules, and the difference between them is only how much you typed.
 
-<img src={ConsoleFull} alt="Console with editor and execution history" />
+```csharp
+// one buffer — Ctrl+Enter runs all of it
+var walls = GetElements<Wall>();
+walls.WhereParam("Function", "Exterior").Table();
+```
 
 ### Saving and loading
 
-The editor reads and writes plain `.cs` files: **Load**, **Save**, **Save As**, and **New**. There is no required folder structure and no metadata block — a REPL snippet is a file you can keep, mail, or paste into a Gallery script later. When you are done experimenting, **New** clears the editor and unloads the file, so a draft never overwrites something you meant to keep.
+The editor reads and writes plain `.cs` files: **New / Clear**, **Open**, **Save** and **Save As**. There is no required folder structure and no metadata block — a REPL snippet is a file you can keep, mail, or paste into a Gallery script later. When you are done experimenting, **New** clears the editor and unloads the file, so a draft never overwrites something you meant to keep.
 
 ## The echo
 
@@ -78,9 +79,17 @@ rooms.WhereParam("Level", "Level 1").Table()
 | `reset` (or `clear vars`) | wipe the session state without restarting Revit |
 | `inspect rooms` | formatted tree of one variable, safe for Revit elements |
 
-<img src={ConsoleHistory} alt="REPL session history: each turn with the result it produced" />
+Each run adds one block to the **History** tab: a `>` marker that names the run, followed by its output and how long it took. If the editor holds a saved snippet, the marker is that file's name without `.cs`; if the code is unsaved, it is `REPL Playground`:
 
-The **History** tab keeps every turn — the code and the result — so a session is a readable transcript you can scroll back through. It is **read-only**: **Copy** takes the whole transcript to the clipboard and **Clear** empties the tab. To run a turn again, paste its code back into the editor and press <kbd>Ctrl</kbd>+<kbd>Enter</kbd> — clicking a history entry does not re-run anything.
+```text
+> REPL Playground
+Hello
+
+> HelloParacore
+Hello
+```
+
+**The code you typed is not copied into History** — only the run marker and its result are kept. The tab is **read-only**: clicking an entry does nothing, there is no re-run from History, **Copy** takes the whole transcript to the clipboard and **Clear** empties the tab. To run something again, type it into the **REPL Playground** again and press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, or **Open** a snippet you saved with **Save**.
 
 ## Scripting rules
 

@@ -29,9 +29,9 @@ That is the whole trick, and everything else in this section builds on it: **the
 Doc.Title
 ```
 
-Each answer lands in History with the code that produced it, so a session becomes a readable transcript you can scroll back through.
+Each run lands in **History** as a labelled block: a `>` marker, the output, and the time it took. The marker is the saved snippet's name — `> HelloParacore` — or `> REPL Playground` when the editor holds unsaved code. **The code you typed is not stored in History**; scrolling back shows results, not source.
 
-> **History is read-only.** Clicking an entry does nothing — there is no re-run from History. The tab only offers **Copy** (take the whole transcript to the clipboard) and **Clear** (empty it). To run something again, copy its code back into the editor and press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, or save the snippet with **Save** and reopen it later with **Open**.
+> **History is read-only.** Clicking an entry does nothing — there is no re-run from History. The tab only offers **Copy** (take the whole transcript to the clipboard) and **Clear** (empty it). Since History holds no code, running a turn again means typing it into the **REPL Playground** again and pressing <kbd>Ctrl</kbd>+<kbd>Enter</kbd> — or saving the snippet with **Save** and reopening it later with **Open**.
 
 > **The semicolon is the difference.** `Doc.Title` **echoes the title**: it is an expression, and the result is yours to look at. `Doc.Title;` **does nothing visible**: the semicolon turns it into a statement, and a statement has no value to report. That is ordinary C#, and it is why a saved script uses `Println` — inside a script, "print it" has to be said out loud.
 
