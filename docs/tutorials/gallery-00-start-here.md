@@ -64,6 +64,8 @@ If you add more sources later, choose the one you want from that dropdown before
 4. On the right of the modal, click **Archetype**.
 5. The **Generate Script** button at the bottom right is now active. Click it.
 
+![The New Script dialog](/img/ui-4.8.3-new-script.png)
+
 A **MyScript** card appears in the Gallery. On disk, Paracore has created:
 
 ```text
