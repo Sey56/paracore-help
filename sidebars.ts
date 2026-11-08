@@ -66,6 +66,7 @@ const sidebars: SidebarsConfig = {
       ],
     },
 
+    'corescript-vscode/index',
     'release-notes',
     'support',
     'privacy',

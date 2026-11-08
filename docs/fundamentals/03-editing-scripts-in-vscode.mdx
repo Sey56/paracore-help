@@ -8,6 +8,11 @@ id: 03-editing-scripts-in-vscode
 
 You write C# in **VS Code**, not in the desktop app. The desktop app opens the editor for you and picks up your changes.
 
+:::info[Plain VS Code is all you need]
+
+The desktop app launches VS Code itself when you click **Edit Script**. It does **not** use the [CoreScript VS Code extension](../corescript-vscode/index.mdx) — that is a separate, optional tool for developers who run code from the editor instead of the desktop app. You never need it to edit a Gallery script.
+:::
+
 ## Opening a script
 
 Click **Edit Script** on a Gallery card. The first time, Paracore builds a small VS Code workspace around the script's folder:
@@ -30,8 +35,8 @@ Save in VS Code; the desktop app sees the change and uses the new code on the ne
 
 ## Running
 
-Use the desktop app's **Run** button. That is the only path that reads the values you set in the parameter form, so for any script with a `Params` class it is the one to use.
+Use the desktop app's **Run** button. That is the only path that reads the values you set in the parameter form, so for any script with a `Params` class it is the one to use. It needs no extension.
 
-The **CoreScript VS Code extension** also has a **CoreScript: Run in Revit** command (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>). It sends the script straight to Revit with **no parameter values**. Use it for a script with **no `Params` class**, or for plain Revit API automation where you don't need a form — for example a quick REPL-style snippet you are editing in VS Code. For Gallery scripts with parameters, stay in the desktop app.
+There is also a separate, optional path: the [CoreScript VS Code extension](../corescript-vscode/index.mdx) can send a script straight to Revit from the editor. It carries no parameter values, so it suits scripts with no `Params` class or plain Revit API automation. [Before You Start, Part 4](../tutorials/gallery-00-start-here.md) has the decision table.
 
 > Revit runs on Windows only. The extension's shortcuts are Windows shortcuts.

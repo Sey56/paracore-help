@@ -1,0 +1,41 @@
+---
+title: CoreScript VS Code Extension
+sidebar_label: CoreScript VS Code Extension
+---
+
+# CoreScript VS Code Extension
+
+A **standalone, optional tool for developers** who want to write C# and run it in Revit **straight from VS Code, without the Paracore desktop app**.
+
+:::warning[It is not part of the desktop app]
+
+You do **not** need this extension to edit Gallery scripts. To edit them you need **VS Code** — the plain editor — and nothing else. Clicking **Edit Script** in the desktop app launches VS Code on the script folder directly. It does not call this extension, does not require it, and does not use it in any way.
+
+The extension does not support the desktop app either. **The two programs have no connection with each other.** Both reach the Revit add-in independently; neither goes through the other. Installing, uninstalling or ignoring this `.vsix` changes nothing in the desktop app.
+:::
+
+## What you need to edit Gallery scripts
+
+- **VS Code** — Microsoft's editor. Get it from [code.visualstudio.com](https://code.visualstudio.com/).
+- *Optional:* the **C# Dev Kit** extension from Microsoft, for autocomplete and error squiggles. It is a general C# extension, not a Paracore one.
+
+That is all. See [Editing Scripts in VS Code](../fundamentals/03-editing-scripts-in-vscode.mdx).
+
+## What this extension adds
+
+Install `corescript-4.8.3.vsix` in VS Code and it adds two commands:
+
+| Command | What it does |
+|---|---|
+| **CoreScript: Initialize Workspace** | Builds a small C# workspace — a `.csproj`, a `.sln`, `Scripts/Main.cs` and IntelliSense helper files — so VS Code can offer autocomplete. It does not run anything. |
+| **CoreScript: Run in Revit** (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd>) | Sends the `.cs` files straight to the Revit add-in. Output and errors appear in the **CoreScript** Output channel in VS Code. |
+
+Gallery scripts do **not** need **Initialize Workspace**: the desktop app's **Edit Script** already builds their workspace on the first click.
+
+The extension connects to the Revit add-in's local service itself. With Revit open and **Paracore Server** ON, it runs code against the open model using the same engine as the desktop app — just reached from the editor instead of from the app.
+
+## When to use it
+
+Use it for a script with **no `Params` class**, a REPL-style snippet, or plain Revit API automation where you want to write and run in one window. **Do not use it for Gallery scripts with parameters** — it sends no parameter values, so those run with the defaults declared in code instead of the values you picked in the Configurator. The full decision table is in [Before You Start, Part 4](../tutorials/gallery-00-start-here.md).
+
+> Revit runs on Windows only. These shortcuts are Windows shortcuts.

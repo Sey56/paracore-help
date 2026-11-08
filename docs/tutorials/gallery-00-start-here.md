@@ -10,7 +10,7 @@ The REPL lessons need nothing but an open Revit document. **Gallery scripts are 
 1. A **script source** — the folder where Paracore keeps your scripts.
 2. **Visual Studio Code** — that is where you write and edit the code.
 
-In the desktop app you initialise script sources, create scripts, fill in their inputs and run them. **It is not a code editor.** You cannot type C# into it. All editing happens in VS Code.
+In the desktop app you initialise script sources, create scripts, fill in their inputs and run them. **It is not a code editor.** You cannot type C# into it. All editing happens in **plain VS Code** — the desktop app opens it directly, and the CoreScript VS Code extension is not involved.
 
 > Do this once. After that, every Gallery lesson follows the same loop: create a script, open it with **Edit Script**, change it in VS Code, run it in the desktop app.
 
@@ -19,7 +19,11 @@ In the desktop app you initialise script sources, create scripts, fill in their 
 - Revit 2025, 2026 or 2027 open, with the **Paracore Server** switched on and the desktop app showing **Connected** — the same setup as the [REPL lessons](./index.md).
 - **VS Code** installed on this machine. Get it from [code.visualstudio.com](https://code.visualstudio.com/) if you don't have it.
 - One empty folder.
-- *Optional:* the **corescript-vscode** extension installed in VS Code. It adds a **Run in Revit** command for scripts with no parameters — see Part 4 below.
+
+:::warning[You do not need the CoreScript VS Code extension to edit scripts]
+
+**Edit Script** opens plain VS Code by itself — the desktop app is connected to VS Code directly and never uses the **corescript-vscode** extension. That extension is a separate tool for developers who want to write **and run** C# from the editor without the desktop app; it does not support the desktop app and the two have no connection at all. See [CoreScript VS Code Extension](../corescript-vscode/index.mdx), and Part 4 below for when you might choose to install it.
+:::
 
 ---
 
@@ -158,7 +162,7 @@ SampleSource/
 
 They only give VS Code autocomplete and help for `Doc`, `Println`, `Transact`, the Revit API and ordinary C# namespaces. **Paracore never reads them to execute your script.** The files inside `Scripts\` are the ones that run.
 
-VS Code's built-in **Run / Debug (F5)** will not run a Paracore script. Use **Run** in the desktop app — or, for a script with no parameters, the **CoreScript: Run in Revit** command described in Part 4.
+VS Code's built-in **Run / Debug (F5)** will not run a Paracore script. Use **Run** in the desktop app — or, for a script with no parameters, the **CoreScript: Run in Revit** command from the optional extension described in Part 4.
 
 You can remove the helper files later with **Remove Scaffolding** on the card menu. Your `Scripts` folder and your code are never touched.
 :::
@@ -179,7 +183,7 @@ That is the loop for every Gallery lesson: **edit in VS Code → save → run in
 
 ## Part 4 — When to run from VS Code, and when to run from the desktop app
 
-**Edit Script** in Part 3 already generated the workspace and opened it in VS Code. You are editing the same `Scripts\` folder that Paracore executes, so with the **corescript-vscode** extension installed you can also run from here.
+**This part is optional and is about a different tool.** Everything in Parts 1–3 needs only plain VS Code and the desktop app. If you also installed the **corescript-vscode** extension — a standalone tool with no connection to the desktop app — you can use it to run code straight from the editor instead of from the desktop app. **Edit Script** in Part 3 already generated the workspace and opened it in VS Code, so you are editing the same `Scripts\` folder that Paracore executes.
 
 Press **`Ctrl+Shift+R`**, or use **Manage → Command Palette… → `CoreScript: Run in Revit`**. Revit must be open and the **Paracore Server** toggled ON. The extension sends the `.cs` files in `Scripts\` straight to the Revit add-in; `Println` output and errors appear in the **CoreScript** Output channel in VS Code. It is the same engine running the same code — the only difference is **where the inputs come from**.
 
