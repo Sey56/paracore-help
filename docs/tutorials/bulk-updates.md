@@ -7,7 +7,7 @@ Reading never hurt a model. This lesson writes to it — so it is also the lesso
 ```csharp
 GetElements("Walls")
     .WhereParam("Fire Rating", "")
-    .SetParam("Fire Rating", "2 hr");
+    .SetParam("Fire Rating", "2 hr")
 ```
 
 That sets a parameter on every matching wall, in **one** transaction, with one undo entry. You did not open a `Transaction`, you did not `Commit()`, and you did not write a `foreach` — the engine does all three because they are always the same three.

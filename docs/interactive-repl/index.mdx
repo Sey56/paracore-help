@@ -20,6 +20,18 @@ GetElements<Wall>().Count()   // prints, e.g. 9
 GetElements<Wall>().Count();  // prints nothing — it is a statement
 ```
 
+⚠ **This changes what you see, not what happens.** The code runs identically with or without the
+final `;` — the semicolon only decides whether the result is echoed. A write proves it:
+
+```csharp
+GetElements("Walls").SetParam("Comments", "Done")    // writes, and lists the walls it changed
+GetElements("Walls").SetParam("Comments", "Done");   // writes just the same, silently
+```
+
+Where the semicolon **is** required is anywhere except the end: in a multi-line submission every
+line before the last must end with `;`, or the whole snippet fails with `CS1002: ; expected` and
+nothing runs.
+
 Use `Println(...)` when you want to label something:
 
 ```csharp

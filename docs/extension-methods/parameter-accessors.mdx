@@ -175,7 +175,7 @@ Transact("Update Comments", () =>
 #### 4. Collection method (`.SetParam`, `.Delete`, `.Hide`, etc.) ✅
 ```csharp
 GetElements("Walls")
-    .SetParam("Comments", "Done");
+    .SetParam("Comments", "Done")
 // Result: 1 transaction, 1 undo step. Already handled for you.
 ```
 Collection methods wrap the entire loop in a single `Tx.Transact` call. Each individual `SetVal` inside sees `IsModifiable == true` from that outer transaction and skips creating its own. **No `Transact()` wrapper needed** for fluent chains.

@@ -49,7 +49,16 @@ The panel is a code editor **and** a prompt at the same time, so it obeys both s
 - **Only the last line can be bare.** If you write several lines, every line before the last needs
   its `;`, otherwise you get `CS1002: ; expected`.
 
-Silence is therefore normal, not a failure: an assignment or a `;` simply has nothing to print.
+⚠ **The semicolon is about what gets *shown*, never about whether the code runs.** Both forms below
+write to the model and change the same walls:
+
+```csharp
+GetElements("Walls").SetParam("Comments", "Done")    // writes, and lists the walls it changed
+GetElements("Walls").SetParam("Comments", "Done");   // writes, and says nothing
+```
+
+So a write, a chart, a table or a `Println` all behave the same way: it happens either way, and only
+the echo differs. Silence is normal, not a failure — an assignment or a `;` simply has nothing to show.
 
 :::
 
