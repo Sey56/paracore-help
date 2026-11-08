@@ -68,7 +68,7 @@ Files.WriteText("out.csv", csv);
 ExportImage("room-check");
 ```
 
-Absolute paths such as `C:\tmp\room-check` are refused on the REPL channel — the path is confined to the workspace folder. That is a guard on the channel (shared with the Paracore-Gen agent, which is why it exists), not a limit on what your own code can compute.
+Absolute paths such as `C:\tmp\room-check` are refused on the REPL channel — the path is confined to the workspace folder. That is a guard on the channel, not a limit on what your own code can compute.
 
 ## If a script runs too long
 

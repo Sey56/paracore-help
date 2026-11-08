@@ -68,13 +68,13 @@ Println(shot);
 
 `ExportImage` is a global method of the Paracore engine — it is available in the REPL, in Gallery scripts and in VS Code, with no `using` and no extra setup. Run the two lines on a plan view and the last one prints the file that was actually written.
 
-**One thing to know about paths in the REPL Playground.** You are running your own code in your own Revit here — there is no sandbox around *you*. What the REPL channel does confine is the file path: a script may read and write only inside one workspace folder, and `System.IO` — `File`, `Directory`, `Path`, `FileStream` — is not available on this channel. `ExportImage` writes a file too, so its target goes through the same check. A **relative** name such as `"room-check"` resolves inside that folder and works; an absolute path such as `C:\tmp\room-check` is outside it and is refused. That path guard is shared with the Paracore-Gen agent — its generated scripts run on the same REPL channel, which is why the confinement exists — so the human playground inherits the guard, not an agent-style trust boundary. To see where your files land:
+**One thing to know about paths in the REPL Playground.** You are running your own code in your own Revit here — there is no sandbox around *you*. What the REPL channel does confine is the file path: a script may read and write only inside one workspace folder, and `System.IO` — `File`, `Directory`, `Path`, `FileStream` — is not available on this channel. `ExportImage` writes a file too, so its target goes through the same check. A **relative** name such as `"room-check"` resolves inside that folder and works; an absolute path such as `C:\tmp\room-check` is outside it and is refused. To see where your files land:
 
 ```csharp
-Println(Files.Root);   // the REPL workspace folder (%LOCALAPPDATA%\Paracore\AgentWorkspace by default)
+Println(Files.Root);   // the REPL workspace folder (under %LOCALAPPDATA%\Paracore by default)
 ```
 
-Use `Files.Root + "/room-check"` if you want the folder spelled out, but do not reach for `Path.Combine` — `Path` is not available on the REPL channel. Gallery scripts are not bound by this channel guard: they *can* use absolute paths and `System.IO`. [File I/O in Gallery scripts](./gallery-07-file-io.md) explains the difference. If you need the workspace on another drive, set the `PARACORE_AGENT_WORKSPACE` environment variable before starting Paracore.
+Use `Files.Root + "/room-check"` if you want the folder spelled out, but do not reach for `Path.Combine` — `Path` is not available on the REPL channel. Gallery scripts are not bound by this channel guard: they *can* use absolute paths and `System.IO`. [File I/O in Gallery scripts](./gallery-07-file-io.md) explains the difference.
 
 Three details matter, and all three surprise people:
 

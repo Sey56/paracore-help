@@ -176,7 +176,7 @@ Bedroom 1,Carpet
    ```csharp
    MiniExcelLibs.MiniExcel.SaveAs(p.OutputCsvPath, log);
    ```
-4. **Test the dry-run** — if you have access to the agent tools, run `dry_run` on this script. The model changes roll back, but the output CSV file is still created. That is `not_reverted` in action.
+4. **Test the dry-run** — run the script in dry-run mode: the model changes roll back, but the output CSV file is still created. That is `not_reverted` in action.
 
 ---
 

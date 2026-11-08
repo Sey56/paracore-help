@@ -1,0 +1,55 @@
+# How Paracore-Gen works
+
+This page covers the implementation details behind [AI Assistants and MCP](./index.mdx) — the parts that matter to safety and to understanding why the agent behaves the way it does. You do not need any of this to use the REPL or Gallery scripts; those run your own code and are documented separately.
+
+## One engine, two trust levels
+
+Both your own code (in the REPL or a Gallery script) and the code Paracore-Gen generates are compiled and run by the **same engine** — the same C#, the same API, the same globals. There is no second, agent-only runtime.
+
+The difference is trust, not capability:
+
+- **Your code** is typed by you, in your own Revit. There is no trust boundary around it.
+- **Generated code** is written by a model, not by you. It runs on the same channel, but with an extra capability boundary because it was not typed by a human.
+
+## The REPL channel
+
+Every script — yours or generated — runs on the REPL channel. One thing that channel enforces is the **file path**: a script may read and write only inside the workspace folder, and `System.IO` (`File`, `Directory`, `Path`, `FileStream`) is not available on it. Relative names resolve inside that folder; absolute paths are refused.
+
+This guard exists for the agent's sake, but your own playground inherits it too — so a script you write by hand is confined to the same folder. The Gallery is exempt from this channel guard: Gallery scripts *can* use absolute paths and `System.IO`.
+
+## The agent capability boundary
+
+On top of the channel's path guard, generated code is additionally blocked from the machine capabilities it must not reach:
+
+- **Network access** — `System.Net`, HTTP calls, sockets.
+- **Process launching** — starting other programs.
+- **Reflection and native interop** — inspecting or calling into code at runtime.
+- **Loading external DLLs** from disk.
+
+These are refused at runtime, not just discouraged. The restriction is about *where generated code can reach*, not about what it can compute — the model can still read the model, query parameters, and build geometry; it just cannot reach out to your machine or the network.
+
+## The workspace
+
+The agent's generated scripts read and write inside a workspace folder. By default this is:
+
+```
+%LOCALAPPDATA%\Paracore\AgentWorkspace
+```
+
+If you need it on another drive, set the `PARACORE_AGENT_WORKSPACE` environment variable before starting Paracore.
+
+`Files.Root` points at this folder from code, so `Files.WriteText("out.csv", ...)` lands inside it.
+
+## Why `ExportImage` exists for the agent
+
+The assistant cannot see Revit's screen. `ExportImage` was added so the agent can render a view to an image file and **look at what it built or changed** — a visibility aid for a model-observing assistant. You can use `ExportImage` from the REPL too (it is a plain engine global), but for a human the built-in *Export to Image* command in Revit is usually the simpler way to get a picture.
+
+## Confirmation gates
+
+Tools can carry a `[Confirm("WORD")]` attribute. The engine re-extracts that word from the source itself at runtime and does not trust the value the caller sends. That means a tool marked `[Confirm("APPLY")]` cannot be run by an automated or API call without the exact word supplied — so bulk, destructive operations stay behind a deliberate gate even when the agent invokes them.
+
+## Approval and safety
+
+- **You see the code before it runs.** Nothing executes unseen.
+- **Dangerous operations are restricted**, and a runaway script is stopped automatically.
+- **Rollback is available** — the engine can run a script in dry-run mode, rolling back model changes while still producing output files (`not_reverted` keeps the files even on rollback).

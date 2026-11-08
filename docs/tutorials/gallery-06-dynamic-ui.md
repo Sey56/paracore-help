@@ -146,7 +146,7 @@ public string? Confirm { get; set; }
 
 The user must type `UPDATE` into the text box before the **Run** button activates. This is the attribute for any tool that overwrites data in bulk — it forces a deliberate action, not an accidental click.
 
-> **The engine re-extracts `[Confirm]` from your source code at runtime.** It does not trust the value the UI sends — it checks the attribute itself. So a tool that has `[Confirm("APPLY")]` cannot be run by an agent or API call without the exact word.
+> **The engine re-extracts `[Confirm]` from your source code at runtime.** It does not trust the value the UI sends — it checks the attribute itself. So the run can never proceed unless the exact word is supplied: the engine enforces the gate, the UI cannot bypass it.
 
 ## How the conditions chain
 

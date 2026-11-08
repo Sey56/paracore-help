@@ -32,7 +32,15 @@ const sidebars: SidebarsConfig = {
         'authoring/playlists',
         'sentinels/index',
         'tool-generator/index',
-        'ai-agent/index',
+        {
+          type: 'category',
+          label: 'AI Assistant (Paracore-Gen)',
+          items: [
+            'ai-agent/index',
+            'ai-agent/using-paracore-gen',
+            'ai-agent/how-it-works',
+          ],
+        },
         'core-concepts/architecture',
       ],
     },
