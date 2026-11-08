@@ -86,10 +86,13 @@ door.GetNum("Base Offset")
 
 A zero that comes from a typo looks like a measurement, so it is refused. Close spellings get a suggestion — `Did you mean ...?`. Collection filters such as `SumParam` raise for the same reason: a misspelled aggregate would otherwise be a silently empty report.
 
-> ⚠ **Some names are simply not on every category — and a few are not on any element.**
-> `From Room` and `To Room` sound like door parameters, but on the model this page was checked
-> against no door exposes them, wall-hosted doors included. Check with
-> `door.CombinedParams().Table()` before you build a schedule around a name you have not seen.
+> ⚠ **`From Room` / `To Room` are not parameters, so no reader can give them to you.** On the model
+> this page was checked against, no door exposes them in its parameter list — `GetStr("From Room")`
+> is refused, correctly. The engine works the rooms out instead: it probes 2.5 ft either side of the
+> door along its facing orientation and uses the swing arc to decide which side is which. Ask for the
+> **methods**, `RoomFrom()` and `RoomTo()` — they return `"External"` when a probe lands outside a
+> room. `CombinedParams().Table()` shows you which names are parameters before you build a schedule
+> around one.
 
 ## When you do not know the name
 
@@ -130,7 +133,8 @@ var rows = doors
         Level  = d.GetStr("Level"),
         Width  = d.GetTypeNum("Width", "mm"),      // type parameter, in mm
         Height = d.GetTypeNum("Height", "mm"),
-        Phase  = d.GetStr("Phase Created")
+        From   = d.RoomFrom(),                  // computed, not a parameter
+        To     = d.RoomTo()
     })
     .OrderBy(r => r.Mark)          // plain LINQ: rows are our own objects now
     .ToList();
