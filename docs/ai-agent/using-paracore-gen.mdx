@@ -24,7 +24,47 @@ Example requests:
 - Supported AI clients: Claude Desktop, Cursor, VS Code, or any client that speaks MCP.
 - Supported Revit versions: the versions supported by the Paracore Add-in (the current Add-in is v4.8.3 — see the Add-in release page for the exact Revit-year list).
 
-## 3. Connecting and checking that it works
+## 3. Install and connect
+
+Paracore-Gen is a standalone Windows app. You install it once, then tell your AI client where it lives and restart the client. The rest of this section covers both steps.
+
+### Install Paracore-Gen
+
+Paracore-Gen is installed alongside the other Paracore tools. Its files live here:
+
+```
+C:\Users\seyou\AppData\Roaming\paracore-data\mcp-servers
+```
+
+The server program is `paracore-gen.exe` in that folder. (On any Windows machine the per-user path is `%APPDATA%\paracore-data\mcp-servers\paracore-gen.exe`, where `%APPDATA%` expands to `C:\Users\<your-user>\AppData\Roaming`.)
+
+### Add it to your AI client
+
+Paracore-Gen is an MCP server, so connecting it means adding a `paracore-gen` entry to your client's MCP config and restarting the client. The JSON shape is identical for every MCP client — only the config file location changes.
+
+**Claude Desktop**
+
+1. Open **Settings → Developer** and click **Edit Config**. This opens the folder that holds `claude_desktop_config.json` (normally `%APPDATA%\Claude\claude_desktop_config.json`).
+2. Open that file and add `paracore-gen` under `mcpServers`:
+   ```json
+   {
+     "mcpServers": {
+       "paracore-gen": {
+         "command": "C:\\Users\\seyou\\AppData\\Roaming\\paracore-data\\mcp-servers\\paracore-gen.exe"
+       }
+     }
+   }
+   ```
+   No `args` are required — the server runs over stdio. If the file already lists other servers, just add the `"paracore-gen": { ... }` block inside the existing `mcpServers` object and keep the commas correct.
+3. Save the file and **fully quit Claude Desktop** (close it from the system tray too, not just the window), then start it again. Claude Desktop only reads the config at launch, so a partial quit is the usual reason a new server never appears.
+4. Start Revit, open a project, and make sure the Paracore server inside Revit is switched on.
+5. In a new chat, confirm `paracore-gen` shows up in the tools list (the tools/connectors icon in the message box), then ask: "Check that you can connect to Revit." The assistant should report that it is connected and tell you which project is open.
+
+**Cursor and VS Code**
+
+Both speak MCP and use the same JSON shape. Cursor reads `~/.cursor/mcp.json`; VS Code reads `.vscode/mcp.json` in your workspace (or the user `settings.json` `mcp` block). Drop the same `mcpServers` block in, then restart the client.
+
+### Verify the connection
 
 At the start of every session the assistant runs a connection check (`ping`). It reports one of four states:
 
