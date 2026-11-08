@@ -57,7 +57,7 @@ The name you give each value becomes the axis label. If you want a label with a 
 
 ## Files
 
-REPL code can only write inside the agent workspace folder. Use short, relative names and the `Files` helpers:
+REPL code can only write inside the REPL workspace folder — the folder the engine confines every path to. Use short, relative names and the `Files` helpers:
 
 ```csharp
 var csv = string.Join("\n", GetElements("Walls").Select(w => w.GetStr("Type Name")));
@@ -68,7 +68,7 @@ Files.WriteText("out.csv", csv);
 ExportImage("room-check");
 ```
 
-Absolute paths such as `C:\tmp\room-check` are refused. This is deliberate: a script run from the REPL cannot read or write anywhere else on your machine.
+Absolute paths such as `C:\tmp\room-check` are refused on the REPL channel — the path is confined to the workspace folder. That is a guard on the channel (shared with the Paracore-Gen agent, which is why it exists), not a limit on what your own code can compute.
 
 ## If a script runs too long
 

@@ -16,7 +16,7 @@ Claude Desktop, Cursor, VS Code, or any client that speaks MCP. Point the client
 
 ## What keeps it safe
 
-- The script runs in the same sandbox as any other script. File access is limited to the agent workspace folder; a script cannot read or write elsewhere on your machine.
+- The script runs on the same REPL channel as your own code, so file access is confined to the workspace folder and a script cannot read or write elsewhere on your machine. On top of that channel guard, the agent's generated code is also blocked from the machine capabilities it must not reach — network, process launching, reflection, native interop — because the code is generated, not typed by you.
 - Dangerous operations are restricted, and a runaway script is stopped automatically.
 - You see the code before it executes, so nothing happens unseen.
 
