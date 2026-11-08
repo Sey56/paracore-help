@@ -64,10 +64,6 @@ var csv = string.Join("\n", GetElements("Walls").Select(w => w.GetStr("Type Name
 Files.WriteText("out.csv", csv);
 ```
 
-```csharp
-ExportImage("room-check");
-```
-
 Absolute paths such as `C:\tmp\room-check` are refused on the REPL channel — the path is confined to the workspace folder. That is a guard on the channel, not a limit on what your own code can compute.
 
 ## If a script runs too long

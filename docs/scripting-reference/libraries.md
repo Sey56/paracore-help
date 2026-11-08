@@ -23,7 +23,7 @@ Println(JsonSerializer.Serialize(data));
 On the REPL channel, a script cannot reach certain machine capabilities. These are refused, not just discouraged:
 
 - **Network access** — `System.Net`, HTTP calls, sockets.
-- **Arbitrary file access** — on the REPL channel, `System.IO` is unavailable. Use `Files.WriteText("out.csv", csv)` or `ExportImage("room-check")`; files stay inside the REPL workspace folder.
+- **Arbitrary file access** — on the REPL channel, `System.IO` is unavailable. Use `Files.WriteText("out.csv", csv)`; files stay inside the REPL workspace folder.
 - **Reflection, process launching, diagnostics, native interop** and loading external DLLs.
 
 That is why a script cannot call a web API, read `C:\temp`, or load a DLL from disk. If you need to work with a file, copy it into the workspace first.
