@@ -54,7 +54,7 @@ When genuinely connected, the assistant also receives a quick-start cheat sheet 
 
 **Change the model.** Set parameters, set numeric values with units, bulk edit, delete, hide, unhide and isolate. Example: "Set the Top Offset of all walls on Level 1 to -150 mm."
 
-**Show results.** Interactive tables, plus bar, pie and line charts.
+**Show results.** Tables and charts. The desktop app renders them in its **Analytics** tab — `.Table()`, `.BarGraph()`, `.PieGraph()` and `.LineGraph()` are the engine methods that produce them. When an assistant drives Paracore there is no desktop tab: the assistant returns the data and your client (Claude Desktop, Cursor, VS Code) renders the table or chart natively.
 
 **See the model.** Render any view as an image, with or without dimensions and tags. The assistant uses this to look at what it built or changed — it cannot otherwise see Revit's screen. Example: "Show me the 3D view."
 
@@ -68,7 +68,7 @@ When genuinely connected, the assistant also receives a quick-start cheat sheet 
 
 - Large tables are summarized: when there are 50 rows or fewer, all rows are shown; above that, the first 50 rows plus the last 2 are shown, and the full total is always reported. Narrow your request instead of paging through results.
 - Parameter-list tables (every parameter of an element) are always shown in full.
-- Charts return as results; the assistant shows them inline. In the desktop app they also appear in the **Analytics** tab.
+- Charts are produced by the engine methods `.BarGraph()`, `.PieGraph()` and `.LineGraph()` and render in the desktop app's **Analytics** tab. Driven by an assistant, the same data comes back to the client, which displays the table or chart itself — there is no separate Paracore tab in that case.
 - A picture of a view hides dimensions and room tags by default. Ask for the version that keeps tags if you need them.
 
 ## 7. Making changes safely
