@@ -32,6 +32,27 @@ A number appears. The expression is **bare** — no semicolon — so it prints i
 its own. Add a semicolon and it becomes a statement that prints nothing; use `Println` to
 label a result instead.
 
+:::tip[Expressions and statements — the one rule]
+
+The panel is a code editor **and** a prompt at the same time, so it obeys both sets of rules.
+
+| You type | What you get |
+|---|---|
+| `GetElements("Walls").Count()` | the number — a **bare expression** prints itself |
+| `GetElements("Walls").Count();` | **nothing** — the `;` turns it into a statement |
+| `Println($"Walls: {GetElements("Walls").Count()}")` | the label, with or without `;` |
+| `var walls = GetElements("Walls");` | **nothing, always** — an assignment is a statement |
+
+- A **semicolon ends a statement**. A statement does work; it does not produce a value to show.
+- An **assignment is always a statement**: `var walls = …` stores the walls for later and never
+  echoes them. It always needs its `;`.
+- **Only the last line can be bare.** If you write several lines, every line before the last needs
+  its `;`, otherwise you get `CS1002: ; expected`.
+
+Silence is therefore normal, not a failure: an assignment or a `;` simply has nothing to print.
+
+:::
+
 ## What just happened
 
 Your C# was compiled and run inside the open Revit document. No file was saved, no project was created, and Revit never restarted. That is the whole idea behind the REPL.
