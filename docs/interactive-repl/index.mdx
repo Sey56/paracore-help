@@ -9,7 +9,15 @@ The panel is called **REPL Playground**. Its toolbar gives you **New**, **Clear*
 A bare expression prints its own result:
 
 ```csharp
-GetElements<Wall>().Count();
+GetElements<Wall>().Count()
+```
+
+The expression must be **bare** — no semicolon. A trailing semicolon turns it into a
+statement, and a statement prints nothing. Drop the semicolon to see the value on its own:
+
+```csharp
+GetElements<Wall>().Count()   // prints, e.g. 9
+GetElements<Wall>().Count();  // prints nothing — it is a statement
 ```
 
 Use `Println(...)` when you want to label something:
@@ -40,6 +48,7 @@ The name you give each value becomes the axis label. If you want a label with a 
 REPL code can only write inside the agent workspace folder. Use short, relative names and the `Files` helpers:
 
 ```csharp
+var csv = string.Join("\n", GetElements("Walls").Select(w => w.GetStr("Type Name")));
 Files.WriteText("out.csv", csv);
 ```
 

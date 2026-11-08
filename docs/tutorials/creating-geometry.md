@@ -58,7 +58,8 @@ Transact("Create room outline", () =>
 });
 
 Println($"{walls.Count} walls created");
-walls.Select();      // and Revit zooms to them
+walls.Select();      // select them in Revit
+walls.Zoom();        // and frame them in the view
 ```
 
 `(i + 1) % corners.Count` is the "and back to the start" trick: with four corners it pairs 0→1, 1→2, 2→3, 3→0. That is what closes the loop.

@@ -7,11 +7,15 @@ Parameters are where a Revit model actually lives — and reading them is where 
 ```csharp
 var wall = GetElements<Wall>().First();
 
-wall.GetStr("Comments")                     // "North wall"      text
-wall.GetNum("Length", "m")                  // 5.065             a number you can compute with
-wall.GetVal("Area", "m2")                   // "14.52 m²"        a string for a human
-wall.GetInt("Room Bounding")                // 1                 yes/no checkbox → 1/0
+Println(wall.GetStr("Comments"));       // "North wall"      text
+Println(wall.GetNum("Length", "m"));    // 5.065             a number you can compute with
+Println(wall.GetVal("Area", "m2"));     // "14.52 m²"        a string for a human
+Println(wall.GetInt("Room Bounding"));  // 1                 yes/no checkbox → 1/0
 ```
+
+> Only the **last** bare expression of a submission prints itself. With four of them in a row the
+> second line is already a statement, so the reader gets `CS1002: ; expected`. `Println` on each
+> line prints all four — and labels them.
 
 > ⚠ **`GetNum` and `GetVal` are not the same method with different spelling.** `GetNum` returns the **exact** value (no rounding unless you ask for it, with a third argument), because a rounded number that you then sum is a wrong number. `GetVal` returns the **display** string, rounded the way Revit's Properties palette rounds it. Compute with `GetNum`, show with `GetVal`.
 
@@ -82,6 +86,11 @@ door.GetNum("Base Offset")
 
 A zero that comes from a typo looks like a measurement, so it is refused. Close spellings get a suggestion — `Did you mean ...?`. Collection filters such as `SumParam` raise for the same reason: a misspelled aggregate would otherwise be a silently empty report.
 
+> ⚠ **Some names are simply not on every category — and a few are not on any element.**
+> `From Room` and `To Room` sound like door parameters, but on the model this page was checked
+> against no door exposes them, wall-hosted doors included. Check with
+> `door.CombinedParams().Table()` before you build a schedule around a name you have not seen.
+
 ## When you do not know the name
 
 You will spend more time on this than you expect. Stop guessing:
@@ -121,8 +130,7 @@ var rows = doors
         Level  = d.GetStr("Level"),
         Width  = d.GetTypeNum("Width", "mm"),      // type parameter, in mm
         Height = d.GetTypeNum("Height", "mm"),
-        From   = d.GetStr("From Room"),
-        To     = d.GetStr("To Room")
+        Phase  = d.GetStr("Phase Created")
     })
     .OrderBy(r => r.Mark)          // plain LINQ: rows are our own objects now
     .ToList();
@@ -136,7 +144,8 @@ var tight = doors
 
 Println($"{tight.Count()} door(s) under 800 mm — check these:");
 
-tight.Select();   // select them in Revit and zoom to them
+tight.Select();   // select them in Revit
+tight.Zoom();     // and frame them in the view
 
 Table(tight.Select(d => new
 {
@@ -152,7 +161,7 @@ Note what is *absent*: no `LookupParameter`, no `AsDouble`, no `* 304.8`, no nul
 1. `GetElements<Wall>().SumParam("Length", "m")` — total wall length, exact. Then compare it with `GroupByParam("Level", "Length", "m").Table()` and note that grouped totals round to 3 decimals. (They do. Carry `SumParam` when you need one number.)
 2. Print each wall's `GetVal("Unconnected Height", "mm")` and notice the height arrives as a *string with units*, ready to paste into a report.
 3. Find every element with an empty comment: `GetElements("Walls").WhereParam("Comments", "")` … then `.WhereParam("Comments", "!=", "")` and see the difference.
-4. `Selection[0].Peek()` on any selected element — the fastest way to learn a category's real parameter names.
+4. `Selection[0].Peek()` on a selected element (select one first — `Selection[0]` on an empty selection throws) — the fastest way to learn a category's real parameter names.
 
 ---
 

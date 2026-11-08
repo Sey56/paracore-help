@@ -25,10 +25,12 @@ Press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>. **History** shows a marker `> REPL Playg
 Now try something from the model:
 
 ```csharp
-GetElements("Rooms").Count();
+GetElements("Rooms").Count()
 ```
 
-A number appears. A bare expression prints its result on its own — you do not need `Println` for that.
+A number appears. The expression is **bare** — no semicolon — so it prints its result on
+its own. Add a semicolon and it becomes a statement that prints nothing; use `Println` to
+label a result instead.
 
 ## What just happened
 

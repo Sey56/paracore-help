@@ -7,9 +7,6 @@ A Gallery script can have a small input form. You define it once in C# and Parac
 Put a public class named `Params` at the bottom of the entry script (or in its own `Params.cs` file). Every public property becomes one control.
 
 ```csharp
-var p = new Params();
-Println($"Level: {p.StartLevel.Name}");
-
 public class Params
 {
     public string Prefix { get; set; } = "A-";
@@ -17,6 +14,14 @@ public class Params
     public Level StartLevel { get; set; }
 }
 ```
+
+The app fills these before the script runs: `Prefix` and `Count` start at the defaults written
+here, and `StartLevel` is whatever the user picks in the dropdown — it has **no default**, so in
+the app it is always set.
+
+> ⚠ **In the REPL, `new Params()` does not.** Nothing fills the form there, so `StartLevel` is
+> `null` and `p.StartLevel.Name` stops with a `NullReferenceException`. Test the script through the
+> Gallery run, where the Configurator supplies the values.
 
 Defaults are the values you see the first time you open the form. The app remembers the values you last used, so you don't have to retype them on every run.
 

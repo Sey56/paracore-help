@@ -20,6 +20,7 @@ Returns a list of strings containing material names.
 Returns a comma-separated string of material names (ideal for `Table()` output).
 
 ```csharp
+// select an element in Revit first — Selection[0] on an empty selection throws
 Selection[0].GetMaterialNames() // → "Glass, Aluminum, Concrete"
 ```
 
