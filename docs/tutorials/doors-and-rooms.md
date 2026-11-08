@@ -132,7 +132,7 @@ Run it on a plan view, then open the file the last line printed — it is in `Fi
 1. Select the doors whose handing disagrees with their name: `.Where(d => d.GetStr("Mark").EndsWith("L") && d.Handing() == "RH").Select()`.
 2. Chart the doors per level: `GetElements<FamilyInstance>("Doors").GroupByParam("Level").BarGraph()`. `GroupByParam` projects `Group` and `Count`, so those are the names the axes pick up on their own. Add a sum parameter and `Total` appears too.
 3. `ExportImage("iso")` while a 3D view is active — and note the `.jpg` even though you asked for nothing.
-4. Take the wall-outline from [Tutorial 5](./creating-geometry.md) and add doors to it: `FamilyInstance` creation is the one thing that still needs the raw API, and [Gallery Scripts](./more-automation.md) is where that road leads (tutorials in progress).
+4. Take the wall-outline from [Tutorial 5](./creating-geometry.md) and add doors to it. A door is a `FamilyInstance`, so placing one is `Doc.Create.NewFamilyInstance(...)` — the raw Revit API, the same kind of call as the `Wall.Create(...)` in that lesson. **This does not need the Gallery.** The REPL and Gallery Scripts run the same engine and the same C#, so you can create doors right here in the playground; the Gallery is simply where you turn that working code into a reusable tool with a parameter form (the `Params` class) and a saved file structure — not because the raw API is unavailable in the REPL. Door-placement lessons: tutorials in progress.
 
 ---
 

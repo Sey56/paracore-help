@@ -8,6 +8,8 @@ There is no `MakeWall(...)` helper, and there should not be — a wall needs a c
 
 > ⚠ **A raw Revit API write is not auto-transacted.** `.SetVal`, `.SetParam`, `.Delete()` open their own transaction. `Wall.Create(...)`, `Floor.Create(...)`, `Doc.Create.NewFamilyInstance(...)` do **not** — wrap them in `Transact("name", () => { … })`, or Revit throws *"modification of the document is forbidden"* and, worse, may have already changed the model before it does.
 
+One thing this lesson proves: the raw API runs **here, in the REPL.** There is no Gallery requirement to create elements — the REPL and Gallery Scripts share the same engine and the same C#, so any code you write in this lesson works unchanged as a Gallery script. The Gallery only wraps that working code in a parameter form (the `Params` class) and a saved file structure; it does not unlock any API the REPL lacks.
+
 ## Measure in metres, build in feet
 
 Revit stores everything in feet. Typing `4` means **four feet**, which is why the first line of real geometry code is almost always a conversion:
