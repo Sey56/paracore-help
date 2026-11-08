@@ -1,0 +1,65 @@
+/* -- Custom automation CTA (the homepage's only call to action) -- */
+.consultingSection {
+  padding: 2rem 0 4rem;
+  position: relative;
+}
+
+.consultingCard {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(46, 133, 85, 0.08) 0%, rgba(37, 194, 160, 0.04) 100%);
+  border: 1px dashed rgba(46, 133, 85, 0.25);
+  text-align: center;
+  transition: border-color 0.3s ease;
+}
+
+.consultingCard:hover {
+  border-color: rgba(46, 133, 85, 0.5);
+}
+
+[data-theme='dark'] .consultingCard {
+  background: linear-gradient(135deg, rgba(37, 194, 160, 0.06) 0%, rgba(30, 30, 30, 0.4) 100%);
+  border-color: rgba(37, 194, 160, 0.2);
+}
+
+.consultingTitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-font-color-base);
+}
+
+.consultingText {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-600);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.consultingLink {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--ifm-color-primary);
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.consultingLink:hover {
+  background: var(--ifm-color-primary);
+  color: white;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 600px) {
+  .consultingCard {
+    margin: 0 1rem;
+    padding: 1.5rem;
+  }
+}

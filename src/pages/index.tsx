@@ -5,7 +5,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import NewsletterSignup from '@site/src/components/NewsletterSignup';
+import GetInTouch from '@site/src/components/GetInTouch';
 import Heading from '@theme/Heading';
 
 import styles from './index.module.css';
@@ -58,7 +58,7 @@ export default function Home(): ReactNode {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
-        <NewsletterSignup />
+        <GetInTouch />
       </main>
     </Layout>
   );

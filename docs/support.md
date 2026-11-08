@@ -36,14 +36,6 @@ Subscribe to our YouTube channel for tutorials, demos, and updates on the latest
 
 ---
 
-## 📬 Stay Updated
-
-Get notified about new releases, automation tips, and ready-to-use scripts.
-
-**[Subscribe for Updates →](pathname:///paracore-help/#subscribe)**
-
----
-
 ## Resources
 
 - **[Installation Guide](./getting-started/installation.mdx)**

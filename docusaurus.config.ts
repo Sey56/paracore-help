@@ -182,10 +182,6 @@ const config: Config = {
           title: 'Services',
           items: [
             {
-              label: '📬 Subscribe for Updates',
-              to: '/#subscribe',
-            },
-            {
               label: '🏗️ Custom Automation',
               href: 'mailto:codarch46@gmail.com?subject=Custom%20Revit%20Automation%20Inquiry',
             },
