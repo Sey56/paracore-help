@@ -20,20 +20,89 @@ ElementId typeId = door.GetTypeId();
 var symbol = Doc.GetElement(typeId) as FamilySymbol;
 
 // ✅ Paracore: ask the instance
-door.GetElementType()                 // the ElementType itself
-door.GetTypeStr("Fire Rating")        // a type parameter, as text
-door.GetTypeNum("Width", "mm")        // a type parameter, as a number
+door.GetElementType()    // the ElementType itself — a FamilySymbol
+door.GetStr("Width")     // "915" — a TYPE parameter, read through the instance
 ```
 
-Both directions exist for walls, floors, columns — `wall.GetElementType()` is the `WallType`, and every `GetType…` reader works on a `Wall` exactly as it does on a door.
+`GetElementType()` works the same way on walls, floors and columns — `wall.GetElementType()` is the
+`WallType` — and so does every reader. That second line is the point of this section.
+
+## One reader, both scopes
+
+**You do not need a separate reader for type parameters.** `GetStr`, `GetNum` and `GetVal` look on
+the instance first and fall back to its type, so the same call answers whichever side the parameter
+actually lives on:
+
+```csharp
+var door = GetElements<FamilyInstance>("Doors").First();
+
+door.GetStr("Width")          // "915"   — a TYPE parameter, found by the fallback
+door.GetNum("Width", "mm")    // 915.0   — the same value as a number
+door.GetVal("Width")          // "915"   — formatted as the Properties palette shows it
+```
+
+Nothing in that call says "type". It never needs to: the parameter is on the type, the instance
+has no value of its own, and the reader resolves it. The rule is simply *instance first, then the
+instance's type*, which is also the order Revit itself works in.
+
+The same holds for a system family, where the type side is a different class:
+
+```csharp
+var wall = GetElements<Wall>().First();
+wall.GetStr("Width")       // "150"   — the WallType's width
+wall.GetStr("Length")      // "5065"  — this wall's own length
+wall.GetStr("Type Name")   // "PC 150 Concrete Masonry Units"
+```
+
+## Then when is `GetType…` worth typing?
+
+The `GetTypeStr` / `GetTypeNum` / `GetTypeVal` / `GetTypeInt` twins do exactly one thing: they skip
+the instance and read the type. Use them when that is the question — *"what is this type's width,
+regardless of what this one door says?"*
+
+```csharp
+door.GetStr("Width")        // walks instance → type
+door.GetTypeStr("Width")    // goes straight to the type
+```
+
+On a door whose width only exists on the type, both print `915`. In a script that reports *type*
+values for a set of doors, `GetTypeNum` states the intent and cannot be fooled by an instance value.
+
+⚠ **They do not work in the other direction.** `GetTypeStr` on a parameter that only exists on the
+instance returns `""` and warns, because the type genuinely does not declare it:
+
+```csharp
+door.GetStr("Mark")         // "7"   — an instance parameter
+door.GetTypeStr("Mark")     // ""    — ⚠ no parameter of that name on the type
+```
+
+So the safe default is the plain reader. Reach for `GetType…` only when you specifically want the
+type's answer.
 
 ## Which one am I writing?
 
-This is the question to ask before every write in this lesson:
+Reading is safe in both scopes. **Writing is not** — and this is the question to ask before every
+write in this lesson. The fallback that makes `GetStr("Width")` convenient is the same mechanism
+that makes `SetNum("Width", …)` on one door resize every door of its type.
+
+Two ways to see which side a name lives on, before you write:
 
 ```csharp
-door.IsTypeParameter("Width")     // true  → writing it changes ALL instances
-door.TypeInstanceCount()          // 4     → how many, right now
+door.TypeParams().Table()        // every TYPE parameter, by name — "Width" is in this list
+door.InstanceParams().Table()    // every INSTANCE parameter — "Mark" is in this list
+
+var symbol = door.GetElementType();
+symbol.Name                      // "0915 x 2032mm"
+symbol.TypeInstanceCount()       // 1  → how many elements share it
+```
+
+And when you write anyway, Paracore tells you after the fact — once per type, naming the blast
+radius and the escape hatch:
+
+```
+⚠ "Width" is a TYPE parameter on Doors: 0915 x 2032mm — this writes to the TYPE, so all 4
+  instance(s) of it change together (and any host opening they cut is re-cut). For ONE instance
+  only: .NewType("<name>") and set the parameter on the returned symbol.
 ```
 
 If the answer is a type and you meant one door, make a type that is only that door's:
@@ -118,7 +187,7 @@ Table(doors
     .Select(d => new
     {
         Type  = d.GetStr("Type Name"),
-        Width = d.GetTypeNum("Width", "mm")
+        Width = d.GetNum("Width", "mm")      // the type's width, via the fallback
     })
     .Distinct());
 ```
@@ -126,7 +195,7 @@ Table(doors
 ## Try This
 
 1. `GetElements<WallType>()` and `GetElements<Wall>()` — compare the two counts in a fresh project. Every wall uses one of very few types.
-2. On one door, print `GetTypeNum("Width","mm")` and `GetNum("Width","mm")`. Both answer; the first reads the type, the second resolves to the type when no instance parameter exists. Knowing *which* one you called is the skill.
+2. On one door, print `GetNum("Width","mm")` and `GetTypeNum("Width","mm")`. Both answer `915` — the first resolves to the type, the second goes there directly. Then print `GetTypeStr("Mark")` and watch it return `""` with a warning: the type has no `Mark`, which is the one thing the `GetType…` family will not do for you.
 3. Take the unused-types list above and `.Delete()` it on a copy of the model. Undo it. Then decide whether it should ever run on a real one (it should not, without a person looking at the list first).
 4. `GetElements<FamilySymbol>("Windows").Where(s => s.TypeInstanceCount() == 0).Table()` — the same audit for windows, no code changes.
 
