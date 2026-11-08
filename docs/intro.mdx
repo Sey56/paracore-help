@@ -43,7 +43,7 @@ GetElements<Wall>().Count()
 ```csharp
 GetElements("Rooms")
     .GroupByParam("Level", "Area", "m2")
-    .BarGraph();
+    .BarGraph()
 ```
 
 The raw Revit API still works — Paracore just saves you from typing the boilerplate every time.

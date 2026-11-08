@@ -36,7 +36,7 @@ Println($"Walls: {GetElements<Wall>().Count()}");
 ```csharp
 GetElements("Rooms")
     .GroupByParam("Level", "Area", "m2")
-    .BarGraph();
+    .BarGraph()
 ```
 
 The name you give each value becomes the axis label. If you want a label with a space in it, use a dictionary key instead of a C# property name — for example `"Total Area"`.
@@ -77,7 +77,7 @@ so a spelling check will not catch it.
 **Check the names before you read:**
 
 ```csharp
-GetElements("Doors").First().CombinedParams().Table();
+GetElements("Doors").First().CombinedParams().Table()
 ```
 
 That lists every parameter doors really have, on the element and on its type. If your name is not
