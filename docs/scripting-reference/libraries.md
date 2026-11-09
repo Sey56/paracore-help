@@ -7,25 +7,23 @@ Your script can use the full **Revit API**, the standard .NET collections and LI
 | What | Typical use |
 |---|---|
 | `System`, `System.Linq`, `System.Collections.Generic` | everyday C# |
+| `System.IO` | pre-imported in every script; see the channel note below |
 | `System.Text`, `System.Text.Json`, `System.Globalization` | strings, JSON, formatting |
 | `MiniExcel` | reading and writing `.xlsx` files |
 | `MathNet.Numerics` | statistics and numerical work |
 | `SixLabors.ImageSharp` | image processing |
-| `RestSharp` | included for compatibility, but **network calls are blocked** — see below |
+| `RestSharp` | included for compatibility; network calls are not available |
 
 ```csharp
 var data = new { Name = "Wall", Height = 3.0 };
 Println(JsonSerializer.Serialize(data));
 ```
 
-## What a script may not do
+## Files and the two channels
 
-On the REPL channel, a script cannot reach certain machine capabilities. These are refused, not just discouraged:
+`System.IO` is pre-imported into every REPL and Gallery script. The import is not a permission: how you work with files still depends on the channel.
 
-- **Network access** — `System.Net`, HTTP calls, sockets.
-- **Arbitrary file access** — on the REPL channel, `System.IO` is unavailable. Use `Files.WriteText("out.csv", csv)`; files stay inside the REPL workspace folder.
-- **Reflection, process launching, diagnostics, native interop** and loading external DLLs.
+- **Gallery scripts** use `System.IO` directly — `File.ReadAllLines`, `File.WriteAllLines`, absolute paths, and the `[InputFile]` / `[OutputFile]` / `[FolderPath]` parameters.
+- **Interactive REPL** snippets work through the `Files` helpers (`Files.WriteText("out.csv", csv)`, `Files.ReadText(...)`, `Files.List()`), inside the REPL workspace folder. Absolute paths are not accepted there.
 
-That is why a script cannot call a web API, read `C:\temp`, or load a DLL from disk. If you need to work with a file, copy it into the workspace first.
-
-> A script that is refused tells you why. The restriction is about *where* code can reach, not about what you can compute.
+A small set of machine-level namespaces — network, process launching, reflection and native interop — is refused for every script, and on the REPL channel the `System.IO` and threading symbols are refused too; that is why the interactive REPL uses `Files` helpers. Those boundaries were added for AI-generated code; see [How Paracore-Gen works](../ai-agent/how-it-works.mdx). A script that is refused tells you which symbol it named.

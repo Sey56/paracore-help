@@ -1,6 +1,42 @@
 # The REPL Playground
 
-The **REPL** tab is a scratchpad. You write C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and the answer appears. Nothing is saved unless you choose to save it.
+The **REPL** tab is a **full C# scripting environment** running inside Revit. You write C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and the answer appears. Nothing is saved unless you choose to save it.
+
+## A full C# scripting environment
+
+The REPL uses C# 9 **top-level statements**: no `Main`, no project file, no class wrapping your code. Echoing bare expressions is a REPL feature layered on top — it is not a limit on the language. Anything you can write in a C# script is available here: variables, local functions, LINQ, generics, classes, interfaces, structs, enums and records, and the complete Revit API.
+
+**The distinction is what the code runs against: the active document in the open Revit session.** This is not a standalone C# process working on a file on disk. The script executes inside Revit, and `Doc` is the live project you have open right now — its elements, parameters, views and transactions. A query reads the model as it stands at that moment; a change lands in that open model. That is what makes this environment more powerful than a general-purpose script runner, not a smaller language. A project must be open for a script to run.
+
+The one structural constraint is that a REPL script is **a single file**. You cannot split it across files the way a [Gallery script](../tutorials/gallery-04-modular-scripts.md) can. That is the only difference in language power — a script as long and as complex as you need still fits in this one file.
+
+Keep the top-level-statement order:
+
+```csharp
+// 1. using directives first
+using System.Text;
+
+// 2. top-level logic
+var walls = GetElements<Wall>();
+var label = new WallLabel();
+Println(label.Describe(walls.Count));
+
+// 3. user-defined types last
+public interface ILabel { string Describe(int count); }
+
+public class WallLabel : ILabel
+{
+    public string Describe(int count)
+    {
+        var sb = new StringBuilder();
+        return sb.Append("Walls: ").Append(count).ToString();
+    }
+}
+```
+
+`using` directives come before the statements, and type declarations come after them. Most common namespaces — `System`, `System.IO`, LINQ and the Revit API — are already pre-imported, so you only add a `using` for one that is not.
+
+Paracore's extension methods (`GetElements`, `.WhereParam`, `.Table`, …) are shorthand for raw Revit API boilerplate. Nothing is fenced off: `new FilteredElementCollector(Doc).OfClass(typeof(Wall))`, `Wall.Create(...)`, `Transact(...)`, transactions and every other Revit API call work exactly as they do in a normal add-in. Use the shortcuts where they save typing and the raw API wherever you need it.
 
 ## The editor
 
@@ -57,14 +93,14 @@ The name you give each value becomes the axis label. If you want a label with a 
 
 ## Files
 
-REPL code can only write inside the REPL workspace folder — the folder the engine confines every path to. Use short, relative names and the `Files` helpers:
+In the interactive REPL, file work goes through the `Files` helpers and stays inside the REPL workspace folder. Use short, relative names:
 
 ```csharp
 var csv = string.Join("\n", GetElements("Walls").Select(w => w.GetStr("Type Name")));
 Files.WriteText("out.csv", csv);
 ```
 
-Absolute paths such as `C:\tmp\room-check` are refused on the REPL channel — the path is confined to the workspace folder. That is a guard on the channel, not a limit on what your own code can compute.
+Absolute paths such as `C:\tmp\room-check` are not accepted here. Gallery scripts use `System.IO` directly and can work with any path — see [File-based Gallery scripts](../tutorials/gallery-07-file-io.md).
 
 ## If a script runs too long
 

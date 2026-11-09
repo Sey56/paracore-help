@@ -2,6 +2,8 @@
 
 No file, no project, no `Params` class. Open the REPL editor, type one line, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and look at the **History** tab.
 
+It is a full C# scripting environment, with one distinction from a standalone C# script: every line runs against the **active document** in the open Revit session. `Doc` is that live model — not a file on disk — so the answers come from the project you have open, and any change you make lands in it.
+
 **You need**, in this order:
 
 1. **Revit 2025, 2026 or 2027**, with any project open. Paracore ships one **.NET 8** payload, which Revit 2027's **.NET 10** host loads directly — no separate build or setting.

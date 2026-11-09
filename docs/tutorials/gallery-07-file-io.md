@@ -139,7 +139,7 @@ public class Params
 
 All three produce a `string` — the full path. The engine does not open the file for you; you do that with `File.ReadAllLines`, `File.WriteAllLines`, or any standard .NET file API.
 
-> **Gallery scripts can access the file system.** The REPL cannot — `System.IO` is blocked on the REPL channel. This is one of the real differences between the two execution paths, and it is why file-based tools belong in the Gallery.
+> **Gallery scripts can work with any file path.** `System.IO` is pre-imported for every script, and a Gallery script can read and write outside the workspace — that is why file-based tools belong here. In the interactive REPL, file work goes through the `Files` helpers inside the workspace folder instead.
 
 ## The `not_reverted` warning
 

@@ -26,11 +26,11 @@ One installer covers **Revit 2025, 2026 and 2027**. You tick the versions you ha
 
 The desktop app has three buttons at the top:
 
-- **REPL** — a scratchpad. Type C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, read the answer in **History**. Tables and charts appear in **Analytics**.
+- **REPL** — a full C# scripting environment in one file. Type C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, read the answer in **History**. Tables and charts appear in **Analytics**.
 - **Gallery** — saved scripts you run again and again. Each one can have a small form for its inputs.
 - **Playlists** — several Gallery scripts run in order.
 
-The REPL and the Gallery use the **same engine and the same C#**. The difference is only that a Gallery script lives in a folder on your disk and can have a parameter form.
+The REPL and the Gallery use the **same engine and the same C#**. Both are full C# 9 top-level-statement scripts: classes, interfaces, LINQ and the complete Revit API are available. Every script runs against the **active document in the open Revit session** — `Doc` is that live model, not a file on disk. The REPL is a single file; a Gallery script lives in a folder on your disk, can be split across several files, and can have a parameter form.
 
 ## What the code looks like
 
@@ -46,7 +46,7 @@ GetElements("Rooms")
     .BarGraph()
 ```
 
-The raw Revit API still works — Paracore just saves you from typing the boilerplate every time.
+Those are ordinary C# extension methods — shortcuts for Revit API boilerplate, not a restricted language. The raw Revit API still works alongside them; see [The REPL Playground](./interactive-repl/index.mdx).
 
 ## How the pieces fit together
 
