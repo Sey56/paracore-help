@@ -1,33 +1,29 @@
-# Paracore Documentation 📚
+# Paracore Documentation
 
-This repository contains the source code for the official [Paracore Documentation](https://sey56.github.io/paracore-help/).
+Source for the [Paracore user documentation](https://sey56.github.io/paracore-help/), built with [Docusaurus 3](https://docusaurus.io/).
 
-## 🏗️ Tech Stack
-Built with [Docusaurus 3](https://docusaurus.io/), a modern static website generator.
+## Run locally
 
-## 🏃‍♂️ Running Locally
-To preview the documentation (including new blog posts) on your machine:
+```bash
+npm install
+npm start
+```
 
-1.  **Install Dependencies**:
-    ```bash
-    npm install
-    # or
-    yarn install
-    ```
+The site opens at http://localhost:3000 and reloads as you edit.
 
-2.  **Start Dev Server**:
-    ```bash
-    npm start
-    # or
-    yarn start
-    ```
-    This will open the site at `http://localhost:3000`. Changes will hot-reload.
+## Build
 
-## 🚀 Deployment
-This site is deployed automatically via **GitHub Actions**.
-*   **Trigger**: Pushing to the `main` branch.
-*   **Result**: The site is built and published to GitHub Pages.
+```bash
+npm run build
+npm run serve
+```
 
-## 📝 Adding Content
-*   **Docs**: Add Markdown files to the `/docs` directory.
-*   **Blog**: Add Markdown files to the `/blog` directory (Format: `YYYY-MM-DD-title.md`).
+`npm run build` writes the static site to `build/`; `npm run serve` previews it locally.
+
+## Add content
+
+- Documentation pages are Markdown/MDX files in `docs/`. Register new pages in `sidebars.ts`.
+- Blog posts are Markdown files in `blog/`.
+- Images go in `static/img/`.
+
+Pushing to `main` builds and publishes the site to GitHub Pages through `.github/workflows/deploy.yml`.
