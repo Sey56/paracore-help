@@ -112,6 +112,7 @@ var mine = door.NewType("PC 1511x1350mm");   // duplicate, assign to THIS instan
 mine.SetNum("Width", 1511, "mm");            // blast radius: 1
 
 // or re-type an existing door, and be told what it changed
+var otherSymbol = GetElements<FamilySymbol>("Doors").Last();
 door.SwapSymbol(otherSymbol);
 // ✅ Swapped 359617 → Windows_Sgl_Plain: 1511x1350mm   (1 parameter(s) changed)
 //    ⚠ the geometry these drive changed with the swap:

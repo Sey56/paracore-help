@@ -127,18 +127,14 @@ GetElements("Doors").First().CombinedParams().Table()
 That lists every parameter doors really have, on the element and on its type. If your name is not
 in that list, do not use it.
 
-{/* TEMPORARY: remove this admonition when the release after 4.8.3 is published. */}
-:::caution[If you downloaded v4.8.3]
+The read refuses that name. A parameter that belongs to another category raises an error naming
+the category, so a door asked for **Top Offset** fails instead of printing an empty cell that
+looks like a real measurement. A near miss such as **Lenght** raises an error that suggests
+**Length**.
 
-**This is already fixed and will ship in the next release.** Until then, `GetStr` and `GetNum`
-do not flag a name that belongs to another category. `GetStr` gives an empty cell and `GetNum`
-gives `0`, so the table shows a value that is not real. Spelling mistakes are reported; this
-case is not. Use the check above so you know the value is real.
+A name the category does declare, but this particular element has no value for, is different:
+the read returns an empty string or zero. That is a legitimate empty cell, not a mistake.
 
-In the next release the read stops with an error and suggests the closest real name instead, so
-this extra check will no longer be needed.
-
-:::
 
 ## Where to learn
 

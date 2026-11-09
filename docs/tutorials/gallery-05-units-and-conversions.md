@@ -49,7 +49,7 @@ Transact("Adjust Walls", () =>
         if (p.Mode == "Offset")
         {
             // p.OffsetMm is already in feet — pass it directly
-            wall.SetNum("Base Offset", p.OffsetMm);
+            wall.SetNum("Base Offset", p.OffsetMm, "");
         }
         else if (p.Mode == "Set Height")
         {
@@ -62,9 +62,9 @@ Transact("Adjust Walls", () =>
 // Report back in the units the user thinks in
 Println($"Mode: {p.Mode}");
 if (p.Mode == "Offset")
-    Println($"Offset applied: {OutputUnit(p.OffsetMm, "mm"):F0} mm");
+    Println($"Offset applied: {p.OffsetMm.OutputUnit("mm"):F0} mm");
 else
-    Println($"Height set to: {OutputUnit(p.TargetHeightM, "m"):F2} m");
+    Println($"Height set to: {p.TargetHeightM.OutputUnit("m"):F2} m");
 
 public class Params
 {
@@ -111,32 +111,36 @@ public class Params
 public double OffsetMm { get; set; } = 0;
 ```
 
-The user types `500` in the UI. The engine calls `UnitUtils.ConvertToInternalUnits(500, UnitTypeId.Millimeters)` before the body runs. Inside the script, `p.OffsetMm` is **1.64 feet** — Revit's internal unit.
-
-You pass it straight to the Revit API:
+The user types 500 in the UI. Before the body runs, the engine converts that value with the Revit unit converter:
 
 ```csharp
-wall.SetNum("Base Offset", p.OffsetMm);   // correct — already in feet
+double offsetFeet = UnitUtils.ConvertToInternalUnits(500, UnitTypeId.Millimeters);
+```
+
+Inside the script, `p.OffsetMm` is **1.6404 feet** — Revit's internal unit. `SetNum` converts *from* the unit named in its third argument, so pass an empty string to say the value is already internal:
+
+```csharp
+wall.SetNum("Base Offset", p.OffsetMm, "");
 ```
 
 ### Output: `OutputUnit` converts on the way out
 
 ```csharp
-Println($"Offset applied: {OutputUnit(p.OffsetMm, "mm"):F0} mm");
+Println($"Offset applied: {p.OffsetMm.OutputUnit("mm"):F0} mm");
 ```
 
-`p.OffsetMm` is 1.64 feet. `OutputUnit(1.64, "mm")` converts back to `500`. The user sees `500 mm` — the number they typed, in the unit they understand.
+An empty unit is an exact identity, and the round trip returns 500. The user sees `500 mm` — the number they typed, in the unit they understand.
 
 ## The one mistake to avoid
 
-> ⚠ **Never wrap a `[Unit]` parameter in `InputUnit(...)`.**
+> ⚠ **Never wrap a `[Unit]` parameter in `InputUnit`.**
 
 ```csharp
 // ❌ WRONG — double conversion
 var offset = p.OffsetMm.InputUnit("mm");
 ```
 
-`p.OffsetMm` is already in feet. `InputUnit("mm")` converts it *again* — as if it were 1.64 millimetres — and you end up with 0.005 feet instead of 1.64. The wall moves by a fraction of a millimetre, and nothing looks right.
+`p.OffsetMm` is already in feet. The converter treats it as 1.64 *millimetres* and you end up with about 0.005 feet instead of 1.64. The wall moves by a fraction of a millimetre, and nothing looks right.
 
 The rule: **`[Unit]` on the property, raw value in the body.** The conversion happens once, at the boundary.
 
@@ -162,12 +166,16 @@ public double WindLoad { get; set; } = 1200;
 ## `SetNum` vs raw `.Set()`
 
 ```csharp
-wall.SetNum("Base Offset", p.OffsetMm);    // Paracore helper — handles the transaction
+wall.SetNum("Base Offset", p.OffsetMm, "");    // Paracore helper — handles the transaction
 ```
 
-`SetNum` is the Paracore wrapper. It finds the parameter by name, checks it is not read-only, sets the value, and reports errors with suggestions if the name is wrong. The raw API — `wall.get_Parameter(BuiltInParameter.WALL_BASE_OFFSET)?.Set(value)` — works too, but you handle the edge cases yourself.
+`SetNum` is the Paracore wrapper. It finds the parameter by name, checks it is not read-only, sets the value, and reports errors with suggestions if the name is wrong. The raw Revit API works too, but you handle the edge cases yourself:
 
-For `BuiltInParameter` constants, the raw `.Set()` is sometimes the only option — `SetNum` takes a string name, not a `BuiltInParameter` enum. Use whichever fits.
+```csharp
+wall.get_Parameter(BuiltInParameter.WALL_BASE_OFFSET)?.Set(p.OffsetMm);
+```
+
+For `BuiltInParameter` constants, the raw setter is sometimes the only option — `SetNum` takes a string name, not a `BuiltInParameter` enum. Use whichever fits.
 
 ## Run it
 
@@ -180,10 +188,34 @@ For `BuiltInParameter` constants, the raw `.Set()` is sometimes the only option 
 
 ## Try This
 
-1. **Change `[Unit("mm")]` to `[Unit("m")]`** on `OffsetMm` and set the default to `0.5`. Run it — the wall moves the same amount (0.5 m = 500 mm). The unit attribute controls interpretation, not behaviour.
-2. **Add `[Unit("m2")] double RoomArea`** with a default of `25.0`. Print it with `OutputUnit(p.RoomArea, "m2")` — you should see `25.00 m²`.
-3. **Break it on purpose** — add `var bad = p.OffsetMm.InputUnit("mm");` in the body and use `bad` instead of `p.OffsetMm`. Run it and see how far off the result is.
-4. **Add a `[Suffix("N/m²")]` property** — it renders the suffix label but does not convert. Compare it side-by-side with a `[Unit]` property to see the difference.
+1. **Change the unit attribute.** On `OffsetMm`, switch millimetres to metres and set the default to 0.5. Run it — the wall moves the same amount (0.5 m = 500 mm). The unit attribute controls interpretation, not behaviour.
+
+   ```csharp
+   [Unit("m")]
+   public double OffsetMm { get; set; } = 0.5;
+   ```
+
+2. **Add an area property** with a default of 25 square metres, then print it back in the unit the user understands.
+
+   ```csharp
+   [Unit("m2")]
+   public double RoomArea { get; set; } = 25.0;
+
+   Println($"Area: {p.RoomArea.OutputUnit("m2"):F2} m²");
+   ```
+
+3. **Break it on purpose.** Add a second conversion in the body and use that value instead of `p.OffsetMm`. Run it and see how far off the result is.
+
+   ```csharp
+   var bad = p.OffsetMm.InputUnit("mm");
+   ```
+
+4. **Add a display-only suffix.** It renders the label but does not convert. Compare it side-by-side with a `[Unit]` property to see the difference.
+
+   ```csharp
+   [Suffix("N/m²")]
+   public double WindPressure { get; set; } = 1200;
+   ```
 
 ---
 

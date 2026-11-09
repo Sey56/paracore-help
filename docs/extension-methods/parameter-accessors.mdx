@@ -14,7 +14,7 @@ All methods on `Element`. Automatically handle:
 
 ## Instance-Level Read Accessors
 
-In v4.8.3, check a name against the category before you read it — see [Check the parameter name first](../interactive-repl/index.mdx#check-the-parameter-name-first).
+A name that no element of the category declares raises an error instead of returning an empty value, and a near miss suggests the closest real name. See [Check the parameter name first](../interactive-repl/index.mdx#check-the-parameter-name-first).
 
 ### `element.GetStr(name)`
 
@@ -26,7 +26,7 @@ In v4.8.3, check a name against the category before you read it — see [Check t
 - Falls back to C# property via Reflection (e.g., `"HandFlipped"` → `"True"`).
 - Falls back to `NativeProperties` (Level, Name, Category, etc.).
 - Falls back to Type parameter if not found on the instance (e.g., standard door `"Width"`).
-- A name that does not exist on the element's category **stops with an error from the next release onward** and suggests the closest real name. Use `.CombinedParams().Table()` to list the real names before you write a query.
+- A name that does not exist on the element's category **raises an error** and suggests the closest real name. Use `.CombinedParams().Table()` to list the real names before you write a query.
 
 ```csharp
 wall.GetStr("Level")       // → "02 - Ground Floor Plan" (via Base Constraint)
@@ -48,7 +48,7 @@ room.GetStr("Area", "m2", 4)     // → "25.4578" (specified decimals)
 
 **Raw Numeric Getter.** Returns the raw `double` value in Revit internal units (feet / sq.ft / cu.ft).
 
-- A name that does not exist on the element's category **stops with an error from the next release onward** instead of returning a silent `0`.
+- A name that does not exist on the element's category **raises an error** instead of returning a silent `0`.
 - Falls back to C# property via Reflection for native doubles (`Width`, `Volume`, etc.).
 - Falls back to Type parameter if not found on the instance.
 
@@ -100,12 +100,12 @@ room.GetVal("Area", "m2", 3)     // → "25.458 m²"
 
 **Integer Getter.** Returns the integer value — also works for yes/no (boolean) parameters.
 
-- A name that does not exist on the element's category **stops with an error from the next release onward**.
+- A name that does not exist on the element's category **raises an error**.
 - Falls back to Type parameter if not found on the instance.
 
 ```csharp
-wall.GetInt("Is External")   // → 1 (true) or 0 (false)
-element.GetInt("Count")      // → 4
+wall.GetInt("Cross-Section")   // → 1 (an enumeration stored as an integer)
+wall.GetInt("Room Bounding")   // → 0 or 1 (a yes/no parameter)
 ```
 
 ## Type-Level Accessors

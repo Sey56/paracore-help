@@ -94,8 +94,12 @@ Filters are only useful if the answer is visible. End the chain with an output:
 ## The script
 
 ```csharp
-// Every wall on this view's level, tallest first, then shown in Revit
-var level = ActiveView.GetStr("Associated Level");   // a view's level, as text
+// Every wall on this view's level, tallest first, then shown in Revit.
+// A floor plan carries its level as "Associated Level"; a 3D view has no such
+// parameter, so fall back to the level of the first wall.
+var level = ActiveView.HasParam("Associated Level")
+    ? ActiveView.GetStr("Associated Level")
+    : GetElements<Wall>().First().GetStr("Level");
 var walls = GetElements<Wall>()
     .WhereParam("Level", level)
     .OrderByParamDesc("Unconnected Height");
@@ -114,15 +118,47 @@ walls
     .Table();
 ```
 
-`GetStr("Level")` resolves a wall's level for you — walls go through `LevelId`, beams through *Reference Level*, columns through *Base Level*, rooms and doors through their built-in parameter. One name, every category, which is why `WhereParam("Level", …)` works on things that do not literally have a *Level* parameter.
+`GetStr` resolves a wall's level for you — walls go through `LevelId`, beams through *Reference Level*, columns through *Base Level*, rooms and doors through their built-in parameter. One name, every category, which is why `WhereParam` works on things that do not literally have a *Level* parameter.
 
 ## Try This
 
-1. `GetElements<WallType>().Table()` — the types this model actually defines, with no `.WhereElementIsElementType()` in sight.
-2. Find every door hosted in a curtain wall: `GetElements<FamilyInstance>("Doors").WhereMatches("Curtain")`. Then the standard doors only: add `.StandardDoor()` (Tutorial 8).
-3. `GetElements("Walls").WhereParam("Mark", "!=", "")` — walls that have a mark.
-4. `GetElements<Room>().WhereParam("Area", ">", 25, "m2").Select()` — and watch Revit jump.
-5. Deliberately misspell a parameter and read the error. Then run `Peek()` on any element to see the names that really exist.
+1. **List the wall types this model actually defines.** No element-type collector needed.
+
+   ```csharp
+   GetElements<WallType>().Table();
+   ```
+
+2. **Find the doors hosted in curtain walls.** `WhereMatches` compares the element's name and its family name. No door family is called "Curtain", so matching that word returns nothing; curtain *walls* do match it. A curtain-wall door is simply the complement of a standard door:
+
+   ```csharp
+   GetElements<FamilyInstance>("Doors")
+       .Where(d => !d.IsStandardDoor())
+       .Table();
+   ```
+
+   For standard doors only, use the dedicated filter:
+
+   ```csharp
+   GetElements<FamilyInstance>("Doors").StandardDoor().Table();
+   ```
+
+3. **Walls that have a mark.**
+
+   ```csharp
+   GetElements("Walls").WhereParam("Mark", "!=", "").Table();
+   ```
+
+4. **Rooms larger than 25 m², highlighted in Revit.**
+
+   ```csharp
+   GetElements<Room>().WhereParam("Area", ">", 25, "m2").Select();
+   ```
+
+5. **Deliberately misspell a parameter** and read the error. Then use `Peek` on any element to see the names that really exist.
+
+   ```csharp
+   GetElements("Walls").First().Peek();
+   ```
 
 ---
 

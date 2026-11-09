@@ -69,10 +69,10 @@ Selection[0].Peek()
 
 ### `elements.Peek()`
 
-Executes `.Peek()` on every element in a collection.
+Executes `.Peek()` on every element in a collection. Each element produces its own full parameter table, so use a small collection — running this on a whole category would print hundreds of tables.
 
 ```csharp
-GetElements("Walls").Peek()
+GetElements("Walls").Take(3).Peek()
 ```
 
 ### `element.InstanceParams()`
@@ -122,11 +122,14 @@ wall.NativeProperties().Table()
 
 ### `element.ParamsDict()`
 
-Returns all parameter values as a `Dictionary<string, string>`.
+Returns a dictionary of parameter name to value, as strings. Type parameters are added first, then instance parameters, so an instance value wins when both declare the same name.
+
+Only parameters that have a value are included. A parameter with no value is not a key, so indexing it throws a key-not-found error. Check for a key before reading a name that might be blank.
 
 ```csharp
 var dict = wall.ParamsDict();
-Println(dict["Mark"]);
+Println(dict["Length"]);
+bool hasMark = dict.ContainsKey("Mark");   // false when Mark is blank
 ```
 
 ---
@@ -158,6 +161,7 @@ These return the element (chainable). All share the same `IsModifiable` transact
 | `.Delete()` | ✅ | ✅ | BIM-Smart Delete (auto-transaction, skips Pinned/Curtain) |
 
 ```csharp
+// select an element in Revit first — Selection[0] on an empty selection throws
 Selection[0].Select().Zoom()
 ```
 

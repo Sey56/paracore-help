@@ -105,6 +105,8 @@ Instead of a dropdown, this renders a **pick button** in the parameters panel. C
 
 ### `[Required]` — mandatory input
 
+These are members of the script's `Params` class, shown on their own so the attribute is easy to read. They are not statements to paste into the REPL.
+
 ```csharp
 [Required]
 public List<Wall>? TargetWalls { get; set; }

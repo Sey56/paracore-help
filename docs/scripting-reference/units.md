@@ -58,6 +58,8 @@ While Paracore handles the conversion **into** your script, you are responsible 
 The authoritative way to convert units in modern Revit (2025 and above) is using the `UnitUtils` class with `ForgeTypeId`.
 
 ```csharp
+var wall = GetElements<Wall>().First();
+
 // 1. Get a wall's length in Internal Units (Feet)
 double lengthFeet = wall.get_Parameter(BuiltInParameter.CURVE_ELEM_LENGTH).AsDouble();
 
@@ -71,7 +73,10 @@ Println($"The wall is {lengthMeters:F2} meters long.");
 For quick calculations or when you want to avoid Revit API overhead for simple logic, you can use standard conversion factors:
 
 ```csharp
+var wall = GetElements<Wall>().First();
+
 // Quick conversion (1 foot = 0.3048 meters)
+double lengthFeet = wall.GetNum("Length");   // already in internal feet
 double lengthMeters = lengthFeet * 0.3048;
 ```
 

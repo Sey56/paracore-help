@@ -27,7 +27,7 @@ Neither is broken and neither is forbidden — both still work, and you will mee
 |---|---|
 | `new FilteredElementCollector(Doc).OfCategory(OST_Walls).WhereElementIsNotElementType().Cast<Wall>()` | `GetElements<Wall>()` |
 | `wall.LookupParameter("Fire Rating")?.AsString()` | `wall.GetStr("Fire Rating")` |
-| `param.AsDouble()` + `UnitUtils.ConvertFromInternalUnits(…, UnitTypeIds.Meters)` | `wall.GetNum("Length", "m")` |
+| `param.AsDouble()` + `UnitUtils.ConvertFromInternalUnits(…, UnitTypeId.Meters)` | `wall.GetNum("Length", "m")` |
 | `foreach` + `if` + `param.Set()` + your own `Transaction` | `.WhereParam(…).SetParam(…)` |
 
 So the lessons get harder the way real work gets harder — more elements, bigger questions, more of the model touched — and never by accumulating syntax.

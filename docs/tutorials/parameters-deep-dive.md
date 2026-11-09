@@ -70,12 +70,6 @@ wall.HasParam("Fire Ratng")           // false — a typo, not an empty value
 
 If a name is **declared by the category** but this particular element has no value for it, `GetStr` gives `""` and `GetNum` gives `0`. That is a legitimate empty cell.
 
-:::caution[If you downloaded v4.8.3]
-
-This is already fixed and ships in the next release. Until then `GetStr` gives `""` and `GetNum` gives `0` — [check the name against the category first](../interactive-repl/index.mdx#check-the-parameter-name-first).
-
-:::
-
 If **no element of the category declares that name at all**, the read stops with an error instead of quietly giving you `""` or `0`:
 
 ```csharp
@@ -123,9 +117,15 @@ if (wall.GetNum("Length", "m").IsAlmostEqualTo(5.0))    // ✅
 A door schedule with a units bug caught in it — the kind of thing that motivates all of the above:
 
 ```csharp
-var doors = GetElements<FamilyInstance>("Doors");
+var doors = GetElements<FamilyInstance>("Doors").ToList();
 
-var rows = doors
+// Some door families declare no Width/Height type parameter. GetTypeNum returns 0 for
+// those, which would look like a very narrow door, so keep only doors with a real width.
+var measured = doors
+    .Where(d => d.GetElementType().GetParameters("Width").Any())
+    .ToList();
+
+var rows = measured
     .Select(d => new
     {
         Mark   = d.GetStr("Mark"),
@@ -142,7 +142,7 @@ var rows = doors
 Table(rows);
 
 // A door narrower than 800 mm is usually a mistake, not a design decision
-var tight = doors
+var tight = measured
     .Where(d => d.GetTypeNum("Width", "mm").IsLessThan(800))
     .ToList();
 
@@ -157,6 +157,8 @@ Table(tight.Select(d => new
     Width = d.GetTypeNum("Width", "mm")
 }));
 ```
+
+Door families that declare no `Width` type parameter are filtered out first: `GetTypeNum` returns `0` for them, so without that guard they would all be reported as narrower than 800 mm.
 
 Note what is *absent*: no `LookupParameter`, no `AsDouble`, no `* 304.8`, no null check on a `Parameter`. What is present is the actual engineering — a width threshold — and a jump to the doors that fail it.
 

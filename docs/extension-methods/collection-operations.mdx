@@ -85,13 +85,13 @@ These work on **any** `IEnumerable<T>`.
 | `.Show()` | Renders data as a table — identical to `.Table()`. It does **not** zoom or focus the Revit view; use `.Zoom()` for that. |
 
 ```csharp
-// Count doors per level as pie chart — name the axes by naming the properties
+// Count doors per level as a pie chart — GroupByParam already projects Group and Count,
+// so the chart picks up its axes on its own. Chain the graph directly, no .Select() first.
 GetElements("Doors")
     .GroupByParam("Level")
-    .Select(g => new { Level = ((dynamic)g).Group, Doors = ((dynamic)g).Count })
     .PieGraph()
 
-// Any projection works directly
+// Add a sum parameter to the grouping and Total appears as a third column
 GetElements("Walls")
     .GroupByParam("Base Constraint", "Length", "m")
     .Table()

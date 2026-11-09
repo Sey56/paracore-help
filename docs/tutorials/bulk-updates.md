@@ -55,7 +55,7 @@ The failed write left **nothing** behind, so the model is exactly as it was. Nar
 
 ## The blast radius of a type parameter
 
-`LookupParameter` on an instance also finds parameters that live on the **type** — so a write you aimed at one element can change all of them. Measured on a five-window model: one `SetNum("Width", …)` on **one** window reported `modified 8` — four windows and the four host walls they cut.
+`LookupParameter` on an instance also finds parameters that live on the **type** — so a write you aimed at one element can change all of them. Measured on a five-window model: one numeric write to **Width** on **one** window reported `modified 8` — four windows and the four host walls they cut.
 
 The engine now tells you, once per type and parameter:
 
@@ -68,13 +68,19 @@ The engine now tells you, once per type and parameter:
 It **informs**, it never refuses — writing a type is often exactly what you want. Whose type is it, and how many elements share it?
 
 ```csharp
-door.IsTypeParameter("Width")        // true — this lives on the type
-door.TypeInstanceCount()             // 4  — the blast radius, right now
-door.NewType("PC 1511x1350mm")       // duplicate the type for THIS instance only
-door.SwapSymbol(otherSymbol)         // re-type, and report what changed
+var door = GetElements<FamilyInstance>("Doors").First();
+var type = door.GetElementType();
+
+bool widthIsTypeParam = type.GetParameters("Width")
+                            .FirstOrDefault()?.IsTypeParameter() ?? false;
+int blastRadius = door.TypeInstanceCount();
+
+Println($"Width is a type parameter: {widthIsTypeParam}; instances sharing it: {blastRadius}");
 ```
 
-`NewType` is the escape hatch: after it, a parameter write affects **one** element. It is idempotent by name, so a re-run reuses the type it made instead of spawning "Type 2", "Type 3".
+`IsTypeParameter` belongs to a `Parameter`, not an element — ask the parameter you got back from the type. `TypeInstanceCount` gives the blast radius right now, before you write anything. Both calls are read-only, so this is safe to paste and run.
+
+`NewType` is the escape hatch: after it, a parameter write affects **one** element. It is idempotent by name, so a re-run reuses the type it made instead of spawning "Type 2", "Type 3". `SwapSymbol` re-types an instance to a symbol you already have and reports what changed.
 
 And when you *do* mean "every instance of these types":
 

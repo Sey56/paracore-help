@@ -41,7 +41,7 @@ else
 if (p.FilterByArea)
 {
     rooms = rooms.Where(r => r.Area < p.MaxArea).ToList();
-    Println($"Filtered to rooms under {OutputUnit(p.MaxArea, "m2"):F1} m²");
+    Println($"Filtered to rooms under {p.MaxArea.OutputUnit("m2"):F1} m²");
 }
 
 Println($"Showing {rooms.Count} room(s).");
@@ -51,7 +51,7 @@ var report = rooms.Select(r => new
     r.Id,
     r.Number,
     r.Name,
-    Area_m2 = OutputUnit(r.Area, "m2").ToString("F2"),
+    Area_m2 = r.Area.OutputUnit("m2").ToString("F2"),
     Level = Doc.GetElement(r.LevelId)?.Name ?? "—"
 }).OrderBy(r => r.Number).ToList();
 
@@ -120,6 +120,8 @@ A simple checkbox. Its value is `true` or `false` in the body.
 
 ### `_Visible` — conditional visibility
 
+These are members of the script's `Params` class, shown on their own so the rule is easy to read. They are not statements to paste into the REPL.
+
 ```csharp
 public bool SelectedRoom_Visible => Scope == "One Room";
 public bool MaxArea_Visible => FilterByArea;
@@ -152,16 +154,40 @@ Parameters are grouped in the UI by their `#region` name. The panel shows collap
 ## The `OutputUnit` helper
 
 ```csharp
-Area_m2 = OutputUnit(r.Area, "m2").ToString("F2")
+GetElements<Room>()
+    .Select(r => new
+    {
+        Number  = r.GetStr("Number"),
+        Area_m2 = r.Area.OutputUnit("m2").ToString("F2")
+    })
+    .Table();
 ```
 
-`r.Area` is in Revit's internal square feet. `OutputUnit(value, "m2")` converts it back to square metres for display. This is the counterpart to `[Unit("m2")]` on inputs: the attribute converts on the way **in**, `OutputUnit` converts on the way **out**.
+Room areas come back in Revit's internal square feet. The output-unit helper in the projection converts each one back to square metres for display. This is the counterpart to the unit attribute on inputs: the attribute converts on the way **in**, the helper converts on the way **out**.
 
 ## Try This
 
-1. **Add a `[Segmented]` for sort order.** Create `public string SortBy { get; set; } = "Number";` with `public List<string> SortBy_Options => ["Number", "Name", "Area"];` and change the `.OrderBy(...)` to use it.
+1. **Add a `[Segmented]` control for sort order.** Give it three choices and change the ordering expression to use the selected one.
+
+   ```csharp
+   [Segmented]
+   public string SortBy { get; set; } = "Number";
+   public List<string> SortBy_Options => ["Number", "Name", "Area"];
+   ```
+
 2. **Add a `bool ShowLevel` toggle** and include the `Level` column in the table only when it is on.
-3. **Change `[Range(1, 500, 1)]` to `[Range(1, 500, 5)]`** — the slider now snaps in steps of 5.
+
+   ```csharp
+   public bool ShowLevel { get; set; } = true;
+   ```
+
+3. **Make the slider snap in steps of 5** by changing the third argument of the range attribute.
+
+   ```csharp
+   [Range(1, 500, 5)]
+   public double MaxArea { get; set; } = 20.0;
+   ```
+
 4. **Remove the `#region` blocks** and see the parameters panel flatten out — still functional, but harder to scan.
 
 ---

@@ -62,17 +62,26 @@ Sorts the collection ascending by any parameter or C# property.
 **Automatically uses numeric sort** for `Double`/`Integer` parameters, string sort for text.
 
 ```csharp
-GetElements("Rooms").OrderByParam("Area").Table()       // smallest first
+// Rooms are not family-based, so name the columns you want before rendering
+GetElements("Rooms").OrderByParam("Area")
+    .Select(r => new { Number = r.GetStr("Number"), Name = r.Name, Area = r.GetVal("Area", "m2") })
+    .Table()
+
 GetElements("Doors").OrderByParam("Mark").Table()       // alphabetical A→Z
 GetElements("Walls").OrderByParam("Width").Table()      // thinnest first
 ```
+
+Rendering a raw collection of rooms tries to read a family parameter that rooms do not have. Projecting the columns first avoids that and gives you a table with only the values you asked for. Doors and walls can be rendered directly because they are family-based.
 
 ### `.OrderByParamDesc(name)` — Descending
 
 Sorts the collection descending. Same auto-numeric detection.
 
 ```csharp
-GetElements("Rooms").OrderByParamDesc("Area").Table()   // largest first
+GetElements("Rooms").OrderByParamDesc("Area")
+    .Select(r => new { Number = r.GetStr("Number"), Name = r.Name, Area = r.GetVal("Area", "m2") })
+    .Table()
+
 GetElements("Walls").OrderByParamDesc("Length").Table() // longest first
 ```
 
