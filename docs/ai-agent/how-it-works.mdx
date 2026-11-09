@@ -1,36 +1,35 @@
 # How Paracore-Gen works
 
-This page covers the implementation details behind [AI Assistants and MCP](./index.mdx) — the parts that matter to safety and to understanding why the agent behaves the way it does. You do not need any of this to use the REPL or Gallery scripts; those run your own code and are documented separately.
+This page covers the implementation details behind [AI Assistants and MCP](./index.mdx) — how generated code runs and the boundary around it. It applies to Paracore-Gen only. The REPL and Gallery run code you write yourself and are documented separately.
 
-## One engine, two trust levels
+Paracore-Gen has no fixed menu of task tools. It generates a C# script from your conversation and runs it in Revit; whatever the request needs is written at that moment.
 
-Both your own code (in the REPL or a Gallery script) and the code Paracore-Gen generates are compiled and run by the **same engine** — the same C#, the same API, the same globals. There is no second, agent-only runtime.
+## One engine
 
-The difference is trust, not capability:
+Your own code (in the REPL or a Gallery script) and the code Paracore-Gen generates are compiled and run by the **same engine** — the same C#, the same imports, the same globals. `System.IO`, LINQ and the whole Revit API are pre-imported for every script. There is no second, agent-only runtime. In every case the script runs inside Revit against the active document: `Doc` is the live project that is open at that moment.
 
-- **Your code** is typed by you, in your own Revit. There is no trust boundary around it.
-- **Generated code** is written by a model, not by you. It runs on the same channel, but with an extra capability boundary because it was not typed by a human.
+## Why generated code has a boundary
 
-## The REPL channel
+A script you write yourself is ordinary code: you wrote it, you read it, you chose to run it — the same as code you would write in VS Code or any other editor. It needs no protection from itself.
 
-Every script — yours or generated — runs on the REPL channel. One thing that channel enforces is the **file path**: a script may read and write only inside the workspace folder, and `System.IO` (`File`, `Directory`, `Path`, `FileStream`) is not available on it. Relative names resolve inside that folder; absolute paths are refused.
+Generated code is different. A model writes it from a conversation, it can contain anything, and it runs inside Revit with the reach of any C# program. The capability boundary on this page exists for that reason: to keep code you did not write from reaching your machine or your network. It was built for Paracore-Gen, not for the REPL.
 
-This guard exists for the agent's sake, but your own playground inherits it too — so a script you write by hand is confined to the same folder. The Gallery is exempt from this channel guard: Gallery scripts *can* use absolute paths and `System.IO`.
+## What the boundary refuses
 
-## The agent capability boundary
-
-On top of the channel's path guard, generated code is additionally blocked from the machine capabilities it must not reach:
+Code on this channel cannot name:
 
 - **Network access** — `System.Net`, HTTP calls, sockets.
 - **Process launching** — starting other programs.
-- **Reflection and native interop** — inspecting or calling into code at runtime.
-- **Loading external DLLs** from disk.
+- **Reflection and native interop** — inspecting or calling into code at runtime, or loading an external DLL from disk.
+- **File and thread APIs** — `System.IO` and `System.Threading` on the REPL channel.
 
-These are refused at runtime, not just discouraged. The restriction is about *where generated code can reach*, not about what it can compute — the model can still read the model, query parameters, and build geometry; it just cannot reach out to your machine or the network.
+These are refused at the symbol level by the compiler rather than matched as text, and they say nothing about what code can compute: the assistant can still read the model, query parameters and build geometry. The Revit API is left whole.
+
+The assistant uses the same REPL channel as the desktop app, so a script you type there meets the same boundary — a side effect of sharing a channel, not a judgement about your code. Gallery scripts run on a different channel and keep full file access, including `System.IO` and absolute paths.
 
 ## The workspace
 
-The agent's generated scripts read and write inside a workspace folder. By default this is:
+Scripts on the REPL channel read and write inside a workspace folder. By default this is:
 
 ```
 %LOCALAPPDATA%\Paracore\AgentWorkspace

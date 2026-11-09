@@ -10,13 +10,15 @@ Claude Desktop, Cursor, VS Code, or any client that speaks MCP. Point the client
 
 ## What it can do
 
+There is no fixed list of operations. Paracore-Gen writes a new C# script for each request, so anything you can describe — reading, editing, creating geometry, multi-step work — is done by code written at that moment. Have that conversation in Claude Desktop, Cursor, VS Code or any client that speaks MCP.
+
 - Look at the model: categories, levels, parameters and element counts.
 - Write and run a script to answer a question or make a change.
 - Show you the code and ask for your approval before a run touches the model.
 
-## What keeps it safe
+## What keeps generated code in bounds
 
-- The script runs on the same REPL channel as your own code, so file access is confined to the workspace folder and a script cannot read or write elsewhere on your machine. On top of that channel guard, the agent's generated code is also blocked from the machine capabilities it must not reach — network, process launching, reflection, native interop — because the code is generated, not typed by you.
+- Generated code can contain anything, so it cannot name machine capabilities it does not need: network, process launching, reflection, native interop, and on the REPL channel `System.IO` and threads. See [How Paracore-Gen works](./how-it-works.mdx) for the boundary and why it exists.
 - Dangerous operations are restricted, and a runaway script is stopped automatically.
 - You see the code before it executes, so nothing happens unseen.
 

@@ -6,7 +6,9 @@ You do not need any of this to use the REPL or Gallery scripts — those run you
 
 ## 1. What Paracore-Gen is
 
-Paracore-Gen connects an AI assistant to your open Revit model. You ask for things in plain language, and the assistant finds the answer or makes the change for you. It works by running short C# scripts against your open project using Paracore's own simplified commands, such as `GetElements("Walls")`, `.WhereParam(...)` and `.SetParam(...)`. It can also render a view as an image to check its own work.
+Paracore-Gen connects an AI assistant to your open Revit model. You describe what you want in conversation, and the assistant **generates a C# script and runs it** against your open project. There is no fixed menu of operations: the code for each request is written at that moment, using Paracore's shortcut methods (`GetElements("Walls")`, `.WhereParam(...)`), LINQ, or the raw Revit API — whichever the task needs. It can also render a view as an image to check its own work.
+
+Have the conversation in the client you prefer: Claude Desktop, Cursor, VS Code or any MCP client. You choose the assistant framework; Paracore-Gen is the connection to Revit.
 
 It is an optional, separate installer. The platform works fully without it. See [AI Assistants and MCP](./index.mdx) for what you can connect it to.
 
@@ -85,6 +87,8 @@ When genuinely connected, the assistant also receives a quick-start cheat sheet 
 4. You get the answer, often as an interactive table.
 
 ## 5. What it can do
+
+There is no fixed list. Every request is answered by a script written for it, so the following are examples of what people ask for, not a set of built-in commands. If you can describe it — including work that takes several steps or creates new geometry — the assistant can write the code for it.
 
 **Find and filter elements.** By category, parameter value, text contained in a parameter, or numeric comparison (for example, area greater than 25 m²). Example: "List doors whose Mark contains 'GEN'."
 
@@ -174,7 +178,7 @@ No. You approve the code before it runs, and there is a one-time consent dialog 
 Workshared and very large models are untested — the connector has been exercised against small single-user models. Use caution and work on a copy.
 
 **Can it create new geometry?**
-It can create and modify elements by dropping to the raw Revit API when the high-level methods are not enough, but the generalist assistant specializes in reading, filtering and editing existing elements. Deep modeling (massing, families) is the job of separate specialist servers.
+Yes. Every request is answered by code written for it, so creating and changing geometry is done through the raw Revit API — `Wall.Create(...)`, placing family instances, transactions and anything else the task needs — whenever the shortcut methods are not enough. There is no separate tool to switch to for modelling work, and no fixed set of operations. You still see and approve the code before it runs.
 
 **Where does my data go?**
 Whatever you send to the AI assistant is handled under that provider's privacy policy. Paracore itself does not send your model data to a server, and tool output deliberately omits your Windows user name and Revit install path — only the project file path is included so the assistant knows which model it is in. You see and approve the code before it runs.
