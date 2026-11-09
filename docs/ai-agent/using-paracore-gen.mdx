@@ -117,7 +117,7 @@ When genuinely connected, the assistant also receives a quick-start cheat sheet 
 - Ask the assistant to **show the current values first** and to **report old → new** after the change.
 - **Type parameters affect every element of that type.** Changing the width of one window's type changes all windows of that type. To change only one element, ask the assistant to create a new type for it first.
 - **Moving geometry can change other things**: rooms, hosted doors and windows, and joins. Check the counts afterwards.
-- If Revit shows a dialog and the tool answers it automatically, the assistant should tell you. (Power users: set `PARACORE_WATCH_DIALOGS=0` to disable the automatic dialog watcher.)
+- If Revit shows a warning while the assistant is working, the [dialog watcher](./how-it-works.mdx#the-dialog-watcher) answers it so the request can finish, and the assistant reports what was pressed. Set `PARACORE_WATCH_DIALOGS=0` before starting your AI client to answer dialogs yourself.
 - Save your project or work on a copy before large edits.
 
 ## 8. Limits and good-to-know behavior

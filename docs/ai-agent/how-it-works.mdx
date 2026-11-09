@@ -40,9 +40,28 @@ If you need it on another drive, set the `PARACORE_AGENT_WORKSPACE` environment 
 
 `Files.Root` points at this folder from code, so `Files.WriteText("out.csv", ...)` lands inside it.
 
-## Why `ExportImage` exists for the agent
+## View images for the agent
 
-The assistant cannot see Revit's screen. `ExportImage` was added so the agent can render a view to an image file and **look at what it built or changed** — a visibility aid for a model-observing assistant. A human who wants a picture of a view uses Revit's built-in *Export to Image* command instead.
+The assistant cannot see Revit's screen. `ExportImage` renders a view to an image file so the agent can **look at what it built or changed** and adjust it. A human who wants a picture of a view uses Revit's built-in *Export to Image* command instead.
+
+## The dialog watcher
+
+Revit reports many failed edits as a modal dialog on its UI thread. Agent code runs on that same thread, so a warning parks the very call that has to return a result: the tool call hangs, the assistant cannot see the warning, and the client eventually times out. The assistant cannot dismiss the dialog itself — it is what is blocked.
+
+Paracore-Gen starts a resident **dialog watcher** thread when the server boots. It watches Revit's windows from outside the blocked call and presses the button a person would press, so the call completes and the assistant can carry on. Servers that only read the model do not start it.
+
+| Dialog | What the watcher does |
+|---|---|
+| Warning with **OK / Continue / Yes** | Presses the keep-edit button. Revit keeps the change; the assistant corrects the geometry afterwards. |
+| **Delete element(s)** button | Never pressed. Removing an element is left to you. |
+| **Cancel** with no keep option | Presses Cancel — Revit's own answer. A failed edit rolls back normally. |
+| A dialog you opened yourself, or the agent-consent prompt | Left alone. |
+
+The watcher acts only while a Paracore tool call is waiting on Revit. Outside a call it watches and logs but clicks nothing, so it will not close a *Type Properties* editor or another window you opened by hand. The consent dialog that approves agent code for the Revit session is never answered by it. If several Paracore servers are running, only one of them answers a given dialog.
+
+It does not suppress the failure and does not touch the transaction: when an edit fails, Revit still rolls it back. The watcher reads the warning text, records which button it pressed, and that record is appended to the tool result so the assistant can see what happened and adjust. Every action is also written to `%APPDATA%\paracore-data\logs\DialogWatcher.txt`.
+
+To turn it off, set `PARACORE_WATCH_DIALOGS=0` before starting your AI client. Revit's dialogs then stay on screen for you to answer.
 
 ## Confirmation gates
 
