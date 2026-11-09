@@ -5,7 +5,6 @@
 Open a script's code view in the desktop app. Next to **Edit Script** you will see:
 
 - **Forge Tool** — for a normal script. Produces a `.ptool` file.
-- **Forge Sentinel** — for a [Sentinel](../sentinels/index.md) script. Produces a `.wtool` file.
 
 The button is only available when the app is connected to Revit. Once a script has been forged, the button disappears from that script's code view.
 

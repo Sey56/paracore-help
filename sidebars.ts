@@ -30,7 +30,6 @@ const sidebars: SidebarsConfig = {
         'fundamentals/07-visual-query-builder',
         'authoring/presets',
         'authoring/playlists',
-        'sentinels/index',
         'tool-generator/index',
         {
           type: 'category',

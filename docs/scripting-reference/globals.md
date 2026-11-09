@@ -51,7 +51,3 @@ These send structured results to the **Analytics** tab:
 | `LineGraph(data)` | A line chart |
 
 The property names you project become the axis labels. For a label with a space in it, use a dictionary key such as `"Total Area"`. See [Answers, Not Code](../tutorials/tables-and-answers.md).
-
-## Background checks
-
-`Watchdog(...)` and `WatchdogReport(...)` are used by [Sentinels](../sentinels/index.md) — checks that run while Revit is idle. Run a Watchdog script once by hand to test its logic before setting it up as a Sentinel.
