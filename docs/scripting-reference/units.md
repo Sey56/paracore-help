@@ -32,15 +32,12 @@ public class Params {
 
 ### Supported Units
 
-| Unit Code | Description | Conversion |
-| :--- | :--- | :--- |
-| `mm` | Millimeters | `x / 304.8` |
-| `cm` | Centimeters | `x / 30.48` |
-| `m` | Meters | `x / 0.3048` |
-| `in` | Inches | `x / 12.0` |
-| `ft` | Feet | `x * 1.0` |
-| `sqm` / `m2` | Square Meters | `x / 0.092903` |
-| `sqft` / `ft2`| Square Feet | `x * 1.0` |
+`[Unit]` accepts length (`mm`, `cm`, `m`, `ft`, `in`), area (`m2`, `ft2`) and volume (`m3`,
+`ft3`), together with their long-form aliases. Mass, angle and time units are not supported, and
+an unrecognised unit is **not converted** — the value reaches the script exactly as typed.
+
+The complete list of accepted spellings is in the
+[parameter reference](parameters.mdx#units).
 
 ## No-Unit Parameters
 

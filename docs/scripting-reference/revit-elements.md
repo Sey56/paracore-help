@@ -105,7 +105,9 @@ public class Params
 ```
 
 #### Category Attribute Filter
-Alternatively, use the `[RevitElements]` attribute to constrain a `Reference` picker.
+Alternatively, use the `[RevitElements]` attribute to constrain a `Reference` picker. Only its
+`Category` argument is read; the complete attribute reference is in
+[Parameters and the Configurator](parameters.mdx#selection-and-file-inputs).
 ```csharp
 public class Params 
 {

@@ -27,4 +27,8 @@ Click **Compute** for a dynamic provider so the list reflects the model as it is
 
 If you declare a Revit type such as `Level` or `WallType` and do **not** add an `_Options` property, Paracore fills the dropdown from the model for you. Only add a provider when you want to narrow or reshape that list.
 
+`_Options` and `_Filter` are two of the six reserved provider suffixes. The other four, and the
+full attribute set, are covered in the
+[parameter reference](parameters.mdx#provider-properties).
+
 The [Gallery lessons](../tutorials/more-automation.md) use `_Options` in a working script.

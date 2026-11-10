@@ -4,7 +4,7 @@ Reference pages for the C# you write in Paracore. If you are new, start with the
 
 | Page | What it covers |
 |---|---|
-| [Parameters and the Configurator](./parameters.mdx) | The `Params` class, attributes and the input form |
+| [Parameters and the Configurator](./parameters.mdx) | The complete `Params` reference: every attribute, type rule, provider and unit |
 | [Global Helpers](./globals.md) | Helpers available in every script |
 | [Units & Conversion](./units.md) | Reading and writing values in the unit you want |
 | [Options Providers](./options.md) | Filling dropdowns from the model |

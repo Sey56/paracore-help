@@ -1,74 +1,343 @@
 # Parameters and the Configurator
 
-A Gallery script can have a small input form. You define it once in C# and Paracore builds the controls for you.
+A Gallery script can declare an input form. You define it once in C#, Paracore builds the controls,
+and the values are supplied before the script body runs.
+
+This page is the reference for that declaration: what becomes a control, every attribute that
+changes it, the type rules, the provider properties, and the units contract. For the surrounding
+topics see [units](units.md) for converting values back out, [options providers](options.md) for
+dynamic lists, and [Revit elements](revit-elements.md) for picking in the model.
 
 ## The Params class
 
-Put a public class named `Params` at the bottom of the entry script (or in its own `Params.cs` file). Every public property becomes one control.
+Put a public class named exactly `Params` at the bottom of the entry script, or in its own
+`Params.cs` file. Every eligible public property becomes one control.
 
 ```csharp
 public class Params
 {
+    #region General
+    /// <summary>Prefix for the marks to be created.</summary>
     public string Prefix { get; set; } = "A-";
+
     public int Count { get; set; } = 10;
+
+    /// <summary>Level the elements will be placed on.</summary>
     public Level StartLevel { get; set; }
+    #endregion
+
+    #region Offset
+    /// <summary>Horizontal offset from the grid.</summary>
+    [Unit("mm")]
+    public double Offset { get; set; } = 250;
+    #endregion
 }
 ```
 
-The app fills these before the script runs: `Prefix` and `Count` start at the defaults written
-here, and `StartLevel` is whatever the user picks in the dropdown — it has **no default**, so in
-the app it is always set.
+The `/// <summary>` comment is the label's tooltip. `#region` names group the controls in the form.
 
-> ⚠ **In the REPL, `new Params()` does not.** Nothing fills the form there, so `StartLevel` is
-> `null` and `p.StartLevel.Name` stops with a `NullReferenceException`. Test the script through the
-> Gallery run, where the Configurator supplies the values.
+> **In the REPL playground, `new Params()` does not fill the form.** Nothing supplies values
+> there, so `StartLevel` is `null` and `p.StartLevel.Name` stops with a
+> `NullReferenceException`. Test the script through the Gallery run, where the Configurator
+> supplies the values.
 
-Defaults are the values you see the first time you open the form. The app remembers the values you last used, so you don't have to retype them on every run.
+Defaults are the values you see the first time you open the form. The app remembers the values you
+last used, so you do not have to retype them on every run.
 
 ![Parameter defaults in the Configurator](/img/ui-4.8.3-configurator.png)
 
-## What each type becomes
+## What becomes a control
 
-| C# type | Control |
+| Rule | Detail |
 |---|---|
-| `string` | Text box |
-| `bool` | Toggle |
-| `int`, `double` | Number box |
-| A Revit type such as `Level` or `WallType` | Dropdown filled from the open model |
-| A list of Revit elements | Multi-select list |
+| Class name | Must be exactly `Params`. |
+| Member kind | **Public properties only.** A public field is ignored, even though the attributes' declarations permit fields. |
+| Writability | Must have a `set`/`init` accessor or an initializer. A get-only property with no initializer is ignored. |
+| Reserved suffixes | A property whose name ends in `_Options`, `_Filter`, `_Range`, `_Visible`, `_Enabled` or `_Unit` is **skipped entirely**. See [provider properties](#provider-properties). |
+| Grouping | `#region` blocks inside `Params` name the group each control belongs to. |
 
-## Attributes
+> **A real parameter can be silently dropped by its own name.** `public double Tolerance_Unit`
+> ends in `_Unit`, so the engine treats it as a provider and never puts it in the form. Rename it
+> to `ToleranceUnit` or `Tolerance`.
 
-Attributes change how a control behaves:
+Attributes are matched by **name in the source text**, not by resolving the CLR type. `[Unit("mm")]`
+and `[UnitAttribute("mm")]` are equivalent, and no `using` directive is needed for the extraction
+step. The attributes themselves are declared in the engine's
+`CoreScript.Engine/Globals/ValidationAttributes.cs`.
 
-| Attribute | Effect |
+## How a type becomes a control
+
+| C# property type | Control | Notes |
+|---|---|---|
+| `string`, other lowercase types | Text box | Default `""`. |
+| `bool` | Toggle | Default `false`. |
+| `int`, `long`, `float`, `double`, `decimal` | Number box | `int`/`long` step as whole numbers; the rest as decimals. Default `0`. |
+| `XYZ` | Point entry with a pick button | Default `"0,0,0"`. |
+| `Reference` | Element picker | Default `""`. |
+| `Face` | Face picker | |
+| `Edge` | Edge picker | |
+| A Revit class such as `Level`, `Wall`, `WallType` | Dropdown of elements from the open model | Default `null`; a **Compute** button fills it. |
+| A Revit enum such as `BuiltInCategory` or `BuiltInParameter` | Dropdown of enum values | |
+| `List<T>` or `T[]` where `T` is a Revit class | Multi-select list of elements | Default `[]`. |
+| `List<T>` / `T[]` of anything else | Multi-select list of strings | Default `[]`. |
+| A non-Revit type starting with a capital letter | Dropdown (`enum`) | Pair it with an `_Options` provider. |
+
+A trailing `?` on the type is ignored for inference, so `Room?` behaves like `Room`.
+
+## Attributes — the complete set
+
+The engine declares **fifteen attribute classes and the extractor reads every one of them**. Five
+further classes were declared for years but never read; they were removed on 2026-11-10, and a
+script that writes one fails to compile in a current build. They are listed below so older tutorials can be
+recognised and corrected.
+
+### Attributes that take effect
+
+| Attribute | What it sets | Result in the form / at runtime |
+|---|---|---|
+| `[Required]` | `required` | A `*` on the label; the desktop app disables **Run** while the value is empty. `[Mandatory]` is an exact synonym. This is a **form-level** check — the engine does not enforce it, unlike `[Confirm]`. |
+| `[Range(min, max, step)]` | `min`, `max`, `step` | A slider when `max > min`; `step` also drives the number box and the stepper. Negative bounds are allowed. **Omitting `step` leaves it unset** — the extractor reads source text, so the C# constructor's `step = 1.0` default never reaches the form. |
+| `[Unit("mm")]` | `unit`, `suffix` | Converts the entered value to Revit internal units before the script sees it, and shows the unit as the label suffix. See [Units](#units). |
+| `[Suffix("mm")]` | `suffix` | A display-only label after the box. It does **not** convert. Overwritten when a unit is set. |
+| `[Confirm("APPLY")]` | `pattern` | The user must type exactly `APPLY`; the engine re-checks this from the script source before executing. A dry run is exempt. |
+| `[EnabledWhen(nameof(X), value)]` | `enabledWhenParam`, `enabledWhenValue` | Disables this control unless `X` equals `value`. It does not hide the control. |
+| `[Select]` | `selectionType` | Adds a pick button for elements in the model. |
+| `[Select(SelectionType.Face)]` | `selectionType` | Picks a face. Values: `Element`, `Point`, `Face`, `Edge`. |
+| `[Select("Walls")]` | `selectionType`, `revitElementCategory` | Picks elements of that category. |
+| `[RevitElements(Category = "Doors")]` | `revitElementCategory` | Restricts the element list to a category. **Only the `Category` argument is read.** |
+| `[InputFile("csv,txt")]` | `inputType = "File"`, `filter` | Open-file dialog, filtered by the extension list. |
+| `[OutputFile("xlsx")]` | `inputType = "SaveFile"`, `filter` | Save-file dialog. |
+| `[FolderPath]` | `inputType = "Folder"` | Folder browser. |
+| `[Color]` | `inputType = "Color"` | Colour swatch picker. |
+| `[Stepper]` | `inputType = "Stepper"` | Minus / value / plus buttons on a number. |
+| `[Segmented]` | `inputType = "Segmented"` | Choice buttons. Needs an `_Options` provider to have anything to show. |
+
+```csharp
+[Range(0, 100, 5)]
+[Unit("mm")]
+public double Offset { get; set; } = 250;
+```
+
+### Attributes that were removed
+
+These five classes were declared in the engine but the parameter extractor never read them. They
+were **removed from the engine source on 2026-11-10**. In a current build, writing one in a script
+fails to compile — better than the old behaviour, where the script compiled, showed no error and
+silently got none of the described behaviour. An installation that has not been updated still
+contains the five classes, so there they compile and still do nothing. Older tutorials may still
+name them; use the replacement in the second column.
+
+| Removed attribute | Use instead |
 |---|---|
-| `[Unit("mm")]` | Converts the value you type into Revit's internal units before the script sees it |
-| `[Range(0, 100)]` | Adds a slider |
-| `[Required]` | Stops the run if the field is empty |
-| `[Segmented]` | Shows a set of choice buttons instead of a dropdown |
-| `[EnabledWhen(...)]` | Shows or enables a control depending on another value |
-| `[Confirm]` | Asks for confirmation before a destructive run |
-| `[Select]`, `[RevitElements]` | Pick elements directly in the Revit viewport |
-| `[InputFile]`, `[OutputFile]`, `[FolderPath]` | File, save-file and folder pickers |
-| `[Suffix]` | A small unit label next to a number |
+| `[ScriptParameter(...)]` | The specific attribute for the job — `[Range]`, `[Unit]`, `[Select]`, `[InputFile]`, etc. None of its named arguments (`MultiSelect`, `Group`, `VisibleWhen`, `Options`, `Compute`, `Min`, `Max`, `Step`, `Suffix`, `InputType`, `Description`, `Select`, `Computable`) ever had any effect. Multi-select comes from declaring `List<T>`. |
+| `[Min(0)]` | `[Range(0, max)]`. |
+| `[Max(100)]` | `[Range(min, 100)]`. |
+| `[Pattern(@"^\d{3}$")]` | `[Confirm("TEXT")]` for an exact phrase; the `pattern` field is only ever written by `[Confirm]`. |
+| `[Description("...")]` | An `/// <summary>` XML doc comment above the property. |
 
-## Custom dropdown contents
+`[RevitElements]` is **live and still declared** — it is used throughout the Gallery and this help
+site. It is the one partially-read attribute: its `Category` named argument works, while
+`TargetType` (including the positional `[RevitElements("WallType")]` form), `MultiSelect`,
+`Group`, `Options`, `VisibleWhen`, `Compute`, `Computable`, `Description` and `Select` are ignored.
+Bare `[RevitElements]` adds nothing — declaring a Revit type already produces the element
+dropdown.
 
-Name a property `Something_Options` and it supplies the choices for `Something`:
+## Units
+
+`[Unit]` values arrive in the script in **Revit's internal units** (feet, square feet, cubic
+feet), not in the unit the user typed. `ParameterService.HardenParameters` converts them before the
+body runs.
+
+```csharp
+[Unit("m")]
+public double Offset { get; set; } = 1.5;   // user enters 1.5 metres
+```
+
+In the body, `p.Offset` is already about **4.921 feet**:
+
+```csharp
+XYZ point = new XYZ(0, 0, p.Offset);                  // correct — the Revit API wants feet
+Println($"Offset: {p.Offset.OutputUnit("m")} m");     // display it back in metres
+```
+
+Pass the value to the Revit API as-is. Do not call `InputUnit(...)` on it — that converts a second
+time. Use `OutputUnit(...)` (see [units](units.md)) only when displaying a value.
+
+A default written in the initializer is in the **user-facing unit** too: it is filled in first and
+then converted, so `[Unit("mm")] public double Offset { get; set; } = 250;` starts at 250 mm and
+the script receives about 0.8202 feet.
+
+### Accepted unit spellings
+
+| Dimension | Spellings accepted by `[Unit]` |
+|---|---|
+| Length | `mm`, `millimeter`, `millimeters`; `cm`, `centimeter`, `centimeters`; `m`, `meter`, `meters`; `ft`, `foot`, `feet`; `in`, `inch`, `inches` |
+| Area | `m2`, `sqm`, `sq.m`, `m²`, `square meter`, `square meters`; `ft2`, `sqft`, `sq.ft`, `ft²`, `square foot`, `square feet` |
+| Volume | `m3`, `cum`, `cu.m`, `m³`, `cubic meter`, `cubic meters`; `ft3`, `cuft`, `cu.ft`, `ft³`, `cubic foot`, `cubic feet` |
+
+Mass, weight, angle and time units are not supported.
+
+> **An unknown unit fails silently.** `[Unit("kg")]` shows `kg` as the suffix but performs **no
+> conversion** — the value reaches the script exactly as typed. Check the spelling against the
+> table above before relying on a converted value.
+
+### Units without an attribute
+
+A property name ending in `_mm`, `_cm`, `_m`, `_ft` or `_in` is treated exactly as if the matching
+`[Unit]` were present, including the conversion:
+
+```csharp
+public double WallOffset_mm { get; set; } = 250;   // same as [Unit("mm")]
+```
+
+This is a name suffix on the **parameter**, not a provider property. Do not confuse it with the
+`_Unit` suffix, which causes a property to be skipped.
+
+`[Unit]` also sets the label's suffix, so it overrides `[Suffix]` when both are on the same
+property.
+
+## Conditional UI
+
+Two different mechanisms, with different syntax.
+
+`[EnabledWhen]` greys out a control. The first argument is the other parameter's name, the second
+is the value that enables it; the comparison is on the string form of the value.
+
+```csharp
+public bool ShowAdvanced { get; set; } = false;
+
+[EnabledWhen(nameof(ShowAdvanced), true)]
+public string ConfigKey { get; set; } = "Default-Key";
+```
+
+A `_Visible` provider hides or shows a control. Its expression is kept as **text** and evaluated
+by the app, which understands only `==`, `!=`, and a bare boolean parameter name — not arbitrary
+C#:
+
+```csharp
+public string Mode { get; set; } = "By Level";
+
+public string LevelName { get; set; } = "";
+public bool LevelName_Visible => Mode == "By Level";   // works
+
+public bool UnlockExperimental { get; set; } = false;
+public bool UnlockExperimental_Visible => ShowAdvanced; // works
+```
+
+## Selection and file inputs
 
 ```csharp
 public class Params
 {
-    public WallType MyWallType { get; set; }
+    /// <summary>Pick a wall in the model.</summary>
+    [Select(SelectionType.Element)]
+    public Wall FavoriteWall { get; set; }
 
-    public List<WallType> MyWallType_Options =>
-        GetElements<WallType>().Where(w => w.Name.Contains("Generic")).ToList();
+    /// <summary>Only door types.</summary>
+    [RevitElements(Category = "Doors")]
+    public FamilySymbol DoorType { get; set; }
+
+    /// <summary>Source data.</summary>
+    [InputFile("csv,txt")]
+    public string DataSource { get; set; }
+
+    /// <summary>Where to write the result.</summary>
+    [OutputFile("xlsx")]
+    public string ExportPath { get; set; }
 }
 ```
 
-Without an `_Options` property, Paracore fills the dropdown from the open model automatically.
+The extension list on `[InputFile]` / `[OutputFile]` is passed to the dialog verbatim. Declare
+outputs this way rather than hard-coding a path in the body: a dry run can report file writes as
+`not_reverted`, because a rollback cannot undo them.
+
+## Provider properties
+
+A property named `<Param>_<Suffix>` is skipped as an input and read as a data provider. Only three
+of the six suffixes currently have an effect.
+
+| Suffix | Effect |
+|---|---|
+| `_Options` | Supplies the choices for `<Param>`. A literal list, `new[] { ... }`, or a comma-separated string is used immediately. Anything computed (LINQ, a collector, a method) sets `requiresCompute` and the form shows a **Compute** button. |
+| `_Filter` | Alias of `_Options`. |
+| `_Visible` | A condition that shows or hides `<Param>`. See [Conditional UI](#conditional-ui). |
+| `_Range` | Reserved and skipped as an input, but not read. Use `[Range]` on the parameter. |
+| `_Enabled` | Reserved and skipped as an input, but not read. Use `[EnabledWhen]` on the parameter. |
+| `_Unit` | Reserved and skipped as an input, but not read. Use `[Unit]` on the parameter. |
+
+```csharp
+[Segmented]
+public string Mode { get; set; } = "Preview";
+public List<string> Mode_Options => ["Preview", "Commit", "Audit"];
+
+public WallType CustomWallType { get; set; }
+public List<WallType> CustomWallType_Options =>
+    GetElements<WallType>().Where(w => w.Name.Contains("Generic")).ToList();
+```
+
+A provider property must not carry an attribute. Without an `_Options` provider, Paracore fills a
+Revit-type dropdown from the open model automatically.
+
+## A complete example
+
+```csharp
+public class Params
+{
+    #region Mode
+    /// <summary>What the tool should do.</summary>
+    [Segmented]
+    public string OperationMode { get; set; } = "Preview";
+    public List<string> OperationMode_Options => ["Preview", "Commit", "Audit"];
+    #endregion
+
+    #region Geometry
+    /// <summary>Pick the wall to work on.</summary>
+    [Select(SelectionType.Element)]
+    public Wall FavoriteWall { get; set; }
+
+    /// <summary>Offset from the wall face.</summary>
+    [Range(0, 1000, 25)]
+    [Unit("mm")]
+    public double WallOffset { get; set; } = 250;
+    #endregion
+
+    #region Advanced
+    /// <summary>Reveal the advanced controls.</summary>
+    public bool ShowAdvanced { get; set; } = false;
+
+    /// <summary>Confirmation phrase for a committing run.</summary>
+    [EnabledWhen(nameof(ShowAdvanced), true)]
+    [Confirm("APPLY")]
+    public string Confirmation { get; set; } = "";
+
+    /// <summary>Source data for the audit.</summary>
+    [InputFile("csv,xlsx")]
+    public string DataSource { get; set; }
+    public bool DataSource_Visible => ShowAdvanced;
+    #endregion
+}
+```
+
+## Traps to check before you publish
+
+- A parameter whose name ends in `_Options`, `_Filter`, `_Range`, `_Visible`, `_Enabled` or
+  `_Unit` never appears in the form.
+- A public **field** never appears in the form — use a property with `{ get; set; }`.
+- `[Min]`, `[Max]`, `[Pattern]`, `[Description]` and `[ScriptParameter]` were removed on
+  2026-11-10; writing one fails to compile in a current build.
+- `[Range(min, max)]` without a third argument leaves `step` unset — there is no default step in the form.
+- `[Required]` is checked by the desktop form only; a script launched outside the Configurator is not blocked by it. `[Confirm]` is the one the engine enforces at execution time.
+- An unrecognised `[Unit]` string is silently not converted.
+- `[Unit]` overwrites `[Suffix]`.
+- `[Confirm]` is enforced at execution time, not just drawn in the form — a caller cannot skip it
+  by sending no value.
+- `_Visible` conditions are limited to `==`, `!=` and bare boolean names; complex C# expressions
+  are not evaluated.
+- `[Segmented]` needs an `_Options` provider, and `[Range]` draws a slider only when both bounds
+  are present and `max > min`.
 
 ## Going further
 
-The [Gallery lessons](../tutorials/more-automation.md) introduce these attributes one at a time, each with a complete working script. Saved sets of values are covered in [Presets](../authoring/presets.mdx).
+The [Gallery lessons](../tutorials/more-automation.md) introduce these attributes one at a time,
+each with a complete working script. Saved sets of values are covered in
+[Presets](../authoring/presets.mdx).
