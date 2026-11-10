@@ -86,6 +86,8 @@ BarGraph(byLevel);      // also PieGraph(byLevel), LineGraph(byLevel)
 
 Each chart takes a list of objects, and **the property names become the axis labels**. Here `Level` labels the horizontal axis and `Walls` the vertical one; on a pie chart, `Level` names the slices in the legend. A numeric property supplies the values and the first other property supplies the names — so `new { name = …, value = … }` is just the shortest way to write it, not a required shape. When a grouped result offers both `Count` and `Total`, the one named `Total` is preferred for the values.
 
+`BarGraph(data)` is the global helper. The same three chart methods are also extension methods, so when you already have a chain you can simply end it with `.BarGraph()`, `.PieGraph()` or `.LineGraph()`. The report at the end of this lesson uses that shorter form.
+
 For a plot such as *total area per level*, name the two columns to say what they mean. C# property names cannot contain spaces, so use dictionary keys to get `Total Area` exactly:
 
 ```csharp
@@ -142,18 +144,19 @@ GetElements<Room>()
     .Table();
 
 Section("Wall length per level (chart)");
-BarGraph(GetElements<Wall>()
-    .GroupBy(w => w.GetStr("Level"))
-    .Select(g => new { Level = g.Key, TotalLength = Math.Round(g.Sum(w => w.GetNum("Length", "m")), 1) })
-    .ToList());
+GetElements<Wall>()
+    .GroupByParam("Level", "Length", "m")
+    .BarGraph();
 ```
+
+> 💡 **Five outputs, one at a time.** This report emits four tables and one chart, but the desktop app's **Analytics** tab shows only one result at a time and starts on the first — so it can look as though the rest were lost. Use the **navigator at the top right of the Analytics tab**: the left / right chevron buttons (**Previous View** / **Next View**) step through every table and chart, the counter shows where you are (for example `1/5`), and it wraps around at either end. The navigator appears only when the run produced more than one result.
 
 A local function (`void Section(...)`) at the top level is worth learning now — it keeps a long report readable, and it is the same shape a longer automation takes.
 
 ## Try This
 
 1. Change `GroupByParam("Level")` to `GroupByParam("Type")` in the walls section. Same script, different question — that is the whole design.
-2. Chart room areas instead of wall lengths: in the final chart, change `GetElements<Wall>()` to `GetElements<Room>()` and the projection to `new { Level = g.Key, TotalArea = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1) }`. The new property name becomes the vertical-axis label.
+2. Chart room areas instead of wall lengths: in the final chart, change `GetElements<Wall>()` to `GetElements<Room>()` and `GroupByParam("Level", "Length", "m")` to `GroupByParam("Level", "Area", "m2")`. The chart takes its values from the `Total` column of the grouping — total room area per level.
 3. Export the door schedule for pandas: append `.ToNotebook("Door_Analysis")` instead of `.Table()`. You get a Jupyter notebook in VS Code with the data already loaded.
 4. Try `GetElements("Walls").GroupByParam("Fire Ratng")` and read the error. Then fix the spelling — this is the failure mode this platform refuses to give you silently.
 
