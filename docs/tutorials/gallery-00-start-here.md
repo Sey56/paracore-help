@@ -158,7 +158,7 @@ SampleSource/
             HelloWall.cs       ← the file Paracore runs in Revit
 ```
 
-:::info The helper files are for autocomplete, not for running.
+:::info[Helper files are for autocomplete, not for running]
 
 They only give VS Code autocomplete and help for `Doc`, `Println`, `Transact`, the Revit API and ordinary C# namespaces. **Paracore never reads them to execute your script.** The files inside `Scripts\` are the ones that run.
 
@@ -192,7 +192,7 @@ Press **`Ctrl+Shift+R`**, or use **Manage → Command Palette… → `CoreScript
 | Gallery script **with** a `Params` class | **Configurator** in the desktop app | **Run** in the desktop app, or **RUN** at the bottom of the Configurator — **recommended** |
 | Gallery script **with no** `Params` class, or a REPL-style script you wrote in VS Code | none needed | `Ctrl+Shift+R` / **CoreScript: Run in Revit** — or the desktop app's **Run**, either works |
 
-:::warning Why we recommend the desktop app for parameterised scripts
+:::warning[Why we recommend the desktop app for parameterised scripts]
 
 `CoreScript: Run in Revit` does **not** read the values you filled in in the desktop app. It sends an empty parameter list, so a script with a `Params` class executes with the **default values declared in the code**. For the `MyScript` archetype from Part 2, `Greeting` stays `"Welcome to Paracore!"` and `CurrentWallType` stays `null` no matter what you picked in the Configurator:
 
