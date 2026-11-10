@@ -105,6 +105,16 @@ const sidebars: SidebarsConfig = {
         'tutorials/gallery-08-multi-file',
       ],
     },
+    {
+      type: 'category',
+      label: 'Sentinels',
+      link: { type: 'doc', id: 'sentinels/index' },
+      items: [
+        'sentinels/index',
+        'sentinels/first-sentinel',
+        'sentinels/deploying',
+      ],
+    },
   ],
 };
 

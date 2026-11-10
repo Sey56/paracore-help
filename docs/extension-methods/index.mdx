@@ -123,6 +123,8 @@ These are **static methods** from `ScriptApi` that are globally available in eve
 | `ExportImage(path, view?, px?, hideAnnotation?)` | Render a Revit view to an image file |
 | `id.ToElement(doc)` | Convert ElementId/int/long to Element |
 
+`Watchdog` and `WatchdogReport` are the two globals that turn a Gallery script into a **[Sentinel](../sentinels/index.md)** — a check you can deploy to run repeatedly while Revit is idle. Running the script with **Run** executes its callback once in Manual Test mode and arms nothing.
+
 ```csharp
 // Extend timeout for heavy scripts
 SetExecutionTimeout(120);
