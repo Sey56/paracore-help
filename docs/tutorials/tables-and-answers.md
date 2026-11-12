@@ -99,6 +99,29 @@ BarGraph(GetElements<Room>()
     }));
 ```
 
+## Editing a cell: the header is the parameter name
+
+A table is not only for reading. With an **Id** column, **double-click any other cell** to edit its value — the change is written back to that element's parameter in Revit. For a whole batch, use **Export CSV**, change the values in a spreadsheet, and bring the file back with **Upload CSV**. The CSV keeps the table's column names, so leave them as they are.
+
+> ⚠ **The column name is the parameter name the edit is sent to.** If it does not match a real parameter on the element, Revit reports that the parameter does not exist and the write fails. A `Height` column on walls fails for exactly this reason: walls have no `Height` parameter, they have `Unconnected Height`.
+
+C# property names cannot contain spaces, so write the real parameter name with an **underscore wherever the name has a space**:
+
+```csharp
+GetElements<Wall>()
+    .Select(wl => new
+    {
+        wl.Id,
+        Base_Constraint    = wl.GetStr("Base Constraint"),
+        Unconnected_Height = wl.GetStr("Unconnected Height")
+    })
+    .Table();
+```
+
+The table displays those headers as `BASE CONSTRAINT` and `UNCONNECTED HEIGHT`: it turns the underscores back into spaces. The edit and CSV-import paths do the same when they look up the parameter, so `Unconnected_Height` reaches `"Unconnected Height"` and the write succeeds. This works for one space or several — put an underscore in place of every space in the real name.
+
+Name the column after the parameter **exactly**: do not add a unit suffix such as `Area_m2`. A suffix is not part of the parameter name, and the CSV path will look for a parameter that does not exist. Parameters Revit marks read-only (a room's `Area`, for example) cannot be edited either way — the edit is refused with a read-only message, which is the correct answer.
+
 ## The one thing to take away
 
 Notice how much of this lesson you did **not** write: no collector, no `StorageType` switch, no `Dictionary<string, List<Element>>` accumulator, no loop that adds to a counter. Every one of those is what "group by type and total the volume" looks like when you write it by hand — and every one of them is a place to get it subtly wrong.

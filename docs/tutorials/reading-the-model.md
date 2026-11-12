@@ -110,12 +110,16 @@ walls
     {
         Id     = d.Id.Value,
         Type   = d.Name,
-        Length = d.GetNum("Length", "m"),
-        Height = d.GetNum("Unconnected Height", "m"),
-        Area   = d.GetVal("Area", "m2")
+        Length = d.GetNum("Length", "m", 2),
+        Height = d.GetNum("Unconnected Height", "m", 2),
+        Area   = d.GetVal("Area", "m2", 2)
     })
     .Table();
 ```
+
+`GetNum` returns the exact converted number — the third argument (`2`) rounds it just for this table; leave it off when the value will be summed or compared. `GetVal` returns a *display* string, so pass the unit and the decimals you want.
+
+> ⚠ **Do not drop the unit from `GetVal("Area", "m2", 2)`.** Written as `GetVal("Area")` it returns the Properties-palette string, whose precision is set by the project's units — with whole-m² accuracy a 0.477 m² wall prints `0 m²`. See [Parameter & Property Accessors](../extension-methods/parameter-accessors.mdx) for the cause and the fix.
 
 `GetStr` resolves a wall's level for you — walls go through `LevelId`, beams through *Reference Level*, columns through *Base Level*, rooms and doors through their built-in parameter. One name, every category, which is why `WhereParam` works on things that do not literally have a *Level* parameter.
 

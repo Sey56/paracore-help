@@ -81,12 +81,14 @@ var largeRooms = GetElements<Room>()
 
 ### `.OutputUnit(unit, decimals)`
 
-Converts a Revit internal value **from** feet into the target unit. Returns a `double`. Available on `double`, `int`, and `decimal`. Defaults to 2 decimals.
+Converts a Revit internal value **from** feet into the target unit. Returns a `double`. Available on `double`, `int`, and `decimal`. **Exact by default** — `decimals` is `-1`, meaning no rounding; pass a second argument to round. The result is a raw `double`, so it can carry floating-point noise and never keeps trailing zeros. For a formatted string use `FormatUnit` or `FormatValueOnly`.
 
 ```csharp
-wall.GetNum("Length").OutputUnit("mm")      // → 3600.0
-wall.GetNum("Length").OutputUnit("m", 3)    // → 3.600 (3 decimals)
-room.GetNum("Area").OutputUnit("m2")        // → 25.46
+// Measured on the sample model's first wall (5.065 m) and first room (9.885 m²):
+wall.GetNum("Length").OutputUnit("mm")      // → 5064.999999999999   exact, no rounding
+wall.GetNum("Length").OutputUnit("m", 2)    // → 5.07                rounded to 2 dp
+room.GetNum("Area").OutputUnit("m2")        // → 9.885               exact
+room.GetNum("Area").OutputUnit("m2", 2)     // → 9.89                rounded to 2 dp
 ```
 
 ### `.FormatUnit(unit, decimals)`

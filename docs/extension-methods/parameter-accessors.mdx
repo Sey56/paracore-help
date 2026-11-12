@@ -57,9 +57,9 @@ wall.GetNum("Length")    // → 11.811 (feet)
 room.GetNum("Area")      // → 18.4 (sq.ft)
 ```
 
-### `element.GetNum(name, unit, decimals)`
+### `element.GetNum(name, unit)` / `element.GetNum(name, unit, decimals)`
 
-**Unit-Converted Numeric Getter.** Returns the value converted to the specified unit. Supports an optional `decimals` parameter (default: 2).
+**Unit-Converted Numeric Getter.** Returns the value converted to the specified unit **as an exact `double`**. Rounding is off by default (`decimals = -1`); pass a third argument only when you want the value rounded. A rounded number that is later summed is a wrong number, so compute with the exact value and round only for display.
 
 | Unit String | Meaning |
 |---|---|
@@ -68,28 +68,39 @@ room.GetNum("Area")      // → 18.4 (sq.ft)
 | `m3`, `cum`, `ft3`, `cuft` | Volume |
 
 ```csharp
-wall.GetNum("Length", "m")       // → 3.6
-room.GetNum("Area", "m2", 4)     // → 25.4578 (specified decimals)
-floor.GetNum("Volume", "m3")     // → 0.72
+// Measured on the sample model's first wall (5.065 m long):
+wall.GetNum("Length", "m")              // → 5.065                  exact (default)
+wall.GetNum("Length", "m", 2)           // → 5.07                   rounded, because you asked
+wall.GetNum("Unconnected Height", "m")  // → 3.0000000000000004     exact feet→m conversion
 ```
 
 ### `element.GetVal(name)`
 
 **WYSIWYG Getter.** Returns the formatted string exactly as seen in Revit's Properties palette.
 
+:::warning[Why a small area can print `0 m²`]
+
+`GetVal(name)` returns Revit's own display string, so **its precision comes from the project's unit settings, not from Paracore**. A project whose Area accuracy is set to whole m² really does show a 0.477 m² wall as `0 m²` in the Properties palette — and that exact string is what lands in your table. Nothing was rounded by Paracore, and nothing was lost from the model.
+
+**What to do:** give `GetVal` the unit and the number of decimals you want:
+
+```csharp
+wall.GetVal("Area")            // → "0 m²"      palette string — too coarse
+wall.GetVal("Area", "m2", 2)   // → "0.48 m²"   unit + 2 decimals
+wall.GetVal("Area", "m2", 3)   // → "0.477 m²"  3 decimals
+```
+
+For arithmetic, use `GetNum("Area", "m2")`, which returns the exact number. If you want the Properties palette itself to show the decimals, change the project's Area accuracy in Revit (**Manage → Project Units**).
+:::
+
 - Returns values like `"3600.0 mm"`, `"1.25 m³"`, `"Level 1"`.
 - Falls back to `GetStr` if Revit doesn't provide a formatted string.
 - Automatically falls back to Type parameters if an instance parameter is not found.
 - Returns `"-"` if not found.
 
-```csharp
-room.GetVal("Area")   // → "25.46 m²"
-wall.GetVal("Level")  // → "Level 1"
-```
-
 ### `element.GetVal(name, unit, decimals)`
 
-**Unit-Formatted WYSIWYG Getter.** Returns a value string with the specified unit suffix. Supports an optional `decimals` parameter (default: 2).
+**Unit-Formatted WYSIWYG Getter.** Returns a value string with the specified unit suffix. Supports an optional `decimals` parameter (default: 2). Passing the unit takes the value out of the project's display rounding: `GetVal("Area", "m2", 3)` turns a table of `16 m²` / `0 m²` into `15.645 m²` / `0.477 m²`.
 
 ```csharp
 wall.GetVal("Length", "mm")      // → "3600.0 mm"
