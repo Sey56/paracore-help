@@ -46,9 +46,8 @@ Watchdog(() =>
 
     // [Unit("mm")] shows millimetres in the Configurator, but p.MinLength arrives
     // in Revit's internal feet - the same units GetNum("Length") returns with no unit.
-    var shortWalls = GetElements<Wall>()
-        .Where(w => w.GetNum("Length") < p.MinLength)
-        .ToList();
+    List<Wall> shortWalls = [.. GetElements<Wall>()
+        .Where(w => w.GetNum("Length") < p.MinLength)];
 
     string limit = p.MinLength.FormatUnit("mm");
     string action = ExecutionGlobals.Get<string>("__sentinel_action__")?.ToLowerInvariant() ?? "";
@@ -84,7 +83,7 @@ Watchdog(() =>
             shortWalls.Count == 0 ? "All walls meet the minimum length."
                                   : $"{shortWalls.Count} wall(s) below {limit}.",
             shortWalls.Count == 0 ? "success" : "warning",
-            shortWalls.Select(w => w.Id).ToList());
+            shortWalls.Select(w => w.Id));
     }
 });
 

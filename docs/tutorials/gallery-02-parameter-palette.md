@@ -22,11 +22,11 @@ with optional area filtering and boundary information.
 
 Params p = new();
 
-List<Room> rooms;
+IEnumerable<Room> rooms;
 
 if (p.Scope == "All Rooms")
 {
-    rooms = GetElements<Room>().Where(r => r.Area > 0).ToList();
+    rooms = GetElements<Room>().Where(r => r.Area > 0);
 }
 else if (p.SelectedRoom != null)
 {
@@ -40,11 +40,11 @@ else
 
 if (p.FilterByArea)
 {
-    rooms = rooms.Where(r => r.Area < p.MaxArea).ToList();
+    rooms = rooms.Where(r => r.Area < p.MaxArea);
     Println($"Filtered to rooms under {p.MaxArea.OutputUnit("m2"):F1} m²");
 }
 
-Println($"Showing {rooms.Count} room(s).");
+Println($"Showing {rooms.Count()} room(s).");
 
 var report = rooms.Select(r => new
 {
@@ -53,7 +53,7 @@ var report = rooms.Select(r => new
     r.Name,
     Area_m2 = r.Area.OutputUnit("m2").ToString("F2"),
     Level = Doc.GetElement(r.LevelId)?.Name ?? "—"
-}).OrderBy(r => r.Number).ToList();
+}).OrderBy(r => r.Number);
 
 Table(report);
 

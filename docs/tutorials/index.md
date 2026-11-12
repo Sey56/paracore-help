@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Paracore Revit Fundamentals
 
-Eight lessons, in order. Each one does **more work in Revit** than the one before it — not cleverer C#. You will write the same handful of calls all the way through, and they will carry you from echoing a string to auditing doors, building walls and exporting the view as a picture.
+Eight lessons, in order. Each one does **more work in Revit** than the one before it — not cleverer C#. You will write the same handful of calls all the way through, and they will carry you from echoing a string to auditing doors and building walls.
 
 All eight run in the **REPL** — the editor in the **REPL** tab, not a file on disk. Write it, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, look at the model.
 
@@ -43,7 +43,7 @@ So the lessons get harder the way real work gets harder — more elements, bigge
 | 05 | [Build Something](./creating-geometry.md) | create a room outline from four numbers, and undo it cleanly |
 | 06 | [Change Many, Safely](./bulk-updates.md) | edit the model in bulk and know exactly what you touched |
 | 07 | [Types vs Instances](./types-vs-instances.md) | choose the blast radius of every edit |
-| 08 | [Doors, Rooms, and a Picture](./doors-and-rooms.md) | door/room/handing reports, and an image of the view |
+| 08 | [Doors, Rooms, and Handing](./doors-and-rooms.md) | door/room/handing reports, and a chart of the busiest room pairs |
 
 Each lesson reuses the previous one: Lesson 4's report shape is what Lesson 6 edits, Lesson 5's walls are what Lesson 7 audits by type, and Lesson 8's doors are Lesson 2's query with four new calls on the end. Nothing is taught twice.
 

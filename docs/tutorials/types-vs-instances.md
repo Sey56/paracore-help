@@ -141,8 +141,7 @@ var used = GetElements<FamilyInstance>("Doors")
     .ToHashSet();
 
 var unused = GetElements<FamilySymbol>("Doors")
-    .Where(s => !used.Contains(s.Id))
-    .ToList();
+    .Where(s => !used.Contains(s.Id));
 
 Println($"{unused.Count()} door type(s) with no instances:");
 Table(unused);
@@ -174,7 +173,7 @@ GetElements<FamilyInstance>("Doors").GroupByParam("Type").Table();
 
 // Types with no instances — candidates for deletion (or for a template someone forgot)
 var used = doors.Select(d => d.GetTypeId()).ToHashSet();
-var unused = symbols.Where(s => !used.Contains(s.Id)).ToList();
+var unused = symbols.Where(s => !used.Contains(s.Id));
 Println($"{unused.Count()} unused door type(s):");
 Table(unused.Select(s => new
 {
@@ -202,4 +201,4 @@ Table(doors
 
 ---
 
-**Next**: [Tutorial 8: Doors, Rooms, and a Picture →](./doors-and-rooms.md)
+**Next**: [Tutorial 8: Doors, Rooms, and Handing →](./doors-and-rooms.md)

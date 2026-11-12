@@ -2,15 +2,15 @@
 
 A dropdown can be filled automatically from the open model, or from a property you write yourself. To supply your own choices, add a companion property named **`X_Options`** for a parameter **`X`**.
 
-Its type must match the parameter's type.
+It must return a sequence of the parameter's type.
 
 ```csharp
 public class Params
 {
     public WallType MyWallType { get; set; }
 
-    public List<WallType> MyWallType_Options =>
-        GetElements<WallType>().Where(w => w.Kind == WallKind.Basic).ToList();
+    public IEnumerable<WallType> MyWallType_Options =>
+        GetElements<WallType>().Where(w => w.Kind == WallKind.Basic);
 }
 ```
 

@@ -31,9 +31,8 @@ if (p.TargetWalls == null || p.TargetWalls.Count == 0)
 }
 
 // Collect doors hosted by the selected walls
-var doors = GetElements<FamilyInstance>("Doors")
-    .Where(d => d.Host?.Id != null && p.TargetWalls.Any(w => w.Id == d.Host.Id))
-    .ToList();
+List<FamilyInstance> doors = [.. GetElements<FamilyInstance>("Doors")
+    .Where(d => d.Host?.Id != null && p.TargetWalls.Any(w => w.Id == d.Host.Id))];
 
 if (doors.Count == 0)
 {
@@ -43,7 +42,7 @@ if (doors.Count == 0)
 
 if (p.SkipDoorsWithMarks)
 {
-    doors = doors.Where(d => string.IsNullOrWhiteSpace(d.GetStr("Mark"))).ToList();
+    doors = [.. doors.Where(d => string.IsNullOrWhiteSpace(d.GetStr("Mark")))];
     Println($"Skipping doors that already have marks — {doors.Count} left.");
 }
 
@@ -123,8 +122,7 @@ This is different from a null check in the body (`if (p.TargetWalls == null)`). 
 
 ```csharp
 var doors = GetElements<FamilyInstance>("Doors")
-    .Where(d => p.TargetWalls.Any(w => w.Id == d.Host.Id))
-    .ToList();
+    .Where(d => p.TargetWalls.Any(w => w.Id == d.Host.Id));
 ```
 
 A door's `.Host` property is the element it was placed into — usually a wall. This filters the door list to only those hosted by walls you picked.

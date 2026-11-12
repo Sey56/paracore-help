@@ -54,12 +54,11 @@ public class Params
     public Wall? WallInstance { get; set; }
 
     // Manually define the list for the WallInstance dropdown.
-    public List<Wall> WallInstance_Options => 
+    public IEnumerable<Wall> WallInstance_Options =>
         new FilteredElementCollector(Doc)
             .OfClass(typeof(Wall))
             .Cast<Wall>()
-            .Where(w => w.Width > 200.InputUnit("mm"))
-            .ToList();
+            .Where(w => w.Width > 200.InputUnit("mm"));
 }
 ```
 

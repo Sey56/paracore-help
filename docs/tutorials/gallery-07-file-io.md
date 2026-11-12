@@ -47,9 +47,9 @@ for (int i = startRow; i < lines.Length; i++)
 Println($"Parsed {updates.Count} room updates from CSV.");
 
 // 2. Apply to Revit rooms
-var rooms = GetElements<Room>().Where(r => r.Area > 0).ToList();
+var rooms = GetElements<Room>().Where(r => r.Area > 0);
 int matched = 0, notFound = 0;
-var log = new List<object>();
+var log = new List<FinishLogRow>();
 
 Transact("Sync Room Finishes from CSV", () =>
 {
@@ -61,14 +61,14 @@ Transact("Sync Room Finishes from CSV", () =>
         if (room == null)
         {
             notFound++;
-            log.Add(new { Room = kvp.Key, Status = "Not Found", New = kvp.Value });
+            log.Add(new FinishLogRow { Room = kvp.Key, Status = "Not Found", New = kvp.Value });
             continue;
         }
 
         var param = room.LookupParameter("Floor Finish");
         if (param == null || param.IsReadOnly)
         {
-            log.Add(new { Room = room.Name, Status = "Read Only", New = kvp.Value });
+            log.Add(new FinishLogRow { Room = room.Name, Status = "Read Only", New = kvp.Value });
             continue;
         }
 
@@ -76,7 +76,7 @@ Transact("Sync Room Finishes from CSV", () =>
         param.Set(kvp.Value);
         matched++;
 
-        log.Add(new { Room = room.Name, Status = "Updated", Old = old, New = kvp.Value });
+        log.Add(new FinishLogRow { Room = room.Name, Status = "Updated", Old = old, New = kvp.Value });
     }
 });
 
@@ -89,12 +89,7 @@ if (!string.IsNullOrWhiteSpace(p.OutputCsvPath))
     var csv = new List<string> { "Room,Status,OldFinish,NewFinish" };
     foreach (var entry in log)
     {
-        var type = entry.GetType();
-        string room = type.GetProperty("Room")?.GetValue(entry)?.ToString() ?? "";
-        string status = type.GetProperty("Status")?.GetValue(entry)?.ToString() ?? "";
-        string oldVal = type.GetProperty("Old")?.GetValue(entry)?.ToString() ?? "";
-        string newVal = type.GetProperty("New")?.GetValue(entry)?.ToString() ?? "";
-        csv.Add($"\"{room}\",\"{status}\",\"{oldVal}\",\"{newVal}\"");
+        csv.Add($"\"{entry.Room}\",\"{entry.Status}\",\"{entry.Old}\",\"{entry.New}\"");
     }
 
     File.WriteAllLines(p.OutputCsvPath, csv);
@@ -126,6 +121,14 @@ public class Params
     public string BackupFolder { get; set; } = "";
 
     #endregion
+}
+
+public class FinishLogRow
+{
+    public string Room { get; set; } = "";
+    public string Status { get; set; } = "";
+    public string Old { get; set; } = "";
+    public string New { get; set; } = "";
 }
 ```
 

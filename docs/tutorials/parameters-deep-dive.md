@@ -117,13 +117,12 @@ if (wall.GetNum("Length", "m").IsAlmostEqualTo(5.0))    // ✅
 A door schedule with a units bug caught in it — the kind of thing that motivates all of the above:
 
 ```csharp
-var doors = GetElements<FamilyInstance>("Doors").ToList();
+var doors = GetElements<FamilyInstance>("Doors");
 
 // Some door families declare no Width/Height type parameter. GetTypeNum returns 0 for
 // those, which would look like a very narrow door, so keep only doors with a real width.
 var measured = doors
-    .Where(d => d.GetElementType().GetParameters("Width").Any())
-    .ToList();
+    .Where(d => d.GetElementType().GetParameters("Width").Any());
 
 var rows = measured
     .Select(d => new
@@ -136,15 +135,13 @@ var rows = measured
         From   = d.RoomFrom(),                  // computed, not a parameter
         To     = d.RoomTo()
     })
-    .OrderBy(r => r.Mark)          // plain LINQ: rows are our own objects now
-    .ToList();
+    .OrderBy(r => r.Mark);         // plain LINQ: rows are our own objects now
 
 Table(rows);
 
 // A door narrower than 800 mm is usually a mistake, not a design decision
 var tight = measured
-    .Where(d => d.GetTypeNum("Width", "mm").IsLessThan(800))
-    .ToList();
+    .Where(d => d.GetTypeNum("Width", "mm").IsLessThan(800));
 
 Println($"{tight.Count()} door(s) under 800 mm — check these:");
 

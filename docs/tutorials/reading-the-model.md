@@ -17,8 +17,7 @@ Here is what it replaces, so you can recognise it in the wild (and never write i
 var walls = new FilteredElementCollector(Doc)
     .OfCategory(BuiltInCategory.OST_Walls)
     .WhereElementIsNotElementType()
-    .Cast<Wall>()
-    .ToList();
+    .Cast<Wall>();
 ```
 
 The angle brackets carry the *type*, and the type already implies the category — walls are walls. For **system families** (`Wall`, `Floor`, `Room`, `Ceiling`, `Level`) that is all you ever need.

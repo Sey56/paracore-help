@@ -78,8 +78,7 @@ A table is for reading. A **chart** is for seeing a shape — and the shape is u
 // walls per level — the property names become the axis labels
 var byLevel = GetElements<Wall>()
     .GroupBy(w => w.GetStr("Level"))
-    .Select(g => new { Level = g.Key, Walls = g.Count() })
-    .ToList();
+    .Select(g => new { Level = g.Key, Walls = g.Count() });
 
 BarGraph(byLevel);      // also PieGraph(byLevel), LineGraph(byLevel)
 ```
@@ -97,8 +96,7 @@ BarGraph(GetElements<Room>()
     {
         ["Level"]      = g.Key,
         ["Total Area"] = Math.Round(g.Sum(r => r.GetNum("Area", "m2")), 1)
-    })
-    .ToList());
+    }));
 ```
 
 ## The one thing to take away

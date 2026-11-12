@@ -271,8 +271,8 @@ public string Mode { get; set; } = "Preview";
 public List<string> Mode_Options => ["Preview", "Commit", "Audit"];
 
 public WallType CustomWallType { get; set; }
-public List<WallType> CustomWallType_Options =>
-    GetElements<WallType>().Where(w => w.Name.Contains("Generic")).ToList();
+public IEnumerable<WallType> CustomWallType_Options =>
+    GetElements<WallType>().Where(w => w.Name.Contains("Generic"));
 ```
 
 A provider property must not carry an attribute. Without an `_Options` provider, Paracore fills a

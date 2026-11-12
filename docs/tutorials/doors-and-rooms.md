@@ -1,6 +1,6 @@
-# Tutorial 8: Doors, Rooms, and a Picture
+# Tutorial 8: Doors, Rooms, and Handing
 
-The last lesson of the track, and the one that does something no schedule in Revit does cheerfully: **which rooms does each door connect**, and which way does it swing. Then it shows you the result instead of describing it.
+The last lesson of the track, and the one that does something no schedule in Revit does cheerfully: **which rooms does each door connect**, and which way does it swing. Then it puts the answers in a table and a chart instead of describing them.
 
 ## The four questions that are painful in the raw API
 
@@ -50,8 +50,7 @@ A door with no room on one side is the one that opens to the outside:
 ```csharp
 var exterior = GetElements<FamilyInstance>("Doors")
     .StandardDoor()
-    .Where(d => d.RoomTo() == "" || d.RoomFrom() == "")
-    .ToList();
+    .Where(d => d.RoomTo() == "" || d.RoomFrom() == "");
 
 Println($"{exterior.Count()} door(s) open to the outside");
 Table(exterior.Select(d => new { Mark = d.GetStr("Mark"), From = d.RoomFrom(), To = d.RoomTo() }));
@@ -62,7 +61,7 @@ Table(exterior.Select(d => new { Mark = d.GetStr("Mark"), From = d.RoomFrom(), T
 A door audit:
 
 ```csharp
-var doors = GetElements<FamilyInstance>("Doors").StandardDoor().ToList();
+var doors = GetElements<FamilyInstance>("Doors").StandardDoor();
 Println($"{doors.Count()} standard doors");
 
 // 1. the handing / room report
@@ -81,13 +80,12 @@ doors
 // 2. which room pairs are busiest
 var pairs = doors
     .GroupBy(d => $"{d.RoomFrom()} → {d.RoomTo()}")
-    .Select(g => new { RoomPair = g.Key, Doors = g.Count() })
-    .ToList();
+    .Select(g => new { RoomPair = g.Key, Doors = g.Count() });
 
 BarGraph(pairs);            // X = RoomPair, Y = Doors
 
 // 3. the doors that open to the outside
-var exterior = doors.Where(d => d.RoomTo() == "" || d.RoomFrom() == "").ToList();
+var exterior = doors.Where(d => d.RoomTo() == "" || d.RoomFrom() == "");
 Println($"{exterior.Count()} exterior door(s)");
 exterior.Select();          // highlight them in Revit
 ```

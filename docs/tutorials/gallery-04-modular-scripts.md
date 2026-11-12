@@ -28,7 +28,7 @@ reports duplicate elevations, and shows a table of all levels.
 
 Params p = new();
 
-var allLevels = GetElements<Level>().OrderBy(l => l.Elevation).ToList();
+List<Level> allLevels = [.. GetElements<Level>().OrderBy(l => l.Elevation)];
 
 if (allLevels.Count == 0)
 {
@@ -37,12 +37,12 @@ if (allLevels.Count == 0)
 }
 
 var rows = LevelAudit.BuildReport(allLevels, p.MinSpacingMm, p.BaseLevel);
-var issues = rows.Where(r => r.Issue != "OK").ToList();
+var issues = rows.Where(r => r.Issue != "OK");
 
-Println($"Audited {allLevels.Count} levels. {issues.Count} issue(s) found.");
+Println($"Audited {allLevels.Count} levels. {issues.Count()} issue(s) found.");
 Table(rows);
 
-if (issues.Count > 0)
+if (issues.Count() > 0)
 {
     Println("\nIssues:");
     foreach (var issue in issues)
@@ -100,7 +100,7 @@ public static class LevelAudit
     }
 }
 
-public record LevelRow
+public class LevelRow
 {
     public long Id { get; init; }
     public string Name { get; init; } = "";
@@ -149,7 +149,7 @@ The engine does **not** combine every `.cs` file in `Scripts/`. It does this:
 
 1. **Find the entry script** — the one file with top-level statements. Only one is allowed.
 2. **Always include `Params.cs`** — that exact bare filename is merged whether or not anything references it.
-3. **Trace references** — the engine walks the entry script's symbol references. `LevelAudit.BuildReport(...)` references `LevelAudit`, so `LevelAudit.cs` is included. `LevelRow` is referenced from `LevelAudit.cs`, so the record comes along.
+3. **Trace references** — the engine walks the entry script's symbol references. `LevelAudit.BuildReport(...)` references `LevelAudit`, so `LevelAudit.cs` is included. `LevelRow` is referenced from `LevelAudit.cs`, so the class comes along.
 4. **Drop unreferenced files** — if you had a `Utils.cs` that nothing called, it would be silently left out.
 
 > **⚠ A helper that nothing references is invisible.** No error — the code simply is not there. If a class or method is missing at compile time, check whether the file that defines it is actually referenced from the entry script.
@@ -176,7 +176,7 @@ When a script has 15+ parameters, the `Params` class can be 40 lines on its own.
 1. **Add a `bool ShowDuplicatesOnly` toggle** in `Params.cs` and filter the table in the entry script when it is on.
 2. **Break the reference** — rename `BuildReport` to `Build` in `LevelAudit.cs` but not in the entry script. The compile error will look like it cannot find `BuildReport` — that is the symptom of a broken merge.
 3. **Add a second helper file** — `LevelFormatting.cs` with a method that formats the elevation as a string. Reference it from `LevelAudit.cs`.
-4. **Put a `record` at the top level of a helper file** (not nested in a class) and run. The engine misreads it as a second entry script and refuses. Nest it inside a class to fix it.
+4. **Change `LevelRow` from a `class` to a `record`** and run. The engine misreads a top-level record as a second entry script and refuses. Change it back to a `class` to fix it.
 
 ---
 

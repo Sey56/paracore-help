@@ -30,9 +30,8 @@ if (p.TargetWallType == null)
     return;
 }
 
-var walls = GetElements<Wall>()
-    .Where(w => w.WallType.Id == p.TargetWallType.Id)
-    .ToList();
+List<Wall> walls = [.. GetElements<Wall>()
+    .Where(w => w.WallType.Id == p.TargetWallType.Id)];
 
 if (walls.Count == 0)
 {

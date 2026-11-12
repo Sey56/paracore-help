@@ -23,27 +23,27 @@ with optional area filtering and a confirmation gate.
 Params p = new();
 
 // Resolve which rooms to update
-List<Room> rooms;
+IEnumerable<Room> rooms;
 
 if (p.UseCustomScope && p.CustomRooms != null && p.CustomRooms.Count > 0)
 {
     rooms = p.CustomRooms;
-    Println($"Using {rooms.Count} selected room(s).");
+    Println($"Using {rooms.Count()} selected room(s).");
 }
 else
 {
-    rooms = GetElements<Room>().Where(r => r.Area > 0).ToList();
-    Println($"Updating all {rooms.Count} placed room(s).");
+    rooms = GetElements<Room>().Where(r => r.Area > 0);
+    Println($"Updating all {rooms.Count()} placed room(s).");
 }
 
 // Apply area filter if enabled
 if (p.FilterByArea)
 {
-    rooms = rooms.Where(r => r.Area < p.MaxArea).ToList();
-    Println($"After area filter: {rooms.Count} room(s).");
+    rooms = rooms.Where(r => r.Area < p.MaxArea);
+    Println($"After area filter: {rooms.Count()} room(s).");
 }
 
-if (rooms.Count == 0)
+if (rooms.Count() == 0)
 {
     Println("No rooms to update.");
     return;
@@ -68,7 +68,7 @@ Transact("Update Room Finishes", () =>
     }
 });
 
-Println($"Updated {updated} of {rooms.Count} rooms.");
+Println($"Updated {updated} of {rooms.Count()} rooms.");
 if (log.Count > 0) Table(log);
 
 public class Params
@@ -131,8 +131,8 @@ You have seen `_Options` paired with `[Segmented]` for static string lists. It a
 
 ```csharp
 public List<Room> SmallRooms { get; set; }
-public List<Room> SmallRooms_Options =>
-    GetElements<Room>().Where(r => r.Area < 10.0).ToList();
+public IEnumerable<Room> SmallRooms_Options =>
+    GetElements<Room>().Where(r => r.Area < 10.0);
 ```
 
 The engine calls the `_Options` property at runtime (when the user clicks **Compute**) and fills the dropdown with the result. This is how curated lists work — not every room, but only rooms that match a condition.

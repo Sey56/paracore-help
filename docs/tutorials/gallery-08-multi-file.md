@@ -138,10 +138,9 @@ public static class FrameGeometry
         int created = 0;
         foreach (Grid grid in grids)
         {
-            var onGrid = intersections
+            List<XYZ> onGrid = [.. intersections
                 .Where(p => p.g1.Id == grid.Id || p.g2.Id == grid.Id)
-                .Select(p => p.point)
-                .ToList();
+                .Select(p => p.point)];
             if (onGrid.Count < 2) continue;
 
             XYZ gDir = (grid.Curve.GetEndPoint(1) - grid.Curve.GetEndPoint(0)).Normalize();
@@ -202,11 +201,11 @@ public static class JoinManager
         var levels = new[] { baseLevel.Name };
 
         var columns = GetElements<FamilyInstance>("Structural Columns")
-            .Where(c => levels.Contains(c.GetStr("Base Level"))).ToList();
+            .Where(c => levels.Contains(c.GetStr("Base Level")));
         var beams = GetElements<FamilyInstance>("Structural Framing")
-            .Where(b => levels.Contains(b.GetStr("Reference Level"))).ToList();
+            .Where(b => levels.Contains(b.GetStr("Reference Level")));
         var slabs = GetElements("Floors")
-            .Where(s => levels.Contains(s.GetStr("Level"))).ToList();
+            .Where(s => levels.Contains(s.GetStr("Level")));
 
         int joins = 0;
         Transact("Set Join Order", () =>
