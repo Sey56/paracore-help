@@ -1,11 +1,237 @@
+---
+title: "Playlists"
+sidebar_label: "Playlists"
+---
+
 # Playlists
 
-A **playlist** runs several Gallery scripts in the order you choose. It is the third view in the desktop app, next to **REPL** and **Gallery**.
+A **playlist** is a saved, ordered list of Gallery scripts. Press **Run** once and Paracore runs them one after another, top to bottom, each with its own parameter values. It is the third view in the desktop app, next to **REPL** and **Gallery**.
 
-1. Open **Playlists** and click **New Playlist**.
-2. Give it a name and add the Gallery scripts you want, in the order they should run.
-3. Click **Run Playlist**.
+A playlist does **not** merge scripts, generate code, or rewrite anything. Each step stays the same Gallery script you can still open and run on its own. The playlist is just data: a list of script paths, the order, and the input values for each step.
 
-Each script keeps its own parameter form and its own preset, so a playlist is just the order and the grouping — it does not merge or rewrite any script.
+> **The one thing to get right first:** a playlist can only contain scripts from the **active script source** — the source whose scripts are currently showing in the **Gallery**. When you add a step, the **Select Script** dialog lists the Gallery's current scripts and nothing else. Get the source right before you build a playlist. See [Before you start](#before-you-start).
 
-A playlist is useful for a repeated sequence, such as "check the model → export a report → apply the fix". Start with the [Gallery lessons](../tutorials/more-automation.md) if you do not have scripts to put in one yet.
+---
+
+## Before you start
+
+Four things must be true:
+
+1. **Revit 2025, 2026 or 2027 is open** with a project, and the **Paracore Server** is switched on in the Revit ribbon.
+2. The desktop app says **Connected** in the TopBar.
+3. A **local** script source is active. In the **Sidebar** (☰, top-left), check the dropdown under **Local Sources**. A published/team source will not do — **New Playlist** is disabled for it, and no playlists are loaded.
+4. The **Gallery** tab shows the scripts you want to sequence. If it is empty, switch to the right source first. [Script sources and folder layout](../fundamentals/01-script-sources-and-structure.mdx) explains how sources are loaded and switched.
+
+Playlists live **inside the active script source folder** as `*.playlist.json` files. Switching source switches which playlists you see, and which scripts their steps can point at.
+
+---
+
+## The two screens
+
+| Screen | What it is | How you get there |
+|---|---|---|
+| **Playlists grid** | All playlists in the active source, as cards | Click **Playlists** in the TopBar (or <kbd>Ctrl</kbd>/<kbd>Cmd</kbd>+<kbd>3</kbd>) |
+| **Playlist editor** | The timeline of steps for one playlist | Single-click a card, then click **Steps** |
+
+The **Output panel** on the right is shared by all three tabs. It is not part of the playlist — it just receives the output of every step.
+
+### The grid
+
+The header has a title, a **Refresh Playlists** button (circular arrow), and **New Playlist**. Below it is a **Search playlists...** box. Cards are grouped under **Favorites** and **All Playlists** (which becomes **Other Playlists** once you have a favourite); a card shows the name, its description (or "No description provided."), and a step count such as `3 steps`. The star on the card marks a favourite.
+
+**A single click highlights a card — it does not open it.** Highlighting reveals a small toolbar with three controls:
+
+| Control | Tooltip | What it does |
+|---|---|---|
+| **Steps** | Configure Steps | Opens the playlist editor — this is how you edit and run a playlist |
+| **Run** | Run Playlist | Shows a "Running playlist: …" notification |
+| **Trash icon** | Delete Playlist | Deletes the playlist after a confirmation dialog |
+
+:::warning[Use the Run button inside the editor]
+
+The **Run** button in the grid toolbar currently only announces the playlist; it does not execute anything. **To actually run a playlist, open it with Steps and use the Run button in the editor header.** Everything below assumes that button.
+
+:::
+
+---
+
+## Build a playlist, step by step
+
+### Step 1 — Create it
+
+Click **New Playlist**. In the **Create New Playlist** dialog, fill in **Playlist Name** (required) and **Description (Optional)**, then click **Create**. Paracore writes a `<name>.playlist.json` file into the active source folder and adds a card to the grid.
+
+### Step 2 — Open the editor
+
+Single-click the new card to highlight it, then click **Steps**. The editor replaces the grid.
+
+The editor header shows a back arrow (**Back to Playlists**), the playlist name with a pencil (**Edit Name & Description**), a `0 STEPS` counter, and two buttons: **Run** and **Save** (which reads **Saved** when there is nothing to save). Below it, **Execution Steps** and **+ Add Script**.
+
+### Step 3 — Add scripts
+
+Click **+ Add Script**. The **Select Script** dialog opens with a **Search scripts...** box. Each row shows the script's display name, description, and document type badge.
+
+**This list is the Gallery's current script list.** It is not a file browser and it does not search your disk. Only scripts loaded from the active source appear; scripts from other sources are absent. Click a row to add it as the next step, or **Cancel** to close the dialog.
+
+After each add, the editor opens that step's **configuration view** automatically. You can add the same script more than once — there is no duplicate check, and the picker does not hide scripts already in the list.
+
+### Step 4 — Configure each step's inputs
+
+The step view shows a **Step N** badge, the script name, a **Back to Steps** arrow, and a **Script Info** button. Under it is the script's parameter form — the same controls as the Gallery's Configurator, including compute buttons and pick-object buttons.
+
+Each step stores **its own** parameter values. Changing a value here does not change the Gallery's saved values, and does not affect another step that uses the same script. If the script has no `Params` class, the view says "This script does not have any configurable parameters."
+
+Click the back arrow (**Back to Steps**) to return to the timeline. Clicking a step bubble or card in the timeline re-opens its configuration.
+
+:::info[Open a step at least once before running]
+
+A step's parameter form is loaded on demand. If you add a script and run the playlist without ever opening that step, the script may run with an empty parameter list instead of the values you expected. Click the step once, confirm the form (or the "no configurable parameters" message) appears, then go back.
+
+:::
+
+### Step 5 — Put the steps in order
+
+In the timeline, each step has a numbered bubble, the script filename, and three small buttons that appear when the step is selected or hovered:
+
+- **↑ / ↓** — move the step one place up or down. The first step's up arrow and the last step's down arrow are disabled.
+- **Trash icon** — remove the step.
+
+Reordering is done with these arrows; there is **no drag and drop**.
+
+### Step 6 — Save
+
+Click **Save** in the editor header. **Saved** means the file on disk is current; **Save** means you have unsaved changes. Editing the name and description saves immediately. **Run** saves first automatically if there are unsaved changes.
+
+### Step 7 — Run
+
+Click **Run** in the editor header. The button changes to **Running**, and **Run**, **Save**, **+ Add Script**, the arrows and the trash buttons are disabled until the sequence finishes.
+
+Here is exactly what happens:
+
+1. Steps are executed **strictly in order, one at a time**. Each step is a separate script run — the same `/run-script` call the Gallery uses, with its own compile and its own parameter values. Paracore waits for a step to finish before starting the next.
+2. The step bubble turns into a spinner while running, then a **green ✓** on success or a **red ✗** on failure. The current step is highlighted.
+3. **On the first failure the sequence stops.** Every later step stays numbered and never runs. Steps that already succeeded stay applied — a playlist has no transaction spanning the whole sequence and no rollback of earlier steps.
+4. Results for the steps that ran are saved into the playlist file and are used to restore the green/red bubbles when you reopen the editor later.
+
+There is no cancel button, and leaving the tab does not stop a sequence already in flight.
+
+---
+
+## Where the output goes
+
+The **Output panel** on the right is shared by REPL, Gallery and Playlists. On its **History** tab, every step contributes entries in the same flat transcript:
+
+```text
+> Wall Audit
+Walls without a Fire Rating: 4
+> Room Area Report
+Level       Area (m2)
+Level 1     184.30
+> Door Schedule Export
+Wrote 68 rows to door-schedule.csv
+```
+
+Each step is introduced by a `> Script Name` marker, followed by its `Println` output and a duration marker. Errors appear as red lines. **History** has **Clear** and **Copy** buttons.
+
+The **Analytics** tab shows the structured tables and charts of the **last step only** — during a playlist run each step overwrites the shared result, so `.Table()`, `.BarGraph()` and friends from earlier steps are visible in **History** but not retained as separate analytics views. Per-step results are stored in the playlist file, but the current UI does not render them as separate panels.
+
+---
+
+## What is saved on disk
+
+A playlist is a plain JSON file in the active script source folder. The filename is derived from the playlist name, with spaces and punctuation turned into underscores:
+
+```text
+SampleSource/
+    .paracore
+    Morning_Model_Check.playlist.json    ← the playlist
+    WallAudit/
+        Scripts/
+            WallAudit.cs
+    RoomAreaReport/
+        Scripts/
+            RoomAreaReport.cs
+```
+
+The file holds the name, description, favourite flag, an ordered `items` array of `{ scriptPath, parameters }`, and the results of the last run. Each `scriptPath` is the **absolute path of the script's project folder** (the same path the Gallery uses for its card), not the `.cs` file. Because the playlist is a file in the source folder, it can be copied or committed to version control, and nothing needs recompiling — but those absolute paths are machine-specific, so a colleague loading your copy will need to re-point its steps.
+
+:::caution[Two consequences of the filename rule]
+
+The filename is regenerated from the **name** on every save. **Renaming** a playlist writes a new file and leaves the old one behind, so you will see both in the grid. Two playlists with the same name overwrite the same file. Keep names unique and avoid renaming an established playlist.
+
+:::
+
+Also saved: `lastExecutionResults`, keyed by **step number**. Adding, removing or reordering steps therefore makes previously recorded results line up with the wrong steps — the status bubbles are a snapshot of the last run, not a permanent history.
+
+---
+
+## Playlist or one big script?
+
+This is the obvious question: if a playlist is just "run these scripts one after another", why not paste them into a single script and run that once?
+
+**For a pipeline that passes data between stages, you should.** One script shares one execution context: a value computed in stage 1 is a variable in stage 2, you can branch, loop, combine everything into one table, and write one `Params` form. A playlist cannot do any of that — each step is an independent run with no shared variables and no way to feed one step's output into the next step's parameters. It also compiles once instead of N times.
+
+Where the playlist wins is not execution power. It is **composition without rewriting code**:
+
+| | Playlist | One merged script |
+|---|---|---|
+| **Building it** | Click scripts into a list; a JSON file | Edit C# in VS Code, recompile, re-test |
+| **Merging three `Params` classes** | Not needed — each step keeps its own | The engine finds the `Params` class **by name**: three become one class, with renamed properties where names collide |
+| **Metadata headers, `using` directives, helper classes** | Untouched | Must be consolidated; top-level statements must come before type declarations |
+| **Same tool with three different inputs** | Add it three times, configure each step | One `Params` class → `Level1`/`Level2`/`Level3` properties, or a loop you write yourself |
+| **Change order or drop a step** | Two clicks, no code | Edit the code |
+| **Individual tools stay reusable** | Yes — each script still runs on its own | No — the merged tool is a one-off monolith |
+| **Failure behaviour** | Stops at the first failure; earlier steps stay applied | Whatever you coded: guard clauses, `Transact(...)`, `Batch(...)`, `Checkpoints` |
+| **Share it** | Copy a `.playlist.json` | Copy a code project |
+| **Pass values between stages / branch / one combined report** | Impossible | Natural |
+
+In short: **a playlist is a saved sequence of independent tools, not a small programming language.** It earns its keep when the steps do not need each other's data and you value keeping them as separate, reusable, individually testable scripts.
+
+:::warning[The trade-off to take seriously]
+
+Because there is no transaction across the sequence, a failed playlist can leave the model **partially updated**. Steps 1 and 2 are committed; step 3 never ran. Prefer playlists made of **read-only checks** or **idempotent writes** (setting a fixed parameter value is idempotent; creating geometry is not). For a staged build that must be all-or-nothing, or that creates elements, one script with explicit `Batch` / `Checkpoints` is the better tool.
+
+:::
+
+---
+
+## When a playlist is the right tool
+
+- **A repeated audit or handover check.** Three or four independent read-only reports — missing fire ratings, unplaced rooms, door/room mismatches, unused views — run as one morning routine. Each report stands on its own, and the whole routine is one click.
+- **One tool applied level by level.** Add `TagRoomsOnLevel` three times and give each step a different `Level`. A single `Params` form cannot express that without rewriting the script; a playlist can, and you can drop a level by deleting one step.
+- **A standard office routine.** Keep the `.playlist.json` in the shared script source so everyone runs the same checks in the same order. A new team member can run it without writing C#.
+- **A per-project subset.** Keep a full checklist and delete the steps a particular project does not need — no code forks, no per-project copies of the same script.
+- **Checks that must still report even when a later one fails.** Because earlier steps are already committed to History, a broken export at step 3 does not erase the two reports that came before it.
+
+Use **one script** instead when stages share computed values, need a condition or a loop, must be atomic, or should produce a single consolidated table.
+
+---
+
+## Limitations and gotchas
+
+- **Only local script sources.** With a published/team source active, playlists do not load and **New Playlist** is disabled.
+- **Switching source breaks the link.** Playlist steps store absolute script paths. Change the active source and the Gallery's script list changes, so existing steps may no longer resolve. The configuration view then says "Script not found" / "Script connection lost", and a run marks that step failed and stops. The playlist files themselves are also scanned from the current source folder, so a playlist authored under source A is not listed while source B is active.
+- **The grid's Run button is not wired up.** Run from the editor header (see the warning above).
+- **No drag and drop** — reorder with the up/down arrows.
+- **Duplicates are allowed**, intentionally: they are how you run one tool with several parameter sets.
+- **No logic, no chaining.** No conditions, loops, step output feeding the next step, or shared variables. No cancellation and no playlist-wide transaction.
+- **Empty playlists run silently.** Run on a playlist with no steps does nothing and simply re-saves the file.
+- **Missing script behaves differently from a failed script.** If a step's script cannot be found at all, the run stops immediately and the results of that run are not saved. An ordinary script failure stops the sequence but does save the partial results.
+- **Analytics shows only the last step's tables and charts.**
+- **Renaming leaves the old file behind**, and recorded results are keyed by step number, so they go stale after a reorder.
+
+---
+
+## Where to learn
+
+Three hands-on lessons build on the [Gallery tutorials](../tutorials/more-automation.md):
+
+| # | Lesson | What you can do afterwards |
+|---|---|---|
+| P1 | [Your First Playlist](../tutorials/playlist-01-first-playlist.md) | build, save and run a three-step model check, and read its output |
+| P2 | [One Tool, Three Levels](../tutorials/playlist-02-one-tool-many-levels.md) | run the same script several times with different saved inputs per step |
+| P3 | [Staged Writes and Stopping on Failure](../tutorials/playlist-03-staged-writes.md) | build a safe write sequence, and recover from a failing step |
+
+All five scripts used in the lessons are in **[`PlaylistSource`](https://github.com/Sey56/Paracore-Examples/tree/main/PlaylistSource)** in the [Paracore-Examples](https://github.com/Sey56/Paracore-Examples) repository. Load it as your local source (**Sidebar → Local Sources → Load or Initialize Source**) and the scripts appear in the Gallery, ready to sequence. Playlists themselves are saved into that same folder by the app — they hold absolute paths, so they stay on your machine.
+
+[Playlist Tutorials index](../tutorials/playlists.md) · [Script Sources and the Gallery](../fundamentals/01-script-sources-and-structure.mdx) · [Parameters and the Configurator](../scripting-reference/parameters.mdx)

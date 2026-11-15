@@ -29,4 +29,8 @@ Each lesson builds on the last. The finished script for every lesson is in the [
 
 A **Sentinel** is a Gallery script that calls `Watchdog(...)`. It has the same `Params` form and still runs once with **Run**, but you can also deploy it from **Settings → Sentinels** so the check is repeated while you work. Start with **[Sentinels](../sentinels/index.md)**, then [write your first one](../sentinels/first-sentinel.md) and [deploy it](../sentinels/deploying.md).
 
+## Next: Playlists
+
+Once you have a few Gallery tools, a **[Playlist](./playlists.md)** lines them up and runs them in order — a whole routine, one button. Start with **[Your First Playlist](./playlist-01-first-playlist.md)**, or see the [Playlists reference](../authoring/playlists.mdx).
+
 For the folder layout and button names without the lesson steps, see [Script Sources and the Gallery](../fundamentals/01-script-sources-and-structure.mdx).

@@ -107,6 +107,17 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Playlists',
+      link: { type: 'doc', id: 'tutorials/playlists' },
+      items: [
+        'tutorials/playlists',
+        'tutorials/playlist-01-first-playlist',
+        'tutorials/playlist-02-one-tool-many-levels',
+        'tutorials/playlist-03-staged-writes',
+      ],
+    },
+    {
+      type: 'category',
       label: 'Sentinels',
       link: { type: 'doc', id: 'sentinels/index' },
       items: [
