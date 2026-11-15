@@ -2,6 +2,19 @@
 
 A short, plain-language history. Technical details for each version are on the [GitHub release page](https://github.com/Sey56/Paracore/releases).
 
+## 4.8.4 — November 2026
+
+**More accurate answers, and a configurator that is easier to use.**
+
+- Asking for one category now returns only that category — no tags, heads, mullions or neighbouring categories mixed into the result.
+- If a parameter name belongs to a different category, Paracore now says so instead of quietly giving you `0`.
+- Numbers keep their real value unless you ask Paracore to round them.
+- The desktop app works fully offline. Slider numbers can be selected and replaced in one go, the step arrows are back and snap to the step, preset buttons show their tooltips again, and the presets dropdown uses a normal down-arrow.
+- VS Code shows each compile error once instead of twice.
+- **Paracore-Gen 2.1.3** is a separate product for the AI assistant / MCP server. It has its own section on the release page, where its dialog, advisory and safety improvements are listed — they are not add-in features.
+
+All four installers are on the [v4.8.4 release page](https://github.com/Sey56/Paracore/releases/tag/v4.8.4).
+
 ## 4.8.3 — November 2026
 
 **Revit 2027, and everything in one place.**
