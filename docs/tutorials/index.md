@@ -57,6 +57,7 @@ Every code block is complete and runnable — paste it and press <kbd>Ctrl</kbd>
 
 ## After the lessons
 
+- **[Export to Dynamo](./dynamo-export.md)** — turn a Gallery script into a Dynamo Method node or a standalone `.dyn` graph (4.9.0+).
 - **[Extension Methods](../extension-methods/index.mdx)** — the full API: every method, every overload, every trap.
 - **[Where to Find Things](../fundamentals/index.md)** — a map of every topic in the help.
 - **[Gallery Scripts](./more-automation.md)** — eight hands-on lessons that take you from your first Gallery tool to a multi-file structural frame generator. You will learn the `Params` class, the Configurator form, script sources, and every parameter attribute. Start with **[Before You Start: Script Sources and VS Code](./gallery-00-start-here.md)** — Gallery scripts are files on disk, so you need a script source and VS Code before the first lesson.

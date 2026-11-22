@@ -57,7 +57,7 @@ In the gallery, select a script and click **Export Dynamo**. If the logic you ex
 - a **Method** node that appears in Dynamo's library, with inputs you wire yourself, or
 - a **Graph** that opens ready-made with inputs connected to the script's logic.
 
-What you export runs in Dynamo without Paracore installed. If a script cannot be exported, the message names the exact part that is the problem. Short, version-marked sample scripts for both kinds are in `Paracore-Examples/V4_9_Dynamo` — load that folder as the script source, not the repository root.
+What you export runs in Dynamo without Paracore installed. If a script cannot be exported, the message names the exact part that is the problem. Short, version-marked sample scripts for both kinds are in `Paracore-Examples/V4_9_Dynamo` — load that folder as the script source, not the repository root. Walk through both in [Export to Dynamo](./tutorials/dynamo-export.md).
 
 ### Downloads
 
