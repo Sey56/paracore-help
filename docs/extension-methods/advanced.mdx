@@ -41,6 +41,7 @@ GetElements<FamilyInstance>("Doors")
     .StandardDoor()
     .OrderByParam("Mark")
     .Select(d => new {
+        d.Id,
         Mark    = d.GetStr("Mark"),
         Level   = d.GetStr("Level"),
         Width   = d.GetTypeVal("Width"),
@@ -53,11 +54,20 @@ GetElements<FamilyInstance>("Doors")
     .Table()
 ```
 
+`From` and `To` here are Paracore's **swing-based** labels: the non-swing side and the swing side. They are not access directions — see [Door & Window Orientation](./door-window.mdx#room-access-swing-based-naming) for the swing-arc rule.
+
 ### Room Area Report by Level
 
 ```csharp
 GetElements("Rooms")
-    .GroupByParam("Level", "Area", "m2")
+    .GroupBy(r => r.GetStr("Level"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count(),
+        Total = g.Sum(r => r.GetNum("Area", "m2"))
+    })
     .Table()
 ```
 
@@ -78,6 +88,7 @@ GetElements<Wall>()
     .Where(w => w.GetNum("Width", "mm") >= 300)
     .OrderByParamDesc("Width")
     .Select(w => new {
+        w.Id,
         Name   = w.Name,
         Level  = w.GetStr("Base Constraint"),
         Width  = w.GetVal("Width"),

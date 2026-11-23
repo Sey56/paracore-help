@@ -1,5 +1,7 @@
 # Tutorial 8: Doors, Rooms, and Handing
 
+**What you'll have at the end:** a table of which rooms each door connects and how it swings, a chart of the busiest room pairs, and the exterior doors highlighted in Revit.
+
 The last lesson of the track, and the one that does something no schedule in Revit does cheerfully: **which rooms does each door connect**, and which way does it swing. Then it puts the answers in a table and a chart instead of describing them.
 
 ## The four questions that are painful in the raw API
@@ -7,15 +9,17 @@ The last lesson of the track, and the one that does something no schedule in Rev
 Ask a door where it goes:
 
 ```csharp
-door.RoomFrom()          // "LIVING ROOM"   — the room on its "from" side
-door.RoomTo()            // "CORRIDOR"      — the room it opens into
+door.RoomFrom()          // the room on the other side of the swing arc
+door.RoomTo()            // the room where the swing arc is
 door.Handing()           // "LH" or "RH"
 door.HingeSide()         // "Left" or "Right"
 door.IsHandFlipped()     // true / false
 door.IsFacingFlipped()
 ```
 
-Underneath, each of those is geometry — the door's transform, its host wall's direction, a room-boundary lookup, and a handedness rule that has to survive a flipped family. Written by hand it is the longest forty lines in this whole track, and it is wrong the first time for everybody. Here it is four calls, and the answers are **stable regardless of flips** — which is the part people underestimate: a hand-flipped door does not report the opposite handing, it reports the same handing, correctly.
+Underneath, each of those is geometry — the door's transform, its host wall's direction, a room-boundary lookup, and a handedness rule that has to survive a flipped family. Written by hand it is the longest forty lines in this whole track, and it is wrong the first time for everybody. Here it is four calls, and the answers are **stable regardless of flips**.
+
+> **Paracore's rule:** `RoomTo()` is the room where the door's swing arc is. `RoomFrom()` is the other room. These are swing-arc based names — not a judgment about which side a person enters from.
 
 The other thing worth knowing:
 
@@ -24,7 +28,7 @@ GetElements<FamilyInstance>("Doors").StandardDoor()   // excludes curtain-wall g
 door.IsStandardDoor()
 ```
 
-On a real model that is often 33 of 40 "doors" — the other seven are glazing panels pretending to be doors. Every door report you write should start with `.StandardDoor()`.
+On a real model, a surprising share of "doors" are glazing panels pretending to be doors. Every door report you write should start with `.StandardDoor()`.
 
 ## Doors *and* rooms together
 
@@ -35,6 +39,7 @@ GetElements<FamilyInstance>("Doors")
     .StandardDoor()
     .Select(d => new
     {
+        d.Id,
         Mark    = d.GetStr("Mark"),
         From    = d.RoomFrom(),
         To      = d.RoomTo(),
@@ -45,15 +50,15 @@ GetElements<FamilyInstance>("Doors")
     .Table();
 ```
 
-A door with no room on one side is the one that opens to the outside:
+`"External"` means a probe landed outside a room; `"-"` means the swing could not be determined. Those are the doors to look at when you want doors that open to the outside:
 
 ```csharp
 var exterior = GetElements<FamilyInstance>("Doors")
     .StandardDoor()
-    .Where(d => d.RoomTo() == "" || d.RoomFrom() == "");
+    .Where(d => d.RoomTo() is "External" or "-" || d.RoomFrom() is "External" or "-");
 
 Println($"{exterior.Count()} door(s) open to the outside");
-Table(exterior.Select(d => new { Mark = d.GetStr("Mark"), From = d.RoomFrom(), To = d.RoomTo() }));
+Table(exterior.Select(d => new { d.Id, Mark = d.GetStr("Mark"), From = d.RoomFrom(), To = d.RoomTo() }));
 ```
 
 ## The script
@@ -68,6 +73,7 @@ Println($"{doors.Count()} standard doors");
 doors
     .Select(d => new
     {
+        d.Id,
         Mark    = d.GetStr("Mark"),
         From    = d.RoomFrom(),
         To      = d.RoomTo(),
@@ -85,7 +91,7 @@ var pairs = doors
 BarGraph(pairs);            // X = RoomPair, Y = Doors
 
 // 3. the doors that open to the outside
-var exterior = doors.Where(d => d.RoomTo() == "" || d.RoomFrom() == "");
+var exterior = doors.Where(d => d.RoomTo() is "External" or "-" || d.RoomFrom() is "External" or "-");
 Println($"{exterior.Count()} exterior door(s)");
 exterior.Select();          // highlight them in Revit
 ```
@@ -96,7 +102,7 @@ Run it on a plan view to see the table, the bar graph, and the highlighted exter
 
 1. Select the doors whose handing disagrees with their name: `.Where(d => d.GetStr("Mark").EndsWith("L") && d.Handing() == "RH").Select()`.
 2. Chart the doors per level: `GetElements<FamilyInstance>("Doors").GroupByParam("Level").BarGraph()`. `GroupByParam` projects `Group` and `Count`, so those are the names the axes pick up on their own. Add a sum parameter and `Total` appears too.
-3. Highlight the exterior doors: `GetElements<FamilyInstance>("Doors").Where(d => d.RoomTo() == "" || d.RoomFrom() == "").Select()`.
+3. Highlight the exterior doors: `GetElements<FamilyInstance>("Doors").Where(d => d.RoomTo() is "External" or "-" || d.RoomFrom() is "External" or "-").Select()`.
 4. Take the wall-outline from [Tutorial 5](./creating-geometry.md) and add doors to it. A door is a `FamilyInstance`, so placing one is `Doc.Create.NewFamilyInstance(...)` — the raw Revit API, the same kind of call as the `Wall.Create(...)` in that lesson. **This does not need the Gallery.** The REPL and Gallery Scripts run the same engine and the same C#, so you can create doors right here in the playground; the Gallery is simply where you turn that working code into a reusable tool with a parameter form (the `Params` class) and a saved file structure — not because the raw API is unavailable in the REPL. Door-placement lessons: tutorials in progress.
 
 ---

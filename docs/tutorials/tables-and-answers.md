@@ -1,30 +1,53 @@
 # Tutorial 4: Answers, Not Code
 
+**What you'll have at the end:** a five-output report — walls per level, concrete by level, door counts, room areas and a bar chart — plus the ability to edit a value in the table and watch Revit change.
+
 Lesson 2 read values. This one answers questions — *how much concrete, which level, where is it* — and the answer arrives as a table or a chart, not as a number in a log.
 
 There is no new C# in this lesson. That is the point: the questions get harder, the code does not.
 
+> ⚠ **Room tables in this lesson project their columns on purpose.** Until 4.9.1 is released, bare `.Table()` on an element collection expects `Family` and `Type` parameters; Rooms declare neither, so `GetElements<Room>().Table()` raises `there is no "Family" parameter in Category Rooms`. Use `.Select(r => new { … }).Table()` for Rooms and similar instance-only categories — as every room table below does.
+
+The sample tables below show one project's numbers. Your groups and totals will differ; the column shapes and the calls are what to copy. Every grouped table carries the Id of one element from that group, so you can single-click it and land inside the group.
+
 ## Count, sort, total
 
 ```csharp
-GetElements("Structural Framing").GroupByParam("Type").Table()
+GetElements("Structural Framing")
+    .GroupBy(e => e.GetStr("Type"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count()
+    })
+    .Table()
 ```
 
 ```
-Group                  | Count
-Grade Beam             | 81
-IntermediateBeams      | 145
+Id                    | Group                 | Count
+<id from one element> | <first type in model> | <count in model>
+<id from one element> | <next type in model>  | <count in model>
 ```
 
-Three words of English, one table. Add a parameter and a unit and the same call totals it:
+The Id is one element from the group; single-click it to land inside that group. Add a parameter and a unit and the same shape totals it:
 
 ```csharp
-GetElements("Structural Columns").GroupByParam("Type", "Volume", "m3").Table()
+GetElements("Structural Columns")
+    .GroupBy(e => e.GetStr("Type"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count(),
+        Total = g.Sum(e => e.GetNum("Volume", "m3"))
+    })
+    .Table()
 ```
 
 ```
-Group              | Count | Total (m3)
-Basement Column    | 21    | 3.250
+Id                    | Group           | Count | Total (m3)
+<id from one element> | <type in model> | <count in model> | <total in m3>
 ```
 
 When you need **one** number rather than a breakdown:
@@ -42,7 +65,7 @@ GetElements<FamilyInstance>("Doors").OrderByParamDesc("Width").Table()
 
 Numeric parameters sort numerically, text sorts as text, and you do not write a comparison function to say so.
 
-> ⚠ **One trap, and it is a real one.** A **grouped** sum rounds each group to 3 decimals; `SumParam` does not round at all. On a real model the groups added to 95.241 m² against a `SumParam` total of 95.2417 m². Both are correct, they just answer slightly different questions. When a figure goes into a BOQ, carry the `SumParam` number — and if you present group totals as a breakdown of it, expect the last digit to disagree by a hair.
+> ⚠ **One trap, and it is a real one.** A **grouped** sum rounds each group to 3 decimals; `SumParam` does not round at all. The rounded group totals may not add up to the exact `SumParam` figure. Both are correct, they just answer slightly different questions. When a figure goes into a BOQ, carry the `SumParam` number — and if you present group totals as a breakdown of it, expect the last digit to disagree by a hair.
 
 ## Ask a real question
 
@@ -60,8 +83,17 @@ var concrete = GetElements("Walls")
 var total = concrete.SumParam("Volume", "m3");
 Println($"Total concrete: {total.FormatUnit("m3")}");
 
-// 3. the same question, per level
-concrete.GroupByParam("Level", "Volume", "m3").Table();
+// 3. the same question, per level — with a representative Id in every row
+concrete
+    .GroupBy(e => e.GetStr("Level"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count(),
+        Total = g.Sum(e => e.GetNum("Volume", "m3"))
+    })
+    .Table();
 ```
 
 > ⚠ **Name the categories. Do not start from `GetElements<Element>()`.** That spelling collects *every* element in the document — hundreds of thousands on a real project — and only then lets a filter throw them away, because `WhereMaterial` filters the list it is **handed**; it has no idea what a category is. Naming the four categories lets Revit's own collector do the narrowing, and keeps you on elements that actually carry the parameter you are about to sum.
@@ -101,7 +133,14 @@ BarGraph(GetElements<Room>()
 
 ## Editing a cell: the header is the parameter name
 
-A table is not only for reading. With an **Id** column, **double-click any other cell** to edit its value — the change is written back to that element's parameter in Revit. For a whole batch, use **Export CSV**, change the values in a spreadsheet, and bring the file back with **Upload CSV**. The CSV keeps the table's column names, so leave them as they are.
+A table is not only for reading. The **Id** column is the element-selection control: single-click an Id cell and that element is selected in Revit and zoomed into view. That is how you check a row against the model before you trust it — and that is why every table of elements in these lessons carries an Id.
+
+With the Id column in place, you can also write back to the model from the table itself, in two ways:
+
+- **Cell edit:** double-click one cell, type the new value, press <kbd>Enter</kbd>. That single element's parameter is updated in Revit. If Revit marks the parameter read-only, the write is refused.
+- **Mass edit:** click **Export CSV**, change many cells in a spreadsheet, **leave the Id column untouched**, save, then click **Upload CSV**. Every changed value under a header is written back to the matching elements — one round trip instead of one edit at a time.
+
+The CSV keeps the table's column names, so leave them as they are.
 
 > ⚠ **The column name is the parameter name the edit is sent to.** If it does not match a real parameter on the element, Revit reports that the parameter does not exist and the write fails. A `Height` column on walls fails for exactly this reason: walls have no `Height` parameter, they have `Unconnected Height`.
 
@@ -136,7 +175,10 @@ Everything above, as one runnable report:
 void Section(string title) => Println($"\n== {title} ==");
 
 Section("Walls per level");
-GetElements<Wall>().GroupByParam("Level").Table();
+GetElements<Wall>()
+    .GroupBy(w => w.GetStr("Level"))
+    .Select(g => new { Id = g.First().Id.Value, Group = g.Key, Count = g.Count() })
+    .Table();
 
 Section("Concrete by level");
 GetElements("Walls")
@@ -144,12 +186,20 @@ GetElements("Walls")
     .Concat(GetElements("Structural Columns"))
     .Concat(GetElements("Structural Framing"))
     .WhereMaterial("Concrete")
-    .GroupByParam("Level", "Volume", "m3")
+    .GroupBy(e => e.GetStr("Level"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count(),
+        Total = g.Sum(e => e.GetNum("Volume", "m3"))
+    })
     .Table();
 
 Section("Door counts by type");
 GetElements<FamilyInstance>("Doors")
-    .GroupByParam("Type")
+    .GroupBy(d => d.GetStr("Type"))
+    .Select(g => new { Id = g.First().Id.Value, Group = g.Key, Count = g.Count() })
     .Table();
 
 Section("Rooms by area");
@@ -157,6 +207,7 @@ GetElements<Room>()
     .OrderByParamDesc("Area")
     .Select(r => new
     {
+        r.Id,
         Number = r.GetStr("Number"),
         Name   = r.Name,
         Level  = r.GetStr("Level"),
@@ -170,15 +221,34 @@ GetElements<Wall>()
     .BarGraph();
 ```
 
-> 💡 **Five outputs, one at a time.** This report emits four tables and one chart, but the desktop app's **Analytics** tab shows only one result at a time and starts on the first — so it can look as though the rest were lost. Use the **navigator at the top right of the Analytics tab**: the left / right chevron buttons (**Previous View** / **Next View**) step through every table and chart, the counter shows where you are (for example `1/5`), and it wraps around at either end. The navigator appears only when the run produced more than one result.
+> 💡 **Five outputs, one at a time.** This report emits four tables and one chart, but the desktop app's **Analytics** tab shows only one result at a time and starts on the first — so it can look as though the rest were lost. Use the **navigator at the top right of the Analytics tab**: the left / right chevron buttons (**Previous View** / **Next View**) step through every table and chart, in the order they were produced, and the counter shows where you are (for example `1/5`). It wraps around at either end and appears only when the run produced more than one result. If you were on **History** when the run finished, a **blue badge** on **Analytics** means unseen results are waiting there — it disappears the moment you activate that tab.
+
+![Analytics navigator showing the result counter and chevrons](/img/wins-03-analytics-navigator.png)
 
 A local function (`void Section(...)`) at the top level is worth learning now — it keeps a long report readable, and it is the same shape a longer automation takes.
 
+### From a table to pandas
+
+Any table you build here can go straight to a Jupyter notebook in VS Code. This is the same report shape as the door section above, with `.ToNotebook(...)` in place of `.Table()`:
+
+```csharp
+GetElements<FamilyInstance>("Doors")
+    .Select(d => new
+    {
+        d.Id,
+        Mark  = d.GetStr("Mark"),
+        Width = d.GetTypeNum("Width", "mm")
+    })
+    .ToNotebook("Door_Analysis");
+```
+
+The data is already loaded when the notebook opens — no intermediate CSV, no import step.
+
 ## Try This
 
-1. Change `GroupByParam("Level")` to `GroupByParam("Type")` in the walls section. Same script, different question — that is the whole design.
+1. Change `w.GetStr("Level")` to `w.GetStr("Type")` in the walls group. Same script, different question — that is the whole design.
 2. Chart room areas instead of wall lengths: in the final chart, change `GetElements<Wall>()` to `GetElements<Room>()` and `GroupByParam("Level", "Length", "m")` to `GroupByParam("Level", "Area", "m2")`. The chart takes its values from the `Total` column of the grouping — total room area per level.
-3. Export the door schedule for pandas: append `.ToNotebook("Door_Analysis")` instead of `.Table()`. You get a Jupyter notebook in VS Code with the data already loaded.
+3. Change the door section above to `.ToNotebook("Door_Analysis")` yourself and run it — the notebook path is shown just before this list.
 4. Try `GetElements("Walls").GroupByParam("Fire Ratng")` and read the error. Then fix the spelling — this is the failure mode this platform refuses to give you silently.
 
 ---

@@ -103,12 +103,12 @@ Leave the default and click **Run** in the Configurator. **History** shows:
 
 ```text
 [INFO] Running Watchdog logic in Manual Test mode (no background registration).
-Found 54 wall(s) shorter than 2000 mm.
+Found <count> wall(s) shorter than 2000 mm.
 ```
 
 The matching table — one row per wall, with `Id`, `Name`, `Level` and `Length` in millimetres — appears in **Analytics**. This script emits a single result, so the Analytics navigator does not appear here; it only shows up when a run produces more than one table or chart.
 
-> The `54` is the count in the project used to write this lesson. Your model will give a different number.
+> The count comes from your model; `2000 mm` is the threshold you set in the Configurator.
 
 Nothing was armed. That first line is the engine telling you it ran the callback once in Manual Test mode; to keep the check running you deploy it, which is [Tutorial 2](./deploying.md).
 
@@ -127,7 +127,7 @@ Deploying captures the parameter values. A plain Run with different Configurator
 
 ## Try This
 
-1. Set **MinLength** to `1000` and click **Run**. On the project used here the count drops from 54 to **30**. Same script, different input — the check itself did not change.
+1. Set **MinLength** to `1000` and click **Run**. The count changes; same script, different input — the check itself did not change.
 2. Change the `"warning"` status in `WatchdogReport` to `"success"` and deploy the script. The **Sentinel Control** card turns green and shows **Clear** even when short walls were found. A status that does not match reality trains you to ignore the panel.
 3. Delete the `WatchdogReport(...)` call and try to deploy. The script is skipped and listed as a failed deployment — the deployer requires it in the tool's scripts alongside `Watchdog(...)`.
 

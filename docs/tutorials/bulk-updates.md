@@ -1,5 +1,7 @@
 # Tutorial 6: Change Many, Safely
 
+**What you'll have at the end:** blank fire ratings filled across every wall in one transaction, a count that proves the write happened, and a named checkpoint you can roll back to.
+
 Reading never hurt a model. This lesson writes to it — so it is also the lesson about **knowing what you changed**, which is the only thing that separates automation from an accident.
 
 ## One line, one transaction
@@ -31,7 +33,7 @@ wall.SetNum("Top Offset", 100, "mm");     // Top Constraint is Unconnected → r
 ```
 
 ```
-InvalidOperationException: SetNum("Top Offset"): the parameter is READ-ONLY on Wall 359588
+InvalidOperationException: SetNum("Top Offset"): the parameter is READ-ONLY on Wall <id>
 and cannot be modified. Revit marks a parameter read-only when another value drives it …
 Nothing was written.
 ```
@@ -43,25 +45,25 @@ wall.SetVal("Fire Ratng", "2 hr");
 ```
 
 ```
-InvalidOperationException: SetVal("Fire Ratng"): no parameter of that name on Wall 359588
+InvalidOperationException: SetVal("Fire Ratng"): no parameter of that name on Wall <id>
 or its type. Did you mean "Fire Rating"? Use .CombinedParams().Table() to list the real names.
 ```
 
 These used to print a small warning and return — while the surrounding transaction still reported `✅ COMMITTED · modified 0`. A green checkmark for a write that never happened. Now a write that cannot happen **raises**, and the script stops.
 
-**The consequence for bulk writes:** because a collection write is one transaction, the first element that refuses aborts the whole thing and **nothing** is applied. That is the safe direction — 6 of 9 walls updated and "success" reported is the outcome this prevents. Narrow the collection first, then retry:
+**The consequence for bulk writes:** because a collection write is one transaction, the first element that refuses aborts the whole thing and **nothing** is applied. That is the safe direction — a partly updated set reported as "success" is the outcome this prevents. Narrow the collection first, then retry:
 
 The failed write left **nothing** behind, so the model is exactly as it was. Narrow the collection — by level, by type, by a value you know is safe — and retry the smaller set.
 
 ## The blast radius of a type parameter
 
-`LookupParameter` on an instance also finds parameters that live on the **type** — so a write you aimed at one element can change all of them. Measured on a five-window model: one numeric write to **Width** on **one** window reported `modified 8` — four windows and the four host walls they cut.
+`LookupParameter` on an instance also finds parameters that live on the **type** — so a write you aimed at one element can change all of them. One numeric write to **Width** on **one** window can report a much larger `modified` count: the other windows of that type and the host openings they cut are recomputed too.
 
 The engine now tells you, once per type and parameter:
 
 ```
-⚠ "Width" is a TYPE parameter on Windows_Sgl_Plain: 910x910mm — this writes to the TYPE, so all
-  4 instance(s) of it change together (and any host opening they cut is re-cut). For ONE
+⚠ "Width" is a TYPE parameter on <type name> — this writes to the TYPE, so all
+  <N> instance(s) of it change together (and any host opening they cut is re-cut). For ONE
   instance only: .NewType("<name>") and set the parameter on the returned symbol.
 ```
 
@@ -88,11 +90,11 @@ And when you *do* mean "every instance of these types":
 GetElements("Structural Columns").SetTypeParam("Cost", "30.00")
 ```
 
-That collapses the collection to distinct types first — 40 selected columns sharing 3 types produce **3 writes**, not 40 — and the change applies to every instance of those types in the model, including ones you did not select. Inherent to type parameters, not a bug.
+That collapses the collection to distinct types first — a selection of columns sharing a few types produces **one write per type**, not one per column — and the change applies to every instance of those types in the model, including ones you did not select. Inherent to type parameters, not a bug.
 
 ## Read the count you get back
 
-`modified 23` for a write to one wall is not an error. Revit reports everything it had to recompute, and geometry moves what depends on it: a `Base Offset` change on one wall modified 10 elements and broke a room enclosure (`COOK 4` dropped from 5.13 m² to 0 m², because the wall stopped bounding the room). The same write on `Comments` reported `modified 1`.
+A `modified` count larger than the number of elements you passed is not an error. Revit reports everything it had to recompute, and geometry moves what depends on it: a `Base Offset` change can break a room enclosure because the wall stops bounding the room. The same write on `Comments` usually reports only the element you named.
 
 **A `modified` count larger than the number of elements you passed is information.** After a geometric write, re-read what depends on the element instead of assuming only the element you named changed.
 

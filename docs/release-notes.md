@@ -34,7 +34,8 @@ foreach (Wall wl in walls)
 ```
 
 ```csharp
-// Walls shorter than 2 m — Paracore DSL, rendered as a table in the Analytics tab
+// Walls with unconnected height under 2 m — Paracore DSL, table in the Analytics tab.
+// IntelliSense knows the category here and offers "Unconnected Height", not "Height".
 GetElements("Walls")
 .WhereParam("Unconnected Height", "<", 2000, "mm")
 .Select(sw => new {

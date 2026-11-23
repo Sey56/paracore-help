@@ -1,5 +1,7 @@
 # Tutorial 5: Build Something
 
+**What you'll have at the end:** four real walls in the Revit model, built from four numbers in metres, selected on screen — and one call that takes them back.
+
 Everything so far has **read** the model. This lesson adds to it: four walls from four numbers, in metres, and a one-line way to take them back.
 
 ## Creating is the one place the raw API survives
@@ -119,6 +121,8 @@ Println($"{walls.Count} walls, {walls.SumParam("Length", "m"):F1} m of wall in t
 
 Run it on a plan view. Four walls appear, selected, and the summary counts the metres. Then `RollbackTo("outline", confirm: true)` and they are gone.
 
+![Four new walls selected in a plan view](/img/wins-05-four-walls.png)
+
 That loop — **build, look, undo** — is how you can now try any idea on a real model without dreading it.
 
 ## Try This
@@ -126,7 +130,7 @@ That loop — **build, look, undo** — is how you can now try any idea on a rea
 1. Change `d` to `6.0.InputUnit("m")` and run it twice. The second run builds a second overlapping outline, because creation is not idempotent — unlike a parameter write, which is. That difference is worth feeling once.
 2. `RollbackTo("outline", confirm: true)` and check the model is clean. Then create again with an `L`-shape: add a fifth corner, and let the loop close it.
 3. Wrap the same code in a `foreach` over three offsets (`new XYZ(x, 0, 0)` with x = 0, 6 m, 12 m) and build three outlines in **one** transaction. One undo, three rooms.
-4. Print `walls.GroupByParam("Level").Table()` — the walls you just made, reported by the lesson you already know.
+4. Table the walls you just made with a clickable Id: `walls.Select(w => new { w.Id, w.Name, Level = w.GetStr("Level") }).Table()` — then click an Id to jump to that wall.
 
 ---
 

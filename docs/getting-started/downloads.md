@@ -1,15 +1,22 @@
 # Downloads
 
-Everything is on **one release page**: [Paracore v4.8.3](https://github.com/Sey56/Paracore/releases/tag/v4.8.3).
+Everything is on **one release page**: [the latest Paracore release](https://github.com/Sey56/Paracore/releases/latest) — currently **v4.9.0**. That link always opens the top release, so it will follow future versions too.
+
+Two assets changed in 4.9.0. Install these first:
 
 | File | What it is | Needed? |
 |---|---|---|
-| `Paracore_4.8.3_x64.msi` | The desktop app | **Yes** |
-| `Paracore_Addin_v4.8.3.exe` | The Revit add-in, for 2025 / 2026 / 2027 | **Yes** |
-| `corescript-4.8.3.vsix` | A standalone VS Code tool for writing **and running** C# without the desktop app | Optional |
-| `Paracore-Gen-v2.1.2.exe` | The AI assistant connector | Optional |
+| `Paracore_4.9.0_x64.msi` | The desktop app (33 MB, down from 45.7 MB) | **Yes** |
+| `Paracore_Addin_v4.9.0.exe` | The Revit add-in and its shared server sidecar, for 2025 / 2026 / 2027 | **Yes** |
 
-Install the first two. The other two are extras — the platform works without them.
+The other two installers on the release page are **unchanged** and keep their previously published versions:
+
+| File | What it is | Needed? |
+|---|---|---|
+| `corescript-4.8.4.vsix` | A standalone VS Code tool for writing **and running** C# without the desktop app | Optional |
+| `Paracore-Gen-v2.1.3.exe` | The AI assistant connector | Optional |
+
+Paracore works without either optional extra. See [what changed in 4.9.0](../release-notes.md#490--november-2026), including Dynamo export and IntelliSense that works with Revit closed.
 
 :::warning[Editing Gallery scripts does not need the `.vsix`]
 

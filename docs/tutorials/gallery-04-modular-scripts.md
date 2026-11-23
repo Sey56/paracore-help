@@ -6,7 +6,7 @@ A REPL snippet is one file. A gallery script can be **many files** — and that 
 
 When a script grows past 80 lines, the `Params` class and the logic start competing for space. Splitting lets you keep the entry script readable while the helper methods and the parameter definitions live in their own files. The engine merges them at compile time — you are not writing a library, you are organising one tool.
 
-> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+> **Before this lesson:** complete [Before You Start](./gallery-00-start-here.md) once. Every script in this track follows the same loop: **NEW → Archetype → Generate Script → Edit Script** in VS Code, then **Run** in the desktop app.
 
 ## Create the script
 
@@ -36,7 +36,7 @@ if (allLevels.Count == 0)
     return;
 }
 
-var rows = LevelAudit.BuildReport(allLevels, p.MinSpacingMm, p.BaseLevel);
+var rows = LevelAudit.BuildReport(allLevels, p.MinSpacing, p.BaseLevel);
 var issues = rows.Where(r => r.Issue != "OK");
 
 Println($"Audited {allLevels.Count} levels. {issues.Count()} issue(s) found.");
@@ -61,9 +61,10 @@ Create a new file in the `Scripts/` folder called `LevelAudit.cs`:
 public static class LevelAudit
 {
     public static List<LevelRow> BuildReport(
-        List<Level> levels, double minSpacingMm, Level? baseLevel)
+        List<Level> levels, double minSpacingFt, Level? baseLevel)
     {
-        double minSpacingFt = minSpacingMm / 304.8;   // mm → ft
+        // [Unit("mm")] already converted the input to Revit's internal feet.
+        // Converting it again here would turn 1000 mm into about 3 mm.
 
         var rows = new List<LevelRow>();
         for (int i = 0; i < levels.Count; i++)
@@ -121,9 +122,9 @@ public class Params
 {
     #region Settings
 
-    /// <summary>Flag levels closer than this (in millimetres)</summary>
+    /// <summary>Flag levels closer than this (in millimetres; converted to feet before the body runs)</summary>
     [Unit("mm")]
-    public double MinSpacingMm { get; set; } = 1000;
+    public double MinSpacing { get; set; } = 1000;
 
     /// <summary>Only audit levels at or above this level (optional)</summary>
     public Level? BaseLevel { get; set; }

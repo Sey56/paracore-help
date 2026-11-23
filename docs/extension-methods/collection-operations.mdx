@@ -91,9 +91,16 @@ GetElements("Doors")
     .GroupByParam("Level")
     .PieGraph()
 
-// Add a sum parameter to the grouping and Total appears as a third column
+// A grouped table carries the Id of one element in the group, so the row is clickable
 GetElements("Walls")
-    .GroupByParam("Base Constraint", "Length", "m")
+    .GroupBy(w => w.GetStr("Base Constraint"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count(),
+        Total = g.Sum(w => w.GetNum("Length", "m"))
+    })
     .Table()
 ```
 

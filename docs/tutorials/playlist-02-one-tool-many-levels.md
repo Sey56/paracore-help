@@ -159,9 +159,9 @@ Click **Run** in the editor header. Step 1 runs to completion first — a separa
 
 ```text
 > StampWallsOnLevel
-Level 1: stamped 6 wall(s) with "P2 checked L1".
+Level 1: stamped <count> wall(s) with "P2 checked L1".
 > StampWallsOnLevel
-Level 2: stamped 3 wall(s) with "P2 checked L2".
+Level 2: stamped <count> wall(s) with "P2 checked L2".
 ```
 
 Two identical markers, two different results — which is why the `Println` line names the level. Select some walls in Revit and check their `Comments` values: each level got its own stamp. (Add a third step and you get a third block; the counts depend on your project.)

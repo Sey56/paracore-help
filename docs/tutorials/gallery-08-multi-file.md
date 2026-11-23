@@ -1,10 +1,14 @@
 # Gallery Tutorial 8: Multi-File Architecture
 
+**What you'll have at the end:** a four-file Gallery tool that builds columns at grid intersections, beams between them and a slab on top — geometry you can undo, re-run with different inputs and ship to someone else as a tool.
+
+![A structural frame — columns, beams and a slab — generated at grid intersections in a Revit 3D view](/img/wins-07-generated-frame.png)
+
 The last lesson in the gallery track, and the one that puts everything together: a multi-file structural frame generator with a separate `Params.cs`, two helper files, category-filtered element pickers, and real geometry — columns at grid intersections, beams between them, a slab on top.
 
 This is the kind of tool the Gallery exists for. It is too large for one file, it has too many parameters for the REPL, and it does work that no snippet should do without a parameter form.
 
-> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+> **Before this lesson:** complete [Before You Start](./gallery-00-start-here.md) once. Every script in this track follows the same loop: **NEW → Archetype → Generate Script → Edit Script** in VS Code, then **Run** in the desktop app.
 
 ## Create the script
 

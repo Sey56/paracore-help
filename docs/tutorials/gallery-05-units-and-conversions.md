@@ -4,7 +4,7 @@ Revit stores everything in feet. Your users think in metres, millimetres, and sq
 
 This lesson is a deep dive into how `[Unit]` works, what goes wrong, and how to display values back to the user.
 
-> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+> **Before this lesson:** complete [Before You Start](./gallery-00-start-here.md) once. Every script in this track follows the same loop: **NEW → Archetype → Generate Script → Edit Script** in VS Code, then **Run** in the desktop app.
 
 ## The script
 

@@ -119,6 +119,8 @@ public class Params
 
 ## From a table back to the model
 
-If a table produced with `.Table()` has an **Id** column, the numbers in that column are clickable. Click one and the element is selected in Revit and brought into view. It is a quick way to jump from an audit result or schedule row to the element that produced it.
+The **Id** column is not just a column of numbers. It is the **element-selection control**: single-click an Id cell and that element is selected in Revit and zoomed into view. It is the fastest way to check that a row really describes the element you think it does — click the door row, look at the room tags and swing in the plan, then trust the report.
 
-Only the **Id** column works this way on a single click. Other cells are **edited** with a double-click, and the whole table can be mass-edited by uploading a CSV — both need each column header to match the real Revit parameter name. See [Answers, Not Code](../tutorials/tables-and-answers.md) for the naming rule and for how tables and charts are built.
+That is why every element table in these docs carries an Id. A table whose rows are elements but which cannot take you back to those elements is harder to verify and cannot be cell-edited or mass-edited.
+
+Only the **Id** column selects on a single click. Other cells are **edited** with a double-click, and the whole table can be mass-edited by uploading a CSV — both need each column header to match the real Revit parameter name. The CSV must keep the Id column untouched. See [Answers, Not Code](../tutorials/tables-and-answers.md) for the naming rule and for how tables and charts are built.

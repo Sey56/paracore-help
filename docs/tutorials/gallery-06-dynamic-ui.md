@@ -1,12 +1,12 @@
 # Gallery Tutorial 6: Dynamic UI
 
-The parameters panel does not have to be a static form. It can adapt — show controls, hide them, enable them, fill dropdowns from the model at runtime, and gate destructive operations behind a confirmation. This lesson builds a room finish updater that uses every one of those tricks.
+The parameters panel does not have to be a static form. It can adapt — show controls, hide them, enable them, and gate operations behind a confirmation. This lesson builds a room auditor that uses every one of those tricks.
 
-> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+> **Before this lesson:** complete [Before You Start](./gallery-00-start-here.md) once. Every script in this track follows the same loop: **NEW → Archetype → Generate Script → Edit Script** in VS Code, then **Run** in the desktop app.
 
 ## The script
 
-Create a script called **RoomFinishUpdater** and open it with **Edit Script**:
+Create a script called **RoomAudit** and open it with **Edit Script**:
 
 ```csharp
 /*
@@ -16,77 +16,55 @@ Author: Paracore Team
 Dependencies: RevitAPI 2025+, Paracore.Addin
 
 Description:
-Updates room floor finish parameters from a text input,
-with optional area filtering and a confirmation gate.
+Audits rooms with optional area filtering and a confirmation gate.
+Read-only — reports only, writes nothing.
 */
 
 Params p = new();
 
-// Resolve which rooms to update
-IEnumerable<Room> rooms;
+// Resolve which rooms to audit
+IEnumerable<Room> rooms = GetElements<Room>().Where(r => r.Area > 0);
 
-if (p.UseCustomScope && p.CustomRooms != null && p.CustomRooms.Count > 0)
-{
-    rooms = p.CustomRooms;
-    Println($"Using {rooms.Count()} selected room(s).");
-}
-else
-{
-    rooms = GetElements<Room>().Where(r => r.Area > 0);
-    Println($"Updating all {rooms.Count()} placed room(s).");
-}
+Println($"Found {rooms.Count()} placed room(s).");
 
 // Apply area filter if enabled
 if (p.FilterByArea)
 {
-    rooms = rooms.Where(r => r.Area < p.MaxArea);
-    Println($"After area filter: {rooms.Count()} room(s).");
+    rooms = rooms.Where(r => r.GetNum("Area", "m2") < p.MaxArea);
+    Println($"After area filter (< {p.MaxArea:F1} m2): {rooms.Count()} room(s).");
 }
 
-if (rooms.Count() == 0)
+// Optionally narrow to selected rooms
+if (p.UseScope && p.Rooms != null && p.Rooms.Count > 0)
 {
-    Println("No rooms to update.");
+    var ids = new HashSet<long>(p.Rooms.Select(r => r.Id.Value));
+    rooms = rooms.Where(r => ids.Contains(r.Id.Value));
+    Println($"Narrowed to {rooms.Count()} selected room(s).");
+}
+
+if (!rooms.Any())
+{
+    Println("No rooms match the criteria.");
     return;
 }
 
-// Apply the finish
-int updated = 0;
-var log = new List<object>();
-
-Transact("Update Room Finishes", () =>
+// Report
+Table(rooms.Select(r => new
 {
-    foreach (var room in rooms)
-    {
-        var param = room.LookupParameter("Floor Finish");
-        if (param == null || param.IsReadOnly) continue;
+    r.Id,
+    Number = r.GetStr("Number"),
+    Name   = r.Name,
+    Level  = r.GetStr("Level"),
+    Area   = r.GetVal("Area", "m2", 1)
+}));
 
-        string old = param.AsString() ?? "(empty)";
-        param.Set(p.FloorFinish);
-        updated++;
-
-        log.Add(new { room.Id, room.Name, Old = old, New = p.FloorFinish });
-    }
-});
-
-Println($"Updated {updated} of {rooms.Count()} rooms.");
-if (log.Count > 0) Table(log);
+Println($"Reported {rooms.Count()} room(s).");
 
 public class Params
 {
-    #region Scope
-
-    /// <summary>Update only specific rooms instead of all</summary>
-    public bool UseCustomScope { get; set; } = false;
-
-    /// <summary>Pick rooms to include (enable the toggle first)</summary>
-    [EnabledWhen(nameof(UseCustomScope), "true")]
-    public List<Room>? CustomRooms { get; set; }
-
-    #endregion
-
     #region Filter
 
-    /// <summary>Only update rooms under a certain area</summary>
+    /// <summary>Only show rooms under a certain area</summary>
     public bool FilterByArea { get; set; } = false;
 
     /// <summary>Maximum area in square metres</summary>
@@ -97,17 +75,21 @@ public class Params
 
     #endregion
 
-    #region Value
+    #region Scope
 
-    /// <summary>The floor finish to apply (e.g. "Tile", "Carpet", "Polished Concrete")</summary>
-    public string FloorFinish { get; set; } = "Tile";
+    /// <summary>Narrow the audit to specific rooms</summary>
+    public bool UseScope { get; set; } = false;
+
+    /// <summary>Pick rooms to include (enable the toggle first)</summary>
+    [EnabledWhen(nameof(UseScope), "true")]
+    public List<Room>? Rooms { get; set; }
 
     #endregion
 
     #region Confirmation
 
-    /// <summary>Type UPDATE to confirm — this overwrites existing values</summary>
-    [Confirm("UPDATE")]
+    /// <summary>Type REPORT to confirm</summary>
+    [Confirm("REPORT")]
     public string? Confirm { get; set; }
 
     #endregion
@@ -119,63 +101,65 @@ public class Params
 ### `[EnabledWhen]` — grey out instead of hide
 
 ```csharp
-[EnabledWhen(nameof(UseCustomScope), "true")]
-public List<Room>? CustomRooms { get; set; }
+[EnabledWhen(nameof(UseScope), "true")]
+public List<Room>? Rooms { get; set; }
 ```
 
-`[EnabledWhen("UseCustomScope", "true")]` means the `CustomRooms` picker is **visible but greyed out** until `UseCustomScope` is checked. This is different from `_Visible` — that hides the control entirely. Use `[EnabledWhen]` when you want the user to see that the option exists but understand it depends on something else.
+`[EnabledWhen("UseScope", "true")]` means the `Rooms` picker is **visible but greyed out** until `UseScope` is checked. This is different from `_Visible` — that hides the control entirely. Use `[EnabledWhen]` when you want the user to see that the option exists but understand it depends on something else.
 
-### `_Options` — fill a dropdown from the model
+![UseScope off: the Rooms picker is disabled, its Compute action is blocked, and the form says which toggle to turn on](/img/wins-06-adaptive-form.png)
 
-You have seen `_Options` paired with `[Segmented]` for static string lists. It also works for Revit element lists:
+The picker keeps its discovered options visible, but every control — including the Compute button — is inert while the toggle is off. An amber note under the field names the toggle that enables it, so a click that does nothing is never a mystery.
+
+### `_Visible` — hide entirely
 
 ```csharp
-public List<Room> SmallRooms { get; set; }
-public IEnumerable<Room> SmallRooms_Options =>
-    GetElements<Room>().Where(r => r.Area < 10.0);
+public bool MaxArea_Visible => FilterByArea;
 ```
 
-The engine calls the `_Options` property at runtime (when the user clicks **Compute**) and fills the dropdown with the result. This is how curated lists work — not every room, but only rooms that match a condition.
+When `FilterByArea` is off, `MaxArea` is **not shown at all** — there is no greyed-out control. Use `_Visible` when the field is meaningless until its toggle is on.
 
 ### `[Confirm]` — the safety gate
 
 ```csharp
-[Confirm("UPDATE")]
+[Confirm("REPORT")]
 public string? Confirm { get; set; }
 ```
 
-The user must type `UPDATE` into the text box before the **Run** button activates. This is the attribute for any tool that overwrites data in bulk — it forces a deliberate action, not an accidental click.
+The user must type `REPORT` into the text box before the **Run** button activates. This forces a deliberate action, not an accidental click. On a read-only audit it is a light gate; on a tool that writes to the model it is the difference between a tool and an accident.
 
 > **The engine re-extracts `[Confirm]` from your source code at runtime.** It does not trust the value the UI sends — it checks the attribute itself. So the run can never proceed unless the exact word is supplied: the engine enforces the gate, the UI cannot bypass it.
+
+### `[Unit]` — display in the right unit
+
+```csharp
+[Unit("m2")]
+public double MaxArea { get; set; } = 15.0;
+```
+
+The parameter form shows `15.0 m²` and accepts input in square metres. Without `[Unit]`, the raw double is shown with no unit label.
 
 ## How the conditions chain
 
 The form has a natural flow:
 
-1. **UseCustomScope** (toggle) → controls **CustomRooms** (enabled/disabled)
-2. **FilterByArea** (toggle) → controls **MaxArea** (visible/hidden)
-3. **FloorFinish** (text) → the value to apply
-4. **Confirm** (text gate) → must type `UPDATE` to run
+1. **FilterByArea** (toggle) → controls **MaxArea** (visible/hidden via `_Visible`)
+2. **UseScope** (toggle) → controls **Rooms** (enabled/disabled via `[EnabledWhen]`)
+3. **Confirm** (text gate) → must type `REPORT` to run
 
 Each control depends on the one above it. The user reads the form top to bottom and the options unfold as they make choices. That is the difference between a parameter form and a flat config file.
 
 ## Run it
 
-> ⚠ **This overwrites room data.** Run it on a copy.
-
-1. Leave **Use Custom Scope** off and **Filter By Area** off.
-2. Set **Floor Finish** to `Carpet`.
-3. Type `UPDATE` in the confirmation box.
-4. Click **Run**. Every placed room's Floor Finish is set to "Carpet".
-5. Turn on **Use Custom Scope**, pick two rooms, set the finish to `Tile`, type `UPDATE`, and run. Only those two rooms change.
-6. Turn on **Filter By Area**, set **Max Area** to `20`, and run. Only rooms under 20&nbsp;m² are updated.
+1. Leave both toggles off. Type `REPORT` and click **Run**. Every placed room appears in the table with Number, Name, Level and Area.
+2. Turn on **Filter By Area**, set **Max Area** to `20`, type `REPORT`, and run. Only rooms under 20 m² appear.
+3. Turn on **Use Scope**, pick two rooms from the picker, type `REPORT`, and run. Only those two rooms appear in the table.
 
 ## Try This
 
-1. **Replace `[EnabledWhen]` with `_Visible`** on `CustomRooms` — `public bool CustomRooms_Visible => UseCustomScope;`. The picker now disappears entirely instead of greying out. Pick the behaviour that feels right for your tool.
-2. **Add a `[Segmented]` finish picker** — `public string FloorFinish { get; set; } = "Tile";` with `public List<string> FloorFinish_Options => ["Tile", "Carpet", "Polished Concrete", "Timber"];`. Now the user picks from buttons instead of typing.
-3. **Add a `_Filter` provider** — `public bool CustomRooms_Filter(Room r) => r.Area > 0;` and see how the picker only shows placed rooms.
-4. **Remove `[Confirm]`** and run without typing anything. The Run button works immediately. Put it back — the confirmation gate is what separates a tool from an accident.
+1. **Replace `[EnabledWhen]` with `_Visible`** on `Rooms` — `public bool Rooms_Visible => UseScope;`. The picker now disappears entirely instead of greying out. Pick the behaviour that feels right for your tool.
+2. **Remove `[Confirm]`** and run without typing anything. The Run button works immediately. Put it back — the confirmation gate is what separates a tool from an accident.
+3. **Remove `[Unit("m2")]`** from `MaxArea` and see how the form loses the unit label. Put it back.
 
 ---
 

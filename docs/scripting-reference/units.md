@@ -99,7 +99,7 @@ Quickly convert and format a value for logging or UI display.
 // ⚠ `wall.Area` does not compile (CS1061). A wall does HAVE an area — it is a
 //   PARAMETER, not a .NET property, so read it with GetNum first. Only Room, Space
 //   and other SpatialElements expose Area as a property (see the example above).
-Println(wall.GetNum("Area").FormatUnit("m2", 2)); // Outputs: "25.42 m²"
+Println(wall.GetNum("Area").FormatUnit("m2", 2)); // area as text in m², two decimals
 Println(wall.GetNum("Area").FormatValueOnly("m2", 2)); // Outputs: "25.42" (no suffix)
 ```
 

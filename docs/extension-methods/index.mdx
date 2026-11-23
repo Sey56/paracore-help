@@ -89,7 +89,7 @@ Both are valid. Use whichever is cleaner for your task.
 | Delete all (BIM-Safe) | `.Delete()` |
 | Export to Jupyter | `.ToNotebook("Analysis")` |
 | Door handing | `.Handing()` |
-| Door room access | `.RoomFrom()` / `.RoomTo()` |
+| Door room sides (swing-based) | `.RoomFrom()` / `.RoomTo()` |
 | Room vertical span | `room.GetZSpan()` |
 | Standard doors only | `.StandardDoor()` |
 | Show table | `.Table()` |
@@ -98,7 +98,7 @@ Both are valid. Use whichever is cleaner for your task.
 | Isolate in view | `.Isolate()` |
 | Hide/Unhide in view | `.Hide()` / `.Unhide()` |
 | Forensic parameter dump | `.Peek()` |
-| Discover all parameters | `.CombinedParams().Table()` |
+| Discover all parameters | `.CombinedParams()` + Id column |
 
 ## 🔧 Global Script Functions
 

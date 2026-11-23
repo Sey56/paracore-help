@@ -26,13 +26,13 @@ A name that no element of the category declares raises an error instead of retur
 - Falls back to C# property via Reflection (e.g., `"HandFlipped"` → `"True"`).
 - Falls back to `NativeProperties` (Level, Name, Category, etc.).
 - Falls back to Type parameter if not found on the instance (e.g., standard door `"Width"`).
-- A name that does not exist on the element's category **raises an error** and suggests the closest real name. Use `.CombinedParams().Table()` to list the real names before you write a query.
+- A name that does not exist on the element's category **raises an error** and suggests the closest real name. Use `.CombinedParams()` with an Id column to list the real names before you write a query.
 
 ```csharp
-wall.GetStr("Level")       // → "02 - Ground Floor Plan" (via Base Constraint)
-beam.GetStr("Level")       // → "05 - Roof Plan" (via Reference Level)
-door.GetStr("Mark")        // → "D-101"
-door.GetStr("HandFlipped") // → "True" (via reflection)
+wall.GetStr("Level")       // → the wall's level name (via Base Constraint)
+beam.GetStr("Level")       // → the beam's level name (via Reference Level)
+door.GetStr("Mark")        // → the door's Mark value
+door.GetStr("HandFlipped") // → "True" or "False" (via reflection)
 ```
 
 ### `element.GetStr(name, unit, decimals)`
@@ -40,8 +40,8 @@ door.GetStr("HandFlipped") // → "True" (via reflection)
 **Unit-Converted String Getter.** Returns the value converted to the given unit as a plain number string (no suffix). Supports an optional `decimals` parameter (default: 2).
 
 ```csharp
-wall.GetStr("Length", "mm")      // → "3600"
-room.GetStr("Area", "m2", 4)     // → "25.4578" (specified decimals)
+wall.GetStr("Length", "mm")      // → length as plain text, in mm
+room.GetStr("Area", "m2", 4)     // → area as plain text, with 4 decimals
 ```
 
 ### `element.GetNum(name)`
@@ -53,8 +53,8 @@ room.GetStr("Area", "m2", 4)     // → "25.4578" (specified decimals)
 - Falls back to Type parameter if not found on the instance.
 
 ```csharp
-wall.GetNum("Length")    // → 11.811 (feet)
-room.GetNum("Area")      // → 18.4 (sq.ft)
+wall.GetNum("Length")    // → raw length in feet
+room.GetNum("Area")      // → raw area in square feet
 ```
 
 ### `element.GetNum(name, unit)` / `element.GetNum(name, unit, decimals)`
@@ -68,10 +68,10 @@ room.GetNum("Area")      // → 18.4 (sq.ft)
 | `m3`, `cum`, `ft3`, `cuft` | Volume |
 
 ```csharp
-// Measured on the sample model's first wall (5.065 m long):
-wall.GetNum("Length", "m")              // → 5.065                  exact (default)
-wall.GetNum("Length", "m", 2)           // → 5.07                   rounded, because you asked
-wall.GetNum("Unconnected Height", "m")  // → 3.0000000000000004     exact feet→m conversion
+// Values come from the element you pass in; rounding is opt-in:
+wall.GetNum("Length", "m")              // → exact (default)
+wall.GetNum("Length", "m", 2)           // → rounded, because you asked
+wall.GetNum("Unconnected Height", "m")  // → exact feet→m conversion
 ```
 
 ### `element.GetVal(name)`
@@ -80,14 +80,14 @@ wall.GetNum("Unconnected Height", "m")  // → 3.0000000000000004     exact feet
 
 :::warning[Why a small area can print `0 m²`]
 
-`GetVal(name)` returns Revit's own display string, so **its precision comes from the project's unit settings, not from Paracore**. A project whose Area accuracy is set to whole m² really does show a 0.477 m² wall as `0 m²` in the Properties palette — and that exact string is what lands in your table. Nothing was rounded by Paracore, and nothing was lost from the model.
+`GetVal(name)` returns Revit's own display string, so **its precision comes from the project's unit settings, not from Paracore**. A project whose Area accuracy is set to whole m² really does show a small area as `0 m²` in the Properties palette — and that exact string is what lands in your table. Nothing was rounded by Paracore, and nothing was lost from the model.
 
 **What to do:** give `GetVal` the unit and the number of decimals you want:
 
 ```csharp
-wall.GetVal("Area")            // → "0 m²"      palette string — too coarse
-wall.GetVal("Area", "m2", 2)   // → "0.48 m²"   unit + 2 decimals
-wall.GetVal("Area", "m2", 3)   // → "0.477 m²"  3 decimals
+wall.GetVal("Area")            // → palette string — may be too coarse
+wall.GetVal("Area", "m2", 2)   // → unit + 2 decimals
+wall.GetVal("Area", "m2", 3)   // → 3 decimals
 ```
 
 For arithmetic, use `GetNum("Area", "m2")`, which returns the exact number. If you want the Properties palette itself to show the decimals, change the project's Area accuracy in Revit (**Manage → Project Units**).
@@ -100,11 +100,11 @@ For arithmetic, use `GetNum("Area", "m2")`, which returns the exact number. If y
 
 ### `element.GetVal(name, unit, decimals)`
 
-**Unit-Formatted WYSIWYG Getter.** Returns a value string with the specified unit suffix. Supports an optional `decimals` parameter (default: 2). Passing the unit takes the value out of the project's display rounding: `GetVal("Area", "m2", 3)` turns a table of `16 m²` / `0 m²` into `15.645 m²` / `0.477 m²`.
+**Unit-Formatted WYSIWYG Getter.** Returns a value string with the specified unit suffix. Supports an optional `decimals` parameter (default: 2). Passing the unit takes the value out of the project's display rounding, so `GetVal("Area", "m2", 3)` gives you three decimals even when the Properties palette rounds to whole units.
 
 ```csharp
-wall.GetVal("Length", "mm")      // → "3600.0 mm"
-room.GetVal("Area", "m2", 3)     // → "25.458 m²"
+wall.GetVal("Length", "mm")      // → length as text, with the unit suffix
+room.GetVal("Area", "m2", 3)     // → area as text, with 3 decimals and the unit suffix
 ```
 
 ### `element.GetInt(name)`
@@ -140,8 +140,8 @@ The instance-level accessors (`GetNum`, `GetStr`, `GetVal`) **automatically reso
 | `element.GetTypeVal(name, unit, decimals)` | Type-level `GetVal` with unit & optional decimals |
 
 ```csharp
-wall.GetTypeStr("Wrapping at Inserts")  // → "Do not wrap"
-door.GetTypeNum("Width", "mm")          // → 900.0 (type width)
+wall.GetTypeStr("Wrapping at Inserts")  // → the type's text value
+door.GetTypeNum("Width", "mm")          // → the type's width as a number
 ```
 
 ## Smart Write Methods

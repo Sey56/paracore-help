@@ -1,8 +1,12 @@
 # Tutorial 1: Sixty Seconds in the Editor
 
+**What you'll have at the end:** a number pulled from the open Revit model, a table of every wall, and the one habit the rest of this track rests on — a bare expression prints its own answer.
+
 No file, no project, no `Params` class. Open the REPL editor, type one line, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and look at the **History** tab.
 
 It is a full C# scripting environment, with one distinction from a standalone C# script: every line runs against the **active document** in the open Revit session. `Doc` is that live model — not a file on disk — so the answers come from the project you have open, and any change you make lands in it.
+
+:::info[First-time setup — do this once]
 
 **You need**, in this order:
 
@@ -10,6 +14,8 @@ It is a full C# scripting environment, with one distinction from a standalone C#
 2. The **Paracore server** switched **ON** in the Paracore ribbon tab — the button is a red circle reading **OFF** until you click it, then a green circle reading **ON**.
 3. **Paracore Desktop** started, showing a green **Connected** in the TopBar. The app launches its connector (`rap-server`) as a sidecar, so give it a second or two; a red **Disconnected** means the server in step 2 is off, or Revit is still loading.
 4. The **REPL** tab active in the TopBar. The editor is the **REPL Playground** panel.
+
+:::
 
 ## Step 1: It talks back
 
@@ -49,7 +55,7 @@ A number. Now the same call without `.Count()`:
 GetElements<Wall>()
 ```
 
-You get a numbered list — `01 - Basic Wall (359588)`, `02 - …` — one line per wall. Notice what you did **not** write: no `FilteredElementCollector`, no `BuiltInCategory.OST_Walls`, no `WhereElementIsNotElementType`, no `.Cast<Wall>()`. `GetElements<Wall>()` is the whole query, and the angle brackets already told it to skip the wall *types*.
+You get a numbered list — an index, the wall's name and its Id on each line — one line per wall. Notice what you did **not** write: no `FilteredElementCollector`, no `BuiltInCategory.OST_Walls`, no `WhereElementIsNotElementType`, no `.Cast<Wall>()`. `GetElements<Wall>()` is the whole query, and the angle brackets already told it to skip the wall *types*.
 
 > **Why the list stops at 50.** Echoing is for a glance. Past fifty items it prints `... (output truncated. Use .Table() for full inspection)` instead of flooding History — that message is the model telling you to ask for a table.
 
@@ -58,6 +64,27 @@ GetElements<Wall>().Table()
 ```
 
 Now the **Analytics** tab has a real table: Id, Family, Type, Category, sortable, and the raw list is no longer dumped underneath it. That is the habit worth forming early — **echo to peek, `.Table()` to read.**
+
+> **Want different columns?** Project them yourself before `.Table()` — for example `.Select(w => new { w.Id, w.Name, Length = w.GetNum("Length", "m", 2) }).Table()`. The bare element form is a quick dump; a projection says exactly what the report is about.
+
+:::warning[Bare `.Table()` on element collections — until 4.9.1 is released]
+
+In 4.9.0 the default table assumes `Family` and `Type` exist on every element. It works for walls and doors, but categories that declare neither — Rooms, for example — raise `there is no "Family" parameter in Category Rooms`. This affects both `GetElements<Room>()` and `GetElements("Rooms")`.
+
+Until the patch is released, project your own columns for those categories:
+
+```csharp
+GetElements<Room>()
+    .Select(r => new
+    {
+        r.Id,
+        Number = r.GetStr("Number"),
+        Area   = r.GetVal("Area", "m2")
+    })
+    .Table()
+```
+
+:::
 
 ## Step 3: Variables survive
 

@@ -121,7 +121,10 @@ so a spelling check will not catch it.
 **Check the names before you read:**
 
 ```csharp
-GetElements("Doors").First().CombinedParams().Table()
+var door = GetElements("Doors").First();
+door.CombinedParams()
+    .Select(p => new { door.Id, p.Name, p.Storage, p.Value, p.Scope })
+    .Table()
 ```
 
 That lists every parameter doors really have, on the element and on its type. If your name is not

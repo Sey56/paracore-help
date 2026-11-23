@@ -2,7 +2,7 @@
 
 Real tools read from and write to files — CSV imports, Excel exports, folder batches. The Gallery gives you three attributes for this: `[InputFile]`, `[OutputFile]`, and `[FolderPath]`. This lesson builds a CSV-driven room finish tool that uses all three.
 
-> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+> **Before this lesson:** complete [Before You Start](./gallery-00-start-here.md) once. Every script in this track follows the same loop: **NEW → Archetype → Generate Script → Edit Script** in VS Code, then **Run** in the desktop app.
 
 ## The script
 
@@ -46,6 +46,16 @@ for (int i = startRow; i < lines.Length; i++)
 
 Println($"Parsed {updates.Count} room updates from CSV.");
 
+// Keep the exact input file so a dry run or a later edit can be traced back.
+if (!string.IsNullOrWhiteSpace(p.BackupFolder))
+{
+    Directory.CreateDirectory(p.BackupFolder);
+    string stamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+    string backup = Path.Combine(p.BackupFolder, $"RoomFinishes-{stamp}.csv");
+    File.Copy(p.InputCsvPath, backup, overwrite: false);
+    Println($"Input CSV backed up to: {backup}");
+}
+
 // 2. Apply to Revit rooms
 var rooms = GetElements<Room>().Where(r => r.Area > 0);
 int matched = 0, notFound = 0;
@@ -61,14 +71,14 @@ Transact("Sync Room Finishes from CSV", () =>
         if (room == null)
         {
             notFound++;
-            log.Add(new FinishLogRow { Room = kvp.Key, Status = "Not Found", New = kvp.Value });
+            log.Add(new FinishLogRow { Id = 0, Room = kvp.Key, Status = "Not Found", New = kvp.Value });
             continue;
         }
 
         var param = room.LookupParameter("Floor Finish");
         if (param == null || param.IsReadOnly)
         {
-            log.Add(new FinishLogRow { Room = room.Name, Status = "Read Only", New = kvp.Value });
+            log.Add(new FinishLogRow { Id = room.Id.Value, Room = room.Name, Status = "Read Only", New = kvp.Value });
             continue;
         }
 
@@ -76,7 +86,7 @@ Transact("Sync Room Finishes from CSV", () =>
         param.Set(kvp.Value);
         matched++;
 
-        log.Add(new FinishLogRow { Room = room.Name, Status = "Updated", Old = old, New = kvp.Value });
+        log.Add(new FinishLogRow { Id = room.Id.Value, Room = room.Name, Status = "Updated", Old = old, New = kvp.Value });
     }
 });
 
@@ -86,10 +96,10 @@ Table(log);
 // 3. Export summary (optional)
 if (!string.IsNullOrWhiteSpace(p.OutputCsvPath))
 {
-    var csv = new List<string> { "Room,Status,OldFinish,NewFinish" };
+    var csv = new List<string> { "Id,Room,Status,OldFinish,NewFinish" };
     foreach (var entry in log)
     {
-        csv.Add($"\"{entry.Room}\",\"{entry.Status}\",\"{entry.Old}\",\"{entry.New}\"");
+        csv.Add($"\"{entry.Id}\",\"{entry.Room}\",\"{entry.Status}\",\"{entry.Old}\",\"{entry.New}\"");
     }
 
     File.WriteAllLines(p.OutputCsvPath, csv);
@@ -116,7 +126,7 @@ public class Params
     [OutputFile("csv")]
     public string OutputCsvPath { get; set; } = "";
 
-    /// <summary>Optional: folder to back up the Revit project first</summary>
+    /// <summary>Optional: folder to copy the input CSV into before applying it</summary>
     [FolderPath]
     public string BackupFolder { get; set; } = "";
 
@@ -125,6 +135,7 @@ public class Params
 
 public class FinishLogRow
 {
+    public long Id { get; set; }
     public string Room { get; set; } = "";
     public string Status { get; set; } = "";
     public string Old { get; set; } = "";
@@ -168,13 +179,13 @@ Bedroom 1,Carpet
 1. Create a CSV file with a few room names and finish values (use real room names from your model).
 2. In the parameters panel, click the **browse** button next to **Input Csv Path** and pick the file.
 3. Leave **Has Header Row** on if your CSV has a header.
-4. Optionally set an **Output Csv Path** for the summary.
+4. Optionally set an **Output Csv Path** for the summary, and a **Backup Folder** to keep a timestamped copy of the input CSV.
 5. Click **Run**. The console shows how many rooms matched, and the table shows old and new values.
 
 ## Try This
 
 1. **Add a `[Segmented]` delimiter option** — `public string Delimiter { get; set; } = ",";` with options `[",", ";", "\t"]`. Use it in `Split()` instead of the hard-coded comma. Now the tool handles semicolon-delimited European CSVs and tab-delimited exports.
-2. **Add a `[FolderPath]` for batch input** — instead of one CSV, iterate every `.csv` file in the folder and apply them all.
+2. **Use the `[FolderPath]` for batch input** — instead of copying one CSV, iterate every `.csv` file in that folder and apply them all.
 3. **Export to Excel** — add `[OutputFile("xlsx")]` and use `MiniExcelLibs` (already imported by the engine) to write a formatted spreadsheet instead of CSV:
    ```csharp
    MiniExcelLibs.MiniExcel.SaveAs(p.OutputCsvPath, log);

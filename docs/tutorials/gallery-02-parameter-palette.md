@@ -2,7 +2,7 @@
 
 The first gallery script used two property types: `Level` and `WallType` (dropdowns) and `double` (number boxes). This lesson adds the rest of the basic palette — toggles, sliders, choice buttons, and conditional visibility — and does it with a read-only room inspector that is genuinely useful.
 
-> **Before this lesson:** do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) once. For each new script — make sure your source is selected under **Local Sources**, click **NEW**, type a name with no spaces, choose **Archetype**, click **Generate Script**, then click **Edit Script** to open it in VS Code. Editing happens there, not in the desktop app.
+> **Before this lesson:** complete [Before You Start](./gallery-00-start-here.md) once. Every script in this track follows the same loop: **NEW → Archetype → Generate Script → Edit Script** in VS Code, then **Run** in the desktop app.
 
 ## The script
 
@@ -157,6 +157,7 @@ Parameters are grouped in the UI by their `#region` name. The panel shows collap
 GetElements<Room>()
     .Select(r => new
     {
+        r.Id,
         Number  = r.GetStr("Number"),
         Area_m2 = r.Area.OutputUnit("m2").ToString("F2")
     })

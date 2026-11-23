@@ -1,5 +1,7 @@
 # Tutorial 2: Find Anything
 
+**What you'll have at the end:** the walls on the current level, sorted by height in a table and highlighted in the Revit view — from one query with a few filters chained onto it.
+
 Every Revit automation starts the same way: *get the right elements.* This lesson is the whole of that — nine methods, no collector, and a query that ends by highlighting what it found in Revit.
 
 ## One call, no plumbing
@@ -13,7 +15,7 @@ That is the query. It found every wall **instance** in the model, typed as `Wall
 Here is what it replaces, so you can recognise it in the wild (and never write it here):
 
 ```csharp
-// ❌ what you would write against the raw API — not in Paracore
+// The same query written with the raw Revit API — it works, but it is four lines of setup
 var walls = new FilteredElementCollector(Doc)
     .OfCategory(BuiltInCategory.OST_Walls)
     .WhereElementIsNotElementType()
@@ -58,7 +60,7 @@ GetElements<Wall>()
 | `.WhereParam(name, value)` | exact match (numbers, text, yes/no) |
 | `.WhereParam(name, ">", 2.5, "m")` | numeric compare, **with a unit** |
 | `.WhereParam(name, "contains", "HCB")` | text search (`contains`, `starts`, `ends`) |
-| `.WhereParam("Id", 359588)` | one element by id |
+| `.WhereParam("Id", elementId)` | one element by id |
 | `.WhereAnyParam(new[]{"Comments","Mark"}, "fire")` | either parameter matches |
 | `.WhereTypeParam("Material", "contains", "HCB")` | a **type** parameter |
 | `.WhereMatches("flush")` | fuzzy match on family/type name |
@@ -73,7 +75,7 @@ Two things worth knowing before you trip over them:
 **A misspelled name in a filter raises.** `WhereParam` and the other collection filters check the name against every element in the set before they run, so a typo cannot come back as an empty result:
 
 ```
-WhereParam: no parameter named "Fire Ratng" on any of the 9 element(s) (Walls).
+WhereParam: no parameter named "Fire Ratng" on any of the elements in this set (Walls).
 Did you mean "Fire Rating"? …
 ```
 
@@ -89,6 +91,10 @@ Filters are only useful if the answer is visible. End the chain with an output:
 | `.Select()` | select everything in Revit and zoom to it |
 | `.Isolate()` | isolate it in the active view |
 | `.Delete()` | delete it, in one transaction |
+
+> ⚠ **Bare `.Table()` on Rooms — until 4.9.1 is released.** The 4.9.0 default table expects `Family` and `Type` parameters; Rooms declare neither, so `GetElements<Room>().Table()` raises `there is no "Family" parameter in Category Rooms`. Project the columns you want first: `.Select(r => new { r.Id, Number = r.GetStr("Number"), Area = r.GetVal("Area", "m2") }).Table()`. The same applies to `GetElements("Rooms")`.
+
+> ⚠ **`.Select()` and `.Isolate()` act in the active view.** Elements on other levels are still selected, but Revit gives you no visual feedback for them until you open a view that contains them. If a query spans the model and you want to *see* the result, use `.Table()` — or filter to `ActiveView.GetStr("Associated Level")` first. This is why the script below narrows to the current level before it highlights anything.
 
 ## The script
 
@@ -115,11 +121,19 @@ walls
         Area   = d.GetVal("Area", "m2", 2)
     })
     .Table();
+
+walls.Select();    // and show those same walls in the Revit view
 ```
+
+The table gives you the numbers; `.Select()` gives you the elements on screen. That is the two-output habit this track keeps: read the answer, then look at what it refers to.
+
+![Large rooms selected on the active floor plan](/img/wins-02b-rooms-selected-on-level.png)
+
+The level filter keeps the selection on the plan you are looking at; the Properties panel shows however many rooms that query matched in your model. Rooms on other levels would be selected but not visible here — see the viewport option in [One-line wins](./one-line-wins.md#2-the-five-largest-rooms).
 
 `GetNum` returns the exact converted number — the third argument (`2`) rounds it just for this table; leave it off when the value will be summed or compared. `GetVal` returns a *display* string, so pass the unit and the decimals you want.
 
-> ⚠ **Do not drop the unit from `GetVal("Area", "m2", 2)`.** Written as `GetVal("Area")` it returns the Properties-palette string, whose precision is set by the project's units — with whole-m² accuracy a 0.477 m² wall prints `0 m²`. See [Parameter & Property Accessors](../extension-methods/parameter-accessors.mdx) for the cause and the fix.
+> ⚠ **Do not drop the unit from `GetVal("Area", "m2", 2)`.** Written as `GetVal("Area")` it returns the Properties-palette string, whose precision is set by the project's units — with whole-m² accuracy a small area prints `0 m²`. See [Parameter & Property Accessors](../extension-methods/parameter-accessors.mdx) for the cause and the fix.
 
 `GetStr` resolves a wall's level for you — walls go through `LevelId`, beams through *Reference Level*, columns through *Base Level*, rooms and doors through their built-in parameter. One name, every category, which is why `WhereParam` works on things that do not literally have a *Level* parameter.
 
@@ -151,10 +165,13 @@ walls
    GetElements("Walls").WhereParam("Mark", "!=", "").Table();
    ```
 
-4. **Rooms larger than 25 m², highlighted in Revit.**
+4. **Rooms larger than 14.5 m², highlighted in Revit — on the floor plan you are looking at.** Filter to the view's level first; otherwise the query selects rooms on every level, but Revit only shows the ones in this view.
 
    ```csharp
-   GetElements<Room>().WhereParam("Area", ">", 25, "m2").Select();
+   GetElements<Room>()
+       .WhereParam("Level", ActiveView.GetStr("Associated Level"))
+       .WhereParam("Area", ">", 14.5, "m2")
+       .Select();
    ```
 
 5. **Deliberately misspell a parameter** and read the error. Then use `Peek` on any element to see the names that really exist.

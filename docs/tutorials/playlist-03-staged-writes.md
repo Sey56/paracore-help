@@ -16,7 +16,7 @@ The first two lessons were safe: [P1](./playlist-01-first-playlist.md) only read
 
 ## Part 1 — What you need
 
-- The setup from [P1](./playlist-01-first-playlist.md#part-1--before-you-start): a **local active script source**, Revit open with a project with at least two levels, **Paracore Server** on, desktop app **Connected**.
+- The setup from [P1](./playlist-01-first-playlist.md#part-1--before-you-start): a **local active script source**, Revit open with a project with at least two levels **and at least one wall placed on each of Level 1 and Level 2**, **Paracore Server** on, desktop app **Connected**. You need a wall on Level 2 for the final check to be meaningful.
 - Two scripts from the earlier lessons in that same source: `WallCountByLevel` (P1) and `StampWallsOnLevel` (P2), plus `DoorSchedule` (P1).
 - One new, deliberately broken script — see Part 2.
 
@@ -112,7 +112,7 @@ Click **Save**.
 
 Click **Run** again. All three go green, and the door report finally appears in History.
 
-Re-running step 2 did **not** create duplicate walls or append a second stamp: it wrote the same `HANDOVER L1` value to the same walls again. That is why an idempotent step makes a re-runnable playlist, and why a step that **creates** geometry does not. If step 2 had created 22 walls, the second run would have created 22 more.
+Re-running step 2 did **not** create duplicate walls or append a second stamp: it wrote the same `HANDOVER L1` value to the same walls again. That is why an idempotent step makes a re-runnable playlist, and why a step that **creates** geometry does not. A step that creates walls would create another set on the second run.
 
 > **Design rule:** every write step in a playlist must be safe to run twice. Setting a parameter to a fixed value is. Creating elements, appending to a list, or incrementing a number is not. If you cannot make a step idempotent, it belongs in one script with explicit stage control, not in a playlist.
 

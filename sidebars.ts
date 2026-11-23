@@ -81,6 +81,7 @@ const sidebars: SidebarsConfig = {
 
   tutorialsSidebar: [
     'tutorials/index',
+    'tutorials/one-line-wins',
     'tutorials/dynamo-export',
     'tutorials/the-repl',
     'tutorials/reading-the-model',

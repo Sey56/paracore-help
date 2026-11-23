@@ -64,7 +64,7 @@ Sorts the collection ascending by any parameter or C# property.
 ```csharp
 // Rooms are not family-based, so name the columns you want before rendering
 GetElements("Rooms").OrderByParam("Area")
-    .Select(r => new { Number = r.GetStr("Number"), Name = r.Name, Area = r.GetVal("Area", "m2") })
+    .Select(r => new { r.Id, Number = r.GetStr("Number"), Name = r.Name, Area = r.GetVal("Area", "m2") })
     .Table()
 
 GetElements("Doors").OrderByParam("Mark").Table()       // alphabetical A→Z
@@ -79,7 +79,7 @@ Sorts the collection descending. Same auto-numeric detection.
 
 ```csharp
 GetElements("Rooms").OrderByParamDesc("Area")
-    .Select(r => new { Number = r.GetStr("Number"), Name = r.Name, Area = r.GetVal("Area", "m2") })
+    .Select(r => new { r.Id, Number = r.GetStr("Number"), Name = r.Name, Area = r.GetVal("Area", "m2") })
     .Table()
 
 GetElements("Walls").OrderByParamDesc("Length").Table() // longest first
@@ -89,39 +89,50 @@ GetElements("Walls").OrderByParamDesc("Length").Table() // longest first
 
 ## Grouping & Aggregation
 
-### `.GroupByParam(groupBy)` → `Group | Count`
-
-Groups the collection by a parameter value and returns a summary table.
+`GroupByParam("Level")` returns `Group | Count`; adding a sum parameter returns `Group | Count | Total`. Those summary rows are ideal for charts. For a **table**, include an Id so the row can take you back to the model — use one representative member of each group:
 
 ```csharp
-GetElements("Doors").GroupByParam("Level").Table()
-// Group        | Count
-// Level 1      | 14
-// Level 2      | 9
-
-GetElements("Doors").GroupByParam("HandFlipped").Table()
-// Group        | Count
-// True         | 6
-// False        | 17
+GetElements("Doors")
+    .GroupBy(d => d.GetStr("Level"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count()
+    })
+    .Table()
+// Id                  | Group        | Count
+// <id from one door>  | <level name> | <count in model>
 ```
 
-### `.GroupByParam(groupByParam, sumParam, unit)` → `Group | Count | Total`
-
-**groupByParam**: parameter to group by (e.g. "Level"). Elements with the same value become one group.
-**sumParam**: numeric parameter to SUM per group (e.g. "Area", "Length").
-**unit**: unit to display the summed total in (e.g. "m2", "m"). Optional.
+With a sum, add `Total`. The unit is the one you pass to `GetNum`:
 
 ```csharp
-// Group rooms by Level, sum their Area in m² per level
-GetElements("Rooms").GroupByParam("Level", "Area", "m2").Table()
-// Group   | Count | Total
-// Level 1 | 12    | 892.3
+GetElements("Rooms")
+    .GroupBy(r => r.GetStr("Level"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count(),
+        Total = g.Sum(r => r.GetNum("Area", "m2"))
+    })
+    .Table()
+// Id                   | Group        | Count | Total
+// <id from one room>   | <level name> | <count in model> | <total in m2>
 
-// Group walls by Base Constraint, sum their Length in meters
-GetElements("Walls").GroupByParam("Base Constraint", "Length", "m").Table()
-// Group   | Count | Total
-// Level 1 | 23    | 284.5
-// Level 2 | 18    | 201.3
+GetElements("Walls")
+    .GroupBy(w => w.GetStr("Base Constraint"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count(),
+        Total = g.Sum(w => w.GetNum("Length", "m"))
+    })
+    .Table()
+// Id                   | Group        | Count | Total
+// <id from one wall>   | <level name> | <count in model> | <total in m>
 ```
 
 ### `.SumParam(name, unit)`

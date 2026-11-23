@@ -61,7 +61,10 @@ Description:
 Counts walls by level. Read-only.
 */
 Println($"Walls in the model: {GetElements<Wall>().Count()}");
-GetElements<Wall>().GroupByParam("Level").Table();
+GetElements<Wall>()
+    .GroupBy(w => w.GetStr("Level"))
+    .Select(g => new { Id = g.First().Id.Value, Group = g.Key, Count = g.Count() })
+    .Table();
 ```
 
 `RoomAreaReport.cs`
@@ -75,8 +78,17 @@ Dependencies: RevitAPI 2025+, Paracore.Addin
 Description:
 Reports room area by level, in square metres. Read-only.
 */
-Println($"Rooms in the model: {GetElements("Rooms").Count()}");
-GetElements("Rooms").GroupByParam("Level", "Area", "m2").Table();
+Println($"Rooms in the model: {GetElements(\"Rooms\").Count()}");
+GetElements("Rooms")
+    .GroupBy(r => r.GetStr("Level"))
+    .Select(g => new
+    {
+        Id = g.First().Id.Value,
+        Group = g.Key,
+        Count = g.Count(),
+        Total = g.Sum(r => r.GetNum("Area", "m2"))
+    })
+    .Table();
 ```
 
 `DoorSchedule.cs`
@@ -210,17 +222,17 @@ The **Output panel** on the right is shared by REPL, Gallery and Playlists. Its 
 
 ```text
 > WallCountByLevel
-Walls in the model: 42
-Level                Count
-Level 1              22
-Level 2              20
+Walls in the model: <count>
+Id                   Group          Count
+<id from one wall>   <level name>   <count in model>
+<id from one wall>   <next level>   <count in model>
 > RoomAreaReport
-Rooms in the model: 18
-Level                Area (m2)
-Level 1              184.30
+Rooms in the model: <count>
+Id                    Group          Count   Total (m2)
+<id from one room>    <level name>   <count in model>   <total in m2>
 > DoorSchedule
-Doors in the model: 12
-… doors ordered by width …
+Doors in the model: <count>
+… doors ordered by width, each row with its Id …
 ```
 
 Each block starts with a `> Script Name` marker, then that script's `Println` output, then a duration marker. Errors would appear as red lines. **Clear** and **Copy** buttons sit in the panel header.

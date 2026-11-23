@@ -41,8 +41,11 @@ door.Matches("NonExistent")   // → false
 Returns a list of all native C# properties on the element's runtime type (via Reflection).
 
 ```csharp
-GetElements<Wall>().First().ReflectionProperties().Table()
-// Columns: Name | Type
+var wall = GetElements<Wall>().First();
+wall.ReflectionProperties()
+    .Select(p => new { wall.Id, p.Name, p.Type })
+    .Table()
+// Columns: Id | Name | Type
 ```
 
 ### `element.ReflectionMethods()`
@@ -50,8 +53,11 @@ GetElements<Wall>().First().ReflectionProperties().Table()
 Returns a list of all public C# methods available on the element's runtime type (via Reflection), excluding standard System.Object methods. Details the method name, return type, parameters, and declaring type.
 
 ```csharp
-GetElements<FamilyInstance>("Doors").First().ReflectionMethods().Table()
-// Columns: Method | ReturnType | Parameters | DeclaringType
+var door = GetElements<FamilyInstance>("Doors").First();
+door.ReflectionMethods()
+    .Select(m => new { door.Id, m.Method, m.ReturnType, m.Parameters, m.DeclaringType })
+    .Table()
+// Columns: Id | Method | ReturnType | Parameters | DeclaringType
 ```
 
 ---
@@ -77,10 +83,12 @@ GetElements("Walls").Take(3).Peek()
 
 ### `element.InstanceParams()`
 
-Returns all instance parameters as `Name | Storage | Value`.
+Returns all instance parameters as `Name | Storage | Value`. Add the element Id so the table stays navigable.
 
 ```csharp
-wall.InstanceParams().Table()
+wall.InstanceParams()
+    .Select(p => new { wall.Id, p.Name, p.Storage, p.Value })
+    .Table()
 ```
 
 ### `element.TypeParams()`
@@ -88,7 +96,9 @@ wall.InstanceParams().Table()
 Returns all type parameters as `Name | Storage | Value`.
 
 ```csharp
-wall.TypeParams().Table()
+wall.TypeParams()
+    .Select(p => new { wall.Id, p.Name, p.Storage, p.Value })
+    .Table()
 ```
 
 ### `element.CombinedParams()`
@@ -97,11 +107,13 @@ Returns instance + type parameters together with a `Scope` column (`"Instance"`,
 
 :::tip[Pro Tip]
 
-Use `element.CombinedParams().Table()` to see both Instance and Type parameters in one view — with a Scope column showing which is which. This is the fastest way to discover whether a property like "Width" lives at the Instance or Type level.
+Use `element.CombinedParams()` with an Id column to see both Instance and Type parameters in one view — with a Scope column showing which is which. This is the fastest way to discover whether a property like "Width" lives at the Instance or Type level.
 :::
 
 ```csharp
-wall.CombinedParams().Table()
+wall.CombinedParams()
+    .Select(p => new { wall.Id, p.Name, p.Storage, p.Value, p.Scope })
+    .Table()
 ```
 
 ### `element.BuiltInParams()`
@@ -109,7 +121,9 @@ wall.CombinedParams().Table()
 Returns all `BuiltInParameter` identifiers for the element: `Name | BIP | Value`. Use to find the BIP string for language-independent code.
 
 ```csharp
-wall.BuiltInParams().Table()
+wall.BuiltInParams()
+    .Select(p => new { wall.Id, p.Name, p.BIP, p.Value })
+    .Table()
 ```
 
 ### `element.NativeProperties()`
@@ -141,8 +155,20 @@ bool hasMark = dict.ContainsKey("Mark");   // false when Mark is blank
 Returns a table of all geometry objects in the element: Solids (Volume, Area, Faces), Curves (Arc, Line), PolyLines. Automatically accumulates transformations to provide World-Space results.
 
 ```csharp
-wall.GeometrySummary().Table()
-// Columns: Type | Source | Material | Volume | Area | Faces | Edges
+wall.GeometrySummary()
+    .Select(g => new
+    {
+        wall.Id,
+        g.Type,
+        g.Source,
+        g.Material,
+        g.Volume,
+        g.Area,
+        g.Faces,
+        g.Edges
+    })
+    .Table()
+// Columns: Id | Type | Source | Material | Volume | Area | Faces | Edges
 ```
 
 ---
