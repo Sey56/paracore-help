@@ -62,8 +62,7 @@ Transact("Create room outline", () =>
 });
 
 Println($"{walls.Count} walls created");
-walls.Select();      // select them in Revit
-walls.Zoom();        // and frame them in the view
+walls.Select().Zoom();   // select them in Revit, then frame them in the view
 ```
 
 `(i + 1) % corners.Count` is the "and back to the start" trick: with four corners it pairs 0→1, 1→2, 2→3, 3→0. That is what closes the loop.
@@ -114,7 +113,7 @@ Transact("Create room outline", () =>
 });
 
 walls.SetParam("Unconnected Height", 3.0, "m");
-walls.Select();
+walls.Select().Zoom();   // select them, then frame them — as in the picture
 
 Println($"{walls.Count} walls, {walls.SumParam("Length", "m"):F1} m of wall in total");
 ```
