@@ -70,10 +70,10 @@ The blue badge on **History** is normal here: every run records its execution ti
 GetElements<Room>()
     .WhereParam("Level", ActiveView.GetStr("Associated Level"))
     .WhereParam("Area", ">", 14.5, "m2")
-    .Select()
+    .Select().Zoom()
 ```
 
-Run that from a floor plan. `Associated Level` is a floor-plan parameter; a 3D view does not have one.
+Run that from a floor plan. `Associated Level` is a floor-plan parameter; a 3D view does not have one. `.Select()` highlights the matching rooms; `.Zoom()` frames them in the current view — that is what the screenshot shows.
 
 ![Large rooms selected on the active floor plan](/img/wins-02b-rooms-selected-on-level.png)
 

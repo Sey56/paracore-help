@@ -88,9 +88,12 @@ That is on purpose. `0 results` is a *legitimate answer*, so if a typo could als
 Filters are only useful if the answer is visible. End the chain with an output:
 
 | `.Table()` | interactive table in the Analytics tab |
-| `.Select()` | select everything in Revit and zoom to it |
+| `.Select()` | select everything in Revit |
+| `.Zoom()` | frame the selection in the active view |
 | `.Isolate()` | isolate it in the active view |
 | `.Delete()` | delete it, in one transaction |
+
+Chain `.Select().Zoom()` when you want both: `.Select()` highlights the elements, `.Zoom()` frames them in the active view.
 
 > ⚠ **Bare `.Table()` on Rooms — until 4.9.1 is released.** The 4.9.0 default table expects `Family` and `Type` parameters; Rooms declare neither, so `GetElements<Room>().Table()` raises `there is no "Family" parameter in Category Rooms`. Project the columns you want first: `.Select(r => new { r.Id, Number = r.GetStr("Number"), Area = r.GetVal("Area", "m2") }).Table()`. The same applies to `GetElements("Rooms")`.
 
@@ -169,12 +172,12 @@ The level filter keeps the selection on the plan you are looking at; walls on ot
    GetElements<Room>()
        .WhereParam("Level", ActiveView.GetStr("Associated Level"))
        .WhereParam("Area", ">", 14.5, "m2")
-       .Select();
+       .Select().Zoom();
    ```
 
    ![Large rooms selected on the active floor plan](/img/wins-02b-rooms-selected-on-level.png)
 
-   The selected rooms are visible here because the level filter narrowed the query first; the same screenshot is used in [One-line wins](./one-line-wins.md#2-the-five-largest-rooms).
+   The level filter keeps the selection on the current plan; `.Zoom()` frames those rooms in the view, which is why they fill the screenshot. The same shot is used in [One-line wins](./one-line-wins.md#2-the-five-largest-rooms).
 
 5. **Deliberately misspell a parameter** and read the error. Then use `Peek` on any element to see the names that really exist.
 
