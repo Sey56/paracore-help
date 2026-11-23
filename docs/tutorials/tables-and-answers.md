@@ -223,7 +223,9 @@ GetElements<Wall>()
 
 > 💡 **Five outputs, one at a time.** This report emits four tables and one chart, but the desktop app's **Analytics** tab shows only one result at a time and starts on the first — so it can look as though the rest were lost. Use the **navigator at the top right of the Analytics tab**: the left / right chevron buttons (**Previous View** / **Next View**) step through every table and chart, in the order they were produced, and the counter shows where you are (for example `1/5`). It wraps around at either end and appears only when the run produced more than one result. If you were on **History** when the run finished, a **blue badge** on **Analytics** means unseen results are waiting there — it disappears the moment you activate that tab.
 
-![Analytics navigator showing the result counter and chevrons](/img/wins-03-analytics-navigator.png)
+![Analytics navigator in a three-result run, showing the counter and chevrons](/img/wins-03-analytics-navigator.png)
+
+The screenshot is from a shorter three-result run, so its counter reads `3/3`; in this report the same controls run from `1/5` to `5/5`.
 
 A local function (`void Section(...)`) at the top level is worth learning now — it keeps a long report readable, and it is the same shape a longer automation takes.
 

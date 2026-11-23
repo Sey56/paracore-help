@@ -159,20 +159,22 @@ VS Code opens a Jupyter notebook with the data already loaded. No export step, n
 This is the one that surprises people: **the table is editable**. Run this first:
 
 ```csharp
-GetElements<Wall>()
+GetElements("Walls")
+    .WhereParam("Base Constraint", "0445 - FirstFloor")
     .Select(w => new
     {
         w.Id,
-        Fire_Rating = w.GetStr("Fire Rating"),
-        Comments    = w.GetStr("Comments")
+        Name            = w.Name,
+        Base_Constraint = w.GetStr("Base Constraint"),
+        Top_Constraint  = w.GetStr("Top Constraint")
     })
     .Table()
 ```
 
-- **Cell edit:** double-click a value cell in the **Comments** column, type a new value, press <kbd>Enter</kbd>. The change is written to that wall's parameter in Revit. If the parameter is **read-only in Revit**, the write is refused — the model is not silently half-updated.
+- **Cell edit:** double-click a value cell in the **Base Constraint** column, type a new value, press <kbd>Enter</kbd>. The change is written to that wall's parameter in Revit. If the parameter is **read-only in Revit**, the write is refused — the model is not silently half-updated.
 - **Mass edit:** click **Export CSV** in the table, edit many cells in your spreadsheet, **leave the Id column untouched**, save, then click **Upload CSV**. Every value under the headers you changed is written back to the matching elements in one pass.
 
-The header is the parameter name. `Fire_Rating` reaches the real parameter `Fire Rating`; the underscore stands for the space. Do not add a unit suffix such as `Area_m2` — the lookup would look for a parameter that does not exist.
+The header is the parameter name. `Base_Constraint` reaches the real parameter `Base Constraint`; the underscore stands for the space. The same rule maps `Fire_Rating` to `Fire Rating`. Do not add a unit suffix such as `Area_m2` — the lookup would look for a parameter that does not exist.
 
 ![Analytics table with an edited cell and the Export CSV / Upload CSV buttons](/img/wins-04-table-edit-and-csv.png)
 

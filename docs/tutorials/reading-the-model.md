@@ -127,9 +127,7 @@ walls.Select();    // and show those same walls in the Revit view
 
 The table gives you the numbers; `.Select()` gives you the elements on screen. That is the two-output habit this track keeps: read the answer, then look at what it refers to.
 
-![Large rooms selected on the active floor plan](/img/wins-02b-rooms-selected-on-level.png)
-
-The level filter keeps the selection on the plan you are looking at; the Properties panel shows however many rooms that query matched in your model. Rooms on other levels would be selected but not visible here — see the viewport option in [One-line wins](./one-line-wins.md#2-the-five-largest-rooms).
+The level filter keeps the selection on the plan you are looking at; walls on other levels would still be selected, but Revit gives you no visual feedback for them here. The same viewport rule shows up with rooms in [One-line wins](./one-line-wins.md#2-the-five-largest-rooms), where an area filter is selected on the active floor plan.
 
 `GetNum` returns the exact converted number — the third argument (`2`) rounds it just for this table; leave it off when the value will be summed or compared. `GetVal` returns a *display* string, so pass the unit and the decimals you want.
 
@@ -173,6 +171,10 @@ The level filter keeps the selection on the plan you are looking at; the Propert
        .WhereParam("Area", ">", 14.5, "m2")
        .Select();
    ```
+
+   ![Large rooms selected on the active floor plan](/img/wins-02b-rooms-selected-on-level.png)
+
+   The selected rooms are visible here because the level filter narrowed the query first; the same screenshot is used in [One-line wins](./one-line-wins.md#2-the-five-largest-rooms).
 
 5. **Deliberately misspell a parameter** and read the error. Then use `Peek` on any element to see the names that really exist.
 
