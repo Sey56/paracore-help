@@ -15,7 +15,11 @@ Two completion gaps are now closed, and they matter most in day-to-day scripting
 - **Category names inside `GetElements("…")`.** As you type inside the quotes, the categories themselves are suggested — `Walls`, `Doors`, `Rooms` and the rest — instead of an empty string you had to fill in from memory.
 - **Parameter names inside `.WhereParam("…")`.** The suggestions are now the parameters of the category you selected. For walls you get Revit's real name **Unconnected Height**, not a guessed `Height`; doors suggest door parameters, rooms suggest room parameters, and so on. The raw Revit API and Paracore's own DSL both get completion at the same time.
 
-Try these two snippets in the REPL playground. You can type them with Revit closed; running them needs Revit and the add-in. The first uses raw Revit API and prints to the History tab; the second uses Paracore's DSL and renders a table in the Analytics tab.
+**Type these two blocks manually in the REPL playground — do not copy/paste them.** Keep this page open beside the REPL and enter each line yourself: first the raw Revit API version, then the Paracore DSL version. Watch IntelliSense as you type — category names inside `GetElements("…")`, real wall parameters such as **Unconnected Height** inside `.WhereParam("…")`, and Revit API names in the first block. You can type with Revit closed; running the finished code needs Revit and the add-in. The first prints to the History tab; the second renders a table in the Analytics tab.
+
+:::note[Why these two are different]
+Every other snippet in the help, including the tutorials, is meant to be copied and run so you can see the result. These two are the exception: copying and running them works, but it skips the IntelliSense behaviour they are here to demonstrate.
+:::
 
 ```csharp
 // Walls shorter than 2 m — raw Revit API, printed in the History tab
