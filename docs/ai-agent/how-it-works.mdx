@@ -16,20 +16,20 @@ Generated code is different. A model writes it from a conversation, it can conta
 
 ## What the boundary refuses
 
-Code on this channel cannot name:
+Code the assistant executes through the Paracore MCPs cannot name:
 
 - **Network access** — `System.Net`, HTTP calls, sockets.
 - **Process launching** — starting other programs.
 - **Reflection and native interop** — inspecting or calling into code at runtime, or loading an external DLL from disk.
-- **File and thread APIs** — `System.IO` and `System.Threading` on the REPL channel.
+- **File and thread APIs** — `System.IO` and `System.Threading` on the agent REPL execution path.
 
 These are refused at the symbol level by the compiler rather than matched as text, and they say nothing about what code can compute: the assistant can still read the model, query parameters and build geometry. The Revit API is left whole.
 
-The assistant uses the same REPL channel as the desktop app, so a script you type there meets the same boundary — a side effect of sharing a channel, not a judgement about your code. Gallery scripts run on a different channel and keep full file access, including `System.IO` and absolute paths.
+The boundary belongs to agent execution, not to the REPL editor. A script you type and run yourself in the desktop REPL playground is your own code and is not subject to these agent restrictions. Gallery scripts run through a different execution path and keep full file access, including `System.IO` and absolute paths.
 
 ## The workspace
 
-Scripts on the REPL channel read and write inside a workspace folder. By default this is:
+Agent scripts read and write inside a workspace folder. By default this is:
 
 ```
 %LOCALAPPDATA%\Paracore\AgentWorkspace

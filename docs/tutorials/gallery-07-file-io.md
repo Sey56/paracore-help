@@ -153,7 +153,7 @@ public class FinishLogRow
 
 All three produce a `string` — the full path. The engine does not open the file for you; you do that with `File.ReadAllLines`, `File.WriteAllLines`, or any standard .NET file API.
 
-> **Gallery scripts can work with any file path.** `System.IO` is pre-imported for every script, and a Gallery script can read and write outside the workspace — that is why file-based tools belong here. In the interactive REPL, file work goes through the `Files` helpers inside the workspace folder instead.
+> **Gallery scripts can work with any file path.** `System.IO` is pre-imported for every script, and a Gallery script can read and write outside the workspace — that is why file-based tools belong here. A script you write and run yourself in the REPL playground can do the same; only scripts executed by an assistant are confined to the `Files` helpers inside the workspace folder.
 
 ## The `not_reverted` warning
 

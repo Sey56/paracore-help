@@ -93,14 +93,14 @@ The Analytics tab renders the chart from that query. [See a worked chart example
 
 ## Files
 
-In the interactive REPL, file work goes through the `Files` helpers and stays inside the REPL workspace folder. Use short, relative names:
+The `Files` helpers keep file work inside the REPL workspace folder. They are a convenient option for snippets you run yourself; scripts generated and executed by an assistant must use them. Use short, relative names:
 
 ```csharp
 var csv = string.Join("\n", GetElements("Walls").Select(w => w.GetStr("Type Name")));
 Files.WriteText("out.csv", csv);
 ```
 
-Absolute paths such as `C:\tmp\room-check` are not accepted here. Gallery scripts use `System.IO` directly and can work with any path — see [File-based Gallery scripts](../tutorials/gallery-07-file-io.md).
+On the agent execution path, absolute paths such as `C:\tmp\room-check` are not accepted. Scripts you write and run yourself in the REPL playground can use `System.IO` directly and work with any path, just like Gallery scripts — see [File-based Gallery scripts](../tutorials/gallery-07-file-io.md).
 
 ## If a script runs too long
 

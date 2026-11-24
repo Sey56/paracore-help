@@ -18,7 +18,7 @@ There is no fixed list of operations. Paracore-Gen writes a new C# script for ea
 
 ## What keeps generated code in bounds
 
-- Generated code can contain anything, so it cannot name machine capabilities it does not need: network, process launching, reflection, native interop, and on the REPL channel `System.IO` and threads. See [How Paracore-Gen works](./how-it-works.mdx) for the boundary and why it exists.
+- Generated code can contain anything, so when the assistant executes it through the MCPs it cannot name machine capabilities it does not need: network, process launching, reflection, native interop, and on the REPL execution path `System.IO` and threads. A script you write and run yourself in the REPL playground is not subject to that agent boundary. See [How Paracore-Gen works](./how-it-works.mdx) for the boundary and why it exists.
 - Dangerous operations are restricted, and a runaway script is stopped automatically.
 - You see the code before it executes, so nothing happens unseen.
 
