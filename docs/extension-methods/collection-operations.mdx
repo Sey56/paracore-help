@@ -15,7 +15,7 @@ Sets a parameter on **every element** in the collection inside a single transact
 // Mark all unreviewed doors
 GetElements("Doors")
     .WhereParam("Comments", "")
-    .SetParam("Comments", "Pending Review")
+    .SetParam("Comments", "Pending Review");
 
 // Set top constraint and offset with unit conversion in a single chain
 GetElements<Wall>()
@@ -89,7 +89,7 @@ These work on **any** `IEnumerable<T>`.
 // so the chart picks up its axes on its own. Chain the graph directly, no .Select() first.
 GetElements("Doors")
     .GroupByParam("Level")
-    .PieGraph()
+    .PieGraph();
 
 // A grouped table carries the Id of one element in the group, so the row is clickable
 GetElements("Walls")
@@ -124,7 +124,7 @@ All return `IEnumerable<T>` (chainable). All batch into a single transaction aut
 // Find and isolate all walls without a Mark
 GetElements<Wall>()
     .WhereParam("Mark", "")
-    .Isolate()
+    .Isolate();
 
 // Find and delete temporary elements
 GetElements("Generic Models")
