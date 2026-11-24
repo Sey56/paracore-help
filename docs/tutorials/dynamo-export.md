@@ -4,7 +4,7 @@ title: Export to Dynamo (new in 4.9.0)
 
 # Export to Dynamo
 
-What is new in 4.9.0 is the **Export Dynamo** button in the Gallery toolbar — earlier Paracore versions have no such button. In 4.9.0, it exports **pure .NET scripts**. It does not convert a script that reads or edits the Revit model, and it does not carry Paracore helpers into Dynamo.
+What is new in 4.9.0 is the **Export Dynamo** button in the Gallery toolbar — earlier Paracore versions have no such button. It exports the **pure .NET computation** of a Gallery script as a Method node or a Graph. Revit work belongs to Dynamo: wire the exported values into Dynamo's native Revit nodes to read model data or change the model. A script that calls the Revit API or Paracore helpers cannot be exported directly, and no Paracore code follows the export into Dynamo.
 
 ## What can be exported
 
