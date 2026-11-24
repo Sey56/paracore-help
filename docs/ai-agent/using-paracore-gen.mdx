@@ -35,10 +35,10 @@ Paracore-Gen is a standalone Windows app. You install it once, then tell your AI
 Paracore-Gen is installed alongside the other Paracore tools. Its files live here:
 
 ```
-C:\Users\seyou\AppData\Roaming\paracore-data\mcp-servers
+%APPDATA%\paracore-data\mcp-servers
 ```
 
-The server program is `paracore-gen.exe` in that folder. (On any Windows machine the per-user path is `%APPDATA%\paracore-data\mcp-servers\paracore-gen.exe`, where `%APPDATA%` expands to `C:\Users\<your-user>\AppData\Roaming`.)
+The server program is `paracore-gen.exe` in that folder. `%APPDATA%` is your per-user roaming folder — on Windows it resolves to `C:\Users\<your-username>\AppData\Roaming`. Most MCP clients do not expand environment variables inside JSON config, so use the resolved path in `command`, not `%APPDATA%` literally.
 
 ### Add it to your AI client
 
@@ -52,12 +52,12 @@ Paracore-Gen is an MCP server, so connecting it means adding a `paracore-gen` en
    {
      "mcpServers": {
        "paracore-gen": {
-         "command": "C:\\Users\\seyou\\AppData\\Roaming\\paracore-data\\mcp-servers\\paracore-gen.exe"
+         "command": "C:\\Users\\<your-username>\\AppData\\Roaming\\paracore-data\\mcp-servers\\paracore-gen.exe"
        }
      }
    }
    ```
-   No `args` are required — the server runs over stdio. If the file already lists other servers, just add the `"paracore-gen": { ... }` block inside the existing `mcpServers` object and keep the commas correct.
+   Replace `<your-username>` with your Windows username (or paste the full path copied from File Explorer). No `args` are required — the server runs over stdio. If the file already lists other servers, just add the `"paracore-gen": { ... }` block inside the existing `mcpServers` object and keep the commas correct.
 3. Save the file and **fully quit Claude Desktop** (close it from the system tray too, not just the window), then start it again. Claude Desktop only reads the config at launch, so a partial quit is the usual reason a new server never appears.
 4. Start Revit, open a project, and make sure the Paracore server inside Revit is switched on.
 5. In a new chat, confirm `paracore-gen` shows up in the tools list (the tools/connectors icon in the message box), then ask: "Check that you can connect to Revit." The assistant should report that it is connected and tell you which project is open.
