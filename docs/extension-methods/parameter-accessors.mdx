@@ -21,12 +21,12 @@ A name that no element of the category declares raises an error instead of retur
 **Smart String Getter.** Returns a human-readable string value.
 
 - **"Level" works on every category** — Walls → Base Constraint, Columns → Base Level, Beams → Reference Level, Rooms/Doors/Windows → built-in Level. No more guessing.
-- If parameter is an `ElementId` (Level, Type, Room), returns the **element name** (e.g., `"Level 1"`).
+- If parameter is an `ElementId` (Level, Type, Room), returns the **element name** (e.g., `"02 - Ground Floor Plan"`).
 - Falls back to Revit's formatted value string for numbers.
 - Falls back to C# property via Reflection (e.g., `"HandFlipped"` → `"True"`).
 - Falls back to `NativeProperties` (Level, Name, Category, etc.).
 - Falls back to Type parameter if not found on the instance (e.g., standard door `"Width"`).
-- A name that does not exist on the element's category **raises an error** and suggests the closest real name. Use `.CombinedParams()` with an Id column to list the real names before you write a query.
+- A name that does not exist on the element's category **raises an error** and suggests the closest real name. Use `.CombinedParams().Table()` to list the real names before you write a query.
 
 ```csharp
 wall.GetStr("Level")       // → the wall's level name (via Base Constraint)
@@ -93,7 +93,7 @@ wall.GetVal("Area", "m2", 3)   // → 3 decimals
 For arithmetic, use `GetNum("Area", "m2")`, which returns the exact number. If you want the Properties palette itself to show the decimals, change the project's Area accuracy in Revit (**Manage → Project Units**).
 :::
 
-- Returns values like `"3600.0 mm"`, `"1.25 m³"`, `"Level 1"`.
+- Returns values like `"3600.0 mm"`, `"1.25 m³"`, or a level name.
 - Falls back to `GetStr` if Revit doesn't provide a formatted string.
 - Automatically falls back to Type parameters if an instance parameter is not found.
 - Returns `"-"` if not found.
@@ -208,17 +208,19 @@ Collection methods wrap the entire loop in a single `Tx.Transact` call. Each ind
 | Input type | Behavior |
 |---|---|
 | `string "500 mm"` | Calls `SetValueString` — parses value + unit |
-| `string "Level 1"` | Resolves name to `ElementId` automatically |
+| `string levelName` | Resolves a real level name to `ElementId` automatically |
 | `string "Updated"` | Standard string set |
 | `double 3.5` | Direct numeric set (internal units) |
 | `bool true` | Native C# Property set via Reflection (e.g. "Pinned") |
 | `double 200, string "mm"` | Converts from the unit to internal units, then sets |
 
 ```csharp
+var wall = GetElements<Wall>().First();
+var level = GetElements("Walls").Select(w => w.GetStr("Base Constraint")).First();
 wall.SetVal("Comments", "Reviewed")          // string
 wall.SetVal("Base Offset", "500 mm")         // value string — unit parsed
 wall.SetVal("Base Offset", -150, "cm")       // converts -150cm to internal feet
-wall.SetVal("Level", "Level 2")              // ElementId resolved by name
+wall.SetVal("Base Constraint", level)        // ElementId resolved by name
 wall.SetVal("Pinned", true)                  // Native C# property
 ```
 

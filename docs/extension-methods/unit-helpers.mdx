@@ -12,7 +12,8 @@ Paracore extends `double`, `int`, `decimal`, and `string` with fluent unit helpe
 Every numeric getter (`GetNum`, `GetNum(name, unit)`, etc.) returns values that can be piped through unit helpers:
 
 ```csharp
-// GetNum returns raw internal feet (11.811)
+var wall = GetElements<Wall>().First();
+// GetNum returns raw internal feet
 wall.GetNum("Length")               // → 11.811
 
 // GetNum(name, unit) converts FOR you
@@ -26,7 +27,8 @@ wall.GetNum("Length").FormatUnit("mm")  // → "3600.0 mm"
 The engine's internal resolution chain (instance → reflection → type parameters) means you can get **type** parameters with units too:
 
 ```csharp
-door.GetNum("Width", "mm")              // → 900.0  (Width is a type param)
+var door = GetElements<FamilyInstance>("Doors").First();
+door.GetNum("Width", "mm")              // → the door width in mm
 door.GetNum("Height", "m")              // → 2.1   (Height is a type param)
 ```
 
@@ -84,6 +86,8 @@ var largeRooms = GetElements<Room>()
 Converts a Revit internal value **from** feet into the target unit. Returns a `double`. Available on `double`, `int`, and `decimal`. **Exact by default** — `decimals` is `-1`, meaning no rounding; pass a second argument to round. The result is a raw `double`, so it can carry floating-point noise and never keeps trailing zeros. For a formatted string use `FormatUnit` or `FormatValueOnly`.
 
 ```csharp
+var wall = GetElements<Wall>().First();
+var room = GetElements<Room>().First();
 // The exact value and the rounded value come from the same element:
 wall.GetNum("Length").OutputUnit("mm")      // exact, no rounding
 wall.GetNum("Length").OutputUnit("m", 2)    // rounded to 2 dp
@@ -96,6 +100,8 @@ room.GetNum("Area").OutputUnit("m2", 2)     // rounded to 2 dp
 Same as `OutputUnit` but returns a **string with the unit suffix** appended. Ideal for display and logging.
 
 ```csharp
+var wall = GetElements<Wall>().First();
+var room = GetElements<Room>().First();
 wall.GetNum("Length").FormatUnit("mm")      // → "3600.0 mm"
 room.GetNum("Area").FormatUnit("m2")        // → "25.46 m2"
 wall.GetNum("Volume").FormatUnit("m3", 3)   // → "0.720 m3"
@@ -106,6 +112,8 @@ wall.GetNum("Volume").FormatUnit("m3", 3)   // → "0.720 m3"
 Returns the numeric value converted to the target unit as a **plain string without suffix**. Ideal for CSV/Excel export.
 
 ```csharp
+var wall = GetElements<Wall>().First();
+var room = GetElements<Room>().First();
 wall.GetNum("Length").FormatValueOnly("mm")     // → "3600"
 room.GetNum("Area").FormatValueOnly("m2", 4)    // → "25.4578"
 ```
@@ -119,6 +127,7 @@ room.GetNum("Area").FormatValueOnly("m2", 4)    // → "25.4578"
 Snaps a raw internal value to the nearest incremental precision of a target unit, then converts it back to internal units. This prevents floating-point drift when setting parameters.
 
 ```csharp
+var wall = GetElements<Wall>().First();
 // Without RoundTo: you might set 1999.999997mm instead of 2000mm
 wall.SetNum("Base Offset", 2000.0.InputUnit("mm"), "mm");
 
@@ -167,6 +176,8 @@ Available on `double`. All use a default tolerance of **1e-9 feet** (~0.0003mm) 
 | `.IsNegative(tolerance?)` | `value < -tolerance` |
 
 ```csharp
+var wall = GetElements<Wall>().First();
+var room = GetElements<Room>().First();
 if (wall.GetNum("Length").AlmostZero()) { /* skip zero-length walls */ }
 if (room.Area.IsPositive()) { /* skip rooms with zero/negative area */ }
 ```
@@ -181,6 +192,8 @@ if (room.Area.IsPositive()) { /* skip rooms with zero/negative area */ }
 | `.IsGreaterThanOrEqual(limit, tolerance?)` | `value > limit` OR approximately equal |
 
 ```csharp
+var wall = GetElements<Wall>().First();
+var room = GetElements<Room>().First();
 if (wall.GetNum("Width", "mm").IsGreaterThanOrEqual(300)) { /* structural walls */ }
 if (room.GetNum("Area", "m2").IsLessThan(10)) { /* small rooms */ }
 ```
@@ -190,6 +203,8 @@ if (room.GetNum("Area", "m2").IsLessThan(10)) { /* small rooms */ }
 Chain `InputUnit` to create thresholds in human units:
 
 ```csharp
+var wall = GetElements<Wall>().First();
+var room = GetElements<Room>().First();
 var isLargeRoom = room.GetNum("Area")
     .IsGreaterThan(25.0.InputUnit("m2"));
 

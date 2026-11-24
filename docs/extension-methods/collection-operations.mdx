@@ -17,12 +17,17 @@ GetElements("Doors")
     .WhereParam("Comments", "")
     .SetParam("Comments", "Pending Review");
 
-// Set top constraint and offset with unit conversion in a single chain
+// Numeric values are converted from the unit you pass
+var topLevel = GetElements("Walls")
+    .Select(w => w.GetStr("Top Constraint"))
+    .Where(s => !string.IsNullOrEmpty(s) && s != "Unconnected")
+    .First();
 GetElements<Wall>()
-    .WhereParam("Base Constraint", "Level 01")
-    .SetParam("Top Constraint", "Level 02")
+    .WhereParam("Top Constraint", topLevel)
     .SetParam("Top Offset", -150, "cm")
 ```
+
+Only write to a parameter that is writable in the element's current state. `Top Offset` is read-only on a wall whose `Top Constraint` is *Unconnected*, so this example picks a level-constrained wall rather than setting the constraint first.
 
 ### `.SetParam(name, valueFactory)` — Dynamic
 
@@ -31,8 +36,9 @@ Sets a parameter on every element using a function. The function receives the el
 ```csharp
 // Sequential renumbering
 int i = 1;
+var level = GetElements("Doors").Select(d => d.GetStr("Level")).First();
 GetElements("Doors")
-    .WhereParam("Level", "Level 2")
+    .WhereParam("Level", level)
     .OrderByParam("Mark")
     .SetParam("Mark", e => $"D2-{i++:000}")
 ```

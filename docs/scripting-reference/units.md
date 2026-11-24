@@ -85,6 +85,7 @@ For even easier unit handling without direct `UnitUtils` calls, Paracore provide
 These methods are useful when you need to perform conversions that aren't handled automatically by the `Params` engine.
 
 ```csharp
+var room = GetElements<Room>().First();
 // Input: Convert FROM a human unit TO Revit internal (Feet/SqFt)
 double wallWidth = 200.0.InputUnit("mm"); // Converts 200mm to internal feet
 
@@ -96,6 +97,7 @@ double areaSqm = room.Area.OutputUnit("m2"); // Converts internal sqft to square
 Quickly convert and format a value for logging or UI display.
 
 ```csharp
+var wall = GetElements<Wall>().First();
 // ⚠ `wall.Area` does not compile (CS1061). A wall does HAVE an area — it is a
 //   PARAMETER, not a .NET property, so read it with GetNum first. Only Room, Space
 //   and other SpatialElements expose Area as a property (see the example above).

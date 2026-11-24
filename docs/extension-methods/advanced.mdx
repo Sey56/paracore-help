@@ -20,8 +20,7 @@ Returns a list of strings containing material names.
 Returns a comma-separated string of material names (ideal for `Table()` output).
 
 ```csharp
-// select an element in Revit first — Selection[0] on an empty selection throws
-Selection[0].GetMaterialNames() // → "Glass, Aluminum, Concrete"
+GetElements<Wall>().First().GetMaterialNames() // → the wall's material names
 ```
 
 ---
@@ -101,8 +100,9 @@ GetElements<Wall>()
 
 ```csharp
 int i = 1;
+var level = GetElements("Doors").Select(d => d.GetStr("Level")).First();
 GetElements("Doors")
-    .WhereParam("Level", "Level 2")
+    .WhereParam("Level", level)
     .OrderByParam("Mark")
     .SetParam("Mark", e => $"D2-{i++:000}");
 ```

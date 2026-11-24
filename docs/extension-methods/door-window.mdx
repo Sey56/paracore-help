@@ -22,7 +22,8 @@ These are Paracore's own geometric labels, not Revit's `FromRoom` / `ToRoom` pro
 Returns the room on the **non-swing side** — the side the door swings away from. Stable regardless of flips.
 
 ```csharp
-door.RoomAccess()   // → "Corridor"
+var door = GetElements<FamilyInstance>("Doors").First();
+door.RoomAccess()   // → the room on the swing side
 ```
 
 ### `fi.RoomDestination()` / `fi.RoomTo()`
@@ -30,6 +31,7 @@ door.RoomAccess()   // → "Corridor"
 Returns the room the door **swings into** (based on swing arc geometry). Stable regardless of flips.
 
 ```csharp
+var door = GetElements<FamilyInstance>("Doors").First();
 door.RoomDestination()  // → the name of the room it swings into
 ```
 
@@ -49,6 +51,7 @@ Since `RoomFrom()` is always the side the door swings **away from**, the observe
 | `RH` | Right Hand — hinges on the right as seen from `RoomFrom()` |
 
 ```csharp
+var door = GetElements<FamilyInstance>("Doors").First();
 door.Handing()    // → "LH" or "RH"
 ```
 
@@ -57,7 +60,8 @@ door.Handing()    // → "LH" or "RH"
 Returns `"Left"` or `"Right"` as seen from the Access Room.
 
 ```csharp
-door.HingeSide()  // → "Right"
+var door = GetElements<FamilyInstance>("Doors").First();
+door.HingeSide()  // → "Left" or "Right"
 ```
 
 ---
@@ -69,6 +73,7 @@ door.HingeSide()  // → "Right"
 Direct wrappers for Revit's `FamilyInstance.HandFlipped` and `FamilyInstance.FacingFlipped`.
 
 ```csharp
+var door = GetElements<FamilyInstance>("Doors").First();
 door.IsHandFlipped()    // → true / false
 door.IsFacingFlipped()  // → true / false
 ```
@@ -87,6 +92,7 @@ In string mode, use `WhereParam("HandFlipped", "True")` instead. This uses refle
 Returns the largest `Arc` found in the door's geometry — the physical swing arc in World Space.
 
 ```csharp
+var door = GetElements<FamilyInstance>("Doors").First();
 var arc = door.FindSwingArc();
 // arc.Radius, arc.Center, arc.GetEndPoint(0)
 ```
@@ -100,6 +106,7 @@ var arc = door.FindSwingArc();
 Returns `true` if the door is hosted in a standard wall (Basic/Stacked), `false` if it's a Curtain Wall panel (glass door).
 
 ```csharp
+var door = GetElements<FamilyInstance>("Doors").First();
 door.IsStandardDoor()  // → true for standard doors
 // false for curtain wall glass doors
 ```

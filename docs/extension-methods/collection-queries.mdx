@@ -14,7 +14,8 @@ All methods are **generic** (`where T : Element`) and preserve the input type th
 Filters elements where the named parameter/property equals the value (case-insensitive). Works via `GetStr()`, which covers Revit parameters AND native C# properties via Reflection.
 
 ```csharp
-GetElements("Doors").WhereParam("Level", "Level 1")
+var level = GetElements("Doors").Select(d => d.GetStr("Level")).First();
+GetElements("Doors").WhereParam("Level", level)
 ```
 
 ### `.WhereParam(name, op, value)` — String predicate filter

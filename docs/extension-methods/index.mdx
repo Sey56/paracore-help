@@ -24,8 +24,9 @@ Paracore's collection extensions support two styles, each with trade-offs:
 ### Mode 1: String / Parameter Mode (Generic Elements)
 
 ```csharp
+var level = GetElements("Doors").Select(d => d.GetStr("Level")).First();
 GetElements("Doors")
-    .WhereParam("Level", "Level 1")
+    .WhereParam("Level", level)
     .WhereParam("HandFlipped", "True")   // Uses reflection for C# properties
     .OrderByParam("Mark")
     .Table()
@@ -38,8 +39,9 @@ GetElements("Doors")
 ### Mode 2: Typed / Lambda Mode (Specific Types)
 
 ```csharp
+var level = GetElements("Doors").Select(d => d.GetStr("Level")).First();
 GetElements<FamilyInstance>("Doors")
-    .WhereParam("Level", "Level 1")
+    .WhereParam("Level", level)
     .Where(dr => !dr.HandFlipped && dr.Symbol.FamilyName.Contains("Single"))
     .OrderByParam("Mark")
     .Table()
@@ -68,7 +70,7 @@ Both are valid. Use whichever is cleaner for your task.
 | Get type parameter | `.GetTypeStr("Width")` or `.GetStr("Width")` |
 | Set parameter value | `.SetVal("Comments", "Done")` |
 | Set numeric with unit | `.SetNum("Base Offset", 500, "mm")` |
-| Filter by param string | `.WhereParam("Level", "Level 1")` |
+| Filter by param string | `.WhereParam("Level", levelName)` |
 | Filter by string op | `.WhereParam("Mark", "starts", "A")` |
 | Filter by C# property | `.WhereParam("HandFlipped", "True")` |
 | Filter by numeric value | `.WhereParam("Width", 200, "mm")` |
@@ -98,7 +100,7 @@ Both are valid. Use whichever is cleaner for your task.
 | Isolate in view | `.Isolate()` |
 | Hide/Unhide in view | `.Hide()` / `.Unhide()` |
 | Forensic parameter dump | `.Peek()` |
-| Discover all parameters | `.CombinedParams()` + Id column |
+| Discover all parameters | `.CombinedParams().Table()` |
 
 ## 🔧 Global Script Functions
 
