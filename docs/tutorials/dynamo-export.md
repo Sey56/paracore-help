@@ -23,8 +23,12 @@ The export runs through the same in-Revit engine as **Run**: the desktop app mus
 
 1. Install the 4.9.0 desktop app and Revit add-in.
 2. Open a Revit project, switch **Paracore Server** to **ON** in the ribbon, and confirm the desktop TopBar says **Connected**.
-3. Load **`V4_9_Dynamo`** as your script source: **hamburger menu → Sidebar → Local Sources → Load or Initialize Source**, then select the `V4_9_Dynamo` folder, not the repository root. The Gallery now shows `DynamoMethod` and `DynamoGraph`.
+3. Load **`V4_9_Dynamo`** as your script source: **hamburger menu → Sidebar → Local Sources → Load or Initialize Source**, then select the `V4_9_Dynamo` folder, not the repository root. The Gallery now shows `DynamoMethod`, `DynamoGraph`, `DynamoDoorMark`, `DynamoFacadeLayout` and `DynamoRoomClassifier`.
 4. Have Dynamo 3.3 installed if you want to open the result.
+
+:::note[Dynamo version support]
+Dynamo 3.3 is the pinned version for exports in 4.9.0. The next patch will add a Revit version selector (2025 / 2026 / 2027) so the export targets the correct Dynamo data folder automatically. For now, select Dynamo version `3.3` in the export dialog.
+:::
 
 If you have not loaded a script source before, do [Before You Start: Script Sources and VS Code](./gallery-00-start-here.md) first. Both examples, and the REPL snippets from the 4.9.0 notes, are in [Paracore-Examples/V4_9_Dynamo](https://github.com/Sey56/Paracore-Examples/tree/main/V4_9_Dynamo).
 
@@ -54,6 +58,68 @@ The graph is built from the **selected** script, not from a canned template. Eve
 The `.dyn` goes to `%APPDATA%\Dynamo\Dynamo Revit\3.3\graphs\Paracore\Paracore_DynamoGraph.dyn`.
 
 `DynamoGraph` is exportable because it declares `public class Params` for its inputs and keeps its logic inside pure .NET code. If the selected script contains a blocked token, the export stops and names it.
+
+## Tutorial 3 — door mark generator (Graph + native Revit write-back)
+
+This tutorial shows the first integration pattern: **one Paracore calculation feeds a native Dynamo node that writes a Revit parameter**. The script composes a standard door mark from a level number, room number, and suffix letter. The mark format is `L02-R105-A` — the kind of string rule that is awkward in a Dynamo CodeBlock but trivial in C#.
+
+The script is `DynamoDoorMark`. It has three inputs (`LevelNumber`, `RoomNumber`, `DoorSuffix`) and produces one output: the composed mark string.
+
+1. Select `DynamoDoorMark` in the Gallery.
+2. Click **Export Dynamo**, choose **Graph**, and keep **Dynamo version** at `3.3`.
+3. Preview the export, then uncheck **Dry run** and click **Write graph**.
+4. Open the generated `.dyn` in Dynamo. You see one DoubleSlider (`LevelNumber`), one DoubleSlider (`RoomNumber`), one StringInput (`DoorSuffix`), one CodeBlock, and one Watch node showing the mark.
+5. In Dynamo, add these native Revit nodes to write the mark back to doors:
+   - **Categories** → select `Doors`.
+   - **All Elements of Category** → feeds a list of door elements.
+   - **Element.GetParameterValueByName** → read `Room Number` and `Level` from each door to supply the graph inputs (you may need a `String from Object` node for the level number).
+   - Feed the Watch output (the mark string) into **Element.SetParameterByName** with parameter name `Mark`.
+6. Run the graph. Dynamo iterates over every door, calls the CodeBlock logic for each, and writes the composed mark.
+
+The mark logic — zero-padding (`ToString("D2")`, `ToString("D3")`), suffix truncation, default-to-`X` — is pure C# that Dynamo has no equivalent for in a single CodeBlock expression. Paracore exported it; Dynamo applies it.
+
+## Tutorial 4 — facade panel layout (Graph + multi-output write-back)
+
+This tutorial shows the second integration pattern: **one Paracore block drives several Revit writes**. The script computes a panel layout grid from wall dimensions and a target module, producing six outputs: panel count, columns, rows, actual panel width, actual panel height, and waste percentage.
+
+The script is `DynamoFacadeLayout`. It takes seven inputs (wall length, wall height, target panel dimensions, edge/bottom/top offsets) and produces six outputs on Watch nodes.
+
+1. Select `DynamoFacadeLayout` in the Gallery.
+2. Click **Export Dynamo**, choose **Graph**, and keep **Dynamo version** at `3.3`.
+3. Preview, then write the `.dyn`.
+4. Open the graph in Dynamo. Seven input nodes feed one CodeBlock; six Watch nodes show the computed values.
+5. To drive it from the model, add native Revit nodes:
+   - **Categories** → `Walls`.
+   - **All Elements of Category** → wall list.
+   - **Element.GetParameterValueByName** → read `Length` and `Unconnected Height` from each wall. Feed these into the `WallLength` and `WallHeight` inputs.
+6. Write the summary to the wall's `Comments` parameter:
+   - Use a **Code Block** or **String Concat** node to build a summary like `"Panels: 24, Waste: 3.2%"` from the Watch outputs.
+   - Feed the string into **Element.SetParameterByName** with parameter name `Comments`.
+7. Run. Each wall gets its panel layout summary written back.
+
+This pattern — one calculation producing multiple values that each drive a different Revit write — is where the Paracore-to-Dynamo bridge earns its keep. The C# handles the math; Dynamo handles the model I/O.
+
+## Tutorial 5 — room review classifier (Graph + conditional branching)
+
+This tutorial shows the third integration pattern: **multi-branch C# logic that Dynamo CodeBlocks cannot express**. The script classifies a room from its area and name, producing a label string and a boolean flag. Dynamo uses the label for a parameter write and the flag to drive a second action.
+
+The script is `DynamoRoomClassifier`. It takes two inputs (`Area`, `RoomName`) and produces two outputs: a classification label and a `needsReview` flag.
+
+1. Select `DynamoRoomClassifier` in the Gallery.
+2. Click **Export Dynamo**, choose **Graph**, and keep **Dynamo version** at `3.3`.
+3. Preview, then write the `.dyn`.
+4. Open the graph in Dynamo. Two input nodes (`Area` as DoubleSlider, `RoomName` as StringInput) feed one CodeBlock. Two Watch nodes show the label and the flag.
+5. Drive it from the model:
+   - **Categories** → `Rooms`.
+   - **All Elements of Category** → room list.
+   - **Element.GetParameterValueByName** → read `Area` and `Name` from each room.
+6. Write the label to `Comments`:
+   - Feed the label Watch output into **Element.SetParameterByName** with parameter name `Comments`.
+7. Use the flag for a second action — for example, highlight rooms that need review:
+   - Feed the `needsReview` Watch output into an **If** node or a **Filter by Boolean Mask** to select only rooms where the flag is `true`.
+   - Apply a visual override or write a `Yes/No` parameter like `Needs Review`.
+
+The classification logic — `if/else if` chains, `Contains` checks on the room name, threshold comparisons — is exactly the kind of conditional branching that Dynamo CodeBlocks cannot do in a single expression. In C# it is straightforward; in Dynamo it would require a stack of `If` nodes.
 
 ## Previews, files and repeat exports
 
