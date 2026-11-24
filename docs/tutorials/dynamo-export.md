@@ -4,12 +4,10 @@ title: Export to Dynamo (new in 4.9.0)
 
 # Export to Dynamo
 
-Paracore 4.9.0 turns a **selected Gallery script** into a Dynamo artifact. Select the script in the Gallery, click **Export Dynamo** in the toolbar, and choose one of two kinds:
+What is new in 4.9.0 is the **Export Dynamo** button in the Gallery toolbar — earlier Paracore versions have no such button. It turns a **selected Gallery script** into a Dynamo artifact. Select the script in the Gallery, click **Export Dynamo**, and choose one of two kinds:
 
 - **Methods** — a ZeroTouch package with a node in Dynamo's library. You place the node and wire its inputs yourself.
 - **Graph** — a standalone `.dyn` whose inputs are already wired to the script's logic, with results on Watch nodes.
-
-**Nodes / package** is visible but disabled in 4.9.0. Earlier Paracore versions have no Export Dynamo button.
 
 The export runs through the same in-Revit engine as **Run**: the desktop app must say **Connected**, and Revit 2025, 2026 or 2027 must have the Paracore ribbon server **ON**. Dynamo 3.3 is the pinned version. What ships uses only native Dynamo nodes and plain .NET, so Dynamo does not need Paracore installed.
 
@@ -53,6 +51,5 @@ A Graph export needs a `public class Params` with public auto-properties, plus p
 
 - **Dry run** writes nothing. It reports artifact paths, sizes and a contract hash, and shows a field-level diff when you export the same contract again.
 - Check **Overwrite existing package** to replace files that are already there. If Revit or Dynamo still has the DLL loaded, close Revit before overwriting it.
-- The **Nodes / package** button is reserved for a later release; only **Methods** and **Graph** work in 4.9.0.
 
 Full release details are in the [4.9.0 release notes](../release-notes.md#490--november-2026).
