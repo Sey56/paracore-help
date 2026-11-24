@@ -46,7 +46,7 @@ Returns a list of all native C# properties on the element's runtime type (via Re
 ```csharp
 var wall = GetElements<Wall>().First();
 wall.ReflectionProperties().Table()
-// Columns: Id | Name | Type
+// Columns: Name | Type
 ```
 
 ### `element.ReflectionMethods()`
@@ -56,7 +56,7 @@ Returns a list of all public C# methods available on the element's runtime type 
 ```csharp
 var door = GetElements<FamilyInstance>("Doors").First();
 door.ReflectionMethods().Table()
-// Columns: Id | Method | ReturnType | Parameters | DeclaringType
+// Columns: Method | ReturnType | Parameters | DeclaringType
 ```
 
 ---
@@ -153,7 +153,7 @@ Returns a table of all geometry objects in the element: Solids (Volume, Area, Fa
 ```csharp
 var wall = GetElements<Wall>().First();
 wall.GeometrySummary().Table()
-// Columns: Id | Type | Source | Material | Volume | Area | Faces | Edges
+// Columns: Type | Source | Material | Volume | Area | Faces | Edges
 ```
 
 ---
