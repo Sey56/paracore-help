@@ -125,10 +125,16 @@ These are **static methods** from `ScriptApi` that are globally available in eve
 
 `Watchdog` and `WatchdogReport` are the two globals that turn a Gallery script into a **[Sentinel](../sentinels/index.md)** — a check you can deploy to run repeatedly while Revit is idle. Running the script with **Run** executes its callback once in Manual Test mode and arms nothing.
 
-```csharp
-// Extend timeout for heavy scripts
-SetExecutionTimeout(120);
+Put `SetExecutionTimeout` on the first line of a long script:
 
-// Query by BuiltInCategory (useful with hydrated enum parameters)
+```csharp
+SetExecutionTimeout(120); // seconds
+
+// ... heavy script here ...
+```
+
+A `BuiltInCategory` query looks like this:
+
+```csharp
 var doors = GetElements(BuiltInCategory.OST_Doors);
 ```
