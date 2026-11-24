@@ -4,10 +4,18 @@ title: Export to Dynamo (new in 4.9.0)
 
 # Export to Dynamo
 
-What is new in 4.9.0 is the **Export Dynamo** button in the Gallery toolbar — earlier Paracore versions have no such button. It turns a **selected Gallery script** into a Dynamo artifact. Select the script in the Gallery, click **Export Dynamo**, and choose one of two kinds:
+What is new in 4.9.0 is the **Export Dynamo** button in the Gallery toolbar — earlier Paracore versions have no such button. In 4.9.0, it exports **pure .NET scripts**. It does not convert a script that reads or edits the Revit model, and it does not carry Paracore helpers into Dynamo.
 
-- **Methods** — a ZeroTouch package, not a `.dyn` file. Dynamo shows it as a node under **Addons** in the library panel on the right; you place that node and wire its inputs yourself.
-- **Graph** — a standalone `.dyn` file whose inputs are already wired to the script's logic, with results on Watch nodes.
+## What can be exported
+
+The selected script must already follow one of these two shapes:
+
+| Export kind | Required script shape | What Dynamo receives |
+| --- | --- | --- |
+| **Methods** | A `public static class` containing `public static` methods. Parameters and return values must be scalar .NET types: `int`, `long`, `short`, `byte`, `double`, `float`, `decimal`, `bool`, `string` or `object`. Each method body must be pure .NET. | A ZeroTouch package, not a `.dyn` file. Dynamo shows it as a node under **Addons** in the library panel on the right; you place that node and wire its inputs yourself. |
+| **Graph** | A `public class Params` with public auto-properties for the inputs, plus pure .NET logic in a `public static` method or in top-level statements. A static method needs one parameter per `Params` property, in the same order, and one return expression. | A standalone `.dyn` file whose inputs are already wired to the logic, with results on Watch nodes. |
+
+That is the 4.9.0 contract. A script that uses `Doc`, `Autodesk.` types, `ScriptApi`, `GetElements`, `GetNum`, `GetStr`, `SetParam`, `Println`, `Transact` or the Revit API is not an exportable script. The export stops and names the token that blocked it.
 
 The export runs through the same in-Revit engine as **Run**: the desktop app must say **Connected**, and Revit 2025, 2026 or 2027 must have the Paracore ribbon server **ON**. Dynamo 3.3 is the pinned version. What ships uses only native Dynamo nodes and plain .NET, so Dynamo does not need Paracore installed.
 
@@ -31,7 +39,7 @@ If you have not loaded a script source before, do [Before You Start: Script Sour
 
 The package goes to `%APPDATA%\Dynamo\Dynamo Revit\3.3\packages\Paracore_MethodNodes` unless you gave it another name.
 
-A Method export needs a `public static` class with `public static` methods whose parameters are scalar .NET types — `int`, `double`, `bool`, `string` and the like. The exported method body must be plain .NET: it cannot call Revit or Paracore helpers. `DynamoMethod` calls `Println` when you **Run** it in Paracore, but that line sits outside the exported class and never reaches Dynamo.
+`DynamoMethod` is exportable because it contains a `public static class` with a `public static` method and pure .NET arithmetic. Its `Println` call sits outside the exported class, so it runs in Paracore but never reaches Dynamo.
 
 ## Tutorial 2 — export a Graph
 
@@ -45,7 +53,7 @@ The graph is built from the **selected** script, not from a canned template. Eve
 
 The `.dyn` goes to `%APPDATA%\Dynamo\Dynamo Revit\3.3\graphs\Paracore\Paracore_DynamoGraph.dyn`.
 
-A Graph export needs a `public class Params` with public auto-properties, plus pure .NET logic in a `public static` method or in top-level statements. If the script reads Revit or uses an engine helper such as `GetElements(`, `GetNum(` or `Println(`, the export stops and names the exact token and what to change. A gallery script that edits the model stays in Paracore; write a separate pure-computation script to export a graph.
+`DynamoGraph` is exportable because it declares `public class Params` for its inputs and keeps its logic inside pure .NET code. If the selected script contains a blocked token, the export stops and names it.
 
 ## Previews, files and repeat exports
 
