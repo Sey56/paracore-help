@@ -49,7 +49,7 @@ const config: Config = {
     },
   ],
 
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'throw',
 
   // Even if you don't use internationalization, you can use this field to set
   // useful metadata like html lang. For example, if your site is Chinese, you
@@ -80,6 +80,29 @@ const config: Config = {
     ],
   ],
   // -----------------------------------
+  // Old lesson routes are preserved as client-side redirects. The "This page has
+  // moved" stubs were removed from docs/ so local search stops indexing empties.
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          { from: ['/docs/ai-agent/mcp-server', '/docs/ai-agent/security'], to: '/docs/ai-agent' },
+          { from: ['/docs/authoring/ai-generation'], to: '/docs/ai-agent' },
+          { from: ['/docs/authoring/execution', '/docs/authoring/inspector', '/docs/fundamentals/10-paracore-repl', '/docs/fundamentals/step-by-step/10-step-by-step'], to: '/docs/interactive-repl' },
+          { from: ['/docs/authoring', '/docs/authoring/gallery', '/docs/authoring/metadata', '/docs/core-concepts/script-types', '/docs/fundamentals/02-creating-and-managing-scripts', '/docs/fundamentals/step-by-step/01-step-by-step', '/docs/fundamentals/step-by-step/02-step-by-step'], to: '/docs/fundamentals/01-script-sources-and-structure' },
+          { from: ['/docs/authoring/vscode', '/docs/fundamentals/step-by-step/03-step-by-step'], to: '/docs/fundamentals/03-editing-scripts-in-vscode' },
+          { from: ['/docs/authoring/query-builder', '/docs/fundamentals/step-by-step/07-step-by-step'], to: '/docs/fundamentals/07-visual-query-builder' },
+          { from: ['/docs/core-concepts/active-data-workflows', '/docs/fundamentals/08-structured-output-table', '/docs/fundamentals/step-by-step/08-step-by-step'], to: '/docs/tutorials/tables-and-answers' },
+          { from: ['/docs/core-concepts'], to: '/docs/intro' },
+          { from: ['/docs/fundamentals/04-parameter-engine-params-class', '/docs/fundamentals/05-parameter-defaults-and-cache', '/docs/fundamentals/step-by-step/04-step-by-step', '/docs/fundamentals/step-by-step/05-step-by-step'], to: '/docs/scripting-reference/parameters' },
+          { from: ['/docs/fundamentals/06-revit-vs-paracore-selection', '/docs/fundamentals/step-by-step/06-step-by-step'], to: '/docs/tutorials/reading-the-model' },
+          { from: ['/docs/releases/v3.0.2'], to: '/docs/release-notes' },
+          { from: ['/docs/tool-generator/creating-tools', '/docs/tool-generator/distributing-tools', '/docs/tool-generator/overview', '/docs/tool-generator/security'], to: '/docs/tool-generator' },
+        ],
+      },
+    ],
+  ],
 
   presets: [
     [
