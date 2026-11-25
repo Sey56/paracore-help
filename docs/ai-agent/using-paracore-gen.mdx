@@ -10,20 +10,19 @@ Use Claude Desktop, Cursor, VS Code or any MCP client.
 
 ### Install and connect
 
-Paracore-Gen is a standalone Windows app installed alongside the other tools. The server program is `paracore-gen.exe` in:
-
-```
-%APPDATA%\paracore-data\mcp-servers
-```
-
-`%APPDATA%` is your roaming folder — usually `C:\Users\<your-username>\AppData\Roaming`. Most MCP clients do not expand environment variables in JSON config, so paste the resolved path.
-
-Add a `paracore-gen` entry to your client's MCP config, then restart the client. The JSON shape is the same everywhere; only the config file location changes.
+The JSON shape is the same for every client; only the config file location changes.
 
 **Claude Desktop**
 
-1. **Settings → Developer → Edit Config** opens the folder holding `claude_desktop_config.json` (normally `%APPDATA%\Claude\claude_desktop_config.json`).
-2. Add `paracore-gen` under `mcpServers`:
+1. Install Paracore-Gen, the standalone Windows app shipped alongside the other Paracore tools. The server program is `paracore-gen.exe` in:
+
+   ```
+   %APPDATA%\paracore-data\mcp-servers
+   ```
+
+   `%APPDATA%` is your roaming folder — usually `C:\Users\<your-username>\AppData\Roaming`. Most MCP clients do not expand environment variables in JSON config, so paste the resolved path into the config below.
+2. **Settings → Developer → Edit Config** opens the folder holding `claude_desktop_config.json` (normally `%APPDATA%\Claude\claude_desktop_config.json`).
+3. Add `paracore-gen` under `mcpServers` in that `.json` file:
 
    ```json
    {
@@ -36,13 +35,15 @@ Add a `paracore-gen` entry to your client's MCP config, then restart the client.
    ```
 
    Replace `<your-username>` with your Windows username, or paste the full path from File Explorer. No `args` are needed — the server runs over stdio. If other servers are already listed, add the `"paracore-gen": { ... }` block inside the existing `mcpServers` object and keep the commas correct.
-3. **Fully quit Claude Desktop** — including the system tray — and start it again. It reads the config only at launch; a partial quit is the usual reason a new server never appears.
-4. In a chat, click the **+** button, then **Plugins**. Make sure **paracore-gen** is listed and switched **ON** (blue in the picture). If it is off, toggle it on.
+4. **Fully quit Claude Desktop** — including the system tray — and start it again. It reads the config only at launch; a partial quit is the usual reason a new server never appears.
+5. In a chat, click the **+** button, then **Plugins**. Check that **paracore-gen** is listed and switched **ON** (blue in the picture). This is how you confirm it loaded from the config and is enabled. If it is off, toggle it on.
 
    ![Claude Desktop's + menu with Plugins open and paracore-gen switched on](/img/ai-gen-claude-desktop-plugins.png)
 
-5. Start Revit, open a project and switch the Paracore server ON.
-6. In a new chat, confirm `paracore-gen` appears in the tools list, then ask: "Check that you can connect to Revit." It should report the connected state and the open project.
+6. Start Revit, open a project and switch the Paracore server ON.
+7. In a new chat, confirm `paracore-gen` appears in the tools list, then ask: "Check that you can connect to Revit." It should report the connected state and the open project, view and levels.
+
+   ![An AI client connected to paracore-gen, showing the loaded tools and the active project, view and levels](/img/ai-gen-connect-check.png)
 
 **Cursor and VS Code**
 
@@ -60,8 +61,6 @@ At the start of every session the assistant runs a connection check (`ping`):
 | Revit not running | Revit is closed. | Start Revit. |
 
 When connected, the assistant also receives a short cheat sheet it uses for the rest of the session.
-
-![An AI client connected to paracore-gen, showing the loaded tools and the active project, view and levels](/img/ai-gen-connect-check.png)
 
 ### Your first request
 
