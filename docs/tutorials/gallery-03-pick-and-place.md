@@ -1,6 +1,6 @@
 # Gallery Tutorial 3: Pick and Place
 
-So far, parameters have been dropdowns filled by the engine — every level, every wall type, every room. This lesson introduces the other way to target elements: **picking them directly in the Revit viewport**, and a safety attribute that stops you from running with empty inputs.
+So far, parameters have been dropdowns filled by the engine — every level, every wall type, every room. This lesson adds a **multi-select box** for choosing several walls at once, and a safety attribute that stops you from running with empty inputs.
 
 The tool is a **Door Renumberer** — it renumbers door marks on selected walls with a prefix and a sequential count. Real work, done safely.
 
@@ -19,14 +19,14 @@ Dependencies: RevitAPI 2025+, Paracore.Addin
 
 Description:
 Renumbers door marks on selected walls with a prefix and sequential numbers.
-Pick walls in the Revit viewport, choose a prefix, and run.
+Select walls from the parameters panel, choose a prefix, and run.
 */
 
 Params p = new();
 
 if (p.TargetWalls == null || p.TargetWalls.Count == 0)
 {
-    Println("Pick at least one wall in the parameters panel.");
+    Println("Select at least one wall in the parameters panel.");
     return;
 }
 
@@ -63,8 +63,7 @@ public class Params
 {
     #region Selection
 
-    /// Pick walls in the Revit viewport
-    [Select(SelectionType.Element)]
+    /// Select walls from the parameters panel
     [Required]
     public List<Wall>? TargetWalls { get; set; }
 
@@ -88,19 +87,18 @@ public class Params
 
 ## What is new
 
-### `[Select(SelectionType.Element)]` — viewport picking
+### `List<Wall>` — desktop multi-select
 
 ```csharp
-[Select(SelectionType.Element)]
 [Required]
 public List<Wall>? TargetWalls { get; set; }
 ```
 
-Instead of a dropdown, this renders a **pick button** in the parameters panel. Click it, and Revit's cursor activates — click walls in the viewport to add them to the list. The picked elements arrive as real `Wall` objects in the script body.
+A `List<T>` parameter renders a **multi-select box with checkboxes** in the parameters panel. It starts empty with a **Compute** button on the right. Click **Compute** to fill it with the walls in the model, then tick the ones you want. The ticked walls arrive as real `Wall` objects in the script body.
 
-`List<Wall>` means multi-select. A single `Wall` (no `List<>`) would let you pick only one.
+A single `Wall` (no `List<>`) would render a single-select dropdown instead. `WallType` gives a dropdown of wall types; `Wall` gives a dropdown of wall instances; `List<Wall>` gives the checkbox list.
 
-> **`[Select]` vs dropdown.** A `WallType` property renders a dropdown of types. A `Wall` property renders a dropdown of instances. But `[Select(SelectionType.Element)]` on a `Wall` forces a **viewport pick** — you click the wall in the model, not in a list. Use `[Select]` when spatial precision matters.
+> **Viewport picking.** For one element, `[Select(SelectionType.Element)]` on a `Wall?` turns the dropdown into a pick button — you click the wall in the Revit model instead of choosing it from a list. That works with a **single** element today. See [Revit Element Selection](../scripting-reference/revit-elements.md) for the picker types and filters.
 
 ### `[Required]` — mandatory input
 
@@ -114,7 +112,7 @@ public List<Wall>? TargetWalls { get; set; }
 public string Prefix { get; set; } = "D";
 ```
 
-`[Required]` means the **Run button is disabled** until the property has a value. For `TargetWalls`, you must pick at least one wall. For `Prefix`, the default `"D"` satisfies it — but if you clear the text box, Run greys out.
+`[Required]` means the **Run button is disabled** until the property has a value. For `TargetWalls`, you must select at least one wall. For `Prefix`, the default `"D"` satisfies it — but if you clear the text box, Run greys out.
 
 This is different from a null check in the body (`if (p.TargetWalls == null)`). `[Required]` prevents the run before it starts; the null check is the safety net inside the script for when the attribute is not present.
 
@@ -125,7 +123,7 @@ var doors = GetElements<FamilyInstance>("Doors")
     .Where(d => p.TargetWalls.Any(w => w.Id == d.Host.Id));
 ```
 
-A door's `.Host` property is the element it was placed into — usually a wall. This filters the door list to only those hosted by walls you picked.
+A door's `.Host` property is the element it was placed into — usually a wall. This filters the door list to only those hosted by walls you selected.
 
 ### `{p.Prefix}-{counter:D3}` — formatted numbers
 
@@ -135,16 +133,16 @@ A door's `.Host` property is the element it was placed into — usually a wall. 
 
 > ⚠ **This writes to the model.** Run it on a copy of your project, not a live one.
 
-1. Click the **pick** button next to **Target Walls**. Pick two or three walls that have doors.
+1. Click **Compute** next to **Target Walls**, then tick two or three walls that have doors.
 2. Set **Prefix** to `L1` and **Start Number** to `1`.
 3. Click **Run**. The doors on those walls get marks `L1-001`, `L1-002`, `L1-003`…
 4. Turn on **Skip Doors With Marks** and run again. Only doors with empty marks are renumbered.
 
 ## Try This
 
-1. **Change `[Select(SelectionType.Element)]` to `[Select(SelectionType.Face)]`** and change the type to `Face?` — now you pick a wall face instead of the wall itself. The UI shows a different pick icon.
+1. **Use one wall instead.** Change `List<Wall>? TargetWalls` to `Wall? TargetWall` and update the body to use `p.TargetWall`. The panel shows a single dropdown instead of the checkbox list.
 2. **Add `[RevitElements(Category = "Doors")]` on a `FamilySymbol` property** called `DoorTypeFilter` and use it to only renumber doors of that type.
-3. **Remove `[Required]` from `TargetWalls`** and run without picking anything. The body's null check catches it — but the Run button let you through. `[Required]` is the front gate; the null check is the back stop.
+3. **Remove `[Required]` from `TargetWalls`** and run without selecting anything. The body's null check catches it — but the Run button let you through. `[Required]` is the front gate; the null check is the back stop.
 4. **Add a `[Confirm("APPLY")]` property** — `public string? Confirm { get; set; }` with `[Confirm("APPLY")]`. The user must type `APPLY` before Run activates. Use this for any tool that modifies many elements.
 
 ---

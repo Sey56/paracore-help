@@ -1,53 +1,30 @@
 # Using Paracore-Gen
 
-This is the end-user guide to **Paracore-Gen** — the optional connector that lets an AI assistant drive Revit through natural language. It is the human-facing counterpart to [How Paracore-Gen works](./how-it-works.mdx), which covers the implementation and safety internals.
+Paracore-Gen connects an AI assistant to your open Revit model. You describe the job; it writes and runs a C# script against the active project, using Paracore shortcuts, LINQ or the raw Revit API — whichever the task needs. Optional: the REPL and Gallery work without it. [How it works](./how-it-works.mdx) covers the internals.
 
-You do not need any of this to use the REPL or Gallery scripts — those run your own code and are documented elsewhere.
+Use Claude Desktop, Cursor, VS Code or any MCP client.
 
-## 1. What Paracore-Gen is
+## Get started
 
-Paracore-Gen connects an AI assistant to your open Revit model. You describe what you want in conversation, and the assistant **generates a C# script and runs it** against your open project. There is no fixed menu of operations: the code for each request is written at that moment, using Paracore's shortcut methods (`GetElements("Walls")`, `.WhereParam(...)`), LINQ, or the raw Revit API — whichever the task needs. It can also render a view as an image to check its own work.
+**You need:** Revit open with a project, the Paracore server inside Revit switched **ON**, and an AI client connected to Paracore-Gen. Supported Revit versions are listed on the [Downloads](../getting-started/downloads.md) page.
 
-Have the conversation in the client you prefer: Claude Desktop, Cursor, VS Code or any MCP client. You choose the assistant framework; Paracore-Gen is the connection to Revit.
+### Install and connect
 
-It is an optional, separate installer. The platform works fully without it. See [AI Assistants and MCP](./index.mdx) for what you can connect it to.
-
-Example requests:
-
-- "How many doors are on Level 2?"
-- "Set Comments to 'Fire-rated' on all walls with a 2 hr rating."
-- "Show me the total wall area by level."
-
-## 2. Before you start
-
-- Revit is open with a project loaded.
-- The Paracore server inside Revit is switched on.
-- Your AI client is connected to Paracore-Gen.
-- Supported AI clients: Claude Desktop, Cursor, VS Code, or any client that speaks MCP.
-- Supported Revit versions: the versions supported by the Paracore Add-in (the current Add-in is v4.9.0 — see the Add-in release page for the exact Revit-year list).
-
-## 3. Install and connect
-
-Paracore-Gen is a standalone Windows app. You install it once, then tell your AI client where it lives and restart the client. The rest of this section covers both steps.
-
-### Install Paracore-Gen
-
-Paracore-Gen is installed alongside the other Paracore tools. Its files live here:
+Paracore-Gen is a standalone Windows app installed alongside the other tools. The server program is `paracore-gen.exe` in:
 
 ```
 %APPDATA%\paracore-data\mcp-servers
 ```
 
-The server program is `paracore-gen.exe` in that folder. `%APPDATA%` is your per-user roaming folder — on Windows it resolves to `C:\Users\<your-username>\AppData\Roaming`. Most MCP clients do not expand environment variables inside JSON config, so use the resolved path in `command`, not `%APPDATA%` literally.
+`%APPDATA%` is your roaming folder — usually `C:\Users\<your-username>\AppData\Roaming`. Most MCP clients do not expand environment variables in JSON config, so paste the resolved path.
 
-### Add it to your AI client
-
-Paracore-Gen is an MCP server, so connecting it means adding a `paracore-gen` entry to your client's MCP config and restarting the client. The JSON shape is identical for every MCP client — only the config file location changes.
+Add a `paracore-gen` entry to your client's MCP config, then restart the client. The JSON shape is the same everywhere; only the config file location changes.
 
 **Claude Desktop**
 
-1. Open **Settings → Developer** and click **Edit Config**. This opens the folder that holds `claude_desktop_config.json` (normally `%APPDATA%\Claude\claude_desktop_config.json`).
-2. Open that file and add `paracore-gen` under `mcpServers`:
+1. **Settings → Developer → Edit Config** opens the folder holding `claude_desktop_config.json` (normally `%APPDATA%\Claude\claude_desktop_config.json`).
+2. Add `paracore-gen` under `mcpServers`:
+
    ```json
    {
      "mcpServers": {
@@ -57,136 +34,104 @@ Paracore-Gen is an MCP server, so connecting it means adding a `paracore-gen` en
      }
    }
    ```
-   Replace `<your-username>` with your Windows username (or paste the full path copied from File Explorer). No `args` are required — the server runs over stdio. If the file already lists other servers, just add the `"paracore-gen": { ... }` block inside the existing `mcpServers` object and keep the commas correct.
-3. Save the file and **fully quit Claude Desktop** (close it from the system tray too, not just the window), then start it again. Claude Desktop only reads the config at launch, so a partial quit is the usual reason a new server never appears.
-4. Start Revit, open a project, and make sure the Paracore server inside Revit is switched on.
-5. In a new chat, confirm `paracore-gen` shows up in the tools list (the tools/connectors icon in the message box), then ask: "Check that you can connect to Revit." The assistant should report that it is connected and tell you which project is open.
+
+   Replace `<your-username>` with your Windows username, or paste the full path from File Explorer. No `args` are needed — the server runs over stdio. If other servers are already listed, add the `"paracore-gen": { ... }` block inside the existing `mcpServers` object and keep the commas correct.
+3. **Fully quit Claude Desktop** — including the system tray — and start it again. It reads the config only at launch; a partial quit is the usual reason a new server never appears.
+4. Start Revit, open a project and switch the Paracore server ON.
+5. In a new chat, confirm `paracore-gen` appears in the tools list, then ask: "Check that you can connect to Revit." It should report the connected state and the open project.
 
 **Cursor and VS Code**
 
-Both speak MCP and use the same JSON shape. Cursor reads `~/.cursor/mcp.json`; VS Code reads `.vscode/mcp.json` in your workspace (or the user `settings.json` `mcp` block). Drop the same `mcpServers` block in, then restart the client.
+Cursor reads `~/.cursor/mcp.json`; VS Code reads `.vscode/mcp.json` in the workspace (or the `mcp` block in user `settings.json`). Drop in the same `mcpServers` block and restart the client.
 
-### Verify the connection
+### Connection states
 
-At the start of every session the assistant runs a connection check (`ping`). It reports one of four states:
+At the start of every session the assistant runs a connection check (`ping`):
 
 | State | Meaning | Fix |
 |---|---|---|
 | Connected | Everything works. | Nothing to do. |
 | Server up, no document | Revit is open but no project is loaded. | Open or load a project. |
-| Revit running, no connection | The in-Revit Paracore server is off. | Turn the Paracore server on in Revit. |
+| Revit running, no connection | The in-Revit Paracore server is off. | Turn it on in Revit. |
 | Revit not running | Revit is closed. | Start Revit. |
 
-When genuinely connected, the assistant also receives a quick-start cheat sheet it uses for the rest of the session.
+When connected, the assistant also receives a short cheat sheet it uses for the rest of the session.
 
-## 4. Your first request
+![An AI client connected to paracore-gen, showing the loaded tools and the active project, view and levels](/img/ai-gen-connect-check.png)
+
+### Your first request
 
 1. Open a project in Revit.
-2. Ask the assistant a simple question, for example: "How many walls are in the model?"
-3. The assistant first looks at your active view, your current selection and your levels (via `get_context`). This means "these walls" or "this level" refers to what you have selected or have open.
-4. You get the answer, often as an interactive table.
+2. Ask: "How many walls are in the model?"
+3. The assistant first checks your active view, selection and levels, so "these walls" or "this level" means what you have selected or open.
+4. The answer comes back, often as an interactive table.
 
-## 5. What it can do
-
-There is no fixed list. Every request is answered by a script written for it, so the following are examples of what people ask for, not a set of built-in commands. If you can describe it — including work that takes several steps or creates new geometry — the assistant can write the code for it.
-
-**Find and filter elements.** By category, parameter value, text contained in a parameter, or numeric comparison (for example, area greater than 25 m²). Example: "List doors whose Mark contains 'GEN'."
-
-**Group, count and sum.** Example: "Total room area per level."
-
-**Read parameters.** Instance and type parameters, in the units you ask for (mm, cm, m, m²). Values are exact; rounding is only applied for display.
-
-**Change the model.** Set parameters, set numeric values with units, bulk edit, delete, hide, unhide and isolate. Example: "Set the Top Offset of all walls on Level 1 to -150 mm."
-
-**Show results.** Tables and charts. The desktop app renders them in its **Analytics** tab — `.Table()`, `.BarGraph()`, `.PieGraph()` and `.LineGraph()` are the engine methods that produce them. When an assistant drives Paracore there is no desktop tab: the assistant returns the data and your client (Claude Desktop, Cursor, VS Code) renders the table or chart natively.
-
-**See the model.** Render any view as an image, with or without dimensions and tags. The assistant uses this to look at what it built or changed — it cannot otherwise see Revit's screen. Example: "Show me the 3D view."
-
-**Explore unknown elements.** List every parameter an element has, its built-in properties and a summary of its geometry.
-
-**Doors and windows.** Room from/to, handing, and standard doors vs. curtain-wall doors.
-
-**Materials and units.** Filter by material, and convert between units automatically.
-
-## 6. Reading the results
-
-- Large tables are summarized: when there are 50 rows or fewer, all rows are shown; above that, the first 50 rows plus the last 2 are shown, and the full total is always reported. Narrow your request instead of paging through results.
-- Parameter-list tables (every parameter of an element) are always shown in full.
-- Charts are produced by the engine methods `.BarGraph()`, `.PieGraph()` and `.LineGraph()` and render in the desktop app's **Analytics** tab. Driven by an assistant, the same data comes back to the client, which displays the table or chart itself — there is no separate Paracore tab in that case.
-- A picture of a view hides dimensions and room tags by default. Ask for the version that keeps tags if you need them.
-
-## 7. Making changes safely
-
-- **Changes are committed immediately**, and the old values are not saved automatically.
-- Ask the assistant to **show the current values first** and to **report old → new** after the change.
-- **Type parameters affect every element of that type.** Changing the width of one window's type changes all windows of that type. To change only one element, ask the assistant to create a new type for it first.
-- **Moving geometry can change other things**: rooms, hosted doors and windows, and joins. Check the counts afterwards.
-- If Revit shows a warning while the assistant is working, the [dialog watcher](./how-it-works.mdx#the-dialog-watcher) answers it so the request can finish, and the assistant reports what was pressed. Set `PARACORE_WATCH_DIALOGS=0` before starting your AI client to answer dialogs yourself.
-- Save your project or work on a copy before large edits.
-
-## 8. Limits and good-to-know behavior
-
-- Scripts stop automatically after **90 seconds** by default. Long jobs can be given more time or split into smaller steps. A single very long framework operation may not be interrupted by the timeout — if Revit stops responding, restart Revit to clear it.
-- Exploring data is read-only. If a script tries to write while exploring, the change is rolled back.
-- If Revit is busy, wait for it to finish instead of sending the request again.
-- A misspelled parameter name gives an error, not a blank or zero value.
-- A category with no elements in the model returns zero. It does not fall back to the types.
-
-## 9. Troubleshooting
+## If something goes wrong
 
 | Problem | Likely cause | What to do |
 |---|---|---|
-| "No connection" | Revit or the Paracore server is not running. | See the connection states in section 3. |
-| "Parameter not found" | Wrong parameter name. | Ask the assistant to list the parameters for that category. |
+| "No connection" | Revit or the Paracore server is not running. | Check the connection states above. |
+| "Parameter not found" | Wrong parameter name. | Ask it to list the parameters for that category. |
 | Table is too wide or empty | No columns were chosen. | Ask for specific columns. |
-| Image has no dimensions or room tags | They are hidden by default. | Ask for the view with tags kept. |
+| Image has no dimensions or room tags | Hidden by default. | Ask for the view with tags kept. |
 | Request times out | The job is too large. | Ask for it in smaller steps. |
 | "Revit is busy" | Another operation is still running. | Wait, then ask again. |
 
-## 10. Example requests
+## What to ask for
 
-**Counting and listing**
+There is no fixed list of commands — every request is answered by code written for it. Counting, filtering, grouping, parameter reads (in mm, cm, m, m²), bulk edits, charts and views all work, including multi-step work that creates geometry.
 
-- "How many doors are on each level?"
-- "List all walls with a fire rating, with their length and area."
+- **Find and filter** — category, parameter value, text or number. "List doors whose Mark contains 'GEN'."
+- **Group, count and sum** — "Total room area per level."
+- **Change the model** — set parameters, bulk edit, delete, hide, unhide, isolate. "Set the Top Offset of all walls on Level 1 to -150 mm."
+- **Show results** — tables and charts. The engine's `.Table()`, `.BarGraph()`, `.PieGraph()` and `.LineGraph()` produce the data; your client renders it. There is no desktop Analytics tab when an assistant drives Revit.
+- **See the model** — render any view as an image. The assistant uses this to check its own work. Dimensions and room tags are hidden by default; ask for them if needed.
+- **Explore unknown elements** — list every parameter, built-in property and a geometry summary.
+- **Doors and windows** — room from/to, handing, standard vs. curtain-wall doors.
+- **Materials and units** — filter by material, convert units automatically.
 
-**Data quality**
+More prompts to copy: "How many doors are on each level?" · "Which rooms have no name?" · "Find walls where Comments is empty." · "Set Mark on all doors to the room they open from." · "Hide all temporary generic models." · "Bar chart of room area by level." · "Pie chart of doors by type." · "Show me Level 1 with dimensions and tags."
 
-- "Which rooms have no name?"
-- "Find walls where Comments is empty."
+## Reading the results
 
-**Bulk edits**
+- Tables of 50 rows or fewer show every row; above that, the first 50 and last 2 are shown, with the full total always reported. Narrow the request instead of paging.
+- Parameter-list tables are always shown in full.
+- Charts come back as data that your client renders; no Paracore tab is involved.
+- Values are exact; rounding is applied only for display.
 
-- "Set Mark on all doors to the room they open from."
-- "Hide all temporary generic models."
+## Working safely
 
-**Charts**
+- **Changes commit immediately.** Old values are not saved automatically. Ask to see current values first and an old → new report afterwards.
+- **Type parameters affect every element of that type.** To change one element, ask for a new type first.
+- **Moving geometry can change rooms, hosted doors and windows, and joins.** Check the counts afterwards.
+- If Revit shows a warning mid-request, the [dialog watcher](./how-it-works.mdx#the-dialog-watcher) answers it and the assistant reports what was pressed. Set `PARACORE_WATCH_DIALOGS=0` before starting the client to answer dialogs yourself.
+- Save the project or work on a copy before large edits.
 
-- "Bar chart of room area by level."
-- "Pie chart of doors by type."
+## Limits
 
-**Views**
+- Scripts stop after **90 seconds** by default. Long jobs can be given more time or split up. A single very long framework operation may not be interrupted — if Revit stops responding, restart it.
+- Exploring data is read-only; a write attempt during exploration is rolled back.
+- If Revit is busy, wait rather than resending the request.
+- A misspelled parameter name gives an error, not a blank or zero value.
+- A category with no elements returns zero; it does not fall back to the types.
 
-- "Show me Level 1 with dimensions and tags."
-
-## 11. FAQ
+## FAQ
 
 **Does it change my model without asking?**
-No. You approve the code before it runs, and there is a one-time consent dialog per Revit session. Nothing changes unseen. For bulk changes, ask it to show old → new values so you can verify.
+No. You approve the code before it runs, with a one-time consent dialog per Revit session. For bulk changes, ask for an old → new report.
 
 **Does it work on workshared models?**
-Workshared and very large models are untested — the connector has been exercised against small single-user models. Use caution and work on a copy.
+Workshared and very large models are untested; the connector has been exercised on small single-user models. Use a copy.
 
 **Can it create new geometry?**
-Yes. Every request is answered by code written for it, so creating and changing geometry is done through the raw Revit API — `Wall.Create(...)`, placing family instances, transactions and anything else the task needs — whenever the shortcut methods are not enough. There is no separate tool to switch to for modelling work, and no fixed set of operations. You still see and approve the code before it runs.
+Yes — through the raw Revit API (`Wall.Create`, family instances, transactions) whenever the shortcut methods are not enough. You still see and approve the code first.
 
 **Where does my data go?**
-Whatever you send to the AI assistant is handled under that provider's privacy policy. Paracore itself does not send your model data to a server, and tool output deliberately omits your Windows user name and Revit install path — only the project file path is included so the assistant knows which model it is in. You see and approve the code before it runs.
+What you send is handled under your AI provider's privacy policy. Paracore itself does not send model data to a server. Tool output omits your Windows user name and Revit install path; only the project file path is included. You see and approve the code before it runs.
 
-## 12. Support
+## Support
 
 - Contact: [codarch46@gmail.com](mailto:codarch46@gmail.com)
 - YouTube: [@Codarch46](https://www.youtube.com/@Codarch46)
 - GitHub: [github.com/Sey56/Paracore](https://github.com/Sey56/Paracore)
-- Version: 2.1.2
-- Release notes: see the Paracore help [release notes](../release-notes.md)
+- Version: 2.1.3 — see the [release notes](../release-notes.md)

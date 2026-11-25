@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Paracore',
-  tagline: 'Bringing the full power of the Revit API to a professional, dynamic execution environment. Paracore enables instant C# automation through live script execution and a zero-boilerplate Parameter Engine that generates rich UI controls directly from your parameters—all integrated seamlessly with VS Code.',
+  tagline: 'Write a line, press Ctrl+Enter, read the answer — no compile step, no restart.',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -144,7 +144,6 @@ const config: Config = {
           label: 'Tutorials',
         },
         { to: '/docs/release-notes', label: 'Releases', position: 'right' },
-        { to: '/blog', label: 'Blog', position: 'left' },
         { to: '/docs/getting-started/downloads', label: 'Download', position: 'left' },
         { to: '/docs/support', label: 'Support', position: 'left' },
       ],
@@ -190,10 +189,6 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
             {
               label: 'Privacy Policy',
               to: '/docs/privacy',

@@ -52,13 +52,7 @@ Analytics shows the five biggest rooms in the whole project, with their level an
 
 The projection is what makes the table say what you asked: room number, level and area. A bare element dump can only guess which columns matter; here you choose them.
 
-:::warning[Bare `.Table()` on rooms — until 4.9.1 is released]
-
-In 4.9.0 the default `.Table()` assumes every element declares `Family` and `Type`. Rooms declare neither, so `GetElements<Room>().Table()` raises `there is no "Family" parameter in Category Rooms`. Typed `GetElements<Room>()` and untyped `GetElements("Rooms")` are both affected.
-
-Until the patch is released, use the projection above — `.Select(r => new { … }).Table()` — for any category without those parameters. An explicit projection works in every version.
-
-:::
+> ⚠ Until 4.9.1, bare `.Table()` on Rooms raises a missing-`Family`-parameter error. The projection above is the workaround; see [the full example](./the-repl.md#step-2-ask-the-model-a-question).
 
 ![Five largest rooms in the Analytics table](/img/wins-02-largest-rooms-table.png)
 

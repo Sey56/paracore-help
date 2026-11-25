@@ -318,7 +318,7 @@ MyScripts/
 | **Multi-file** | 4 files — entry + 2 helpers + Params.cs |
 | **`[RevitElements]`** | Column, beam, slab pickers filtered by category |
 | **`[Required]`** | Grids, BaseLevel, ColumnType must be set |
-| **`List<Grid>` multi-select** | Pick multiple grids from the model |
+| **`List<Grid>` multi-select** | Select multiple grids from the parameters panel |
 | **`Transact`** | All creation in one transaction, joins in a second |
 | **Separate `Params.cs`** | Parameters in their own file, always merged |
 | **Reference tracing** | Entry calls `FrameGeometry` and `JoinManager` → both merged |
@@ -328,7 +328,7 @@ MyScripts/
 > ⚠ **This creates a lot of geometry.** Run it on an empty model or a copy.
 
 1. Set up at least 2 levels and 2 grids (one in each direction) in your Revit model.
-2. In the parameters panel, pick the grids (multi-select), the base level, and a column type.
+2. In the parameters panel, click **Compute** and tick the grids (multi-select), then set the base level and a column type.
 3. Optionally pick a beam type and a slab type.
 4. Click **Run**. Columns appear at every grid intersection, beams span between them along each grid line, and a slab covers the top.
 

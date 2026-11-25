@@ -8,6 +8,8 @@ Paracore provides a dual-model approach to element selection: **Paracore UI Sele
 
 When you define a Revit element type as a property in your `Params` class, Paracore automatically "hydrates" the UI with a searchable list of matching elements from the model. This allows users to select elements directly from the Paracore interface without focusing on the Revit window.
 
+![A single-select dropdown above a multi-select checkbox list in the Configurator](/img/ui-4.9.0-single-and-multi-select.png)
+
 ### Single-Select Dropdown
 Defining a single element type creates a searchable dropdown.
 ```csharp
@@ -114,6 +116,46 @@ public class Params
     public Reference? MyRoomRef { get; set; } // Picker limited to Rooms
 }
 ```
+
+### Multi-Select in the Revit Viewport
+
+> ⚠ **Not yet released.** This needs an updated engine and add-in. Until it ships, use the
+> [desktop multi-select dropdown](#multi-select-dropdown) — see
+> [Gallery Tutorial 3](../tutorials/gallery-03-pick-and-place.md) for the current way.
+
+`[Select]` combined with `List<T>` renders a **multi-pick button**. The Revit cursor stays active
+until you press <kbd>Esc</kbd>, so one pick round trip collects several elements. This is different
+from the [desktop multi-select dropdown](#multi-select-dropdown) above: the dropdown lists elements
+in the Paracore panel; the pick button asks you to click them in the Revit model.
+
+Two forms, both driven by the declared type:
+
+**Filtered — one category.** Declare the concrete Revit type; the picker accepts only that class.
+```csharp
+public class Params
+{
+    /// Pick walls in the Revit viewport
+    [Select(SelectionType.Element)]
+    [Required]
+    public List<Wall>? TargetWalls { get; set; }
+}
+```
+
+**Unrestricted — any element.** Declare `List<Element>`; the picker accepts any element with no
+category or class filter.
+```csharp
+public class Params
+{
+    /// Pick any elements in the Revit viewport
+    [Select(SelectionType.Element)]
+    [Required]
+    public List<Element>? Elements { get; set; }
+}
+```
+
+The picked elements arrive in the script body as real `Wall` / `Element` objects, ready to pass to
+`.Table()` or `GetElements` workflows. Press <kbd>Esc</kbd> in Revit to finish; pressing it before
+picking anything cancels the operation.
 
 ---
 

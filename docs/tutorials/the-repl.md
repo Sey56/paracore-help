@@ -6,16 +6,7 @@ No file, no project, no `Params` class. Open the REPL editor, type one line, pre
 
 It is a full C# scripting environment, with one distinction from a standalone C# script: every line runs against the **active document** in the open Revit session. `Doc` is that live model — not a file on disk — so the answers come from the project you have open, and any change you make lands in it.
 
-:::info[First-time setup — do this once]
-
-**You need**, in this order:
-
-1. **Revit 2025, 2026 or 2027**, with any project open. Paracore ships one **.NET 8** payload, which Revit 2027's **.NET 10** host loads directly — no separate build or setting.
-2. The **Paracore server** switched **ON** in the Paracore ribbon tab — the button is a red circle reading **OFF** until you click it, then a green circle reading **ON**.
-3. **Paracore Desktop** started, showing a green **Connected** in the TopBar. The app launches its connector (`rap-server`) as a sidecar, so give it a second or two; a red **Disconnected** means the server in step 2 is off, or Revit is still loading.
-4. The **REPL** tab active in the TopBar. The editor is the **REPL Playground** panel.
-
-:::
+> First time here? Do the [four setup steps](./index.md#before-you-start) once, then come back.
 
 ## Step 1: It talks back
 

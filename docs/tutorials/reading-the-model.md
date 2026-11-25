@@ -95,7 +95,7 @@ Filters are only useful if the answer is visible. End the chain with an output:
 
 Chain `.Select().Zoom()` when you want both: `.Select()` highlights the elements, `.Zoom()` frames them in the active view.
 
-> ⚠ **Bare `.Table()` on Rooms — until 4.9.1 is released.** The 4.9.0 default table expects `Family` and `Type` parameters; Rooms declare neither, so `GetElements<Room>().Table()` raises `there is no "Family" parameter in Category Rooms`. Project the columns you want first: `.Select(r => new { r.Id, Number = r.GetStr("Number"), Area = r.GetVal("Area", "m2") }).Table()`. The same applies to `GetElements("Rooms")`.
+> ⚠ Until 4.9.1, project columns before `.Table()` on Rooms — the default table expects parameters Rooms do not have. [Why and how →](./the-repl.md#step-2-ask-the-model-a-question)
 
 > ⚠ **`.Select()` and `.Isolate()` act in the active view.** Elements on other levels are still selected, but Revit gives you no visual feedback for them until you open a view that contains them. If a query spans the model and you want to *see* the result, use `.Table()` — or filter to `ActiveView.GetStr("Associated Level")` first. This is why the script below narrows to the current level before it highlights anything.
 

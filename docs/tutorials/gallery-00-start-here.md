@@ -20,10 +20,7 @@ In the desktop app you initialise script sources, create scripts, fill in their 
 - **VS Code** installed on this machine. Get it from [code.visualstudio.com](https://code.visualstudio.com/) if you don't have it.
 - One empty folder.
 
-:::warning[You do not need the CoreScript VS Code extension to edit scripts]
-
-**Edit Script** opens plain VS Code by itself — the desktop app is connected to VS Code directly and never uses the **corescript-vscode** extension. That extension is a separate tool for developers who want to write **and run** C# from the editor without the desktop app; it does not support the desktop app and the two have no connection at all. See [CoreScript VS Code Extension](../corescript-vscode/index.mdx), and Part 4 below for when you might choose to install it.
-:::
+> **Edit Script** opens plain VS Code directly. The CoreScript extension is a separate, optional tool — see [Downloads](../getting-started/downloads.md) and Part 4 below.
 
 ---
 
@@ -68,7 +65,7 @@ If you add more sources later, choose the one you want from that dropdown before
 4. On the right of the modal, click **Archetype**.
 5. The **Generate Script** button at the bottom right is now active. Click it.
 
-![The New Script dialog](/img/ui-4.8.3-new-script.png)
+![The New Script dialog — type a name, choose Archetype, then Generate Script](/img/ui-4.9.0-new-script.png)
 
 A **MyScript** card appears in the Gallery. On disk, Paracore has created:
 
@@ -137,6 +134,8 @@ Change the greeting, use the compute button to pick a wall type, then click **RU
 ### Step 8: One click does everything
 
 Select the script card and click **Edit Script** (the pencil button) in the Gallery toolbar. **This is the step that generates and scaffolds the VS Code workspace for that Gallery script** — it also opens VS Code on it.
+
+![Edit Script opens plain VS Code on the script's workspace, beside the desktop app](/img/gallery-00-edit-script-in-vscode.png)
 
 That single click:
 

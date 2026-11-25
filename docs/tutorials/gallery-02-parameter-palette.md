@@ -88,6 +88,8 @@ public class Params
 }
 ```
 
+![The Configurator form — a boolean toggle, a numeric field, a grouped region and a multi-select box](/img/gallery-02-parameter-palette-form.png)
+
 ## What is new
 
 ### `[Segmented]` — choice buttons

@@ -6,7 +6,7 @@ Lesson 2 read values. This one answers questions — *how much concrete, which l
 
 There is no new C# in this lesson. That is the point: the questions get harder, the code does not.
 
-> ⚠ **Room tables in this lesson project their columns on purpose.** Until 4.9.1 is released, bare `.Table()` on an element collection expects `Family` and `Type` parameters; Rooms declare neither, so `GetElements<Room>().Table()` raises `there is no "Family" parameter in Category Rooms`. Use `.Select(r => new { … }).Table()` for Rooms and similar instance-only categories — as every room table below does.
+> ⚠ Room tables below project their columns on purpose: bare `.Table()` fails on Rooms until 4.9.1. [Details →](./the-repl.md#step-2-ask-the-model-a-question)
 
 The sample tables below show one project's numbers. Your groups and totals will differ; the column shapes and the calls are what to copy. Every grouped table carries the Id of one element from that group, so you can single-click it and land inside the group.
 

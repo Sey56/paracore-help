@@ -1,40 +1,33 @@
 # Welcome to Paracore
 
-Paracore runs C# scripts **inside Autodesk Revit**, while Revit is open. You write a line of code, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and see the answer immediately. There is nothing to compile and no need to restart Revit.
+Paracore runs C# scripts **inside Autodesk Revit**, while Revit is open. Write a line, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, read the answer. Nothing to compile, no restart.
 
 ![The Paracore desktop app](/img/ui-4.8.3-first-run.png)
 
-It is made of two pieces you install, and two you can add later.
+Two pieces are required; two are optional.
 
 | Piece | What it does | Needed? |
 |---|---|---|
 | **Paracore Revit add-in** | Runs your code inside Revit | Yes |
 | **Paracore Desktop app** | Where you write, configure and run scripts | Yes |
-| **CoreScript VS Code extension** | A standalone tool for developers who write **and run** C# from VS Code instead of the desktop app | Optional |
+| **CoreScript VS Code extension** | Standalone tool for writing **and running** C# from VS Code instead of the desktop app | Optional — not needed to edit scripts |
 | **Paracore-Gen** | Lets an AI assistant write and run scripts in Revit | Optional |
 
-:::warning[VS Code and the CoreScript VS Code extension are two different things]
-
-To **edit** a Gallery script you need **VS Code** — the plain editor — and nothing else. The desktop app's **Edit Script** button opens VS Code directly. You do **not** need the **CoreScript VS Code extension** to edit scripts, and the desktop app does not use it at all. That extension is a separate tool for developers who want to run code from VS Code without the desktop app. The two have no connection with each other.
-
-[Read the short explanation](./corescript-vscode/index.mdx) · [See the downloads](./getting-started/downloads.md)
-:::
-
-One installer covers **Revit 2025, 2026 and 2027**. You tick the versions you have; there is no separate 2027 download.
+The difference between plain VS Code and the CoreScript extension is explained under [Downloads](./getting-started/downloads.md).
 
 ## The three views
 
 The desktop app has three buttons at the top:
 
-- **REPL** — a full C# scripting environment in one file. Type C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, read the answer in **History**. Tables and charts appear in **Analytics**.
-- **Gallery** — saved scripts you run again and again. Each one can have a small form for its inputs.
-- **Playlists** — several Gallery scripts run in order. [Playlists reference](./authoring/playlists.mdx) · [Playlist lessons](./tutorials/playlists.md).
+- **REPL** — type C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, read the answer in **History**. Tables and charts go to **Analytics**. These are two tabs on the output panel: only one is visible at a time. If the hidden tab receives output, a blue dot appears on its name; activating the tab clears the dot.
+- **Gallery** — saved scripts you run again and again, each with an optional input form.
+- **Playlists** — several Gallery scripts run in order. [Reference](./authoring/playlists.mdx) · [Lessons](./tutorials/playlists.md).
 
-The REPL and the Gallery use the **same engine and the same C#**. Both are full C# 9 top-level-statement scripts: classes, interfaces, LINQ and the complete Revit API are available. Every script runs against the **active document in the open Revit session** — `Doc` is that live model, not a file on disk. The REPL is a single file; a Gallery script lives in a folder on your disk, can be split across several files, and can have a parameter form.
+All three views feed the same output panel: text to **History**, tables and charts to **Analytics**. The REPL and Gallery use the same engine and the same C#. Every script runs against the **active document in the open Revit session** — `Doc` is that live model, not a file on disk.
 
 ## What the code looks like
 
-You do not need to write Revit's long setup code. Paracore gives you short calls instead:
+Paracore supplies short calls in place of Revit's setup boilerplate:
 
 ```csharp
 GetElements<Wall>().Count()
@@ -46,17 +39,14 @@ GetElements("Rooms")
     .BarGraph()
 ```
 
-Those are ordinary C# extension methods — shortcuts for Revit API boilerplate, not a restricted language. The raw Revit API still works alongside them; see [The REPL Playground](./interactive-repl/index.mdx).
-
-## How the pieces fit together
-
-See [How Paracore Fits Together](./core-concepts/architecture.mdx) for the four parts and the diagram.
+These are ordinary C# extension methods; the raw Revit API still works alongside them. See [The REPL Playground](./interactive-repl/index.mdx).
 
 ## Where to go next
 
-1. [Install and connect](./getting-started/installation.mdx) — about five minutes.
-2. [Run your first line of C#](./getting-started/first-script.mdx).
-3. [Try ten one-line wins](./tutorials/one-line-wins.md) — including editing an Analytics table cell and updating Revit.
-4. [Work through the eight REPL lessons](./tutorials/index.md), then the [Gallery lessons](./tutorials/more-automation.md).
+- **Just looking** — [ten one-line wins](./tutorials/one-line-wins.md).
+- **Teach me** — [eight REPL lessons](./tutorials/index.md), then the [Gallery lessons](./tutorials/more-automation.md).
+- **I need a method** — [Extension Methods](./extension-methods/index.mdx).
+
+Start with [install and connect](./getting-started/installation.mdx) — about five minutes. For the four parts and a diagram, see [How Paracore Fits Together](./core-concepts/architecture.mdx).
 
 > Autodesk Revit runs on Windows only. Paracore runs on Windows 10 or 11 (64-bit).

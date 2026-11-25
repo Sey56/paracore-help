@@ -14,7 +14,7 @@ The REPL teaches you the engine. The Gallery is where you turn what you learned 
 |---|--------|---------------------------|
 | G1 | [Your First Gallery Script](./gallery-01-hello-wall.md) | build a wall tool with a parameter form and run it with different inputs |
 | G2 | [The Parameter Palette](./gallery-02-parameter-palette.md) | use toggles, sliders, choice buttons and conditional visibility |
-| G3 | [Pick and Place](./gallery-03-pick-and-place.md) | pick elements in the Revit viewport and require them with `[Required]` |
+| G3 | [Pick and Place](./gallery-03-pick-and-place.md) | choose several walls with a multi-select box and require them with `[Required]` |
 | G4 | [Modular Scripts](./gallery-04-modular-scripts.md) | split a tool into several files with its own `Params.cs` |
 | G5 | [Units and Conversions](./gallery-05-units-and-conversions.md) | use `[Unit]` and show values back in the user's unit |
 | G6 | [Dynamic UI](./gallery-06-dynamic-ui.md) | build adaptive forms with `[EnabledWhen]`, `_Options` and `[Confirm]` |

@@ -16,22 +16,20 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <Heading as="h1" className="hero__title">
-          Welcome to {siteConfig.title}:
-          <br />
-          Dynamic C# Revit API Automation
+          Dynamic C# automation inside Revit
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg"
-            to="/docs/release-notes">
-            What's New
+            className="button button--primary button--lg"
+            to="/docs/getting-started/installation">
+            Install
           </Link>
           <Link
             className="button button--outline button--lg margin-left--md"
             style={{ color: 'white', borderColor: 'white' }}
-            to="https://www.youtube.com/@Codarch46">
-            Paracore YouTube
+            to="/docs/tutorials/one-line-wins">
+            Try one line
           </Link>
         </div>
       </div>
@@ -40,8 +38,6 @@ function HomepageHeader() {
 }
 
 export default function Home(): ReactNode {
-  const { siteConfig } = useDocusaurusContext();
-
   useEffect(() => {
     if (window.location.hash) {
       const id = window.location.hash.slice(1);
@@ -53,8 +49,8 @@ export default function Home(): ReactNode {
   }, []);
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Paracore brings the full power of the Revit API to a professional, dynamic C# execution environment with instant UI generation, VS Code integration, and an interactive REPL.">
+      title="Paracore — dynamic C# automation for Revit"
+      description="Run C# inside Autodesk Revit with instant results. No compile step, no restart.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

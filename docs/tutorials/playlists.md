@@ -12,12 +12,7 @@ A playlist does not merge code. Every step is still an ordinary Gallery script w
 
 ## Before you start
 
-All three lessons need the same four things:
-
-1. **Revit 2025, 2026 or 2027 is open** with a project, and the **Paracore Server** is switched on in the Revit ribbon.
-2. The desktop app says **Connected** in the TopBar.
-3. A **local script source is active** — check the dropdown under **Local Sources** in the Sidebar (☰, top-left).
-4. The **Gallery** shows the scripts you will sequence.
+All three lessons need the [basic setup](./index.md#before-you-start), plus a **local script source** active (dropdown under **Local Sources** in the Sidebar, ☰ top-left) and the scripts visible in the **Gallery**.
 
 > ⚠ **The active script source is the whole game.** The **Select Script** dialog in a playlist lists **only** the scripts currently loaded in the Gallery from the active source. It is not a file browser. If a script is missing from that dialog, switch to the source that contains it before you build the playlist.
 
