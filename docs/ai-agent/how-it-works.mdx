@@ -6,13 +6,13 @@ Paracore-Gen has no fixed menu of task tools. It generates a C# script from your
 
 ## One engine
 
-Your own code (in the REPL or a Gallery script) and the code Paracore-Gen generates are compiled and run by the **same engine** — the same C#, the same imports, the same globals. `System.IO`, LINQ and the whole Revit API are pre-imported for every script. There is no second, agent-only runtime. In every case the script runs inside Revit against the active document: `Doc` is the live project that is open at that moment.
+Your own code (in the REPL or a Gallery script) and the code Paracore-Gen generates are compiled and run by the **same engine** — the same C#, the same imports, the same globals. `System.IO`, LINQ and the whole Revit API are pre-imported for every script. There is no second, agent-only runtime. In every case the script runs against the active Revit document, driven from the desktop app: `Doc` is the live project that is open at that moment.
 
 ## Why generated code has a boundary
 
 A script you write yourself is ordinary code: you wrote it, you read it, you chose to run it — the same as code you would write in VS Code or any other editor. It needs no protection from itself.
 
-Generated code is different. A model writes it from a conversation, it can contain anything, and it runs inside Revit with the reach of any C# program. The capability boundary on this page exists for that reason: to keep code you did not write from reaching your machine or your network. It was built for Paracore-Gen, not for the REPL.
+Generated code is different. A model writes it from a conversation, it can contain anything, and it runs against your Revit model with the reach of any C# program. The capability boundary on this page exists for that reason: to keep code you did not write from reaching your machine or your network. It was built for Paracore-Gen, not for the REPL.
 
 ## What the boundary refuses
 

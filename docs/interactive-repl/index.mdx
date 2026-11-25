@@ -1,12 +1,12 @@
 # The REPL Playground
 
-The **REPL** tab is a **full C# scripting environment** running inside Revit. You write C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and the answer appears. Nothing is saved unless you choose to save it.
+The **REPL** tab is a **full C# scripting environment** that automates Revit from the desktop app. You write C#, press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>, and the answer appears. Nothing is saved unless you choose to save it.
 
 ## A full C# scripting environment
 
 The REPL uses C# 9 **top-level statements**: no `Main`, no project file, no class wrapping your code. Echoing bare expressions is a REPL feature layered on top — it is not a limit on the language. Anything you can write in a C# script is available here: variables, local functions, LINQ, generics, classes, interfaces, structs, enums and records, and the complete Revit API.
 
-**The distinction is what the code runs against: the active document in the open Revit session.** This is not a standalone C# process working on a file on disk. The script executes inside Revit, and `Doc` is the live project you have open right now — its elements, parameters, views and transactions. A query reads the model as it stands at that moment; a change lands in that open model. That is what makes this environment more powerful than a general-purpose script runner, not a smaller language. A project must be open for a script to run.
+**The distinction is what the code runs against: the active document in the open Revit session.** This is not a standalone C# process working on a file on disk. The script runs against the open Revit session from the desktop app, and `Doc` is the live project you have open right now — its elements, parameters, views and transactions. A query reads the model as it stands at that moment; a change lands in that open model. That is what makes this environment more powerful than a general-purpose script runner, not a smaller language. A project must be open for a script to run.
 
 The one structural constraint is that a REPL script is **a single file**. You cannot split it across files the way a [Gallery script](../tutorials/gallery-04-modular-scripts.md) can. That is the only difference in language power — a script as long and as complex as you need still fits in this one file.
 

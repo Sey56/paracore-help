@@ -8,7 +8,7 @@ Four pieces, all on your computer.
 |---|---|
 | **Paracore Desktop app** | The window you work in: the REPL editor, the Gallery, Playlists and results. |
 | **Local connector** | A small service the desktop app starts for you. It passes scripts and results back and forth. |
-| **Paracore Revit add-in** | Runs inside Revit and gives the code direct access to the open model. |
+| **Paracore Revit add-in** | Sits in Revit as a local bridge, giving the code access to the open model. |
 | **CoreScript engine** | Compiles and runs the C#. The REPL, Gallery scripts and AI assistants all use this same engine. |
 
 Because there is one engine, a line of C# behaves the same wherever you write it. The only differences between the REPL and a Gallery script are where the code is stored and whether it has a parameter form.
