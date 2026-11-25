@@ -37,8 +37,12 @@ Add a `paracore-gen` entry to your client's MCP config, then restart the client.
 
    Replace `<your-username>` with your Windows username, or paste the full path from File Explorer. No `args` are needed — the server runs over stdio. If other servers are already listed, add the `"paracore-gen": { ... }` block inside the existing `mcpServers` object and keep the commas correct.
 3. **Fully quit Claude Desktop** — including the system tray — and start it again. It reads the config only at launch; a partial quit is the usual reason a new server never appears.
-4. Start Revit, open a project and switch the Paracore server ON.
-5. In a new chat, confirm `paracore-gen` appears in the tools list, then ask: "Check that you can connect to Revit." It should report the connected state and the open project.
+4. In a chat, click the **+** button, then **Plugins**. Make sure **paracore-gen** is listed and switched **ON** (blue in the picture). If it is off, toggle it on.
+
+   ![Claude Desktop's + menu with Plugins open and paracore-gen switched on](/img/ai-gen-claude-desktop-plugins.png)
+
+5. Start Revit, open a project and switch the Paracore server ON.
+6. In a new chat, confirm `paracore-gen` appears in the tools list, then ask: "Check that you can connect to Revit." It should report the connected state and the open project.
 
 **Cursor and VS Code**
 
