@@ -1,31 +1,33 @@
 # Revit Element Selection
 
-Paracore provides a dual-model approach to element selection: **Paracore UI Selection** (Automatic Hydration) and **Revit Selection** (Manual Picking). Understanding the difference is key to building professional automation tools.
+Paracore provides two ways to select elements: **Paracore UI parameters** (resolved from the current model by **Compute**) and **Revit viewport picking** (manual selection). Understanding the difference is key to building professional automation tools.
 
 ---
 
-## Paracore UI Selection (Hydration)
+## Paracore UI parameters
 
-When you define a Revit element type as a property in your `Params` class, Paracore automatically "hydrates" the UI with a searchable list of matching elements from the model. This allows users to select elements directly from the Paracore interface without focusing on the Revit window.
+When you define a Revit element type as a property in your `Params` class, the Configurator renders a text box with a **Compute** button beside it. Clicking **Compute** reads the current model and turns the box into a searchable dropdown, so elements can be selected without focusing the Revit window.
 
 ![A single-select dropdown above a multi-select checkbox list in the Configurator](/img/ui-4.9.0-single-and-multi-select.png)
 
 ### Single-Select Dropdown
-Defining a single element type creates a searchable dropdown.
+Defining a single element type gives you a text box with a **Compute** button; after computing, it becomes a searchable dropdown.
 ```csharp
 public class Params 
 {
-    // Lists all wall instances in the project automatically.
+    // Creates a text box with a Compute button. Clicking Compute turns it into
+    // a single-select dropdown of wall instances from the current model.
     public Wall? MyWall { get; set; } 
 }
 ```
 
 ### Multi-Select Dropdown
-Wrapping the type in `List<T>` creates a multi-select dropdown with checkboxes.
+Wrapping the type in `List<T>` follows the same flow, but computes into a multi-select dropdown with checkboxes.
 ```csharp
 public class Params 
 {
-    // Lists all walls in a multi-select checkbox list.
+    // Same two-step flow: text box + Compute, then a multi-select
+    // checkbox list of wall instances from the current model.
     public List<Wall>? MyWallInstances { get; set; }
 }
 ```

@@ -2,7 +2,7 @@
 
 Every script starts with these already available. You do not import or set them up.
 
-## The open Revit document
+## The active Revit document
 
 - **`Doc`** — the active `Autodesk.Revit.DB.Document`.
 - **`UIDoc`** — the active `UIDocument`.
