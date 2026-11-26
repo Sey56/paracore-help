@@ -59,6 +59,7 @@ var walls = GetElements<Wall>()
     .Where(w => w.GetStr("Level") == levelName)
     .ToList();
 
+// One transaction for the whole loop — SetVal inside reuses it instead of making one per wall.
 Transact("Stamp walls", () =>
 {
     foreach (var wall in walls)

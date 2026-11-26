@@ -34,7 +34,7 @@ Three rules:
 - Put the **loop inside** one `Transact`, not a `Transact` inside each iteration. Inside `Transact`, each write runs in that one transaction, so the whole loop costs one undo entry instead of one per element.
 - If a script fails, everything it changed in that run is undone. Either the whole run happened, or none of it did.
 
-Paracore prints a warning when it finds a per-element write inside a loop with no enclosing `Transact`, including the line number. Collection helpers such as `SetParam` already wrap the whole enumeration in one transaction and need no `Transact`.
+Paracore prints a line-numbered warning if it finds a per-element write inside a loop with no enclosing `Transact`. The full mechanics are explained in [SetVal and transactions](../extension-methods/parameter-accessors.mdx). Collection helpers such as `SetParam` already wrap the whole enumeration in one transaction.
 
 ## Long scripts
 

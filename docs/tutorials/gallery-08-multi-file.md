@@ -49,6 +49,7 @@ if (p.ColumnType == null)
 
 int colCount = 0, beamCount = 0;
 
+// One transaction covers all the loops inside these helpers — no per-element transactions.
 Transact("Create Structural Frame", () =>
 {
     colCount = FrameGeometry.PlaceColumns(p.Grids, p.BaseLevel, p.ColumnType);

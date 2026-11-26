@@ -46,6 +46,7 @@ if (p.SkipDoorsWithMarks)
     Println($"Skipping doors that already have marks — {doors.Count} left.");
 }
 
+// One transaction for the whole loop — SetVal inside reuses it instead of making one per door.
 Transact("Renumber Doors", () =>
 {
     int counter = p.StartNumber;

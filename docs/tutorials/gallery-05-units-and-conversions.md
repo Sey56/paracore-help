@@ -41,6 +41,7 @@ if (walls.Count == 0)
 
 Println($"Found {walls.Count} walls of type '{p.TargetWallType.Name}'.");
 
+// One transaction for the whole loop — each SetNum reuses it instead of opening its own.
 Transact("Adjust Walls", () =>
 {
     foreach (var wall in walls)
