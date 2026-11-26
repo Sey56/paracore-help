@@ -17,7 +17,9 @@ Use `Println` instead of `TaskDialog.Show()`: it does not pause your script or c
 
 ## Changing the model
 
-Document changes must be inside a **Transact** block:
+A single-element write such as `wall.SetVal("Comments", "Checked")` does **not** need `Transact`: the helper opens its own transaction.
+
+When you write to many elements, wrap the **whole loop** in one `Transact`:
 
 ```csharp
 Transact("Update comments", () => {
@@ -26,10 +28,13 @@ Transact("Update comments", () => {
 });
 ```
 
-Two rules:
+Three rules:
 
-- Put the **loop inside** one `Transact`, not a `Transact` inside each iteration.
+- One write outside a loop is fine on its own — it already makes one transaction.
+- Put the **loop inside** one `Transact`, not a `Transact` inside each iteration. Inside `Transact`, each write runs in that one transaction, so the whole loop costs one undo entry instead of one per element.
 - If a script fails, everything it changed in that run is undone. Either the whole run happened, or none of it did.
+
+Paracore prints a warning when it finds a per-element write inside a loop with no enclosing `Transact`, including the line number. Collection helpers such as `SetParam` already wrap the whole enumeration in one transaction and need no `Transact`.
 
 ## Long scripts
 
